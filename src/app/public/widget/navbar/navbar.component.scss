@@ -1,0 +1,11 @@
+$primary-text-color: #fff;
+$primary-text-color-hover: #fff;
+.mat-button-wrapper h1:hover {
+    color: $primary-text-color !important;
+    text-decoration: none !important;
+}
+
+.mat-toolbar .mat-button:hover {
+    color: $primary-text-color !important;
+    text-decoration: none !important;
+}

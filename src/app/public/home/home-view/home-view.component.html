@@ -1,0 +1,16 @@
+<div class="root-container">
+    <app-top-nav (sidenavToggle)="sidenav.toggle()"></app-top-nav>
+    <mat-sidenav-container class="sidenav-container" fxFlexFill>
+        <mat-sidenav #sidenav fxHide.gt-sm>
+            <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlexFill class="nav-content">
+            <div fxFlex style="height:100%;width:100%;">
+                <main [@routeAnimations]="getRouterOutletState(o)">
+                    <router-outlet #o="outlet"></router-outlet>
+                </main>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+
+</div>

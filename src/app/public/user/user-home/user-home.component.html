@@ -1,0 +1,98 @@
+<app-path></app-path>
+
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="container-fluid mt-3 ">
+    <div class="row p-3">
+
+        <h1 class="h3"><i class="fa fa-user" area-label="false"></i> User Managerment
+            <hr>
+        </h1>
+    </div>
+    <div class="row pr-0 ml-4 h-50 pre-scrollable only-verical-scroller ">
+        <div class="row pt-2 ml-1 border h-100 ">
+            <div class="col-sm m-4 p-4 text-center border align-content-center   pe-auto bg-portal-primary portal-box-shadow ">
+
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
+                            <span class="fa-stack">
+                        <i class="fa fa-user fa-stack-2x" area-label="false"></i>
+                        <i class="h5 fa fa-plus-circle fa-stack-1x ml-4"></i>
+                    </span> <span class="ml-2 mt-2 align-middle">Create User</span>
+                        </h1>
+                        <p class="card-text">Add a normal user to the system, normal user will have access basic fuctionality.</p>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
+
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
+                            <span class="fa-stack">
+                        <i class="fa fa-user fa-stack-2x" area-label="false"></i>
+                        <i class="h5 fa fa-info fa-stack-1x ml-4"></i>
+                    </span> <span class="ml-2 mt-2 align-middle">Edit User</span>
+                        </h1>
+                        <p class="card-text">Edit a user to update user permission or user data.</p>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row pt-2 ml-1 w-100 border">
+            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
+
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
+                            <span class="fa-stack">
+                        <i class="fa fa-user fa-stack-2x" area-label="false"></i>
+                        <i class="h5 fa fa-info fa-stack-1x ml-4"></i>
+                    </span> <span class="ml-2 mt-2 align-middle">Promote User</span>
+                        </h1>
+                        <p class="card-text">Promote a normal user to Team Lead.</p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h1 [routerLink]="['../add']" class="h4 bg-light text-danger link pe-auto  center-block ">
+                            <span class="fa-stack">
+                        <i class="fa fa-trash fa-stack-2x" area-label="false"></i>
+                        <i class="h5 fa fa-user fa-stack-1x ml-4"></i>
+                    </span> <span class="ml-2 mt-2 align-middle">Delete User</span>
+                        </h1>
+                        <p class="card-text">Delete user from the system.</p>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

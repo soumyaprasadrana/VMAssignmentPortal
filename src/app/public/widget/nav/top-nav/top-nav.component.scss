@@ -1,0 +1,54 @@
+$primary-text-color: #fff;
+$primary-text-color-hover: #fff;
+.white-icon {
+  color: $primary-text-color;
+}
+
+.navflex a:hover {
+  color: primary-text-color-hover !important;
+  text-decoration: none !important;
+}
+.navflex:hover {
+  color: primary-text-color-hover !important;
+  text-decoration: none !important;
+}
+.flexnava h1:hover {
+  color: $primary-text-color-hover !important;
+  text-decoration: none !important;
+}
+.flexnava span h1:hover {
+  color: $primary-text-color-hover !important;
+  text-decoration: none !important;
+}
+.navflex a {
+  color: $primary-text-color !important;
+  text-decoration: none !important;
+}
+.navflex {
+  color: $primary-text-color !important;
+  text-decoration: none !important;
+}
+.flexnava h1 {
+  color: $primary-text-color !important;
+  text-decoration: none !important;
+}
+.mat-button-wrapper h1:hover {
+  color: $primary-text-color !important;
+  text-decoration: none !important;
+}
+
+.mat-toolbar .mat-button:hover {
+  color: $primary-text-color !important;
+  text-decoration: none !important;
+}
+
+.search-form {
+  width: 100px;
+  display: block;
+  font-size: 18px;
+  font-weight: 200;
+}
+.search-field {
+  font-size: 12px;
+  width: 200px;
+}

@@ -1,0 +1,130 @@
+<app-path></app-path>
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-y: scroll;
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="container-fluid mt-3  only-verical-scroller">
+
+    <div class="row p-3 w-100 text-center justify-content-md-center">
+
+        <div class="col-sm  shadow-lg p-4 m-4 border card-top ">
+            <div class="row">
+                <h1 class="h4 text-dark ">
+                    Availibility
+                </h1>
+            </div>
+            <div class="row">
+                <!-- <ngx-charts-bar-vertical [results]="vmDataAvailibility" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="true" [legendTitle]="'Availibility'" [legendPosition]="'below'" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="'Status'"
+                    [yAxisLabel]="'Count'">
+                </ngx-charts-bar-vertical> -->
+                <ngx-charts-pie-grid [scheme]="colorScheme" [results]="vmDataAvailibility">
+                </ngx-charts-pie-grid>
+
+            </div>
+        </div>
+        <div class="col-sm shadow-lg p-4 m-4 border card-top">
+            <div class="row">
+                <h1 class="h4 text-dark ">
+                    OS
+                </h1>
+            </div>
+            <div class="row">
+                <!--<ngx-charts-pie-chart [results]="vmDataOS" [legend]="false" [legendTitle]="'OS'" [legendPosition]="'below'" [labels]="true">
+                </ngx-charts-pie-chart> -->
+                <ngx-charts-pie-grid [scheme]="colorScheme" [results]="vmDataOS">
+                </ngx-charts-pie-grid>
+            </div>
+        </div>
+    </div>
+    <div class="row p-3 w-100 h-50 text-center justify-content-md-center">
+
+        <div class="col-sm shadow-lg p-4 m-4 border card-top">
+            <div class="row">
+                <h1 class="h4 text-dark ">
+                    Group
+                </h1>
+            </div>
+            <div class="row">
+                <ngx-charts-bar-horizontal [results]="vmDataGroup" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [legendTitle]="'Group'" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="'Count'" [yAxisLabel]="'Group'">
+                </ngx-charts-bar-horizontal>
+
+
+
+            </div>
+        </div>
+        <div class="col-sm shadow-lg p-4 m-4 border card-top">
+            <div class="row">
+                <h1 class="h4 text-dark ">
+                    Snapshot Count
+                </h1>
+            </div>
+            <div class="row">
+                <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [results]="vmDataSnapCount" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-advanced-pie-chart>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<div style="overflow-y:scroll; overflow-x: hidden; " class="h-100">
+   
+    <table style="width:100%;margin-left:40px;">
+        <tr>
+            <td>
+                <h1 class="h4 text-dark ">Availibility</h1>
+            </td>
+            <td>
+                <h1 class="h4 text-dark ">
+                    OS
+                </h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ngx-charts-bar-vertical [view]="[400,200]" [results]="vmDataAvailibility" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="true" [legendTitle]="'Availibility'" [legendPosition]="'below'" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="'Status'" [yAxisLabel]="'Count'">
+                </ngx-charts-bar-vertical>
+            </td>
+            <td>
+                <ngx-charts-pie-chart [view]="[400,400]" [results]="vmDataOS" [legend]="false" [legendTitle]="'OS'" [legendPosition]="'below'" [labels]="true">
+                </ngx-charts-pie-chart>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h1 class="h4 text-dark ">
+                    Group
+                </h1>
+            </td>
+            <td>
+                <h1 class="h4 text-dark ">
+                    Snapshot Count
+                </h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ngx-charts-bar-horizontal [view]="[600,200]" [results]="vmDataGroup" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [legendTitle]="'Group'" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="'Count'" [yAxisLabel]="'Group'">
+                </ngx-charts-bar-horizontal>
+            </td>
+            <td>
+                <ngx-charts-advanced-pie-chart [view]="[600,200]" [scheme]="colorScheme" [results]="vmDataSnapCount" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-advanced-pie-chart>
+            </td>
+        </tr>
+    </table>
+</div>
+-->

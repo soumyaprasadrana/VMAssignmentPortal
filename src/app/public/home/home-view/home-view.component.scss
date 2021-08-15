@@ -1,0 +1,30 @@
+:host {
+  display: block !important;
+  height: 100% !important;
+}
+.hidden-router {
+  display: block;
+  overflow: visible;
+  position: absolute;
+  bottom: 20;
+  top: 100;
+  left: 0;
+  right: 0;
+}
+.root-container {
+  height: 100% !important;
+  width: 100% !important;
+}
+.sidenav-container {
+  height: 90% !important;
+  width: auto !important;
+}
+.nav-content {
+  overflow: auto !important;
+  height: 100% !important;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.nav-content::-webkit-scrollbar {
+  display: none;
+}

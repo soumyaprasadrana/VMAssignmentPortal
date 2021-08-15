@@ -1,0 +1,22 @@
+<mat-toolbar>
+    <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon class="white-icon">menu</mat-icon>
+    </button>
+    <a mat-button [routerLink]="['/portal/home/dash']">
+        <h1 style="color:white">VM Management Portal</h1>
+    </a>
+
+    <div fxFlex fxLayout fxLayoutAlign="end">
+        <div class="navflex" fxHide.lt-md>
+
+
+            <input class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" matInput placeholder="What are you looking for ?">
+
+
+            <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
+            <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
+            <a [routerLink]="['/portal/home/user/dash']" mat-button>User</a>
+            <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
+        </div>
+    </div>
+</mat-toolbar>

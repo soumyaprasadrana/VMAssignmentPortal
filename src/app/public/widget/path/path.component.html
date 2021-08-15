@@ -1,0 +1,28 @@
+<div class="alert-container">
+    <ngb-alert [type]="'info'" [dismissible]="false">
+        <ul id="breadcrumb">
+            <li *ngFor="let item of path">
+                <a class="path-item" [routerLink]="item.path">
+                    <!-- Home Icon-->
+                    <i class="fa fa-home" *ngIf="item.title=='home'" area-label="false"></i>
+
+                    <!-- User Icon-->
+                    <i class="fa fa-user" *ngIf="item.title=='user'" area-label="false"></i>
+
+                    <!-- Add VM  Icon-->
+                    <i *ngIf="item.parent=='home' && item.title=='add'" class="fa fa-desktop" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='home' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>
+
+
+                    <!-- User Dash-->
+                    <i *ngIf="item.parent=='user' && item.title=='dash'" class="fa fa-address-book" area-hideen="true"></i>
+
+                    <!-- Add User -->
+                    <i *ngIf="item.parent=='user' && item.title=='add'" class="fa fa-user" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='user' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i> {{item.title | uppercase}}
+                </a>
+
+            </li>
+        </ul>
+    </ngb-alert>
+</div>

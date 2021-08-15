@@ -1,0 +1,39 @@
+/* Angular-Slickgrid styling */
+/* Customize the SlickGrid Bootstrap theme to your taste
+ * Copy any of the variables '../node_modules/angular-slickgrid/styles/sass/_variables.scss'
+ * and make sure to add the @import at the end of this file
+ */
+
+/* for example, let's change the mouse hover color */
+/*$cell-odd-background-color: lightyellow;*/
+
+/* make sure to add the @import the SlickGrid Bootstrap Theme AFTER the variables changes */
+/*@import '@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-bootstrap.scss';*/
+
+//$primary-color: #0070ad;
+//$primary-color: #5100ad;
+//$row-mouse-hover-color: #efebfa;
+//$row-selected-color: #e6d4f6;
+$primary-color: #3498db;
+$row-mouse-hover-color: #dceffc;
+$row-selected-color: #c9e8fd;
+@import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
+
+html,
+body {
+  height: 100% !important;
+  display: block !important;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

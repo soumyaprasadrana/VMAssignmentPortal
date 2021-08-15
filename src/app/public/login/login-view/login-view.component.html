@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+
+
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <!-- The image half -->
+        <div class="col-md-6 d-none d-md-flex bg-image" style="padding-top:50px;">
+            <ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" class="mh-100" style="width: 100%; ">
+                <ng-template ngbSlide *ngFor="let image of images">
+                  <div class="picsum-img-wrapper">
+                    <img [src]="image" alt="Random slide" style="width:100%;max-height:300px; margin:0 auto;" >
+                  </div>
+                  
+                </ng-template>
+              </ngb-carousel>
+              
+              <hr>
+              
+              
+
+        </div>
+        <!-- The content half -->
+        <div class="col-md-6 bg-light">
+            <div class="login d-flex align-items-center py-5">
+                <!-- Demo content-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 col-xl-7 mx-auto">
+                            <h3 class="display-4">Welcome!</h3>
+                            <p class="text-muted mb-4">Please login to use VM Management Portal.</p>
+                            
+                            <form  [formGroup]="form" (ngSubmit)="onSubmit()">
+                                <ngb-alert *ngIf="showAlert" [type]="alert.type" [dismissible]="false" >{{ alert.message }}</ngb-alert>
+                                <div class="form-group mb-3">
+                                    <input id="username" type="text" placeholder="Username" formControlName="username" class="form-control " [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                        <div *ngIf="f.username.errors.required">Username is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input id="password" type="password" placeholder="Password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" >
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">Password is required</div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-block btn-portal text-uppercase mb-2 rounded-pill shadow-sm">Sign in</button>
+                                <div class="text-center d-flex justify-content-between mt-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- End -->
+            </div>
+        </div><!-- End -->
+    </div>
+</div>
+<app-footer></app-footer>

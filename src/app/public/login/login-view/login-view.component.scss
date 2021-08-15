@@ -1,0 +1,19 @@
+a.carousel-control-prev,
+a.carousel-control-next {
+  span {
+    display: none;
+  }
+}
+.container-fluid {
+  height: 100%;
+  /* border: solid 3px red;  for debugging purposes */
+}
+:host {
+  /* border: solid 3px red;  for debugging purposes */
+}
+.row {
+  /*  border: solid 3px blue;  for debugging purposes */
+  min-height: 60vh !important;
+  padding: 20px;
+  padding-bottom: 0px;
+}
