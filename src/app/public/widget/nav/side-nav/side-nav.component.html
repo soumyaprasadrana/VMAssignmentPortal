@@ -1,18 +1,18 @@
 <mat-nav-list class="app-side-nav">
-    <a mat-list-item [routerLink]="['/']" (click)="onSidenavClose()">
-        <mat-icon>home</mat-icon> Home
+    <a mat-list-item [routerLink]="['/portal/home/dash']" (click)="onSidenavClose()">
+        <mat-icon>home</mat-icon> <span class="ml-1">Home</span>
     </a>
-    <a mat-list-item [routerLink]="['/products']" (click)="onSidenavClose()">
-        <mat-icon>build</mat-icon> Products
+    <a mat-list-item [routerLink]="['/portal/home/vmm/dash']" (click)="onSidenavClose()">
+        <mat-icon>desktop_windows</mat-icon> <span class="ml-1">VMM</span>
     </a>
-    <a mat-list-item [routerLink]="['/services']" (click)="onSidenavClose()">
-        <mat-icon>pages</mat-icon> Services
+    <a mat-list-item [routerLink]="['/portal/home/chart']" (click)="onSidenavClose()">
+        <mat-icon>pie_chart</mat-icon> <span class="ml-1">Charts</span>
     </a>
-    <a mat-list-item [routerLink]="['/about']" (click)="onSidenavClose()">
-        <mat-icon>location_city</mat-icon> Company
+    <a mat-list-item [routerLink]="['/portal/home/user/dash']" (click)="onSidenavClose()">
+        <mat-icon>people</mat-icon> <span class="ml-1">Users</span>
     </a>
-    <a mat-list-item [routerLink]="['/contact']" (click)="onSidenavClose()">
-        <mat-icon>contact_support</mat-icon> Contact
+    <a mat-list-item [routerLink]="['/portal/home/tools/dash']" (click)="onSidenavClose()">
+        <mat-icon>build_circle</mat-icon> <span class="ml-1">Tools</span>
     </a>
     <a mat-list-item (click)="onSidenavClose()">
         <mat-icon>close</mat-icon> Close

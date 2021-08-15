@@ -5,18 +5,21 @@ import { UserViewComponent } from '../public/user/user-view/user-view.component'
 import { AddUserComponent } from '../public/user/add-user/add-user.component';
 import { UserHomeComponent } from '../public/user/user-home/user-home.component';
 import { PathModule } from '../public/widget/path/path.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     UserViewComponent,
     AddUserComponent,
     UserHomeComponent,
-   
+
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
-    PathModule
+    PathModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }
