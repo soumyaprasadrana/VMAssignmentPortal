@@ -38,29 +38,16 @@
                     <div class="col-sm-6 ">
                         <div class="form-group">
                             <label for="os">OS:</label>
-                            <select id="os" type="select" class="form-control" formControlName="os" [ngClass]="{ 'is-invalid': submitted && f.os.errors }">
-                            <option> ABC </option>
-                            <option> DEF </option>    
-                        </select>
-                            <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.os.errors.required">OS is required</div>
+                            <ngx-select [allowClear]="true" [items]="osList" [optionValueField]="'os_full'" placeholder="Select OS" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
+                            </ngx-select>
+
+                            <div *ngIf="submitted && f.ngxos.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.ngxos.errors.required">OS is required</div>
                             </div>
+
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="osVer">OS Version:</label>
-                            <select id="osVer" type="select" class="form-control" formControlName="osVer" [ngClass]="{ 'is-invalid': submitted && f.osVer.errors }">
-                            <option> ABC </option>
-                            <option> DEF </option>    
-                        </select>
-                            <div *ngIf="submitted && f.osVer.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.osVer.errors.required">OS version is required</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row p-3 ">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="ram">RAM:</label>
@@ -73,6 +60,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row p-3 ">
+
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="group">Group:</label>
@@ -83,8 +73,6 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="row p-3 ">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="owner">Owner:</label>
@@ -94,17 +82,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row p-3 ">
+
                     <div class="col-sm-6">
 
                         <div class="form-group">
                             <label for="team">Team:</label>
-                            <select id="team" type="select" class="form-control" formControlName="team" [ngClass]="{ 'is-invalid': submitted && f.team.errors }">
-                            <option> ABC </option>
-                            <option> DEF </option>    
-                        </select>
-                            <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.team.errors.required">Team is required</div>
+                            <ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }"
+                                ngDefaultControl>
+                            </ngx-select>
+
+                            <div *ngIf="submitted && f.ngxteam.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -120,4 +115,5 @@
             </div>
         </div>
     </form>
+
 </div>

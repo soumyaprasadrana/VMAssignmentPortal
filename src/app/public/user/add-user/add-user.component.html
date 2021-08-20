@@ -46,13 +46,16 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="team">Team:</label>
-                            <select id="team" type="select" class="form-control" formControlName="user_team" [ngClass]="{ 'is-invalid': submitted && f.user_team.errors }">
-                            <option> Team 1 </option>
-                            <option> Team 2 </option>    
-                        </select>
-                            <div *ngIf="submitted && f.user_team.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.user_team.errors.required">Team is required</div>
+                            <ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }"
+                                ngDefaultControl>
+                            </ngx-select>
+
+                            <div *ngIf="submitted && f.ngxteam.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -60,7 +63,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="password">Password:</label>
-                            <input id="password" type="password" class="form-control" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
+                            <input id="password" type="password" autocomplete="new-password" class="form-control" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
                             <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.user_pass.errors.required">Passwod is required</div>
                                 <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
@@ -73,7 +76,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="conf_password">Confirm Password:</label>
-                            <input id="conf_password" type="password" class="form-control" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
+                            <input id="conf_password" type="password" autocomplete="new-password" class="form-control" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
                             <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Passwod is required</div>
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
@@ -88,7 +91,7 @@
         </div>
         <div class="row ">
             <div class="col-sm-6 mr-0 pr-0">
-                <button type="submit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
+                <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
             </div>
         </div>
     </form>

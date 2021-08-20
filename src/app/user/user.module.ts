@@ -6,7 +6,7 @@ import { AddUserComponent } from '../public/user/add-user/add-user.component';
 import { UserHomeComponent } from '../public/user/user-home/user-home.component';
 import { PathModule } from '../public/widget/path/path.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgxSelectModule, INgxSelectOptions } from 'ngx-select-ex';
 @NgModule({
   declarations: [
     UserViewComponent,
@@ -19,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UserRoutingModule,
     PathModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSelectModule
   ]
 })
 export class UserModule { }

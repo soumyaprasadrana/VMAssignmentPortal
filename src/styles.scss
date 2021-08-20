@@ -195,3 +195,12 @@ div:has(input[data-columnid="global"]) {
 .card-top {
     border-top: 2px solid $primary-color !important;
 }
+
+.is-ngx-invalid div {
+    border-color: #dc3545 !important;
+}
+
+.is-ngx-invalid div input:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgb(220 53 69 / 25%) !important;
+}

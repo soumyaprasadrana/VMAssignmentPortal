@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';  
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './public/login/login-form/login-form.component';
@@ -22,22 +22,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterModule } from './public/widget/footer/footer.module';
 import { MaterialModule } from './material.module';
 
+import { NgxSelectModule } from 'ngx-select-ex';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
-   // HomePageComponent,
-  //  LtbButtonComponent,
-  //  DbButtonComponent,
+    // HomePageComponent,
+    //  LtbButtonComponent,
+    //  DbButtonComponent,
     NavbarComponent,
-  //  NavbarHomeComponent,
-   
+    //  NavbarHomeComponent,
+
     LoginViewComponent,
     PageNotFoundComponent,
-   // HomePageGroupComponent,
+    // HomePageGroupComponent,
     //HomeViewComponent
-    
-    
+
+
   ],
   imports: [
     BrowserModule,
@@ -47,21 +49,22 @@ import { MaterialModule } from './material.module';
     AppRoutingModule,
     NgbModule,
     BrowserAnimationsModule,
-    FooterModule,MaterialModule
-   
-   
-  /*  AngularSlickgridModule.forRoot({
-      // add any Global Grid Options/Config you might want
-      // to avoid passing the same options over and over in each grids of your App
-      enableAutoResize: true,
-      autoResize: {
-        container: '#container',
-        rightPadding: 10
-      }
-    })
-  */
+    FooterModule, MaterialModule,
+    NgxSelectModule
+
+
+    /*  AngularSlickgridModule.forRoot({
+        // add any Global Grid Options/Config you might want
+        // to avoid passing the same options over and over in each grids of your App
+        enableAutoResize: true,
+        autoResize: {
+          container: '#container',
+          rightPadding: 10
+        }
+      })
+    */
   ],
-  exports:[],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })
