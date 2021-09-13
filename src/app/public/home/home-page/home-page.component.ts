@@ -1,18 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import { ExcelExportService } from '@slickgrid-universal/excel-export'
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import {
-  Column, GridOption, Formatters
-  , EditCommand, Filters, MultipleSelectOption, FieldType, AngularGridInstance, GridStateChange,
-  GridState, unsubscribeAllObservables, Grouping, AngularSlickgridComponent, GridService, Formatter, CurrentColumn
+  Column,
+  GridOption,
+  Formatters,
+  EditCommand,
+  Filters,
+  MultipleSelectOption,
+  FieldType,
+  AngularGridInstance,
+  GridStateChange,
+  GridState,
+  unsubscribeAllObservables,
+  Grouping,
+  AngularSlickgridComponent,
+  GridService,
+  Formatter,
+  CurrentColumn,
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
-
+import { AuthserviceService } from '../../services/authservice.service';
 import { VmsService } from '../../services/vms.service';
 import { GlobalSearchService } from '../../services/global-search.service';
+import { SpinnerService } from '../../services/spinner-service';
 
 const NB_ITEMS = 995;
 const LOCAL_STORAGE_KEY = 'gridState';
@@ -21,7 +35,6 @@ const DEFAULT_PAGE_SIZE = 25;
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
-
 })
 export class HomePageComponent implements OnInit {
   columnDef: Column[] = [];
@@ -42,13 +55,17 @@ export class HomePageComponent implements OnInit {
   private subscription!: Subscription;
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
-    private route: ActivatedRoute, private router: Router, private vms: VmsService, private gss: GlobalSearchService
-
+    private route: ActivatedRoute,
+    private router: Router,
+    private vms: VmsService,
+    private gss: GlobalSearchService,
+    private auth: AuthserviceService,
+    private spinner: SpinnerService
   ) {
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
-    this.subscription = this.gss.getFilterText().subscribe(text => {
+    this.subscription = this.gss.getFilterText().subscribe((text) => {
       if (text) {
-        console.log("<{Home Component}> Recieved from nav-bar :" + text.text);
+        console.log('<{Home Component}> Recieved from nav-bar :' + text.text);
         this.setGlobalFilterTextToGrid(text.text);
       } else {
       }
@@ -61,15 +78,10 @@ export class HomePageComponent implements OnInit {
     this.gridService = angularGrid.gridService;
     const delay = 100; // delay in milliseconds
     this.angularGrid.resizerService.resizeGrid(delay);
-
   }
-
-
-
 
   ngOnDestroy() {
     // also unsubscribe all Angular Subscriptions
-
   }
 
   ngOnInit(): void {
@@ -78,12 +90,7 @@ export class HomePageComponent implements OnInit {
     // use some Grid State preset defaults if you wish or just restore from Locale Storage
     // presets = presets || this.useDefaultPresets();
     this.defineGrid(presets);
-
-
-
-
-
-
+    //this.auth.ensureAuth();
   }
 
   renderUnsavedStylingOnAllVisibleCells() {
@@ -99,12 +106,19 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  renderUnsavedCellStyling(item: any, column: Column, editCommand: EditCommand) {
+  renderUnsavedCellStyling(
+    item: any,
+    column: Column,
+    editCommand: EditCommand
+  ) {
     if (editCommand && item && column) {
       const row = this.angularGrid.dataView.getRowByItem(item) as number;
       if (row >= 0) {
         const hash = { [row]: { [column.id]: 'unsaved-editable-field' } };
-        this.angularGrid.slickGrid.setCellCssStyles(`unsaved_highlight_${[column.id]}${row}`, hash);
+        this.angularGrid.slickGrid.setCellCssStyles(
+          `unsaved_highlight_${[column.id]}${row}`,
+          hash
+        );
       }
     }
   }
@@ -112,7 +126,13 @@ export class HomePageComponent implements OnInit {
     console.log('assign clicked');
   }
   release() {
-    console.log('release clicked')
+    console.log('release clicked');
+  }
+  edit(_event: any, args: any) {
+    console.log(args);
+    this.router.navigate(['../portal/home/vmm/edit'], {
+      state: args.dataContext,
+    });
   }
 
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
@@ -122,17 +142,17 @@ export class HomePageComponent implements OnInit {
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
-
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
-    const gridState: GridState = this.angularGrid.gridStateService.getCurrentGridState();
+    const gridState: GridState =
+      this.angularGrid.gridStateService.getCurrentGridState();
     console.log('Client sample, last Grid State:: ', gridState);
     localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
   }
 
-
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
+    this.spinner.setSpinnerState(true);
     // prepare a multiple-select array to filter with
     const multiSelectFilterArray = [];
     for (let i = 0; i < NB_ITEMS; i++) {
@@ -140,87 +160,160 @@ export class HomePageComponent implements OnInit {
     }
     /* Custom Formatter for cells to check snapshot count */
     const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
-      if (typeof (value) == 'undefined') {
+      if (typeof value == 'undefined') {
         value = '';
       }
       if (vm.snap_count >= 5 && vm.snap_count <= 8) {
-        return { text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`, toolTip: value };
-      }
-      else if (vm.snap_count > 8) {
-        return { text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`, toolTip: value };
-      }
-      else {
-        return { text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`, toolTip: value };
+        return {
+          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else if (vm.snap_count > 8) {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          toolTip: value,
+        };
       }
     };
     this.columnDef = [
       {
-        id: 'ip', name: 'IP Address', field: 'ip', sortable: true, filterable: true, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText }, headerCssClass: 'gridRow'
+        id: 'ip',
+        name: 'IP Address',
+        field: 'ip',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputText },
+        headerCssClass: 'gridRow',
       },
       {
-        id: 'hostname', name: 'Hostname', field: 'hostname', sortable: true, filterable: true, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText }
+        id: 'hostname',
+        name: 'Hostname',
+        field: 'hostname',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputText },
       },
       {
-        id: 'os', name: 'OS', field: 'os', sortable: true, filterable: true, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText }
+        id: 'os',
+        name: 'OS',
+        field: 'os',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputText },
       },
       {
-        id: 'ver', name: 'OS Version', field: 'ver', sortable: true, filterable: true, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText }
+        id: 'ver',
+        name: 'OS Version',
+        field: 'ver',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputText },
       },
       {
-        id: 'group', name: 'Group', field: 'group', sortable: true, filterable: true, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText }
+        id: 'group',
+        name: 'Group',
+        field: 'group',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputText },
       },
       {
-        id: 'snap_count', name: 'SS #', field: 'snap_count', sortable: true, filterable: true, type: FieldType.number, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputNumber }
+        id: 'snap_count',
+        name: 'SS #',
+        field: 'snap_count',
+        sortable: true,
+        filterable: true,
+        type: FieldType.number,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputNumber },
       },
       {
-        id: 'ram', name: 'RAM', field: 'ram', sortable: true, filterable: true, type: FieldType.number, formatter: cellFormatter,
-        filter: { model: Filters.compoundInputNumber }
+        id: 'ram',
+        name: 'RAM',
+        field: 'ram',
+        sortable: true,
+        filterable: true,
+        type: FieldType.number,
+        formatter: cellFormatter,
+        filter: { model: Filters.compoundInputNumber },
       },
       {
-        id: 'status', name: 'Availability', field: 'status', sortable: true, filterable: true, formatter: cellFormatter,
-
+        id: 'status',
+        name: 'Availability',
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        formatter: cellFormatter,
 
         filter: {
           // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
           // enableRenderHtml: true,
           // collection: [{ value: '', label: '' }, { value: true, label: 'True', labelPrefix: `<i class="fa fa-check"></i> ` }, { value: false, label: 'False' }],
 
-          collection: [{ status: '', label: '' }, { status: 'Available', label: 'Available' }, { status: 'Occupied', label: 'Occupied' }],
+          collection: [
+            { status: '', label: '' },
+            { status: 'Available', label: 'Available' },
+            { status: 'Occupied', label: 'Occupied' },
+          ],
           customStructure: {
             value: 'status',
-            label: 'label'
+            label: 'label',
           },
           model: Filters.singleSelect,
 
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: { autoDropWidth: true } as MultipleSelectOption,
-        }
+        },
+      },
+      {
+        id: 'owner',
+        name: 'Assignee',
+        field: 'owner',
+        sortable: true,
+        filterable: true,
+        filter: { model: Filters.compoundInputText },
+        formatter: cellFormatter,
+      },
+      {
+        id: 'comment',
+        name: 'Comment',
+        field: 'comment',
+        sortable: true,
+        filterable: true,
+        filter: { model: Filters.compoundInputText },
+        formatter: cellFormatter,
+      },
+      {
+        id: 'vm_owner_lab',
+        name: 'Owner',
+        field: 'vm_owner_lab',
+        sortable: true,
+        filterable: true,
+        filter: { model: Filters.compoundInputText },
+        formatter: cellFormatter,
+      },
 
-
-      },
       {
-        id: 'owner', name: 'Assignee', field: 'owner', sortable: true, filterable: true,
-        filter: { model: Filters.compoundInputText }, formatter: cellFormatter
-      },
-      {
-        id: 'comment', name: 'Comment', field: 'comment', sortable: true, filterable: true,
-        filter: { model: Filters.compoundInputText }, formatter: cellFormatter
-      },
-      {
-        id: 'vm_owner_lab', name: 'Owner', field: 'vm_owner_lab', sortable: true, filterable: true,
-        filter: { model: Filters.compoundInputText }, formatter: cellFormatter,
-      },
-
-      {
-        id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
-        excludeFromExport: true, excludeFromHeaderMenu: true,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="fa fa-chevron-down text-primary"></span></div>`,
+        id: 'action',
+        name: 'Action',
+        field: 'action',
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
+        excludeFromExport: true,
+        excludeFromHeaderMenu: true,
+        formatter: () =>
+          `<div class="button-style margin-auto" style="width: 35px;"><span class="fa fa-chevron-down text-primary"></span></div>`,
         cellMenu: {
           hideCloseButton: false,
           width: 175,
@@ -231,19 +324,30 @@ export class HomePageComponent implements OnInit {
               title: 'Assign',
               iconCssClass: 'fa fa-pencil',
               positionOrder: 66,
-              action: () => this.assign()
+              action: () => this.assign(),
+            },
+            {
+              command: 'edit',
+              title: 'Edit',
+              iconCssClass: 'fa fa-pencil',
+              positionOrder: 66,
+              action: (_event, args) => this.edit(_event, args),
             },
             {
               command: 'release',
               title: 'Release',
               iconCssClass: 'fa fa-clone',
               positionOrder: 66,
-              action: () => this.release()
+              action: () => this.release(),
             },
 
             {
-              command: 'delete-vm', title: 'Remove', positionOrder: 64,
-              iconCssClass: 'fa fa-times color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
+              command: 'delete-vm',
+              title: 'Remove',
+              positionOrder: 64,
+              iconCssClass: 'fa fa-times color-danger',
+              cssClass: 'red',
+              textCssClass: 'text-italic color-danger-light',
               // only show command to 'Delete Row' when the task is not completed
               itemVisibilityOverride: (args) => {
                 return !args.dataContext?.completed;
@@ -251,17 +355,28 @@ export class HomePageComponent implements OnInit {
               action: (_event, args) => {
                 const dataContext = args.dataContext;
                 const row = args?.row ?? 0;
-                if (confirm(`Do you really want to remove this vm  with "${dataContext.ip}"`)) {
+                if (
+                  confirm(
+                    `Do you really want to remove this vm  with "${dataContext.ip}"`
+                  )
+                ) {
                   this.angularGrid.gridService.deleteItemById(dataContext.id);
                 }
-              }
+              },
             },
           ],
-        }
+        },
       },
       {
-        id: 'global', name: 'global', field: 'global', sortable: false, filterable: true, headerCssClass: 'hiddenWidth', cssClass: 'hidden',
-        filter: { model: '' }, width: 0
+        id: 'global',
+        name: 'global',
+        field: 'global',
+        sortable: false,
+        filterable: true,
+        headerCssClass: 'hiddenWidth',
+        cssClass: 'hidden',
+        filter: { model: '' },
+        width: 0,
       },
     ];
     /* Used to hide last global column */
@@ -290,50 +405,59 @@ export class HomePageComponent implements OnInit {
                 tooltip: 'Group By ' + columnDef.id + '?',
                 positionOrder: 1,
                 itemUsabilityOverride: (args) => {
-
-                  return !(args.column.id === 'ip' || args.column.id === 'hostname' || args.column.id === 'comment' || args.column.id === 'action');
+                  return !(
+                    args.column.id === 'ip' ||
+                    args.column.id === 'hostname' ||
+                    args.column.id === 'comment' ||
+                    args.column.id === 'action'
+                  );
                 },
                 itemVisibilityOverride: (args) => {
-
-                  return !(args.column.id == 'ip' || args.column.id == 'hostname' || args.column.id === 'comment' || args.column.id === 'action');
+                  return !(
+                    args.column.id == 'ip' ||
+                    args.column.id == 'hostname' ||
+                    args.column.id === 'comment' ||
+                    args.column.id === 'action'
+                  );
                 },
                 action: (_e, args) => {
-                  console.log("Grouping grid by " + args.column.id + ".");
+                  console.log('Grouping grid by ' + args.column.id + '.');
                   this.groupByColumn(args.column.id + '');
-                }
-              }
-            ]
-          }
-        }
+                },
+              },
+            ],
+          },
+        };
       }
     });
     this.vmGridOptions = {
-
       enableSorting: true,
       enableFiltering: true,
       autoResize: {
         container: '#grid-container',
         applyResizeToContainer: true,
-        rightPadding: 0
-
+        rightPadding: 0,
       },
       enableAutoResize: true,
       enablePagination: true,
       pagination: {
         pageSizes: [5, 10, 20, 25, 50],
-        pageSize: 25
+        pageSize: 25,
       },
 
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
-      registerExternalResources: [new ExcelExportService(), this.compositeEditorInstance],
+      registerExternalResources: [
+        new ExcelExportService(),
+        this.compositeEditorInstance,
+      ],
 
       enableCompositeEditor: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
 
       enableCheckboxSelector: true,
@@ -346,9 +470,17 @@ export class HomePageComponent implements OnInit {
 
       editCommandHandler: (item, column, editCommand) => {
         // composite editors values are saved as array, so let's convert to array in any case and we'll loop through these values
-        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue) ? editCommand.prevSerializedValue : [editCommand.prevSerializedValue];
-        const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
-        const editorColumns = this.columnDef.filter((col) => col.editor !== undefined);
+        const prevSerializedValues = Array.isArray(
+          editCommand.prevSerializedValue
+        )
+          ? editCommand.prevSerializedValue
+          : [editCommand.prevSerializedValue];
+        const serializedValues = Array.isArray(editCommand.serializedValue)
+          ? editCommand.serializedValue
+          : [editCommand.serializedValue];
+        const editorColumns = this.columnDef.filter(
+          (col) => col.editor !== undefined
+        );
 
         const modifiedColumns: Column[] = [];
         prevSerializedValues.forEach((_val, index) => {
@@ -356,8 +488,11 @@ export class HomePageComponent implements OnInit {
           const serializedValue = serializedValues[index];
 
           if (prevSerializedValue !== serializedValue) {
-            const finalColumn = Array.isArray(editCommand.prevSerializedValue) ? editorColumns[index] : column;
-            this.editedItems[this.vmGridOptions.datasetIdPropertyName || 'id'] = item; // keep items by their row indexes, if the row got edited twice then we'll keep only the last change
+            const finalColumn = Array.isArray(editCommand.prevSerializedValue)
+              ? editorColumns[index]
+              : column;
+            this.editedItems[this.vmGridOptions.datasetIdPropertyName || 'id'] =
+              item; // keep items by their row indexes, if the row got edited twice then we'll keep only the last change
             this.angularGrid.slickGrid.invalidate();
             editCommand.execute();
 
@@ -403,9 +538,8 @@ export class HomePageComponent implements OnInit {
 
             textCssClass: 'title',
             positionOrder: 90,
-
-          }
-          , {
+          },
+          {
             iconCssClass: 'fa fa-times text-danger',
             title: 'Reset Grouping',
             disabled: false,
@@ -413,7 +547,6 @@ export class HomePageComponent implements OnInit {
 
             textCssClass: 'title',
             positionOrder: 90,
-
           },
           {
             iconCssClass: 'fa fa-object-group',
@@ -423,25 +556,21 @@ export class HomePageComponent implements OnInit {
 
             textCssClass: 'title',
             positionOrder: 90,
-
-          }
-
+          },
         ],
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
         onCommand: (_e, args) => {
           if (args.command === 'resetGrid') {
             this.clearGridStateFromLocalStorage();
-          }
-          else if (args.command === 'switchToGrouping') {
+          } else if (args.command === 'switchToGrouping') {
             this.router.navigate(['/portal/home/group']);
-          }
-          else if (args.command === 'resetGrouping') {
+          } else if (args.command === 'resetGrouping') {
             this.clearGridGrouping();
           }
         },
         onColumnsChanged: (_e, _args) => {
           // console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
-        }
+        },
       },
       //Grouping
       enableGrouping: true,
@@ -453,7 +582,7 @@ export class HomePageComponent implements OnInit {
           mappedColumnDefinitions
         
       }*/
-    }
+    };
 
     // reload the Grid State with the grid options presets
     if (gridStatePresets) {
@@ -461,13 +590,34 @@ export class HomePageComponent implements OnInit {
     }
 
     //Generating Data Set
-    this.vmDataSet = this.vms.getVms();
+
+    var promise = this.vms.getVms();
+    promise
+      .then((res: any[]) => {
+        this.spinner.setSpinnerState(false);
+        console.log('inside promise.then -< setting vmdataset');
+        this.vmDataSet = res;
+        console.log(res);
+        this.gridService.resetGrid();
+      })
+      .catch((err: any) => {
+        this.spinner.setSpinnerState(true);
+        console.log('error occurred ' + err);
+      });
+
+    //If you want to use a observable
+    /* this.vms.getVms2().subscribe((data:any)=>{
+      console.log("Inside observer")  ;
+      var dataSet=this.vms.parseData(data);
+        console.log(dataSet);
+        this.vmDataSet=dataSet;
+        this.gridService.resetGrid();
+    });*/
   }
   /* Global Filter */
   setGlobalFilterTextToGrid(text: string) {
     this.angularGrid.filterService.updateFilters([
       { columnId: 'global', searchTerms: [text] },
-
     ]);
   }
   /** Dispatched event of a Grid State Changed event */
@@ -476,28 +626,30 @@ export class HomePageComponent implements OnInit {
     // localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridStateChanges.gridState);
   }
 
-
   //Group By Column
   groupByColumn(column: string) {
-    console.log("Cicked :", column);
+    console.log('Cicked :', column);
     let c = column.toUpperCase();
 
-    this.dataviewObj.setGrouping([{
-      getter: column,
-      formatter: (g) => `${c} : ${g.value}  <span style="color:green">(${g.count} items)</span>`,
-      aggregateCollapsed: false,
-      lazyTotalsCalculation: true
-    } as Grouping]);
-
+    this.dataviewObj.setGrouping([
+      {
+        getter: column,
+        formatter: (g) =>
+          `${c} : ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        aggregateCollapsed: false,
+        lazyTotalsCalculation: true,
+      } as Grouping,
+    ]);
 
     // you need to manually add the sort icon(s) in UI
-    this.angularGrid.filterService.setSortColumnIcons([{ columnId: column, sortAsc: true }]);
+    this.angularGrid.filterService.setSortColumnIcons([
+      { columnId: column, sortAsc: true },
+    ]);
     this.gridObj.invalidate(); // invalidate all rows and re-render
     this.collapseAllGroups();
-    console.log(this.gridObj)
+    console.log(this.gridObj);
 
-    this.addGroupChildByColumnToTheColumnDef(column)
-
+    this.addGroupChildByColumnToTheColumnDef(column);
   }
   addGroupChildByColumnToTheColumnDef(column: string) {
     // let columns=this.gridObj.getColumns();
@@ -518,18 +670,24 @@ export class HomePageComponent implements OnInit {
             command: 'groupByChild',
             tooltip: 'Add child group by to existing grouping data ?',
             positionOrder: 2,
-            itemUsabilityOverride: (args: { column: { id: string; }; }) => {
-
-              return !(args.column.id === 'ip' || args.column.id === 'hostname' || args.column.id === 'comment');
+            itemUsabilityOverride: (args: { column: { id: string } }) => {
+              return !(
+                args.column.id === 'ip' ||
+                args.column.id === 'hostname' ||
+                args.column.id === 'comment'
+              );
             },
-            itemVisibilityOverride: (args: { column: { id: string; }; }) => {
-
-              return !((args.column.id == 'ip' || args.column.id == 'hostname' || args.column.id === 'comment'));
+            itemVisibilityOverride: (args: { column: { id: string } }) => {
+              return !(
+                args.column.id == 'ip' ||
+                args.column.id == 'hostname' ||
+                args.column.id === 'comment'
+              );
             },
-            action: (_e: any, args: { column: { id: string; }; }) => {
-              console.log("Child grouping grid by " + args.column.id + ".");
+            action: (_e: any, args: { column: { id: string } }) => {
+              console.log('Child grouping grid by ' + args.column.id + '.');
               this.groupByColumnAddChild(args.column.id + '');
-            }
+            },
           });
         }
       }
@@ -541,23 +699,25 @@ export class HomePageComponent implements OnInit {
   }
   /* Help to add child grouping to parent groups*/
   groupByColumnAddChild(column: string) {
-
     /* Store the existing grouping set */
     let list = this.dataviewObj.getGrouping();
     if (list.length == 0) {
-      console.log("No Parent group found adding it as parent object...");
+      console.log('No Parent group found adding it as parent object...');
     }
     let c = column.toUpperCase();
     list.push({
       getter: column,
-      formatter: (g) => `${c} : ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+      formatter: (g) =>
+        `${c} : ${g.value}  <span style="color:green">(${g.count} items)</span>`,
       aggregateCollapsed: false,
-      lazyTotalsCalculation: true
+      lazyTotalsCalculation: true,
     } as Grouping);
     this.dataviewObj.setGrouping(list);
 
     // you need to manually add the sort icon(s) in UI
-    this.angularGrid.filterService.setSortColumnIcons([{ columnId: column, sortAsc: true }]);
+    this.angularGrid.filterService.setSortColumnIcons([
+      { columnId: column, sortAsc: true },
+    ]);
     this.gridObj.invalidate(); // invalidate all rows and re-render
     this.expandAllGroups();
   }
@@ -576,8 +736,4 @@ export class HomePageComponent implements OnInit {
   clearGridGrouping() {
     this.dataviewObj.setGrouping([]);
   }
-
-
-
-
 }

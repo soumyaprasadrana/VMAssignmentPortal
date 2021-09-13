@@ -4,6 +4,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { VM } from '../../DataModel/vm';
+import { SpinnerService } from '../../services/spinner-service';
 import { VmsService
 } from '../../services/vms.service';
 /*
@@ -56,12 +57,24 @@ showLabels = true;
 
 
   
-  constructor(private vms:VmsService) { 
-    this.vmList=vms.getVms();
+  constructor(private vms:VmsService, private spinner:SpinnerService) { 
+    this.spinner.setSpinnerState(true);
+    var promise = this.vms.getVms();
+    promise.then((res: any[])=>{
+      this.spinner.setSpinnerState(false);
+      console.log("inside promise.then -< setting vmdataset");
+      this.vmList=res;
     this.parseVMListOnOSBasis();
     this.parseVMListOnSnapCountBasis();
     this.parseVMListOnGroupBasis();
     this.parseVMListOnAvailibilitypBasis();
+     
+      
+    }).catch((err:any)=>{
+      this.spinner.setSpinnerState(false);
+      console.log("error occurred "+err)
+    });
+    
   }
 
   ngOnInit(): void {

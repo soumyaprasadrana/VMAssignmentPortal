@@ -1,0 +1,131 @@
+<app-path></app-path>
+
+<div class="container-fluid-lg p-3 my-3 text-muted  ">
+    <div class="row">
+        <div class="col-xs-6 ">
+
+            <h1 class="ml-3">
+
+                <i class="fa fa-user" area-label="false"></i> {{title}}
+                <hr>
+            </h1>
+        </div>
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row  ml-4">
+            <div class="col-lg-12">
+                <div class="row p-3 ">
+                    <div class="col-sm-6">
+                        <div class="form-group required">
+                            <label for="name">Full Name:</label>
+                            <input id="name" type="text" class="form-control" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
+                            <div *ngIf="submitted && f.user_name.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.user_name.errors.required">Full name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group required">
+                            <label for="team">Team:</label>
+                            <!--<ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }"
+                                ngDefaultControl>
+                            </ngx-select>-->
+                            <ng-select [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }" ngDefaultControl>
+                            </ng-select>
+                            <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.team.errors.required">Team is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row p-3 ">
+
+                    <div class="col-sm-6">
+                        <div class="form-group required">
+                            <label for="email">E-Mail:</label>
+                            <input id="email" class="form-control" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
+                            <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
+                                <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 ">
+
+                        <h2 class="ml-3">
+
+                            <i class="fa fa-key" area-label="false"></i> User Permissions
+                            <hr>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row p-3 ml-4">
+                    <div class="col-sm-2 mr-0 pr-0">
+                        <div class="form-group required">
+                            <label for="remove_vm">Delete VM:</label>
+                            <select id="remove_vm" class="form-control" formControlName="removeVM" [ngClass]="{ 'is-invalid': submitted && f.removeVM.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                            <div *ngIf="submitted && f.removeVM.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.removeVM.errors.required">Delete VM is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-2 mr-0 pr-0">
+                        <div class="form-group required">
+                            <label for="addUser">Create User:</label>
+                            <select id="addUser" class="form-control" formControlName="addUser" [ngClass]="{ 'is-invalid': submitted && f.addUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                            <div *ngIf="submitted && f.addUser.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.addUser.errors.required">Create User is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 mr-0 pr-0">
+                        <div class="form-group required">
+                            <label for="editUser">Edit User:</label>
+                            <select id="editUser" class="form-control" formControlName="editUser" [ngClass]="{ 'is-invalid': submitted && f.editUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                            <div *ngIf="submitted && f.editUser.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.editUser.errors.required">Edit User is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 mr-0 pr-0">
+                        <div class="form-group required">
+                            <label for="removeUser">Delete User:</label>
+                            <select id="removeUser" class="form-control" formControlName="removeUser" [ngClass]="{ 'is-invalid': submitted && f.removeUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                            <div *ngIf="submitted && f.removeUser.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.removeUser.errors.required">Delete User is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-sm-6 mr-0 pr-0">
+
+                    </div>
+                    <div class="col-sm-6 mr-0 pr-0">
+                        <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

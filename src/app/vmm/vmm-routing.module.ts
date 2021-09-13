@@ -4,26 +4,37 @@ import { PageNotFoundHomeComponent } from '../public/widget/page-not-found-home/
 import { VmmViewComponent } from '../public/vmm/vmm-view/vmm-view.component';
 import { AddVmComponent } from '../public/vmm/add-vm/add-vm.component';
 import { VmmHomeComponent } from '../public/vmm/vmm-home/vmm-home.component';
-
+import { EditVmComponent } from '../public/vmm/edit-vm/edit-vm.component';
 
 const routes: Routes = [
   {
-    path: '', component: VmmViewComponent, children: [
+    path: '',
+    component: VmmViewComponent,
+    children: [
       {
-        path: 'dash', component: VmmHomeComponent,data: { animation: 'vmm'} 
+        path: 'dash',
+        component: VmmHomeComponent,
+        data: { animation: 'vmm' },
       },
-   
-      { path: 'add', component: AddVmComponent,data: { animation: 'add'} },
-     
+
+      { path: 'add', component: AddVmComponent, data: { animation: 'add' } },
+      { path: 'edit', component: EditVmComponent, data: { animation: 'add' } },
+
       {
-        path: '', redirectTo: 'dash', pathMatch: 'full'
+        path: '',
+        redirectTo: 'dash',
+        pathMatch: 'full',
       },
-      { path: '**', component: PageNotFoundHomeComponent,data: { animation: 'notFound'}  }
-    ]
-  }
+      {
+        path: '**',
+        component: PageNotFoundHomeComponent,
+        data: { animation: 'notFound' },
+      },
+    ],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})  
-export class VMMRoutingModule { }
+  exports: [RouterModule],
+})
+export class VMMRoutingModule {}

@@ -1,27 +1,71 @@
 /* Node Express Server Setup  */
 
 const express = require('express');
-var Q = require('Q');
-
 var cookieParser = require('cookie-parser')
 var cookieSession = require('cookie-session')
-
+var expressPino = require('express-pino-logger');
+var session = require('express-session')
+const passport = require('passport');
+var path = require('path');
+var config = require('./config');
+var logger = config.logger;
+var cors = require('cors');
+const bodyParser = require('body-parser');
+const expressLogger = expressPino({ logger });
+logger.info("Initializing node server");
+logger.info("Checking node version ..." + global.process.version);
 
 var app = express();
 app.disable('x-powered-by');
+
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+if (config.useCORS) {
+    app.use(cors());
+}
+
+const oneDay = 1000 * 60 * 60 * 24;
+const twoHour = 1000 * 60 * 60 * 2;
 app.use(cookieParser());
 app.use(cookieSession({
-    secret: 'portal1234',
-    key: 'portal',
-    httpOny: true,
-    secure: true,
-    maxAge: null,
-    sameSite: "None"
-}))
-app.use(express.static(__dirname));
+        secret: 'portal1234',
+        name: 'portal.session',
+        keys: ['portal.sid'],
+        httpOny: true,
+        secure: false,
+        maxAge: twoHour,
+        site: 'None',
+        saveUninitialized: true
+
+    }))
+    /*const oneDay = 1000 * 60 * 60 * 24;
+    app.use(session({
+        secret: 'portal1234',
+        key: 'portal.sid',
+        httpOnly: true,
+        resave: false,
+        cookie: { maxAge: oneDay },
+        saveUninitialized: true
+    }))
+
+
+    */
+
+//app.use(express.static(__dirname));
+app.use(express.static('../dist/VMPORTAL'))
+app.set('view engine', 'pug');
+
+
+
+
+
 
 /* Passport Authentication Setup */
-const passport = require('passport');
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -29,40 +73,27 @@ var portalAuth = require('./api/portal-auth');
 
 portalAuth.custStrategyConfigure();
 
-passport.serializeUser(function(user, callback) {
-    console.log("serializing " + JSON.stringify(user));
-    callback(null, user);
+/*Routes*/
+require('./api/api-route')(app)
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: __dirname })
 });
 
-passport.deserializeUser(function(obj, done) {
-    console.log("deserializing " + obj);
-    callback(null, obj);
-});
 
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    req.session.error = 'Please sign in!';
-    res.redirect('/signin');
+function getRoot(request, response) {
+
+
+    response.sendFile(path.resolve('../dist/VMPORTAL/index.html'));
 }
 
+function getUndefined(request, response) {
 
-const bodyParser = require('body-parser');
-const expressSession = require('express-session')({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false
-});
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSession);
-/*Routes*/
-app.get("/login", (req, res, next) => {
-    res.send("<h1>Login Page</h1>");
-});
-app.post('/login', portalAuth.authenticate);
-app.get("/success", (req, res, next) => {
-    res.send("<h1>Success Page/h1>");
-});
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log('App listening on port ' + port));
+    response.sendFile(path.resolve('../dist/VMPORTAL/index.html'));
+}
+app.get('/portal', getRoot);
+app.get('/portal/login', getRoot);
+app.get('/portal/home/*', portalAuth.ensureAuthenticated, getUndefined);
+
+const port = config.PORT;
+app.listen(port, () => logger.info('App listening on port ' + port));

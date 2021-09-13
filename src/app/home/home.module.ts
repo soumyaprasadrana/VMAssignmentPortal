@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 
-
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +27,8 @@ import { PathModule } from '../public/widget/path/path.module';
 import { VmChartComponent } from '../public/home/vm-chart/vm-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContactPageComponent } from '../public/home/contact-page/contact-page.component';
-import { NgxSelectModule } from 'ngx-select-ex';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 @NgModule({
   declarations: [
     HomeViewComponent,
@@ -36,9 +36,10 @@ import { NgxSelectModule } from 'ngx-select-ex';
     LtbButtonComponent,
     DbButtonComponent,
 
-    HomePageGroupComponent, PageNotFoundHomeComponent, VmChartComponent, ContactPageComponent,
-
-
+    HomePageGroupComponent,
+    PageNotFoundHomeComponent,
+    VmChartComponent,
+    ContactPageComponent,
   ],
   imports: [
     CommonModule,
@@ -58,12 +59,13 @@ import { NgxSelectModule } from 'ngx-select-ex';
       enableAutoResize: true,
       autoResize: {
         container: '#container',
-        rightPadding: 10
-      }
-    })
-    , NgxSelectModule
-  ], providers:
-    [],
-  bootstrap: [HomeViewComponent]
+        rightPadding: 10,
+      },
+    }),
+
+    NgSelectModule,
+  ],
+  providers: [],
+  bootstrap: [HomeViewComponent],
 })
-export class HomeModule { }
+export class HomeModule {}

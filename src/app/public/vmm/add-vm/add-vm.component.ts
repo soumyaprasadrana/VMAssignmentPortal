@@ -1,25 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { Team } from '../../DataModel/team';
 import { TeamService } from '../../services/teams.service';
 import { OS } from '../../DataModel/os';
 import { OSService } from '../../services/vm.os.service';
+import { HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { NodeclientService } from '../../services/nodeclient.service';
+import { SpinnerService } from '../../services/spinner-service';
+import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-add-vm',
   templateUrl: './add-vm.component.html',
-  styleUrls: ['./add-vm.component.scss']
+  styleUrls: ['./add-vm.component.scss'],
 })
 export class AddVmComponent implements OnInit {
-  registerForm !: FormGroup;
+  registerForm!: FormGroup;
   submitted = false;
   selectedTeam!: string;
   selectedOS!: string;
-  osList: Array<OS> = [];
-  teams: Array<Team> = [];
-  constructor(private formBuilder: FormBuilder, private tms: TeamService, private oss: OSService) {
-    this.teams = tms.getTeams();
-    this.osList = oss.getOsList();
+  osList: any = [];
+  teams: any = [];
+  title: string = ' Add Virtual Machine';
+  constructor(
+    private formBuilder: FormBuilder,
+    private tms: TeamService,
+    private oss: OSService,
+    private _spinner: SpinnerService,
+    private _client: NodeclientService,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
+    tms
+      .getTeams()
+      .then((res) => {
+        this.teams = res;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    oss
+      .getOsList()
+      .then((res) => {
+        this.osList = res;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   public ngxteam = new FormControl();
   public ngxos = new FormControl();
@@ -27,29 +61,90 @@ export class AddVmComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       ip: ['', Validators.required],
       host: ['', Validators.required],
-      ngxos: ['', Validators.required],
-      ram: ['', [Validators.required, Validators.max(200)]],
-      group: ['', Validators.required],
-      owner: ['', Validators.required],
-      ngxteam: ['', Validators.required]
+      ngxos: [null, Validators.required],
+      ram: [0, [Validators.min(0), Validators.max(200)]],
+      group: [''],
+      owner: [''],
+      ngxteam: [null, Validators.required],
     });
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.registerForm.controls; }
+  get f() {
+    return this.registerForm.controls;
+  }
 
   onSubmit() {
     this.submitted = true;
-
+    this._spinner.setSpinnerState(true);
     // stop here if form is invalid
     if (this.registerForm.invalid) {
+      this._spinner.setSpinnerState(false);
       return;
     }
 
     // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    var _promise = this._client.post(
+      'api/vm/addVM',
+      this.registerForm.value,
+      httpOptions
+    );
+    _promise
+      .then((res: any) => {
+        this._spinner.setSpinnerState(false);
+        console.log(JSON.parse(res));
+        if (res) res = JSON.parse(res);
+        if (res.status == 'Success') {
+          this.openDialog(
+            {
+              type: 'message',
+              message: 'VM added successfully!',
+            },
+            () => {
+              this.router.navigate(['/portal/home/vmm/dash']);
+            }
+          );
+        } else {
+          this._spinner.setSpinnerState(false);
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+        }
+      })
+      .catch((err: any) => {
+        this._spinner.setSpinnerState(false);
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
+      });
   }
-  toJSON(object: any) {
-    return JSON.stringify(object);
+  openDialog(data: any, callback: any) {
+    this.dialog
+      .open(AlertDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback();
+        }
+      });
   }
 }

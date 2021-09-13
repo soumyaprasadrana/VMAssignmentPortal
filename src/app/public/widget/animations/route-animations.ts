@@ -103,6 +103,43 @@ export const vmmModule = trigger('routeAnimations', [
 
 ]);
 
+export const adminModule = trigger('routeAnimations', [
+  // The '* => *' will trigger the animation to change between any two states
+  transition('notFoundx => dash',[
+    style({ opacity: 0 }), 
+    animate(1000, style({opacity: 1}))
+  ]),
+  transition('* => notFoundx', 
+  [
+    style({ opacity: 0 }), 
+    animate(1000, style({opacity: 1}))
+  ]
+  ),
+  //Child Module Entry
+  transition('* => admin', 
+  useAnimation(globalAnimation,{
+    // Set the duration to 5seconds and delay to 2seconds
+    params: { timing: globalTiming, delay: globalDelay }
+  })
+
+),
+  //Dash to -> chart
+  transition('admin => addTeam', 
+  useAnimation(globalAnimation,{
+    // Set the duration to 5seconds and delay to 2seconds
+    params: { timing: globalTiming, delay: globalDelay }
+  }) 
+),
+  //backward
+  transition('addTeam => dash', 
+  useAnimation(globalAnimation,{
+    // Set the duration to 5seconds and delay to 2seconds
+    params: { timing: globalTiming, delay: globalDelay }
+  })
+),
+
+]);
+
 export const UserModule = trigger('routeAnimations', [
   // The '* => *' will trigger the animation to change between any two states
   transition('notFoundx => dash',[

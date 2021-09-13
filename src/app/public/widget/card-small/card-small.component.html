@@ -1,0 +1,15 @@
+<div class="card" [ngStyle]="{'width.px':cardWidth ,'height.px': cardHeight}">
+    <div [routerLink]="cardRouterLink" class="card-body text-center">
+        <span class="card-notify-badge" [ngClass]="{'card-notify-badge-danger' : cardDanger}"><i class="{{badgeIcon}}"></i></span>
+        <h1 class="h4 bg-light -1 text-muted link pe-auto  center-block ">
+            <span class="fa-stack">
+                 <i class="{{cardIconClass}} fa-stack-2x card-icon-color" [ngStyle]="{'color':cardIconColor}"  area-label="false"></i>
+                <i *ngIf="cardStackIcon" class="h5 {{cardStackIcon}} fa-stack-1x ml-1 mt-1 card-icon-color" [ngStyle]="{'color':cardStackIconColor}"></i>
+            </span>
+            <br>
+            <span class="ml-2 mt-2 align-middle">{{cardTitle}}</span>
+        </h1>
+        <p [clamp]="cardTextClamp" [matTooltip]="cardTextClamp ? cardText : null" class="card-text">{{cardText}}</p>
+
+    </div>
+</div>

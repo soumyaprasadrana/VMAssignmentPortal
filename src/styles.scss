@@ -9,6 +9,7 @@
 $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~material-icons-font/sass/main";
 @import "~material-icons-font/sass/Regular";
+@import "~@ng-select/ng-select/themes/default.theme.css";
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
@@ -156,10 +157,6 @@ body {
     width: 0px !important;
 }
 
-.actionHeader {
-    // margin-left: 35px !important;
-}
-
 input[data-columnid="global"] {
     display: none !important;
     width: 0px !important;
@@ -203,4 +200,66 @@ div:has(input[data-columnid="global"]) {
 .is-ngx-invalid div input:focus {
     border-color: #dc3545 !important;
     box-shadow: 0 0 0 0.2rem rgb(220 53 69 / 25%) !important;
+}
+
+.form-group.required label:before {
+    content: "*";
+    color: red;
+}
+
+.spinner {
+    display: block;
+    position: fixed;
+    background-color: #fff;
+    z-index: 1031;
+    top: 40%;
+    left: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    height: 120px;
+    width: 120px;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: $primary-color;
+}
+
+.modal-backdrop {
+    opacity: 0.5 !important;
+}
+
+.spinner-modal {
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.card-icon-color {
+    color: $primary-color
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-scroller::-webkit-scrollbar {
+    width: 4px;
+    overflow-y: scroll;
+    background: grey;
+    box-shadow: inset 0 0 4px #707070;
+}
+
+.app-scroller::-webkit-scrollbar-thumb {
+    background: $primary-color;
+    border-radius: 10px;
 }

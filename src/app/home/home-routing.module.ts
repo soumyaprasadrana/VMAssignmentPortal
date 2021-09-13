@@ -16,6 +16,7 @@ const routes: Routes = [
       },
       { path: 'group', component: HomePageGroupComponent,data: { animation: 'group'} },
       { path: 'vmm', loadChildren: () => import(`../vmm/vmm.module`).then(m => m.VmmModule)},
+      { path: 'admin', loadChildren: () => import(`../admin/admin.module`).then(m => m.ADMINModule)},
       { path: 'chart', component: VmChartComponent,data: { animation: 'chart'} },
       
       

@@ -7,25 +7,27 @@ import { VmmHomeComponent } from '../public/vmm/vmm-home/vmm-home.component';
 import { AddVmComponent } from '../public/vmm/add-vm/add-vm.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxSelectModule, INgxSelectOptions } from 'ngx-select-ex';
-
-
+import { MaterialModule } from '../material.module';
+import { CardsModule } from '../public/widget/card-small/card.module';
+import { EditVmComponent } from '../public/vmm/edit-vm/edit-vm.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   declarations: [
     VmmViewComponent,
     VmmHomeComponent,
-    AddVmComponent
+    AddVmComponent,
+    EditVmComponent,
   ],
   imports: [
     CommonModule,
     PathModule,
     VMMRoutingModule,
     NgbModule,
-
     FormsModule,
     ReactiveFormsModule,
-    NgxSelectModule,
-
-  ]
+    NgSelectModule,
+    MaterialModule,
+    CardsModule,
+  ],
 })
-export class VmmModule { }
+export class VmmModule {}

@@ -22,68 +22,15 @@
             <hr>
         </h1>
     </div>
-    <div class="row pr-0 ml-4 h-50 pre-scrollable only-verical-scroller  ">
-        <div class="row pt-2 ml-1 border h-100 w-100 ">
-            <div class="col-sm m-4 p-4 text-center border align-content-center   pe-auto bg-portal-primary portal-box-shadow ">
+    <div class="ml-2 ">
+        <div class="row ml-5" *ngFor='let row of cardsMetaData'>
+            <div class="card-container column p-2" *ngFor='let card of row'>
 
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
-                            <span class="fa-stack">
-                        <i class="fa fa-desktop fa-stack-2x" area-label="false"></i>
-                        <i class="h5 fa fa-plus-circle fa-stack-1x ml-1 mt-1"></i>
-                    </span> <span class="ml-2 mt-2 align-middle">Add Virtual Machine</span>
-                        </h1>
-                        <p class="card-text">Add a virtual machine to portal database , it will not create a vm instance in VMWare.</p>
-
-                    </div>
-                </div>
-
-
-
-            </div>
-            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
-
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
-                            <span class="fa-stack">
-                        <i class="fa fa-desktop fa-stack-2x" area-label="false"></i>
-                        <i class="h5 fa fa-info fa-stack-1x ml-1 mt-1"></i>
-                    </span> <span class="ml-2 mt-2 align-middle">Edit Virtual Machine</span>
-                        </h1>
-                        <p class="card-text">Edit a Vitual Machine to update Virtual Machine Details.</p>
-
-                    </div>
-                </div>
-
-
+                <app-card-small [cardDanger]="card.cardDanger" [cardTextClamp]="card.cardTextClamp" [cardRouterLink]="card.cardRouterLink" [cardTitle]="card.cardTitle" [cardText]="card.cardText" [cardHeight]='card.cardHeight' [cardWidth]='card.cardWidth' [cardIconClass]="card.cardIconClass"
+                    [badgeIcon]="card.badgeIcon" [cardStackIcon]="card.cardStackIcon" [cardIconColor]="card.cardIconColor" [cardStackIconColor]="card.cardStackIconColor"></app-card-small>
             </div>
         </div>
-        <div class="row pt-2 ml-1 w-100 border">
-
-            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h1 [routerLink]="['../add']" class="h4 bg-light text-danger link pe-auto  center-block ">
-                            <span class="fa-stack">
-                        <i class="fa fa-trash fa-stack-2x" area-label="false"></i>
-                        <i class="h5 fa fa-desktop fa-stack-1x ml-4"></i>
-                    </span> <span class="ml-2 mt-2 align-middle">Delete Virtual Machine</span>
-                        </h1>
-                        <p class="card-text">Delete Virtual Machine from Portal Database, It will not delete Virtal Machine from vmware.</p>
-
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-
-
-
-
-
-
     </div>
+
+
 </div>

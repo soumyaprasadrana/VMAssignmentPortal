@@ -21,8 +21,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { HomeViewComponent } from './public/home/home-view/home-view.component';
 import { FooterModule } from './public/widget/footer/footer.module';
 import { MaterialModule } from './material.module';
+import { Config } from './app.config';
 
-import { NgxSelectModule } from 'ngx-select-ex';
+import { AdminConfig } from './public/admin/admin.config';
 
 @NgModule({
   declarations: [
@@ -38,8 +39,6 @@ import { NgxSelectModule } from 'ngx-select-ex';
     PageNotFoundComponent,
     // HomePageGroupComponent,
     //HomeViewComponent
-
-
   ],
   imports: [
     BrowserModule,
@@ -49,9 +48,10 @@ import { NgxSelectModule } from 'ngx-select-ex';
     AppRoutingModule,
     NgbModule,
     BrowserAnimationsModule,
-    FooterModule, MaterialModule,
-    NgxSelectModule
+    FooterModule,
+    MaterialModule,
 
+    HttpClientModule,
 
     /*  AngularSlickgridModule.forRoot({
         // add any Global Grid Options/Config you might want
@@ -65,7 +65,7 @@ import { NgxSelectModule } from 'ngx-select-ex';
     */
   ],
   exports: [],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [Config, AdminConfig],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
