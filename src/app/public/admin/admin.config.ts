@@ -1,0 +1,95 @@
+export class AdminConfig {
+  static cardsMetaData: any = [
+    [
+      {
+        cardTitle: 'Create Team',
+        cardText:
+          'Creating a team will help youto manage team members and virutal machines under this team.',
+        cardWidth: '300',
+        cardHeight: '200',
+        cardIconClass: 'fa fa-users',
+        badgeIcon: 'fa fa-plus',
+        cardRouterLink: ['../addTeam'],
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Edit Team',
+        cardText: 'Edit a team details.',
+        cardWidth: '200',
+        cardHeight: '200',
+        cardRouterLink: ['../editTeam'],
+        cardIconClass: 'fa fa-users',
+        badgeIcon: 'fa fa-edit',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Create Team Leader',
+        cardText:
+          'Create a team leader for each team, team leaders has more permissions than a normal user.',
+        cardWidth: '250',
+        cardHeight: '200',
+        cardRouterLink: ['../addTeamLead'],
+        cardIconClass: 'fa fa-user ',
+        badgeIcon: 'fa fa-plus',
+        cardTextClamp: 2,
+      },
+      {
+        cardTitle: 'Edit Team Leader',
+        cardText: 'Edit a team leader to update permission and user data.',
+        cardWidth: '250',
+        cardHeight: '200',
+        cardIconClass: 'fa fa-user',
+        cardRouterLink: ['../editTeamLead'],
+        badgeIcon: 'fa fa-edit',
+        cardTextClamp: 0,
+      },
+    ],
+    [
+      {
+        cardTitle: 'Delete Team Leader',
+        cardText: 'This will remove the team leader user from the database.',
+        cardWidth: '250',
+        cardHeight: '200',
+        cardIconClass: 'fa fa-trash ',
+        badgeIcon: 'fa fa-trash',
+        cardTextClamp: 2,
+        cardDanger: true,
+        cardIconColor: 'red',
+        cardStackIconColor: 'red',
+        cardStackIcon: 'fa fa-user ml-4 mt-0',
+      },
+      {
+        cardTitle: 'Team Stats',
+        cardText: 'Users permissions view.',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../teamStats'],
+        cardIconClass: 'fa fa-group ',
+        badgeIcon: 'fa fa-pie-chart',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Activity Logs',
+        cardText: 'System activity logs.',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../activityLogs'],
+        cardIconClass: 'fa fa-history ',
+        badgeIcon: 'fa fa-check-circle',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Application Properties',
+        cardText: 'Dynamic Application Properties',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../properties'],
+        cardIconClass: 'fa fa-cog ',
+        badgeIcon: 'fa fa-cog',
+        cardTextClamp: 0,
+      },
+    ],
+  ];
+
+  constructor() {}
+}

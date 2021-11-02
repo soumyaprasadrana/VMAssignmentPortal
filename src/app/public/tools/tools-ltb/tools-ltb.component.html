@@ -1,1 +1,35 @@
-<p>tools-ltb works!</p>
+<app-path></app-path>
+
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="container-fluid mt-3 ">
+    <div class="row p-3">
+
+        <h1 class="h3"><i class="fa fa-desktop" area-label="false"></i> SSH Tool
+            <hr>
+        </h1>
+    </div>
+    <div class="ml-2 ">
+        <div class="row ml-5" *ngFor='let row of cardsMetaData'>
+            <div class="card-container column p-2" *ngFor='let card of row'>
+
+                <app-ltb-button [cardWidth]="card.cardWidth" [cardHeigth]="card.cardHeight" [callback]="card.cardCallback" [title]="card.cardTitle" [inputFields]="card.cardFields" [commandQuerryParser]="card.commandQuerryParser" [queryFields]="card.queryFields"></app-ltb-button>
+            </div>
+        </div>
+    </div>
+
+
+</div>

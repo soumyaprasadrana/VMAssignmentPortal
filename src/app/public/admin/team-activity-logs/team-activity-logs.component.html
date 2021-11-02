@@ -1,0 +1,39 @@
+<app-path></app-path>
+
+
+
+<div class="container-fluid-lg pt-2 mt-2 text-muted  ">
+    <div class="row">
+        <div class="col-xs-6 ">
+
+            <h3 class="ml-3">
+
+                <i class="fa fa-history" area-label="false"></i> Activity Logs
+                <hr>
+            </h3>
+        </div>
+
+        <div class="col mt-1">
+            <button style="width:100px;margin-right:10px;margin-bottom: 5px;float:right;" class="btn btn-primary" (click)="next()" [disabled]="endOfData || lastPage">Next</button>
+            <button style="width:100px;margin-right:10px;margin-bottom: 5px;float:right;" class="btn btn-primary" (click)="prev()" [disabled]="startOfData || !onNext">Previous</button>
+
+        </div>
+    </div>
+</div>
+<div style="width:90%;">
+    <div>
+
+        <div *ngIf="endOfData" class="containerL">
+            <div class="centered-divL">
+                No more records are there.
+
+            </div>
+        </div>
+        <div *ngIf="!isLoadingActivityList  && !endOfData" style="height:70%">
+            <div class="p-20">
+                <angular-slickgrid gridId="grid2" [columnDefinitions]="columnDef" [gridOptions]="alGridOptions" [dataset]="alDataSet">
+                </angular-slickgrid>
+            </div>
+        </div>
+    </div>
+</div>

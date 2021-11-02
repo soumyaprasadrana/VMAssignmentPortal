@@ -1,0 +1,54 @@
+<app-path></app-path>
+
+<div class="container-fluid-lg p-3 my-3 text-muted  ">
+    <div class="row">
+        <div class="col-xs-6 ">
+
+            <h1 class="ml-3">
+
+                <i class="fa fa-group" area-label="false"></i> Application Properties
+                <hr>
+            </h1>
+        </div>
+    </div>
+    <div clas="w-100">
+        <div>
+            <div *ngIf="!isLoading " style="height:70%">
+                <div class="p-20">
+                    <!--  <angular-slickgrid gridId="grid3" [columnDefinitions]="columnDef" [gridOptions]="propGridOptions" [dataset]="propDataSet">
+                    </angular-slickgrid> -->
+
+                    <mat-form-field class="w-100" appearance="standard">
+                        <mat-label>Property Name</mat-label>
+
+                        <input matInput class="w-100" (keyup)="applyFilter($event)" placeholder="Enter Property Name" #input>
+                    </mat-form-field>
+
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 prop-table">
+                        <!-- Property Column -->
+                        <ng-container matColumnDef="prop_name">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Property Name
+
+                            </th>
+                            <td mat-cell *matCellDef="let element">{{element.prop_name}}</td>
+                        </ng-container>
+
+                        <!-- Property Value Column -->
+                        <ng-container matColumnDef="prop_value">
+                            <th mat-header-cell *matHeaderCellDef>Value</th>
+                            <td mat-cell *matCellDef="let element"><input [(ngModel)]="element.prop_value" (ngModelChange)="propUpdate(element)" class="propValue"> </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <button style="width:100px;margin-top:30px;margin-right:10px;margin-bottom: 5px;float:right;" class="btn btn-primary" (click)="updateProps()" [disabled]="!isModified">Update</button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+        <i *ngIf="data.type=='message'" class="titleicon fa fa-envelope-open fa-2 " style="color:#337ab7;"></i>
+        <img src="assets/images/alert.svg" *ngIf="data.type=='alert'" class="titleicon far fa-2 " style="fill:#b72727;vertical-align:sub;height:20px;">
+        <img src="assets/images/alert.svg" *ngIf="data.type=='warn'" class="titleicon far fa-2 " style="fill:#f5cd01;vertical-align:sub;height:20px;">
+         System Message 
+         <button  type="button" class="close" style="background: white;
+    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
+        <span style="font-size:30px;" aria-hidden="true">&times;</span>
+    </button>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg">
+    <br> {{data.message}}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

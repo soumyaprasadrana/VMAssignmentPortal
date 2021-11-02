@@ -5,12 +5,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { Column, GridOption ,Formatters
   ,EditCommand,Filters,MultipleSelectOption,FieldType,AngularGridInstance,GridStateChange,
-  GridState,unsubscribeAllObservables,Grouping,AngularSlickgridComponent
+  GridState,unsubscribeAllObservables,Grouping,AngularSlickgridComponent, GridService
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { VmsService
  } from '../../services/vms.service';
+ import { SpinnerService } from '../../services/spinner-service';
 const NB_ITEMS = 995;
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
@@ -34,11 +35,12 @@ export class HomePageGroupComponent implements OnInit {
   gridObj: any;
   dataviewObj: any;
   isGroupByChildAdded:boolean=false;
+  gridService!: GridService;
   /* rxjs Subscription */
   private subscriptions: Subscription[] = [];
   
   constructor(
-    private route: ActivatedRoute,private router: Router,private vms:VmsService
+    private route: ActivatedRoute,private router: Router,private vms:VmsService,private spinner:SpinnerService
 
   ) { 
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
@@ -47,6 +49,7 @@ export class HomePageGroupComponent implements OnInit {
     this.angularGrid = angularGrid;
     this.gridObj = angularGrid.slickGrid;
     this.dataviewObj = angularGrid.dataView;
+    this.gridService = angularGrid.gridService;
     const delay = 100; // delay in milliseconds
     this.angularGrid.resizerService.resizeGrid(delay);
    
@@ -318,7 +321,20 @@ defineGrid(gridStatePresets?: GridState) {
    
 
     //Generating Data Set
-    this.vmDataSet=this.vms.getVms();
+    this.spinner.setSpinnerState(true);
+    var promise = this.vms.getVms();
+    promise.then((res: any[])=>{
+      this.spinner.setSpinnerState(false);
+      console.log("inside promise.then -< setting vmdataset");
+      this.vmDataSet=res;
+      console.log(res);
+      this.gridService.resetGrid();
+      
+    }).catch((err:any)=>{
+      this.spinner.setSpinnerState(true);
+      console.log("error occurred "+err)
+    });
+    
 }
 
 

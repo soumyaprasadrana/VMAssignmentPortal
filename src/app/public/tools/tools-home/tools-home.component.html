@@ -15,51 +15,22 @@
         overflow-x: hidden !important;
     }
 </style>
-<div class="container-fluid mt-3 w-100 ">
+<div class="container-fluid mt-3 ">
     <div class="row p-3">
 
-        <h1 class="h3"><i class="fa fa-user" area-label="false"></i> Tools
+        <h1 class="h3"><i class="fa fa-desktop" area-label="false"></i> Tools
             <hr>
         </h1>
     </div>
-    <div class="row pr-0 ml-4 h-50 pre-scrollable only-verical-scroller w-100">
-        <div class="row pt-2 ml-1 border h-100 w-100">
-            <div class="col-sm m-4 p-4 text-center border align-content-center   pe-auto bg-portal-primary portal-box-shadow ">
+    <div class="ml-2 ">
+        <div class="row ml-5" *ngFor='let row of cardsMetaData'>
+            <div class="card-container column p-2" *ngFor='let card of row'>
 
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
-                            <span class="fa-stack">
-                        <i class="fa fa-user fa-stack-2x" area-label="false"></i>
-                        <i class="h5 fa fa-plus-circle fa-stack-1x ml-4"></i>
-                    </span> <span class="ml-2 mt-2 align-middle">DB Tool Box</span>
-                        </h1>
-                        <p class="card-text">Facilitate to run data base queries currently supports DB2 only.</p>
-
-                    </div>
-                </div>
-
-
-
-            </div>
-            <div class="col-sm m-4 p-4 text-center border bg-portal-primary portal-box-shadow ">
-
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h1 [routerLink]="['../add']" class="h4 bg-light link pe-auto  center-block ">
-                            <span class="fa-stack">
-                        <i class="fa fa-user fa-stack-2x" area-label="false"></i>
-                        <i class="h5 fa fa-info fa-stack-1x ml-4"></i>
-                    </span> <span class="ml-2 mt-2 align-middle">Linux Tool Box</span>
-                        </h1>
-                        <p class="card-text">Helps to run linux shell commands.</p>
-
-                    </div>
-                </div>
-
-
+                <app-card-small [cardDanger]="card.cardDanger" [cardTextClamp]="card.cardTextClamp" [cardRouterLink]="card.cardRouterLink" [cardTitle]="card.cardTitle" [cardText]="card.cardText" [cardHeight]='card.cardHeight' [cardWidth]='card.cardWidth' [cardIconClass]="card.cardIconClass"
+                    [badgeIcon]="card.badgeIcon" [cardStackIcon]="card.cardStackIcon" [cardIconColor]="card.cardIconColor" [cardStackIconColor]="card.cardStackIconColor"></app-card-small>
             </div>
         </div>
-
     </div>
+
+
 </div>

@@ -6,7 +6,7 @@
 
             <h1 class="ml-3">
 
-                <i class="fa fa-user" area-label="false"></i> Create User
+                <i class="fa fa-user" area-label="false"></i> {{title}}
                 <hr>
             </h1>
         </div>
@@ -16,25 +16,22 @@
             <div class="col-lg-12">
                 <div class="row p-3 ">
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label for="name">Full Name:</label>
-                            <input id="name" type="text" class="form-control" formControlName="full_name" [ngClass]="{ 'is-invalid': submitted && f.full_name.errors }">
-                            <div *ngIf="submitted && f.full_name.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.full_name.errors.required">Full name is required</div>
+                            <input id="name" type="text" class="form-control" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
+                            <div *ngIf="submitted && f.user_name.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.user_name.errors.required">Full name is required</div>
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="row p-3 ">
                     <div class="col-sm-6 ">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <div class="form-group">
                                 <label for="userid">Username:</label>
-                                <input id="userid" type="text" class="form-control" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
-                                <div *ngIf="submitted && f.user_name.errors" class="invalid-feedback">
-                                    <div class="ml-1" *ngIf="f.user_name.errors.required">Username is required</div>
-
+                                <input id="userid" type="text" class="form-control" formControlName="user_id" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }">
+                                <div *ngIf="submitted && f.user_id.errors" class="invalid-feedback">
+                                    <div class="ml-1" *ngIf="f.user_id.errors.required">Username is required</div>
+                                    <div *ngIf="f.user_id.errors.restrictWhiteSpace">White Space is not allowed.</div>
                                 </div>
 
                             </div>
@@ -44,26 +41,27 @@
                 </div>
                 <div class="row p-3 ">
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label for="team">Team:</label>
-                            <select id="team" type="select" class="form-control" formControlName="user_team" [ngClass]="{ 'is-invalid': submitted && f.user_team.errors }">
-                            <option> Team 1 </option>
-                            <option> Team 2 </option>    
-                        </select>
-                            <div *ngIf="submitted && f.user_team.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.user_team.errors.required">Team is required</div>
+                            <!--<ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }"
+                                ngDefaultControl>
+                            </ngx-select>-->
+                            <ng-select [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }" ngDefaultControl>
+                            </ng-select>
+                            <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.team.errors.required">Team is required</div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row p-3 ">
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input id="password" type="password" class="form-control" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
+                        <div class="form-group required">
+                            <label for="email">E-Mail:</label>
+                            <input id="email" class="form-control" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
                             <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.user_pass.errors.required">Passwod is required</div>
-                                <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
+
+                                <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
+                                <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
                             </div>
                         </div>
                     </div>
@@ -71,9 +69,19 @@
                 </div>
                 <div class="row p-3 ">
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group required">
+                            <label for="password">Password:</label>
+                            <input id="password" type="password" autocomplete="new-password" class="form-control" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
+                            <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.user_pass.errors.required">Passwod is required</div>
+                                <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group required">
                             <label for="conf_password">Confirm Password:</label>
-                            <input id="conf_password" type="password" class="form-control" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
+                            <input id="conf_password" type="password" autocomplete="new-password" class="form-control" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
                             <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Passwod is required</div>
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
@@ -86,9 +94,72 @@
 
 
         </div>
-        <div class="row ">
+        <div class="row">
+            <div class="col-xs-6 ">
+
+                <h2 class="ml-3">
+
+                    <i class="fa fa-key" area-label="false"></i> User Permissions
+                    <hr>
+                </h2>
+            </div>
+        </div>
+        <div class="row p-3 ml-4">
+            <div class="col-sm-2 mr-0 pr-0">
+                <div class="form-group required">
+                    <label for="remove_vm">Delete VM:</label>
+                    <select id="remove_vm" class="form-control" formControlName="removeVM" [ngClass]="{ 'is-invalid': submitted && f.removeVM.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.removeVM.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.removeVM.errors.required">Delete VM is required</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-2 mr-0 pr-0">
+                <div class="form-group required">
+                    <label for="addUser">Create User:</label>
+                    <select id="addUser" class="form-control" formControlName="addUser" [ngClass]="{ 'is-invalid': submitted && f.addUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.addUser.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.addUser.errors.required">Create User is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2 mr-0 pr-0">
+                <div class="form-group required">
+                    <label for="editUser">Edit User:</label>
+                    <select id="editUser" class="form-control" formControlName="editUser" [ngClass]="{ 'is-invalid': submitted && f.editUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.editUser.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.editUser.errors.required">Edit User is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2 mr-0 pr-0">
+                <div class="form-group required">
+                    <label for="removeUser">Delete User:</label>
+                    <select id="removeUser" class="form-control" formControlName="removeUser" [ngClass]="{ 'is-invalid': submitted && f.removeUser.errors }">
+                        <option *ngFor="let item of permissionValueList">{{item}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.removeUser.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.removeUser.errors.required">Delete User is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3">
             <div class="col-sm-6 mr-0 pr-0">
-                <button type="submit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
+
+            </div>
+            <div class="col-sm-6 mr-0 pr-0">
+                <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
             </div>
         </div>
     </form>

@@ -10,13 +10,22 @@
         <div class="navflex" fxHide.lt-md>
 
 
-            <input class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" matInput placeholder="What are you looking for ?">
+            <input *ngIf="showGlobalSearch" class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" placeholder="What are you looking for ?">
 
 
             <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
             <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
             <a [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
             <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
+            <a [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
+            <button mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
+                class="fa fa-user"></i> {{loggedUser.name | uppercase }}  </button>
+            <mat-menu #belowMenu="matMenu" yPosition="below">
+                <button mat-menu-item><span><i
+                    class="fa fa-lock"></i> Change Password</span></button>
+                <button mat-menu-item (click)="signOut()"><span><i
+                    class="fa fa-sign-out"></i> Sign Out </span></button>
+            </mat-menu>
         </div>
     </div>
 </mat-toolbar>

@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "VM Management Portal Node Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soumya",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-pino-logger": "^6.0.0",
+    "express-session": "^1.17.2",
+    "passport": "^0.4.1",
+    "passport-custom": "^1.1.1",
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "pino": "^6.13.1",
+    "pino-pretty": "^6.0.0",
+    "pug": "^3.0.2",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "sanitize-html": "^2.5.2"
+  }
+}

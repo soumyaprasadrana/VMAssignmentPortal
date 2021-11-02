@@ -1,5 +1,5 @@
 <div class="alert-container">
-    <ngb-alert [type]="'info'" [dismissible]="false">
+    <div class="alert-custom">
         <ul id="breadcrumb">
             <li *ngFor="let item of path">
                 <a class="path-item" [routerLink]="item.path">
@@ -8,6 +8,17 @@
 
                     <!-- User Icon-->
                     <i class="fa fa-user" *ngIf="item.title=='user'" area-label="false"></i>
+                    <!-- VMM Icon-->
+                    <i class="fa fa-desktop" *ngIf="item.title=='vmm'" area-label="false"></i>
+
+                    <!-- Add VM -->
+                    <i *ngIf="item.parent=='vmm' && item.title=='add'" class="fa fa-desktop" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='vmm' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>
+
+                    <!-- Edit VM -->
+                    <i *ngIf="item.parent=='vmm' && item.title=='edit'" class="fa fa-desktop" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='vmm' && item.title=='edit'" class="fa fa-edit" area-hidden="true" style="font-size: 8px;"></i>
+
 
                     <!-- Add VM  Icon-->
                     <i *ngIf="item.parent=='home' && item.title=='add'" class="fa fa-desktop" area-hideen="true"></i>
@@ -15,14 +26,19 @@
 
 
                     <!-- User Dash-->
-                    <i *ngIf="item.parent=='user' && item.title=='dash'" class="fa fa-address-book" area-hideen="true"></i>
+                    <i *ngIf="item.title=='dash'" class="fa fa-columns" area-hideen="true"></i>
 
                     <!-- Add User -->
                     <i *ngIf="item.parent=='user' && item.title=='add'" class="fa fa-user" area-hideen="true"></i>
-                    <i *ngIf="item.parent=='user' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i> {{item.title | uppercase}}
+                    <i *ngIf="item.parent=='user' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>
+
+                    <!-- Edit User -->
+                    <i *ngIf="item.parent=='user' && item.title=='edit'" class="fa fa-user" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='user' && item.title=='edit'" class="fa fa-edit" area-hidden="true" style="font-size: 8px;"></i> {{item.title | uppercase}}
+
                 </a>
 
             </li>
         </ul>
-    </ngb-alert>
+    </div>
 </div>
