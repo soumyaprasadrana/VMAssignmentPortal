@@ -27,6 +27,7 @@ import { AuthserviceService } from '../../services/authservice.service';
 import { VmsService } from '../../services/vms.service';
 import { GlobalSearchService } from '../../services/global-search.service';
 import { SpinnerService } from '../../services/spinner-service';
+import { UIPropService } from '../../services/properties.services';
 
 const NB_ITEMS = 995;
 const LOCAL_STORAGE_KEY = 'gridState';
@@ -51,6 +52,7 @@ export class HomePageComponent implements OnInit {
   dataviewObj: any;
   gridService!: GridService;
   isGroupByChildAdded: boolean = false;
+  properties: any = {};
   /* rxjs Subscription */
   private subscription!: Subscription;
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
@@ -60,8 +62,19 @@ export class HomePageComponent implements OnInit {
     private vms: VmsService,
     private gss: GlobalSearchService,
     private auth: AuthserviceService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private _props: UIPropService
   ) {
+    this._props
+      .getProps()
+      .then((res) => {
+        console.log('Props=>', res);
+        this.properties = JSON.parse('' + res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
     this.subscription = this.gss.getFilterText().subscribe((text) => {
       if (text) {
@@ -163,12 +176,15 @@ export class HomePageComponent implements OnInit {
       if (typeof value == 'undefined') {
         value = '';
       }
-      if (vm.snap_count >= 5 && vm.snap_count <= 8) {
+      if (
+        vm.snap_count >= this.properties.warnSnapshot &&
+        vm.snap_count <= this.properties.alertSnapshot
+      ) {
         return {
           text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
           toolTip: value,
         };
-      } else if (vm.snap_count > 8) {
+      } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
           toolTip: value,
@@ -601,8 +617,8 @@ export class HomePageComponent implements OnInit {
         this.gridService.resetGrid();
       })
       .catch((err: any) => {
-        this.spinner.setSpinnerState(true);
-        console.log('error occurred ' + err);
+        this.spinner.setSpinnerState(false);
+        console.log('error occurred ', err);
       });
 
     //If you want to use a observable

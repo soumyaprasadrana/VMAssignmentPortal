@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppCommonModule } from './public/widget/utils/common.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [],
   imports: [
@@ -32,6 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     AppCommonModule,
     MatTooltipModule,
+    MatTableModule,
   ],
   exports: [
     MatIconModule,
@@ -48,6 +50,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     AppCommonModule,
     MatTooltipModule,
+    MatTableModule,
   ],
 })
 export class MaterialModule {}

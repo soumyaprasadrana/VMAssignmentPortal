@@ -11,7 +11,9 @@ export class AppComponent {
   title = 'VM Assignment Portal';
   isLoading: boolean = false;
   private subscription!: Subscription;
-  constructor(private route: ActivatedRoute, private spinner: SpinnerService) {
+  constructor(private route: ActivatedRoute, private spinner: SpinnerService) {}
+
+  ngOnInit() {
     this.subscription = this.spinner.getSpinnerState().subscribe((value) => {
       if (value) {
         console.log('Spinner state:' + value.value);
@@ -20,6 +22,4 @@ export class AppComponent {
       }
     });
   }
-
-  ngOnInit() {}
 }

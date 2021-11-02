@@ -50,7 +50,7 @@ module.exports = {
 
             if (error) {
                 logger.debug(fun + "- Error found while authenticating");
-                res.status(401).json({ "status": false, "message": error.message });
+                res.status(200).json({ "status": false, "message": error.message });
                 next(error);
                 return;
 

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 import { NodeclientService } from '../../services/nodeclient.service';
@@ -10,20 +15,31 @@ import { SpinnerService } from '../../services/spinner-service';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
-  styleUrls: ['./add-team.component.scss']
+  styleUrls: ['./add-team.component.scss'],
 })
 export class AddTeamComponent implements OnInit {
-  registerForm !: FormGroup;
+  registerForm!: FormGroup;
   submitted = false;
-  constructor(private formBuilder: FormBuilder,private _client:NodeclientService,private dialog: MatDialog,private _spinner:SpinnerService) { }
+  title: string = 'Add Team';
+  constructor(
+    private formBuilder: FormBuilder,
+    private _client: NodeclientService,
+    private dialog: MatDialog,
+    private _spinner: SpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      team_name: ['', [Validators.required,CustomValidator.restrictWhiteSpace]],
-      team_desc:['']
+      team_name: [
+        '',
+        [Validators.required, CustomValidator.restrictWhiteSpace],
+      ],
+      team_desc: [''],
     });
   }
-  get f() { return this.registerForm.controls; }
+  get f() {
+    return this.registerForm.controls;
+  }
   onSubmit() {
     this.submitted = true;
     this._spinner.setSpinnerState(true);
@@ -35,43 +51,47 @@ export class AddTeamComponent implements OnInit {
 
     // display form values on success
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
 
     var httpOptions = {
-      headers: headers, 
+      headers: headers,
     };
-    var _promise=this._client.post("api/admin/addTeam",this.registerForm.value,httpOptions);
-    _promise.then((res:any)=>{
-      this._spinner.setSpinnerState(false);
-      console.log(JSON.parse(res));
-      if(res)
-        res=JSON.parse(res);
-      if(res.status=='SUCCESS'){
-      this.openDialog({
-        type:'message',
-        message:res.message
-      });}
-      else{
+    var _promise = this._client.post(
+      'api/admin/addTeam',
+      this.registerForm.value,
+      httpOptions
+    );
+    _promise
+      .then((res: any) => {
+        this._spinner.setSpinnerState(false);
+        console.log(JSON.parse(res));
+        if (res) res = JSON.parse(res);
+        if (res.status == 'SUCCESS') {
+          this.openDialog({
+            type: 'message',
+            message: res.message,
+          });
+        } else {
+          this._spinner.setSpinnerState(false);
+          this.openDialog({
+            type: 'alert',
+            message: res.message,
+          });
+        }
+      })
+      .catch((err: any) => {
         this._spinner.setSpinnerState(false);
         this.openDialog({
-          type:'alert',
-          message:res.message
+          type: 'alert',
+          message: err.message,
         });
-      }
-    }).catch((err:any)=>{
-      this._spinner.setSpinnerState(false);
-      this.openDialog({
-        type:'alert',
-        message:err.message
       });
-    })
-    
   }
-  openDialog(data:any) {
+  openDialog(data: any) {
     this.dialog.open(AlertDialogComponent, {
       data: data,
-      panelClass:'app-dialog-class'
+      panelClass: 'app-dialog-class',
     });
   }
 }

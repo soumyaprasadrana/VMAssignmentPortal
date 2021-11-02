@@ -12,7 +12,10 @@ import { async } from '@angular/core/testing';
 export class TeamService {
   teams: Array<Team> = [];
   promise: any;
-  constructor(private _props: UIPropService) {
+  constructor(
+    private _props: UIPropService,
+    private _client: NodeclientService
+  ) {
     this.promise = this._props.getDataFromNode();
   }
   getTeams() {
@@ -38,6 +41,28 @@ export class TeamService {
         .then((res: any) => {
           //console.log('TeamServices=>', res);
           resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  getTeam(team: string) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .get('api/admin/getTeam/' + team, httpOptions)
+        .then((res: any) => {
+          console.log('Teams Service:getTeam=>', res);
+          resolve(res);
         })
         .catch((error: any) => {
           console.log(error);

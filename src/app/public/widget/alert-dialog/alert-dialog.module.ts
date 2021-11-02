@@ -6,8 +6,13 @@ import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputDialogComponent } from './input-dialog.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { LTBButtonInputDialogComponent } from './ltb-button-input-dialog.component';
 @NgModule({
-  declarations: [AlertDialogComponent, InputDialogComponent],
+  declarations: [
+    AlertDialogComponent,
+    InputDialogComponent,
+    LTBButtonInputDialogComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -16,6 +21,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [AlertDialogComponent, InputDialogComponent],
+  exports: [
+    AlertDialogComponent,
+    InputDialogComponent,
+    LTBButtonInputDialogComponent,
+  ],
 })
 export class AlertModule {}

@@ -1,10 +1,15 @@
-import { NgModule } from '@angular/core';
+import { ApplicationInitStatus, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundHomeComponent } from '../public/widget/page-not-found-home/page-not-found-home.component';
 import { AdminViewComponent } from '../public/admin/admin-view/admin-view.component';
 import { AddTeamComponent } from '../public/admin/add-team/add-team.component';
 import { AdminHomeComponent } from '../public/admin/admin-home/admin-home.component';
 import { AddTeamLeadComponent } from '../public/admin/add-team-lead/add-team-lead.component';
+import { EditTeamComponent } from '../public/admin/edit-team/edit-team.component';
+import { EditTeamLeadComponent } from '../public/admin/edit-team-lead/edit-team-lead.component';
+import { TeamStatsComponent } from '../public/admin/team-stats/team-stats.component';
+import { TeamActivityLogsComponent } from '../public/admin/team-activity-logs/team-activity-logs.component';
+import { ApplicationPropertiesComponent } from '../public/admin/application-properties/application-properties.component';
 
 const routes: Routes = [
   {
@@ -23,8 +28,33 @@ const routes: Routes = [
         data: { animation: 'addTeam' },
       },
       {
+        path: 'editTeam',
+        component: EditTeamComponent,
+        data: { animation: 'addTeam' },
+      },
+      {
+        path: 'editTeamLead',
+        component: EditTeamLeadComponent,
+        data: { animation: 'addTeam' },
+      },
+      {
+        path: 'teamStats',
+        component: TeamStatsComponent,
+        data: { animation: 'addTeam' },
+      },
+      {
         path: 'addTeamLead',
         component: AddTeamLeadComponent,
+        data: { animation: 'addTeam' },
+      },
+      {
+        path: 'activityLogs',
+        component: TeamActivityLogsComponent,
+        data: { animation: 'addTeam' },
+      },
+      {
+        path: 'properties',
+        component: ApplicationPropertiesComponent,
         data: { animation: 'addTeam' },
       },
 

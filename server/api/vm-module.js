@@ -9,8 +9,8 @@ var request_promise = require('request-promise');
 module.exports = {
     getAll: function(req, res, next) {
         const fn = "vm-module.js :-: getAll -"
-        logger.debug(fn + "JSESSIONID:" + req.user.jsession);
-        logger.debug(fn + "AUTH:" + req.user.auth);
+            //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
+            //logger.debug(fn + "AUTH:" + req.user.auth);
 
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + config.vm_rest_path,

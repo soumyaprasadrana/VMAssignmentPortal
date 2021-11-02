@@ -11,6 +11,8 @@ import { Team } from '../DataModel/team';
 export class UserService {
   users: Array<any> = [];
   promise: any;
+  promiseTL: any;
+  promiseTeamStats: any;
   constructor(private _client: NodeclientService) {
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -20,6 +22,8 @@ export class UserService {
       headers: headers,
     };
     this.promise = _client.get('api/public/getUsers', httpOptions);
+    this.promiseTL = _client.get('api/admin/getTeamLeads', httpOptions);
+    this.promiseTeamStats = _client.get('api/admin/teamStats', httpOptions);
   }
   getUsers() {
     const promisey = new Promise((resolve, reject) => {
@@ -52,7 +56,51 @@ export class UserService {
     });
     return promisey;
   }
+  getTeamStats() {
+    const promisey = new Promise((resolve, reject) => {
+      this.promiseTeamStats
+        .then((res: any) => {
+          console.log('Users Service:-: Team Stats=>', res);
+          resolve(res);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  getTeamLeads() {
+    const promisey = new Promise((resolve, reject) => {
+      function parseResult(res: any): User[] {
+        var result = JSON.parse(res);
 
+        var id = 1;
+        var returnObject: User[] = [];
+        for (var user in result) {
+          returnObject.push({
+            id: id,
+            user_name: user,
+            user_id: user,
+          });
+          id++;
+        }
+        //console.log('returnObject=>', returnObject);
+        return returnObject;
+      }
+
+      this.promiseTL
+        .then((res: any) => {
+          console.log('Users Service=>', res);
+          resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
   getUser(user: string) {
     const promisey = new Promise((resolve, reject) => {
       var headers = new HttpHeaders({

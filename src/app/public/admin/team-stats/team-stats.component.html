@@ -1,0 +1,73 @@
+<app-path></app-path>
+
+<div class="container-fluid-lg p-3 my-3 text-muted  ">
+    <div class="row">
+        <div class="col-xs-6 ">
+
+            <h1 class="ml-3">
+
+                <i class="fa fa-group" area-label="false"></i> Team Stats
+                <hr>
+            </h1>
+        </div>
+    </div>
+    <table *ngIf="list.length>0" class="table table-striped" style="border: 1px solid #ccc;">
+
+        <tr *ngFor="let users of list|groupBy:'user_team' |toArray">
+            <td>
+
+                <label style="margin-top:5px;">Team: {{ users[0].user_team }}</label>
+                <div style="float: right; margin-right: 10px;cursor:pointer;">
+                    <div style="float:right;padding:5px;" *ngIf="!temp[users[0].user_team]" (click)="temp[users[0].user_team]=!temp[users[0].user_team]">
+                        <i class="arrowX downX"></i>
+                    </div>
+                    <div style="float:right;padding:5px;" *ngIf="temp[users[0].user_team]" (click)="temp[users[0].user_team]=!temp[users[0].user_team]">
+                        <i class="arrowX upX"></i>
+                    </div>
+                </div>
+                <div class="userList" *ngIf="temp[users[0].user_team] ">
+                    <table class="table table-striped dataTable ">
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Team Leader?</th>
+                        <th>Permissions<br>[Create User, Edit User,<br>Delete User, Remove VM]</th>
+                        <tr *ngFor="let user of users | orderBy: 'user_name' ">
+                            <td style="text-align:left; ">
+
+                                <i class="fa fa-user "></i> <label style="margin-left:5px;font-weight: 100; ">{{ user.user_id }}</label>
+                            </td>
+                            <td style="text-align:left; ">
+                                <label mat-tooltip="user.user_name " style="overflow:hidden;white-space:nowrap; text-overflow: ellipsis;font-weight: 100; ">{{ user.user_name }}</label>
+                            </td>
+                            <td>
+                                <span *ngIf="user.is_teamLead=='1' "><i class="fa fa-check-circle "></i></span>
+                                <span *ngIf="user.is_teamLead=='0' "><i class="fa fa-times-circle "></i></span>
+                            </td>
+                            <td>
+                                <div>
+                                    <span mat-tooltip="Create User? " *ngIf="user.create_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span mat-tooltip="Create User? " *ngIf="user.create_user=='0' "><i class="fa fa-times-circle "></i></span>,
+
+                                    <span mat-tooltip="Edit User? " *ngIf="user.update_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span mat-tooltip="Edit User? " *ngIf="user.update_user=='0' "><i class="fa fa-times-circle "></i></span>,
+
+                                    <span mat-tooltip="Delete User? " *ngIf="user.delete_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span mat-tooltip="Delete User? " *ngIf="user.delete_user=='0' "><i class="fa fa-times-circle "></i></span>,
+
+                                    <span mat-tooltip="Remove VM? " *ngIf="user.delete_vm=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span mat-tooltip="Remove VM? " *ngIf="user.delete_vm=='0' "><i class="fa fa-times-circle "></i></span>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4 " style="text-align:left; ">
+                                <label> Total users: {{users.length}}</label>
+                        </tr>
+                    </table>
+
+                </div>
+                </td>
+        </tr>
+    </table>
+</div>

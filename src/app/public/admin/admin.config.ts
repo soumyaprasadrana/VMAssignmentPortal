@@ -1,5 +1,3 @@
-import { userInfo } from 'os';
-
 export class AdminConfig {
   static cardsMetaData: any = [
     [
@@ -19,6 +17,7 @@ export class AdminConfig {
         cardText: 'Edit a team details.',
         cardWidth: '200',
         cardHeight: '200',
+        cardRouterLink: ['../editTeam'],
         cardIconClass: 'fa fa-users',
         badgeIcon: 'fa fa-edit',
         cardTextClamp: 0,
@@ -40,6 +39,7 @@ export class AdminConfig {
         cardWidth: '250',
         cardHeight: '200',
         cardIconClass: 'fa fa-user',
+        cardRouterLink: ['../editTeamLead'],
         badgeIcon: 'fa fa-edit',
         cardTextClamp: 0,
       },
@@ -63,8 +63,29 @@ export class AdminConfig {
         cardText: 'Users permissions view.',
         cardWidth: '220',
         cardHeight: '200',
+        cardRouterLink: ['../teamStats'],
         cardIconClass: 'fa fa-group ',
         badgeIcon: 'fa fa-pie-chart',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Activity Logs',
+        cardText: 'System activity logs.',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../activityLogs'],
+        cardIconClass: 'fa fa-history ',
+        badgeIcon: 'fa fa-check-circle',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'Application Properties',
+        cardText: 'Dynamic Application Properties',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../properties'],
+        cardIconClass: 'fa fa-cog ',
+        badgeIcon: 'fa fa-cog',
         cardTextClamp: 0,
       },
     ],

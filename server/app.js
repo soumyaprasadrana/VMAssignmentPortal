@@ -1,5 +1,3 @@
-/* Node Express Server Setup  */
-
 const express = require('express');
 var cookieParser = require('cookie-parser')
 var cookieSession = require('cookie-session')

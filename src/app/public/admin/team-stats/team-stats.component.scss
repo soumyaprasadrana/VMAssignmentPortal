@@ -1,0 +1,65 @@
+.arrowX {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.rightX {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.leftX {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.upX {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.downX {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.userList {
+    background: #fff;
+    padding: 10px
+}
+
+.dataTable th {
+    background: #fff;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.dataTable tr {
+    background: #fff;
+    text-align: center;
+    border: 1px solid #ccc;
+    vertical-align: inherit;
+}
+
+.dataTable tr td {
+    border: 1px solid #ccc;
+    vertical-align: inherit;
+}
+
+.fa-user {
+    color: #0070ad;
+}
+
+.dataTable>tbody>tr>th {
+    vertical-align: inherit;
+}
+
+.fa-check-circle {
+    color: #5cb85c;
+}
+
+.fa-times-circle {
+    color: #f90000;
+}

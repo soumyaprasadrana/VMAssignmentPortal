@@ -44,6 +44,28 @@ module.exports = {
         _client.get(httpOptions, req, res, next);
 
     },
+    getUsersWithProtocols: function(req, res, next) {
+        console.log(req.body);
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.team_stats_path,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+
+    },
+    getTL: function(req, res, next) {
+        console.log(req.body);
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.teamLeads_path,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+
+    },
     getUser: function(req, res, next) {
         var user_id = req.params['id']
         console.log(req.body);

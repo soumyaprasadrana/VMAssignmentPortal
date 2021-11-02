@@ -24,4 +24,19 @@ export class UIPropService {
     var promise = this._client.get('api/public/getUIProps', httpOptions);
     return promise;
   }
+
+  getProps() {
+    const promisey = new Promise((resolve, reject) => {
+      this.getDataFromNode()
+        .then((res: any) => {
+          //console.log('TeamServices=>', res);
+          resolve(res);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
 }

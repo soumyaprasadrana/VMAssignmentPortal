@@ -6,39 +6,27 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './public/login/login-form/login-form.component';
-//import { HomePageComponent } from './public/home/home-page/home-page.component';
-//import { LtbButtonComponent } from './public/widget/ltb-button/ltb-button.component';
-//import { DbButtonComponent } from './public/widget/db-button/db-button.component';
 import { NavbarComponent } from './public/widget/navbar/navbar.component';
-//import { NavbarHomeComponent } from './public/widget/navbar-home/navbar-home.component';
-//import { FooterComponent } from './public/widget/footer/footer.component';
 import { LoginViewComponent } from './public/login/login-view/login-view.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './public/widget/page-not-found/page-not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { AngularSlickgridModule } from 'angular-slickgrid';
-//import { HomePageGroupComponent } from './public/home/home-page-group/home-page-group.component';
-//import { HomeViewComponent } from './public/home/home-view/home-view.component';
 import { FooterModule } from './public/widget/footer/footer.module';
 import { MaterialModule } from './material.module';
 import { Config } from './app.config';
 
 import { AdminConfig } from './public/admin/admin.config';
+import { AuthInterceptor } from './public/services/customHttp';
+import { Router } from '@angular/router';
+import { SpinnerService } from './public/services/spinner-service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
-    // HomePageComponent,
-    //  LtbButtonComponent,
-    //  DbButtonComponent,
     NavbarComponent,
-    //  NavbarHomeComponent,
-
     LoginViewComponent,
     PageNotFoundComponent,
-    // HomePageGroupComponent,
-    //HomeViewComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +53,19 @@ import { AdminConfig } from './public/admin/admin.config';
     */
   ],
   exports: [],
-  providers: [Config, AdminConfig],
+  providers: [
+    SpinnerService,
+    Config,
+    AdminConfig,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: function (router: Router) {
+        return new AuthInterceptor(router);
+      },
+      multi: true,
+      deps: [Router],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

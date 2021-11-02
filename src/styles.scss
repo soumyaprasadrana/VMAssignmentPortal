@@ -10,12 +10,10 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~material-icons-font/sass/main";
 @import "~material-icons-font/sass/Regular";
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "variable";
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
-$primary-color: #3498db;
-$primary-btn-hover-color: #2980b9;
-$side-nav-color: #c9e8fd;
 .mat-toolbar {
     background-color: $primary-color !important;
     height: 50px;
@@ -178,7 +176,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .mat-drawer-inner-container {
-    background-color: #dceffc;
+    background-color: $side-nav-color;
 }
 
 .bg-portal-primary {

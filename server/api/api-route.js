@@ -19,12 +19,21 @@ module.exports = function(app) {
     app.post('/api/vm/addVM', vmCtrl.addVM);
     app.post('/api/vm/updateVM', vmCtrl.updateVM);
     app.post('/api/admin/addTeam', admnCtrl.addTeam);
+    app.post('/api/admin/updateTeam/:team', admnCtrl.updateTeam);
+    app.get('/api/admin/getTeam/:team', admnCtrl.getTeam);
     app.post('/api/admin/addTeamLead', admnCtrl.createTeamLeader);
+    app.post('/api/admin/prop/update', admnCtrl.updateProps);
     app.post('/api/user/addUser', userCtrl.addUser);
     app.post('/api/user/updateUser', userCtrl.updateUser);
+    app.post('/api/user/updateTeamLead', admnCtrl.updateTeamLead);
     app.get('/api/public/getUIProps', commonCtrl.getProps);
     app.get('/api/public/getUsers', userCtrl.getUsers);
+    app.get('/api/admin/getTeamLeads', userCtrl.getTL);
+    app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
     app.get('/api/user/getUser/:id', userCtrl.getUser);
+    app.get('/api/admin/activityLog/:type/:activityId', admnCtrl.getActivityLog);
+    app.post('/api/stream/exec', commonCtrl.streamExec);
+    app.get("/api/stream/getOut/:file/:threadID", commonCtrl.getStreamOutput);
 
     app.get("/success", (req, res, next) => {
         res.send("<h1>Success Page/h1>");

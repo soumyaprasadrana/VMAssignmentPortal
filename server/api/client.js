@@ -42,7 +42,7 @@ module.exports = {
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
 
                 body = JSON.parse(body);
-                headers = JSON.parse(JSON.stringify(response.headers));
+                headers = JSON.parse(JSON.stringify(response.headers))
 
 
                 if (body.status) {
@@ -216,11 +216,11 @@ module.exports = {
                 return;
             }
 
-            request_promise.get(httpOptions, function(error, response, body) {
+            request_promise.get(httpOptions).then(function(body) {
 
                 logger.info(fun + "- GET request to " + httpOptions.uri);
-                // logger.debug(fun + "- Response body:" + body);
-                logger.debug(fun + "- Response headers:" + JSON.stringify(response));
+                logger.debug(fun + "- Response body:" + body);
+
                 if (body) {
                     res.status(200).json(body);
                     next();
@@ -229,11 +229,11 @@ module.exports = {
                     res.status(401).json({ "status": false });
                     next();
                 }
-            }, function(error) {
-                logger.info(fn + JSON.stringify(error));
-                res.status(500).json({ "status": false });
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
                 next();
-            })
+            });
         } catch (e) {
             console.log(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
@@ -267,7 +267,7 @@ module.exports = {
                 }
             }).catch(function(error) {
                 logger.info(fun + JSON.stringify(error));
-                res.status(500).json({ "status": false });
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
                 next();
             })
         } catch (e) {
@@ -291,7 +291,7 @@ module.exports = {
 
                 logger.info(fun + "- POST request to " + httpOptions.uri);
 
-                logger.debug(fun + "- Response error:" + JSON.stringify(body));
+                logger.debug(fun + "- Response :" + JSON.stringify(body));
 
                 if (body) {
                     callback(body);
@@ -303,7 +303,7 @@ module.exports = {
                 }
             }).catch(function(error) {
                 logger.info(fn + JSON.stringify(error));
-                res.status(500).json({ "status": false });
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
                 next();
             })
         } catch (e) {

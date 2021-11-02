@@ -10,7 +10,7 @@
         <div class="navflex" fxHide.lt-md>
 
 
-            <input class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" matInput placeholder="What are you looking for ?">
+            <input *ngIf="showGlobalSearch" class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" placeholder="What are you looking for ?">
 
 
             <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>

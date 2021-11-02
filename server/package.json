@@ -24,6 +24,7 @@
     "pino-pretty": "^6.0.0",
     "pug": "^3.0.2",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "sanitize-html": "^2.5.2"
   }
 }
