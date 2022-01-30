@@ -3,7 +3,7 @@ import { userInfo } from 'os';
 export class ToolConfig {
   static cardsMetaData: any = [
     [
-      {
+      /*{
         cardTitle: 'DB Tool Box',
         cardText:
           'Facilitate to run data base queries currently supports DB2 only.',
@@ -13,10 +13,10 @@ export class ToolConfig {
         badgeIcon: 'fa fa-cogs',
         cardRouterLink: ['../dtb'],
         cardTextClamp: 0,
-      },
+      },*/
       {
-        cardTitle: 'Linux Tool Box',
-        cardText: 'Helps to run linux shell commands.',
+        cardTitle: 'SSH Tool Box',
+        cardText: 'Helps to run ssh commands.',
         cardWidth: '200',
         cardHeight: '200',
         cardRouterLink: ['../ltb'],

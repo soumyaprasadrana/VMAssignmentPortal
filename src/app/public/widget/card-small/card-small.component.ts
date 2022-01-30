@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AuthserviceService } from '../../services/authservice.service';
 
 @Component({
   selector: 'app-card-small',
@@ -10,6 +11,7 @@ export class CardSmallComponent implements OnInit {
   @Input() cardWidth?: string = '100';
   @Input() cardRouterLink?: Array<string> = [];
   @Input() cardIconClass?: string = '';
+  @Input() cardPermissions?: any;
   @Input() cardStackIcon?: string = '';
   @Input() cardTitle?: string = '';
   @Input() cardText?: string = '';
@@ -19,9 +21,21 @@ export class CardSmallComponent implements OnInit {
   @Input() cardDanger?: boolean = false;
   @Input() cardIconColor?: string = '';
   @Input() cardStackIconColor?: string = '';
-  constructor() {}
+  @Input() callback?: any;
+  @Input() parentObject?: any;
+
+  loggedUser: any;
+  visible: any = true;
+  constructor(private _auth: AuthserviceService) {
+    this.loggedUser = _auth.getUser();
+  }
 
   ngOnInit(): void {
+    //console.log('Card Small Component permissions:', this.cardPermissions);
+    if (this.cardPermissions && typeof this.cardPermissions == 'function') {
+      this.visible = this.cardPermissions(this.loggedUser);
+    }
+    //console.log('Card Small Component visible:', this.visible);
     this.iconColor = this.getRandomColor();
     if (
       this.badgeIcon == '' ||
@@ -34,5 +48,14 @@ export class CardSmallComponent implements OnInit {
   getRandomColor() {
     var color = Math.floor(0x1000000 * Math.random()).toString(16);
     return '#' + ('000000' + color).slice(-6);
+  }
+  clickHandle() {
+    //console.log('clickHandle called', typeof this.callback);
+    if (typeof this.callback == 'function' && this.parentObject) {
+      this.callback(this.parentObject);
+    } else if (typeof this.callback == 'function' && !this.parentObject) {
+      this.callback();
+    }
+    return;
   }
 }

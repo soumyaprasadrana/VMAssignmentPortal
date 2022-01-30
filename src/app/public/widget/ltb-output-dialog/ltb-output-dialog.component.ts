@@ -25,7 +25,7 @@ export class LtbOutputDialogComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router
   ) {
-    console.log('LTBOutPutDialogComponent - data', data);
+    //console.log('LTBOutPutDialogComponent - data', data);
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -44,9 +44,9 @@ export class LtbOutputDialogComponent implements OnInit {
     this.promise
       .then((res: any) => {
         this.initResponse = JSON.parse(res);
-        console.log('initResponse', this.initResponse);
+        //console.log('initResponse', this.initResponse);
         this.output = this.initResponse.data;
-        //console.log(this.textarea);
+        ////console.log(this.textarea);
         //this.textarea.scrollToBottom(300); //300ms animation speed
         if (this.initResponse.isThreadStillAlive) {
           this.interval_s = interval(1000 * 10).subscribe((x) => {
@@ -56,13 +56,13 @@ export class LtbOutputDialogComponent implements OnInit {
         this.isLoading = false;
       })
       .catch((error: any) => {
-        console.log(error);
+        //console.log(error);
         this.isLoading = false;
       });
   }
   updateOutput() {
     this.isLoading = true;
-    console.log('update Output Called');
+    //console.log('update Output Called');
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -77,7 +77,7 @@ export class LtbOutputDialogComponent implements OnInit {
       )
       .then((res: any) => {
         this.initResponse = JSON.parse(res);
-        console.log('initResponse', this.initResponse);
+        //console.log('initResponse', this.initResponse);
         this.output += this.initResponse.data;
         //this.textarea.scrollToBottom(300); //300ms animation speed
         if (!this.initResponse.isThreadStillAlive) {
@@ -86,7 +86,7 @@ export class LtbOutputDialogComponent implements OnInit {
         this.isLoading = false;
       })
       .catch((error: any) => {
-        console.log(error);
+        //console.log(error);
         this.isLoading = false;
       });
   }

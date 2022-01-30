@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { NodeclientService } from './nodeclient.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Team } from '../DataModel/team';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -40,17 +41,17 @@ export class UserService {
           });
           id++;
         }
-        //console.log('returnObject=>', returnObject);
+        ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
 
       this.promise
         .then((res: any) => {
-          console.log('Users Service=>', res);
+          //console.log('Users Service=>', res);
           resolve(parseResult(res));
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });
@@ -60,11 +61,11 @@ export class UserService {
     const promisey = new Promise((resolve, reject) => {
       this.promiseTeamStats
         .then((res: any) => {
-          console.log('Users Service:-: Team Stats=>', res);
+          //console.log('Users Service:-: Team Stats=>', res);
           resolve(res);
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });
@@ -85,17 +86,39 @@ export class UserService {
           });
           id++;
         }
-        //console.log('returnObject=>', returnObject);
+        ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
 
       this.promiseTL
         .then((res: any) => {
-          console.log('Users Service=>', res);
+          //console.log('Users Service=>', res);
           resolve(parseResult(res));
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  deleteUser(user: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .post('api/user/delete/' + user, null, httpOptions)
+        .then((res: any) => {
+          //console.log('Users Service:delete=>', res);
+          resolve(res);
+        })
+        .catch((error: any) => {
+          //console.log(error);
           reject(error);
         });
     });
@@ -113,11 +136,11 @@ export class UserService {
       this._client
         .get('api/user/getUser/' + user, httpOptions)
         .then((res: any) => {
-          console.log('Users Service:getUser=>', res);
+          //console.log('Users Service:getUser=>', res);
           resolve(res);
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });

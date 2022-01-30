@@ -36,14 +36,14 @@ export class LtbButtonComponent implements OnInit {
 
   ngOnInit(): void {}
   submit(): void {
-    console.log('submit called');
+    //console.log('submit called');
 
-    console.log(this.inputFields);
+    //console.log(this.inputFields);
 
     this.getData(this.inputFields[0], this.inputFields[1]);
   }
   getData(list: any, formCtrl: {}) {
-    console.log(list);
+    //console.log(list);
     this.openDialogInput(
       {
         list: list,
@@ -52,11 +52,11 @@ export class LtbButtonComponent implements OnInit {
         queryFields: this.queryFields,
       },
       (res: any) => {
-        console.log(res);
+        //console.log(res);
         if (typeof this.callback == 'function') {
           this.callback(res);
         } else {
-          console.log('usual path to show result');
+          //console.log('usual path to show result');
           this.submitted = true;
           this._spinner.setSpinnerState(true);
 
@@ -112,7 +112,7 @@ export class LtbButtonComponent implements OnInit {
       .afterClosed()
       .toPromise()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (typeof callback == 'function' && res != '' && res != null) {
           callback(res);
         }
@@ -134,7 +134,7 @@ export class LtbButtonComponent implements OnInit {
       });
   }
   openOutputDialog(data: any) {
-    console.log(data, 'Going to open output dialog');
+    //console.log(data, 'Going to open output dialog');
     this.dialog.open(LtbOutputDialogComponent, {
       data: data,
       panelClass: 'app-dialog-class',

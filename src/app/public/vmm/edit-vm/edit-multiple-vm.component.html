@@ -1,0 +1,107 @@
+<app-path></app-path>
+
+<div class="container-fluid-lg p-3 my-3 text-muted  ">
+    <div class="row">
+        <div class="col-xs-6 ">
+
+            <h1 class="ml-3">
+
+                <i class="fa fa-desktop" area-label="false"></i>{{title}}
+                <hr>
+            </h1>
+        </div>
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row  ml-4">
+            <div class="col-lg-12">
+                <div class="row p-3 ">
+                    <div class="col-sm-6">
+                        <div class="form-group required">
+                            <label for="ip">IP Addresses:</label>
+                            <input id="ip" type="text" class="form-control" formControlName="ip" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }" disabled>
+                            <div *ngIf="submitted && f.ip.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.ip.errors.required">IP List is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <label for="os">OS:</label>
+                            <!-- <ngx-select [allowClear]="true" [items]="osList" [optionValueField]="'os_full'" placeholder="Select OS" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
+                            </ngx-select>-->
+                            <ng-select [items]="osList" bindLabel="os_full" placeholder="Select OS" bindValue="os_full" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
+                            </ng-select>
+                            <div *ngIf="submitted && f.ngxos.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.ngxos.errors.required">OS is required</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3 ">
+                    <div class="col-sm-6 ">
+
+                        <div class="form-group">
+                            <label for="owner">Owner:</label>
+                            <input id="owner" type="text" class="form-control" formControlName="owner" [ngClass]="{ 'is-invalid': submitted && f.owner.errors }">
+                            <div *ngIf="submitted && f.owner.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.owner.errors.required">Owner is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="ram">RAM:</label>
+                            <input id="ram" type="number" class="form-control" formControlName="ram" [ngClass]="{ 'is-invalid': submitted && f.ram.errors }">
+                            <div *ngIf="submitted && f.ram.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.ram.errors.required">RAM is required</div>
+                            </div>
+                            <div *ngIf="submitted && f.ram.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.ram.errors.max || f.ram.errors.min">Invalid value for ram !</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3 ">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="group">Group:</label>
+                            <input id="group" type="text" class="form-control" formControlName="group" [ngClass]="{ 'is-invalid': submitted && f.group.errors }">
+                            <div *ngIf="submitted && f.group.errors" class="invalid-feedback">
+                                <div class="ml-1" *ngIf="f.group.errors.required">Group is required</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div *ngIf="loggedUser.permissions.is_admin" class="col-sm-6">
+                        <div class="form-group ">
+                            <label for="team">Team:</label>
+                            <!-- <ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }"
+                                ngDefaultControl>
+                            </ngx-select>-->
+                            <ng-select [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }" ngDefaultControl>
+                            </ng-select>
+                            <div *ngIf="submitted && f.ngxteam.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="row ">
+            <div class="col-lg-12 ">
+                <button type="submit" class="btn float-sm-right text-capitalize btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -14,6 +14,10 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
+.text-primary {
+    color: $primary-color !important;
+}
+
 .mat-toolbar {
     background-color: $primary-color !important;
     height: 50px;
@@ -49,6 +53,16 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 
 .btn-portal:hover {
     background-color: $primary-btn-hover-color !important;
+}
+
+.btn-primary {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+}
+
+.btn-primary:hover {
+    background-color: $primary-btn-hover-color !important;
+    border-color: $primary-btn-hover-color !important;
 }
 
 html,
@@ -173,10 +187,6 @@ div:has(input[data-columnid="global"]) {
 
 .app-side-nav {
     width: 200px !important;
-}
-
-.mat-drawer-inner-container {
-    background-color: $side-nav-color;
 }
 
 .bg-portal-primary {

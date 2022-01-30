@@ -40,7 +40,7 @@ export class AddTeamLeadComponent implements OnInit {
         this.teams = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
   }
 
@@ -93,7 +93,7 @@ export class AddTeamLeadComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.openDialog(

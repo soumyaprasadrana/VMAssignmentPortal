@@ -23,9 +23,9 @@ export class VMMConfig {
         cardRouterLink: ['../edit'],
       },
       {
-        cardTitle: 'Delete Virtual Machine',
+        cardTitle: 'Remove Virtual Machine',
         cardText:
-          'Delete Virtual Machine from Portal Database, It will not delete Virtal Machine from vmware.',
+          'Remove Virtual Machine from Portal Database, It will not delete Virtal Machine from vmware.',
         cardWidth: '250',
         cardHeight: '200',
         cardIconClass: 'fa fa-trash ',
@@ -35,6 +35,17 @@ export class VMMConfig {
         cardIconColor: 'red',
         cardStackIconColor: 'red',
         cardStackIcon: 'fa fa-desktop ml-4 mt-0',
+        callback: function (parentObject: any) {
+          //console.log('Function Called');
+          parentObject.deleteVM();
+        },
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.is_admin ||
+            loggedUser.permissions.is_teamLead ||
+            loggedUser.permissions.delete_vm
+          );
+        },
       },
     ],
   ];

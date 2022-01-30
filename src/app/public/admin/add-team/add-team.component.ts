@@ -12,6 +12,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { SpinnerService } from '../../services/spinner-service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
@@ -25,7 +26,8 @@ export class AddTeamComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _client: NodeclientService,
     private dialog: MatDialog,
-    private _spinner: SpinnerService
+    private _spinner: SpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,33 +67,52 @@ export class AddTeamComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS') {
-          this.openDialog({
-            type: 'message',
-            message: res.message,
-          });
+          this.openDialog(
+            {
+              type: 'message',
+              message: res.message,
+            },
+            () => {
+              this.router.navigate(['/portal/home/admin/dash']);
+            }
+          );
         } else {
           this._spinner.setSpinnerState(false);
-          this.openDialog({
-            type: 'alert',
-            message: res.message,
-          });
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
         }
       })
       .catch((err: any) => {
         this._spinner.setSpinnerState(false);
-        this.openDialog({
-          type: 'alert',
-          message: err.message,
-        });
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
       });
   }
-  openDialog(data: any) {
-    this.dialog.open(AlertDialogComponent, {
-      data: data,
-      panelClass: 'app-dialog-class',
-    });
+  openDialog(data: any, callback: any) {
+    this.dialog
+      .open(AlertDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback();
+        }
+      });
   }
 }

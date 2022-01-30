@@ -104,7 +104,7 @@ export class ApplicationPropertiesComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.propDataSet);
       })
       .catch((err: any) => {
-        console.log(err);
+        //console.log(err);
         this.isLoading = false;
         this._spinner.setSpinnerState(false);
       });
@@ -127,7 +127,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     ) {
       return;
     }
-    console.log(this.updatePropList);
+    //console.log(this.updatePropList);
     // display form values on success
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('Res', JSON.parse(res));
+        //console.log('Res', JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.openDialog(
@@ -168,7 +168,7 @@ export class ApplicationPropertiesComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log('Error:', err);
+        //console.log('Error:', err);
         this._spinner.setSpinnerState(false);
         this.openDialog(
           {

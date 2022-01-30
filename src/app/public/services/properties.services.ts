@@ -29,11 +29,11 @@ export class UIPropService {
     const promisey = new Promise((resolve, reject) => {
       this.getDataFromNode()
         .then((res: any) => {
-          //console.log('TeamServices=>', res);
+          ////console.log('TeamServices=>', res);
           resolve(res);
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });

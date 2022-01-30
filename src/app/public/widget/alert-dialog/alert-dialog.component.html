@@ -11,7 +11,8 @@
     </span>
 </h1>
 <mat-dialog-content class="alertMssg">
-    <br> {{data.message}}
+    <br>
+    <p [innerHtml]="data.message"></p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Close</button>

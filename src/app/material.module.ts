@@ -15,10 +15,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppCommonModule } from './public/widget/utils/common.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
+import { AngularFileUploaderModule } from 'angular-file-uploader';
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    AngularFileUploaderModule,
     MatIconModule,
     MatListModule,
     MatToolbarModule,
@@ -36,6 +38,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
   ],
   exports: [
+    AngularFileUploaderModule,
     MatIconModule,
     MatListModule,
     MatToolbarModule,

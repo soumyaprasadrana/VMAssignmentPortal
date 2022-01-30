@@ -2,7 +2,8 @@
  * Chart Compnent for VM management Portal , this componenet will be used to cuisualize existing
  * VM Data
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VM } from '../../DataModel/vm';
 import { SpinnerService } from '../../services/spinner-service';
 import { VmsService } from '../../services/vms.service';
@@ -27,15 +28,36 @@ interface data {
  * Component Class
  */
 export class VmChartComponent implements OnInit {
+  @ViewChild('dataContainer')
+  dataContainer!: ElementRef;
+  showPie: boolean = false;
+  showBar: boolean = false;
+  showAdv: boolean = false;
+  showBarVer: boolean = false;
+  registerForm!: FormGroup;
   vmList: any = [];
   vmDataOS: Array<data> = [];
   vmDataSnapCount: Array<data> = [];
   vmDataGroup: Array<data> = [];
   vmDataAvailibility: Array<any> = [];
+  resultSet: Array<any> = [];
   vmDataLoading: boolean = false;
   // Bar Configuration
 
   view: any[] = [600, 400];
+
+  fieldList = [
+    'OS',
+    'VERSION',
+    //'SNAPSHOT COUNT',
+    'RAM',
+    'GROUP',
+    'STATUS',
+    'OWNER',
+  ];
+  chartTypeList = ['PIE GRID', 'BAR VERTICAL', 'BAR HORIZONTAL', 'ADVANCED'];
+
+  showChart: boolean = false;
 
   // options for bar chart
   showXAxis = true;
@@ -53,15 +75,20 @@ export class VmChartComponent implements OnInit {
 
   //pie
   showLabels = true;
+  cardHeight: any;
 
-  constructor(private vms: VmsService, private spinner: SpinnerService) {
+  constructor(
+    private vms: VmsService,
+    private spinner: SpinnerService,
+    private formBuilder: FormBuilder
+  ) {
     this.spinner.setSpinnerState(true);
     this.vmDataLoading = true;
     var promise = this.vms.getVms();
     promise
       .then((res: any[]) => {
         this.spinner.setSpinnerState(false);
-        console.log('inside promise.then -< setting vmdataset');
+        //console.log('inside promise.then -< setting vmdataset');
         this.vmList = res;
         this.parseVMListOnOSBasis();
         this.parseVMListOnSnapCountBasis();
@@ -71,12 +98,95 @@ export class VmChartComponent implements OnInit {
       })
       .catch((err: any) => {
         this.spinner.setSpinnerState(false);
-        console.log('error occurred ' + err);
+        //console.log('error occurred ' + err);
         this.vmDataLoading = false;
       });
   }
 
-  ngOnInit(): void {}
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.registerForm.controls;
+  }
+  getParseData(field: string) {
+    //console.log('getParseData Called:', field);
+    var result: { name: string; value: any }[] = [];
+    var unique: any;
+    var grouped: Map<any, any>;
+    if (field == 'OS') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.os);
+      unique = [...new Set(this.vmList.map((item: VM) => item.os))];
+    }
+    if (field == 'GROUP') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.group);
+      unique = [...new Set(this.vmList.map((item: VM) => item.group))];
+    }
+    if (field == 'STATUS') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.status);
+      unique = [...new Set(this.vmList.map((item: VM) => item.status))];
+    }
+    if (field == 'OWNER') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.owner);
+      unique = [...new Set(this.vmList.map((item: VM) => item.owner))];
+    }
+    if (field == 'RAM') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.ram);
+      unique = [...new Set(this.vmList.map((item: VM) => item.ram))];
+    }
+    if (field == 'VERSION') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.ver);
+      unique = [...new Set(this.vmList.map((item: VM) => item.ver))];
+    }
+    if (field == 'SNAPSHOT COUNT') {
+      grouped = this.groupBy(this.vmList, (vm: VM) => vm.snap_count);
+      unique = [...new Set(this.vmList.map((item: VM) => item.snap_count))];
+    }
+    unique.forEach((item: string) => {
+      if (typeof item !== 'undefined') {
+        var list = grouped.get(item);
+        result.push({ name: item + '', value: list.length });
+      }
+    });
+
+    this.resultSet = result;
+  }
+  toggleChart(type: string) {
+    if (type == 'BAR HORIZONTAL') {
+      this.showBar = true;
+      this.showAdv = false;
+      this.showPie = false;
+      this.showBarVer = false;
+    } else if (type == 'PIE GRID') {
+      this.showBar = false;
+      this.showAdv = false;
+      this.showPie = true;
+      this.showBarVer = false;
+    } else if (type == 'ADVANCED') {
+      this.showBar = false;
+      this.showAdv = true;
+      this.showPie = false;
+      this.showBarVer = false;
+    } else if ((type = 'BAR VERTICAL')) {
+      this.showBar = false;
+      this.showAdv = false;
+      this.showPie = false;
+      this.showBarVer = true;
+    }
+  }
+  onSubmit() {
+    //console.log('onSubmit Called');
+    this.toggleChart(this.registerForm.value.chartType);
+    //console.log(this.registerForm.value);
+    this.getParseData(this.registerForm.value.field);
+    this.cardHeight = this.registerForm.value.height;
+    this.showChart = true;
+  }
+  ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      field: ['OS', Validators.required],
+      chartType: ['PIE GRID', Validators.required],
+      height: [150, Validators.required],
+    });
+  }
   /**
    * Will parse vmList data to ngx-chart module data on basis of availibility
    */
@@ -148,14 +258,14 @@ export class VmChartComponent implements OnInit {
   }
 
   onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    //console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    //console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    //console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

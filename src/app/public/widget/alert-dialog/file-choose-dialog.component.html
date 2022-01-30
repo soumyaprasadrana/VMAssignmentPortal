@@ -1,0 +1,53 @@
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+        <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
+         {{data.title}}
+       
+         <button  type="button" class="close" style="background: white;
+    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
+        <span style="font-size:30px;" aria-hidden="true">&times;</span>
+    </button>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg ml-2">
+    <br>
+    <a mat-button href="{{sampleDownloadUrl}}">
+        <mat-icon>cloud_download</mat-icon><span>Download sample sheet.</span></a>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row p-3 ">
+            <div class="col ">
+                <div class="form-group required">
+                    <!-- <div class="row">
+                        <div class="col-sm">
+                            <button type="button" mat-button (click)="dataCtrl.click()">
+                                <mat-icon>library_add</mat-icon>
+                                <span>Browse Files</span>
+                            </button>
+                        </div>
+                        <div class="col-sm">
+                            <span *ngIf="f.dataCtrl.value" class="ml-3"> File Name: {{getFileName(f.dataCtrl.value)}} </span>
+                            <span *ngIf="!f.dataCtrl.value" class="ml-3"> No file choosen </span>
+                        </div>
+                    </div>
+                -->
+                    <angular-file-uploader [config]="afuConfig" [resetUpload]=resetUpload1 (fileSelected)="fileSelected($event)" (ApiResponse)="docUpload($event)">
+                    </angular-file-uploader>
+
+                    <!--    <input #dataCtrl (change)="onFileSelect($event)" type="file" id="dataCtrl" class="form-control" formControlName="dataCtrl" [ngClass]="{ 'is-invalid': submitted && f.dataCtrl.errors }" style="display:none;" accept=".xlsx">
+                    <div *ngIf="submitted && f.dataCtrl.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
+                    </div>-->
+
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col float-end">
+
+                <!--  <button type="submit" mat-button class="float-end">Ok</button>-->
+                <button mat-button mat-dialog-close class="float-end">Close</button>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

@@ -26,6 +26,21 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group required">
+                            <label for="email">E-Mail:</label>
+                            <input id="email" class="form-control" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
+                            <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
+
+                                <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
+                                <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3 ">
+
+
+                    <div *ngIf="loggedUser.permissions.is_admin" class="col-sm-6">
+                        <div class="form-group required">
                             <label for="team">Team:</label>
                             <!--<ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }"
                                 ngDefaultControl>
@@ -35,21 +50,6 @@
                             <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
 
                                 <div class="ml-1" *ngIf="f.team.errors.required">Team is required</div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row p-3 ">
-
-                    <div class="col-sm-6">
-                        <div class="form-group required">
-                            <label for="email">E-Mail:</label>
-                            <input id="email" class="form-control" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
-                            <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
-
-                                <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
-                                <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
                             </div>
                         </div>
                     </div>

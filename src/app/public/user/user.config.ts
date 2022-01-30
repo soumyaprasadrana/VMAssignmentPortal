@@ -13,6 +13,12 @@ export class UserConfig {
         badgeIcon: 'fa fa-plus',
         cardRouterLink: ['../add'],
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.create_user ||
+            loggedUser.permissions.is_teamLead
+          );
+        },
       },
       {
         cardTitle: 'Edit User',
@@ -23,6 +29,12 @@ export class UserConfig {
         badgeIcon: 'fa fa-edit',
         cardRouterLink: ['../edit'],
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.update_user ||
+            loggedUser.permissions.is_teamLead
+          );
+        },
       },
       {
         cardTitle: 'Delete User',
@@ -36,6 +48,16 @@ export class UserConfig {
         cardIconColor: 'red',
         cardStackIconColor: 'red',
         cardStackIcon: 'fa fa-user ml-4 mt-0',
+        callback: function (parentObject: any) {
+          //console.log('called callback fnction', parentObject);
+          parentObject.deleteUser();
+        },
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.delete_user ||
+            loggedUser.permissions.is_teamLead
+          );
+        },
       },
     ],
   ];

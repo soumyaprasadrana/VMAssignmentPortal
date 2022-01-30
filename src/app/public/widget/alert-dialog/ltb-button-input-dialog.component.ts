@@ -57,12 +57,12 @@ export class LTBButtonInputDialogComponent implements OnInit {
       return;
     }
     if (this.data.commandQuerryParser) {
-      console.log('this.data.commandQuerryParser true');
+      //console.log('this.data.commandQuerryParser true');
       for (var item in this.data.queryFields) {
         var n: number = item as unknown as number;
-        console.log('item in queryField', this.data.queryFields[n]);
+        //console.log('item in queryField', this.data.queryFields[n]);
         var temp = this.registerForm.controls['command'].value;
-        console.log('Command value', temp);
+        //console.log('Command value', temp);
         this.registerForm.controls['command'].setValue(
           temp.replaceAll(
             '{' + this.data.queryFields[n] + '}',
@@ -71,10 +71,10 @@ export class LTBButtonInputDialogComponent implements OnInit {
         );
       }
     }
-    console.log(
-      'Final Command value',
-      this.registerForm.controls['command'].value
-    );
+    //console.log(
+    //   'Final Command value',
+    //   this.registerForm.controls['command'].value
+    //  );
 
     this.dialogRef.close(this.registerForm.value);
   }

@@ -20,7 +20,7 @@ export class LoginViewComponent implements OnInit {
   /* For View */
   showNavigationArrows = false;
   showNavigationIndicators = true;
-  images = [1, 2, 3, 4].map((n) => `assets/images/${n}.PNG`);
+  images = [1, 2, 3, 4, 5].map((n) => `assets/images/${n}.PNG`);
   /* For Validation */
   form: FormGroup = new FormGroup({
     password: new FormControl('', Validators.minLength(2)),
@@ -58,9 +58,9 @@ export class LoginViewComponent implements OnInit {
     var promise = this.auth.checkSession();
     promise
       .then((result) => {
-        console.log('After Result');
+        //console.log('After Result');
         if (result.status) {
-          console.log('Authentication Sucessfull');
+          //console.log('Authentication Sucessfull');
           this.alert.type = 'success';
           this.alert.message = 'Login Success';
           this.router.navigate(['/portal/home/dash']);
@@ -69,7 +69,7 @@ export class LoginViewComponent implements OnInit {
       })
       .catch((result) => {
         //Handle error case
-        console.log('Login Failed.', result);
+        //console.log('Login Failed.', result);
       });
   }
   // convenience getter for easy access to form fields
@@ -86,15 +86,15 @@ export class LoginViewComponent implements OnInit {
     }
 
     this.spinner.setSpinnerState(true);
-    console.log(this.f.username.value);
-    console.log(this.f.password.value);
+    //console.log(this.f.username.value);
+    //console.log(this.f.password.value);
     //this.auth.login(this.f.username.value, this.f.password.value);
     var promise = this.auth.login(this.f.username.value, this.f.password.value);
     promise
       .then((result) => {
-        console.log('After Result');
+        //console.log('After Result');
         if (result.status) {
-          console.log('Login Success true');
+          //console.log('Login Success true');
           this.alert.type = 'success';
           this.alert.message = 'Login Success';
           this.router.navigate(['/portal/home']);
