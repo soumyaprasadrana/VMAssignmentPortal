@@ -18,6 +18,7 @@ import { SpinnerService } from '../../services/spinner-service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { VmsService } from '../../services/vms.service';
+import { AuthserviceService } from '../../services/authservice.service';
 @Component({
   selector: 'app-edit-vm',
   templateUrl: '../add-vm/add-vm.component.html',
@@ -32,6 +33,8 @@ export class EditVmComponent implements OnInit {
   teams: any = [];
   vmList: any = [];
   title: string = ' Edit Virtual Machine';
+  loggedUser: any;
+  editMode: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
     private tms: TeamService,
@@ -41,16 +44,17 @@ export class EditVmComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private vms: VmsService,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private _auth: AuthserviceService
   ) {
     tms
       .getTeams()
       .then((res) => {
         this.teams = res;
-        console.log('Teams', this.teams);
+        //console.log('Teams', this.teams);
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
     oss
       .getOsList()
@@ -58,12 +62,20 @@ export class EditVmComponent implements OnInit {
         this.osList = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
+    this.loggedUser = this._auth.getUser();
   }
   public ngxteam = new FormControl();
   public ngxos = new FormControl();
   ngOnInit(): void {
+    var teamValidation;
+    var teamValue = null;
+    if (this.loggedUser.permissions.is_admin) {
+      teamValidation = Validators.required;
+    } else {
+      teamValidation = null;
+    }
     this.registerForm = this.formBuilder.group({
       ip: ['', Validators.required],
       host: ['', Validators.required],
@@ -71,7 +83,7 @@ export class EditVmComponent implements OnInit {
       ram: [0, [Validators.min(0), Validators.max(200)]],
       group: [''],
       owner: [''],
-      ngxteam: [null, Validators.required],
+      ngxteam: [null, teamValidation],
     });
 
     if (typeof history.state.ip != 'undefined') {
@@ -98,7 +110,7 @@ export class EditVmComponent implements OnInit {
         })
         .catch((err: any) => {
           this._spinner.setSpinnerState(false);
-          console.log('error occurred ', err);
+          //console.log('error occurred ', err);
         });
       this._spinner.setSpinnerState(false);
     }
@@ -109,7 +121,7 @@ export class EditVmComponent implements OnInit {
     return this.registerForm.controls;
   }
   getData(list: any) {
-    console.log(list);
+    //console.log(list);
     this.openDialogInput(
       {
         title: 'Choose a virtual machine',
@@ -119,7 +131,7 @@ export class EditVmComponent implements OnInit {
         bindLabel: 'ip',
       },
       (res: any) => {
-        console.log('data from close:', res);
+        //console.log('data from close:', res);
         res = res.dataCtrl;
         this.registerForm = this.formBuilder.group({
           ip: [res.ip, Validators.required],
@@ -158,9 +170,10 @@ export class EditVmComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
+          this.vms.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',
@@ -217,7 +230,7 @@ export class EditVmComponent implements OnInit {
       .afterClosed()
       .toPromise()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (typeof callback == 'function' && res != '' && res != null) {
           callback(res);
         }

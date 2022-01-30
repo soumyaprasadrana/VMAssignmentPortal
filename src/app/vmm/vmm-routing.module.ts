@@ -5,6 +5,7 @@ import { VmmViewComponent } from '../public/vmm/vmm-view/vmm-view.component';
 import { AddVmComponent } from '../public/vmm/add-vm/add-vm.component';
 import { VmmHomeComponent } from '../public/vmm/vmm-home/vmm-home.component';
 import { EditVmComponent } from '../public/vmm/edit-vm/edit-vm.component';
+import { EditMultipleVmComponent } from '../public/vmm/edit-vm/edit-multiple-vm.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
 
       { path: 'add', component: AddVmComponent, data: { animation: 'add' } },
       { path: 'edit', component: EditVmComponent, data: { animation: 'add' } },
+      {
+        path: 'selectededit',
+        component: EditMultipleVmComponent,
+        data: { animation: 'add' },
+      },
 
       {
         path: '',

@@ -33,17 +33,17 @@ export class TeamService {
           });
           id++;
         }
-        //console.log('returnObject=>', returnObject);
+        ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
 
       this.promise
         .then((res: any) => {
-          //console.log('TeamServices=>', res);
+          ////console.log('TeamServices=>', res);
           resolve(parseResult(res));
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });
@@ -61,11 +61,33 @@ export class TeamService {
       this._client
         .get('api/admin/getTeam/' + team, httpOptions)
         .then((res: any) => {
-          console.log('Teams Service:getTeam=>', res);
+          //console.log('Teams Service:getTeam=>', res);
           resolve(res);
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  deleteTeam(team: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .post('api/admin/team/delete/' + team, null, httpOptions)
+        .then((res: any) => {
+          //console.log('Users Service:delete=>', res);
+          resolve(res);
+        })
+        .catch((error: any) => {
+          //console.log(error);
           reject(error);
         });
     });

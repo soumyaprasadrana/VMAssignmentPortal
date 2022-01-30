@@ -141,16 +141,22 @@ export class TeamActivityLogsComponent implements OnInit {
         this._spinner.setSpinnerState(false);
         this.alDataSet = als.parseData(res);
         this.firstPage = [...this.alDataSet];
-        console.log(this.alDataSet);
+        if (this.alDataSet.length == 0) {
+          this.endOfData = true;
+        }
+        if (this.alDataSet.length > 0 && this.alDataSet.length < 10) {
+          this.lastPage = true;
+        }
+        //console.log(this.alDataSet);
       })
       .catch((err: any) => {
-        console.log(err);
+        //console.log(err);
         this.isLoadingActivityList = false;
         this._spinner.setSpinnerState(false);
       });
   }
   next() {
-    console.log('next');
+    //console.log('next');
     this.isLoadingActivityList = true;
     this.onNext = true;
     this.startOfData = false;
@@ -172,16 +178,16 @@ export class TeamActivityLogsComponent implements OnInit {
           this.lastPage = true;
           return;
         }
-        console.log(this.alDataSet);
+        //console.log(this.alDataSet);
       })
       .catch((err: any) => {
-        console.log(err);
+        //console.log(err);
         this.isLoadingActivityList = false;
         this._spinner.setSpinnerState(false);
       });
   }
   prev() {
-    console.log('prev');
+    //console.log('prev');
     this.isLoadingActivityList = true;
     this.endOfData = false;
     this.lastPage = false;
@@ -192,17 +198,17 @@ export class TeamActivityLogsComponent implements OnInit {
         this.isLoadingActivityList = false;
         this._spinner.setSpinnerState(false);
         this.alDataSet = this.als.parseData(res).reverse();
-        console.log('Prev->', this.firstPage[0]['activity_id']);
+        //console.log('Prev->', this.firstPage[0]['activity_id']);
         if (
           this.alDataSet[0]['activity_id'] == this.firstPage[0]['activity_id']
         ) {
-          console.log('Page -1');
+          //console.log('Page -1');
           this.startOfData = true;
         }
-        console.log(this.alDataSet);
+        //console.log(this.alDataSet);
       })
       .catch((err: any) => {
-        console.log(err);
+        //console.log(err);
         this.isLoadingActivityList = false;
         this._spinner.setSpinnerState(false);
       });

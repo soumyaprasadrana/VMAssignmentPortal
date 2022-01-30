@@ -1,6 +1,8 @@
 <h1 mat-dialog-title class="dialog-title">
     <span>
+        <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
          {{data.title}}
+       
          <button  type="button" class="close" style="background: white;
     padding-right: 10px;"  aria-label="Close" mat-dialog-close>
         <span style="font-size:30px;" aria-hidden="true">&times;</span>
@@ -14,9 +16,9 @@
             <div class="col ">
                 <div class="form-group required">
 
-                    <ng-select [items]="data.list" bindLabel="{{data.bindLabel}}" placeholder="{{data.placeholder}}" [formControl]="dataCtrl" formControlName="dataCtrl" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.dataCtrl.errors }" ngDefaultControl>
+                    <ng-select *ngIf="!data.isText" [items]="data.list" bindLabel="{{data.bindLabel}}" placeholder="{{data.placeholder}}" [formControl]="dataCtrl" formControlName="dataCtrl" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.dataCtrl.errors }" ngDefaultControl>
                     </ng-select>
-
+                    <input *ngIf="data.isText" id="dataCtrl" class="form-control" formControlName="dataCtrl" [ngClass]="{ 'is-invalid': submitted && f.dataCtrl.errors }">
                     <div *ngIf="submitted && f.dataCtrl.errors" class="invalid-feedback">
                         <div class="ml-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
                     </div>

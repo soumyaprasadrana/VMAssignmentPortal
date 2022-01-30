@@ -15,7 +15,7 @@ module.exports = {
                 const fun = "portal-auth.js :-: custStrategyConfigure";
                 logger.debug(fun + "-" + req.method);
                 logger.debug(fun + "-" + JSON.stringify(req.body));
-                // console.log(fun +"-"+req.headers.Authorization || req.headers.authorization);
+                // logger.debug(fun +"-"+req.headers.Authorization || req.headers.authorization);
                 if (req.method !== "POST" || (!req.headers.Authorization && !req.headers.authorization)) {
                     logger.info(fun + "- Failed : No authorization header found.")
                     err = {}
@@ -90,6 +90,7 @@ module.exports = {
         return;
     },
     logOut: function(req, res, next) {
+        logger.debug("inside logout")
         require('./client').logout(req, res, next);
     }
 

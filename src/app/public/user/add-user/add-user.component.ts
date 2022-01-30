@@ -9,6 +9,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Team } from '../../DataModel/team';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
@@ -28,13 +29,15 @@ export class AddUserComponent implements OnInit {
   teams: any = [];
   permissionValueList: Array<String> = ['No', 'Yes'];
   title: string = ' Create User';
+  loggedUser: any;
   constructor(
     private formBuilder: FormBuilder,
     private tms: TeamService,
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private _auth: AuthserviceService
   ) {
     tms
       .getTeams()
@@ -42,11 +45,19 @@ export class AddUserComponent implements OnInit {
         this.teams = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
+    this.loggedUser = this._auth.getUser();
   }
 
   ngOnInit(): void {
+    var teamValidation;
+    var teamValue = null;
+    if (this.loggedUser.permissions.is_admin) {
+      teamValidation = Validators.required;
+    } else {
+      teamValidation = null;
+    }
     this.registerForm = this.formBuilder.group(
       {
         user_name: ['', Validators.required],
@@ -57,7 +68,7 @@ export class AddUserComponent implements OnInit {
         user_email: ['', [Validators.required, Validators.email]],
         user_pass: ['', [Validators.required, Validators.minLength(6)]],
         conf_pass: ['', Validators.required],
-        team: [null, Validators.required],
+        team: [teamValue, teamValidation],
         addUser: ['No', Validators.required],
         editUser: ['No', Validators.required],
         removeUser: ['No', Validators.required],
@@ -99,7 +110,7 @@ export class AddUserComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.openDialog(

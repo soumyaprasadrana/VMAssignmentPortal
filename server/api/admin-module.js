@@ -8,16 +8,16 @@ const _client = require('./client');
 var request_promise = require('request-promise');
 module.exports = {
     addTeam: function(req, res, next) {
-        console.log(req.body);
+        logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.add_team_rest_path), req, res, next);
 
     },
     updateTeam: function(req, res, next) {
-        console.log(req.body);
+        logger.debug(req.body);
         var old_name = req.params['team'];
         req.body.params.old_name = old_name;
         req.body.params.update_data = true;
-        console.log(req.body);
+        logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.update_team_rest_path), req, res, next);
 
     },
@@ -26,15 +26,25 @@ module.exports = {
         _client.post(_client.getHttpPostOptions(req, config.update_props_rest_path), req, res, next);
 
     },
+
     createTeamLeader: function(req, res, next) {
-        console.log(req.body);
+        logger.debug(req.body);
 
         _client.post(_client.getHttpPostOptions(req, config.add_team_lead_rest_path), req, res, next);
 
     },
+    deleteTeam: function(req, res, next) {
+        var team_name = req.params['team']
+        req.body.params = {}
+        req.body.params.team_name = team_name;
+        req.body.params.remove_data = true;
+        logger.debug(req.body);
+        _client.post(_client.getHttpPostOptions(req, config.delete_team_path), req, res, next);
+
+    },
     getTeam: function(req, res, next) {
         var team_name = req.params['team']
-        console.log(req.body);
+        logger.debug(req.body);
         var _temp_qs = _client.getStaticQueryParam(req);
         _temp_qs.team_name = team_name;
         var httpOptions = {
@@ -48,7 +58,7 @@ module.exports = {
     getActivityLog: function(req, res, next) {
         var type = req.params['type']
         if (type == 'recent') {
-            console.log(req.body);
+            logger.debug(req.body);
             var _temp_qs = _client.getStaticQueryParam(req);
             var httpOptions = {
                 uri: config.apiBase + '/' + config.apiContextRoot + config.get_recent_activitylogs,
@@ -58,7 +68,7 @@ module.exports = {
             }
             _client.get(httpOptions, req, res, next);
         } else if (type == 'next') {
-            console.log(req.body);
+            logger.debug(req.body);
             var _temp_qs = _client.getStaticQueryParam(req);
             var httpOptions = {
                 uri: config.apiBase + '/' + config.apiContextRoot + config.get_next_activitylogs + '/' + req.params['activityId'],
@@ -69,7 +79,7 @@ module.exports = {
             _client.get(httpOptions, req, res, next);
 
         } else if (type == 'prev') {
-            console.log(req.body);
+            logger.debug(req.body);
             var _temp_qs = _client.getStaticQueryParam(req);
             var httpOptions = {
                 uri: config.apiBase + '/' + config.apiContextRoot + config.get_prev_activitylogs + '/' + req.params['activityId'],
@@ -91,7 +101,7 @@ module.exports = {
         };
         delete req.body.params.is_teamLead;
         req.body.params.authProtocol = temp;
-        console.log(req.body);
+        logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.update_tl_rest_path), req, res, next);
 
     },

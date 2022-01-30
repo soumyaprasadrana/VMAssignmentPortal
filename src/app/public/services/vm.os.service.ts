@@ -29,17 +29,17 @@ export class OSService {
           });
           id++;
         }
-        //console.log('returnObject=>', returnObject);
+        ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
 
       this.promise
         .then((res: any) => {
-          //console.log('TeamServices=>', res);
+          ////console.log('TeamServices=>', res);
           resolve(parseResult(res));
         })
         .catch((error: any) => {
-          console.log(error);
+          //console.log(error);
           reject(error);
         });
     });

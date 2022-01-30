@@ -55,7 +55,7 @@ export class ToolsLTBConfig {
           },
         ],
         cardCallback: function (res: any) {
-          console.log('Callback ', res);
+          //console.log('Callback ', res);
         },
       },
 

@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { CardsModule } from '../public/widget/card-small/card.module';
 import { EditVmComponent } from '../public/vmm/edit-vm/edit-vm.component';
+import { EditMultipleVmComponent } from '../public/vmm/edit-vm/edit-multiple-vm.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     VmmHomeComponent,
     AddVmComponent,
     EditVmComponent,
+    EditMultipleVmComponent,
   ],
   imports: [
     CommonModule,

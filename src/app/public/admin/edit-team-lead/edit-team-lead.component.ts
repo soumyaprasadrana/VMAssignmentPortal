@@ -46,7 +46,7 @@ export class EditTeamLeadComponent implements OnInit {
         this.teams = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
   }
 
@@ -68,7 +68,7 @@ export class EditTeamLeadComponent implements OnInit {
       })
       .catch((err: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('error occurred ', err);
+        //console.log('error occurred ', err);
       });
     this._spinner.setSpinnerState(false);
   }
@@ -78,7 +78,7 @@ export class EditTeamLeadComponent implements OnInit {
     return this.registerForm.controls;
   }
   getData(list: any) {
-    console.log(list);
+    //console.log(list);
     this.openDialogInput(
       {
         title: 'Choose a user',
@@ -88,14 +88,14 @@ export class EditTeamLeadComponent implements OnInit {
         bindLabel: 'user_id',
       },
       (res: any) => {
-        console.log('data from close:', res);
+        //console.log('data from close:', res);
         res = res.dataCtrl.user_id;
         this._spinner.setSpinnerState(true);
         this.userService
           .getUser(res)
           .then((res: any) => {
             res = JSON.parse(res);
-            console.log(res);
+            //console.log(res);
             this.registerForm = this.formBuilder.group({
               user_id: [res.user.user_id, Validators.required],
               user_name: [res.user.user_name, Validators.required],
@@ -110,7 +110,7 @@ export class EditTeamLeadComponent implements OnInit {
           })
           .catch((err: any) => {
             this._spinner.setSpinnerState(false);
-            console.log('error occurred ', err);
+            //console.log('error occurred ', err);
           });
         this._spinner.setSpinnerState(false);
       }
@@ -142,7 +142,7 @@ export class EditTeamLeadComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('Res', JSON.parse(res));
+        //console.log('Res', JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.openDialog(
@@ -151,7 +151,7 @@ export class EditTeamLeadComponent implements OnInit {
               message: 'User updated successfully!',
             },
             () => {
-              this.router.navigate(['/portal/home/user/dash']);
+              this.router.navigate(['/portal/home/admin/dash']);
             }
           );
         } else {
@@ -166,7 +166,7 @@ export class EditTeamLeadComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log('Error:', err);
+        //console.log('Error:', err);
         this._spinner.setSpinnerState(false);
         this.openDialog(
           {
@@ -202,7 +202,7 @@ export class EditTeamLeadComponent implements OnInit {
       .afterClosed()
       .toPromise()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (typeof callback == 'function' && res != '' && res != null) {
           callback(res);
         }

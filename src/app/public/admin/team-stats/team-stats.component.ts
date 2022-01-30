@@ -18,7 +18,7 @@ export class TeamStatsComponent implements OnInit {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
   }
 

@@ -7,24 +7,25 @@ import { RoutehandleService } from '../../widget/animations/routehandle.service'
   selector: 'app-user-view',
   templateUrl: './user-view.component.html',
   styleUrls: ['./user-view.component.scss'],
-  animations: [UserModule]
+  animations: [UserModule],
 })
 export class UserViewComponent implements OnInit {
+  constructor(private routeHandle: RoutehandleService) {}
 
-  constructor(private routeHandle:RoutehandleService) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   public getRouterOutletState(outlet: RouterOutlet) {
-    /*console.log("User Module:getRouterOutletState:");
-    console.log(outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']);
-    console.log("calling get router");
+    /*//console.log("User Module:getRouterOutletState:");
+    //console.log(outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']);
+    //console.log("calling get router");
     this.routeHandle.getRouterOutletState();*/
-    
-    return  outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']
+
+    return (
+      outlet &&
+      outlet.activatedRouteData &&
+      outlet.activatedRouteData['animation']
+    );
   }
-  public onRouterOutletActivate(outlet : RouterOutlet){
+  public onRouterOutletActivate(outlet: RouterOutlet) {
     this.routeHandle.setUserRouterOutlet(outlet);
   }
-
 }

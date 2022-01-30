@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AnyCnameRecord } from 'dns';
 import { Team } from '../../DataModel/team';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
@@ -32,6 +33,7 @@ export class EditUserComponent implements OnInit {
   userList: any = [];
   permissionValueList: Array<String> = ['No', 'Yes'];
   title: string = ' Edit User';
+  loggedUser: any;
   constructor(
     private formBuilder: FormBuilder,
     private tms: TeamService,
@@ -39,7 +41,8 @@ export class EditUserComponent implements OnInit {
     private _client: NodeclientService,
     private dialog: MatDialog,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private _auth: AuthserviceService
   ) {
     tms
       .getTeams()
@@ -47,15 +50,22 @@ export class EditUserComponent implements OnInit {
         this.teams = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
+    this.loggedUser = _auth.getUser();
   }
 
   ngOnInit(): void {
+    var teamValidation;
+    if (this.loggedUser.permissions.is_admin) {
+      teamValidation = Validators.required;
+    } else {
+      teamValidation = null;
+    }
     this.registerForm = this.formBuilder.group({
       user_name: ['', Validators.required],
       user_email: ['', [Validators.required, Validators.email]],
-      team: [null, Validators.required],
+      team: [null, teamValidation],
       addUser: ['NO', Validators.required],
       editUser: ['No', Validators.required],
       removeUser: ['No', Validators.required],
@@ -72,7 +82,7 @@ export class EditUserComponent implements OnInit {
       })
       .catch((err: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('error occurred ', err);
+        //console.log('error occurred ', err);
       });
     this._spinner.setSpinnerState(false);
   }
@@ -82,7 +92,7 @@ export class EditUserComponent implements OnInit {
     return this.registerForm.controls;
   }
   getData(list: any) {
-    console.log(list);
+    //console.log(list);
     this.openDialogInput(
       {
         title: 'Choose a user',
@@ -92,14 +102,14 @@ export class EditUserComponent implements OnInit {
         bindLabel: 'user_id',
       },
       (res: any) => {
-        console.log('data from close:', res);
+        //console.log('data from close:', res);
         res = res.dataCtrl.user_id;
         this._spinner.setSpinnerState(true);
         this.userService
           .getUser(res)
           .then((res: any) => {
             res = JSON.parse(res);
-            console.log(res);
+            //console.log(res);
             this.registerForm = this.formBuilder.group({
               user_id: [res.user.user_id, Validators.required],
               user_name: [res.user.user_name, Validators.required],
@@ -129,7 +139,7 @@ export class EditUserComponent implements OnInit {
           })
           .catch((err: any) => {
             this._spinner.setSpinnerState(false);
-            console.log('error occurred ', err);
+            //console.log('error occurred ', err);
           });
         this._spinner.setSpinnerState(false);
       }
@@ -163,7 +173,7 @@ export class EditUserComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('Res', JSON.parse(res));
+        //console.log('Res', JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.openDialog(
@@ -187,7 +197,7 @@ export class EditUserComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log('Error:', err);
+        //console.log('Error:', err);
         this._spinner.setSpinnerState(false);
         this.openDialog(
           {
@@ -223,7 +233,7 @@ export class EditUserComponent implements OnInit {
       .afterClosed()
       .toPromise()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (typeof callback == 'function' && res != '' && res != null) {
           callback(res);
         }

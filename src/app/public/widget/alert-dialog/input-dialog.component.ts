@@ -21,6 +21,9 @@ export interface DialogData {
   title?: string;
   placeholder?: string;
   bindLabel?: string;
+  isText?: boolean;
+  titleIcon?: boolean;
+  defaultValue?: string;
 }
 @Component({
   selector: 'app-input-dialog',
@@ -41,8 +44,10 @@ export class InputDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var defaultV = null;
+    if (this.data.defaultValue) defaultV = this.data.defaultValue;
     this.registerForm = this.formBuilder.group({
-      dataCtrl: [null, Validators.required],
+      dataCtrl: [defaultV, Validators.required],
     });
   }
   get f() {

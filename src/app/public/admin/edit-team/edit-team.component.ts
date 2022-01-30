@@ -51,7 +51,7 @@ export class EditTeamComponent implements OnInit {
       })
       .catch((err: any) => {
         this._spinner.setSpinnerState(false);
-        console.log('error occurred ', err);
+        //console.log('error occurred ', err);
       });
     this._spinner.setSpinnerState(false);
   }
@@ -83,7 +83,7 @@ export class EditTeamComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS') {
           this.openDialog(
@@ -108,7 +108,7 @@ export class EditTeamComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log(err);
+        //console.log(err);
         this._spinner.setSpinnerState(false);
         this.openDialog(
           {
@@ -121,7 +121,7 @@ export class EditTeamComponent implements OnInit {
   }
 
   getData(list: any) {
-    console.log(list);
+    //console.log(list);
     this.openDialogInput(
       {
         title: 'Choose a team',
@@ -131,7 +131,7 @@ export class EditTeamComponent implements OnInit {
         bindLabel: 'team_name',
       },
       (res: any) => {
-        console.log('data from close:', res);
+        //console.log('data from close:', res);
         res = res.dataCtrl.team_name;
         this.selectedTeam = res;
         this._spinner.setSpinnerState(true);
@@ -151,7 +151,7 @@ export class EditTeamComponent implements OnInit {
           })
           .catch((err: any) => {
             this._spinner.setSpinnerState(false);
-            console.log('error occurred ', err);
+            //console.log('error occurred ', err);
           });
         this._spinner.setSpinnerState(false);
       }
@@ -169,7 +169,7 @@ export class EditTeamComponent implements OnInit {
       .afterClosed()
       .toPromise()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (typeof callback == 'function' && res != '' && res != null) {
           callback(res);
         }

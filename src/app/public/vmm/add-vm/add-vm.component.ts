@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
+import { AuthserviceService } from '../../services/authservice.service';
+import { VmsService } from '../../services/vms.service';
 @Component({
   selector: 'app-add-vm',
   templateUrl: './add-vm.component.html',
@@ -29,6 +31,8 @@ export class AddVmComponent implements OnInit {
   osList: any = [];
   teams: any = [];
   title: string = ' Add Virtual Machine';
+  loggedUser: any;
+  editMode: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private tms: TeamService,
@@ -36,7 +40,9 @@ export class AddVmComponent implements OnInit {
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private _auth: AuthserviceService,
+    private vms: VmsService
   ) {
     tms
       .getTeams()
@@ -44,7 +50,7 @@ export class AddVmComponent implements OnInit {
         this.teams = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
     oss
       .getOsList()
@@ -52,12 +58,20 @@ export class AddVmComponent implements OnInit {
         this.osList = res;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
+    this.loggedUser = this._auth.getUser();
   }
   public ngxteam = new FormControl();
   public ngxos = new FormControl();
   ngOnInit(): void {
+    var teamValidation;
+    var teamValue = null;
+    if (this.loggedUser.permissions.is_admin) {
+      teamValidation = Validators.required;
+    } else {
+      teamValidation = null;
+    }
     this.registerForm = this.formBuilder.group({
       ip: ['', Validators.required],
       host: ['', Validators.required],
@@ -65,7 +79,7 @@ export class AddVmComponent implements OnInit {
       ram: [0, [Validators.min(0), Validators.max(200)]],
       group: [''],
       owner: [''],
-      ngxteam: [null, Validators.required],
+      ngxteam: [null, teamValidation],
     });
   }
 
@@ -99,9 +113,10 @@ export class AddVmComponent implements OnInit {
     _promise
       .then((res: any) => {
         this._spinner.setSpinnerState(false);
-        console.log(JSON.parse(res));
+        //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
+          this.vms.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',

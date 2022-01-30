@@ -27,7 +27,7 @@
             <div class="card-container column p-2" *ngFor='let card of row'>
 
                 <app-card-small [cardDanger]="card.cardDanger" [cardTextClamp]="card.cardTextClamp" [cardRouterLink]="card.cardRouterLink" [cardTitle]="card.cardTitle" [cardText]="card.cardText" [cardHeight]='card.cardHeight' [cardWidth]='card.cardWidth' [cardIconClass]="card.cardIconClass"
-                    [badgeIcon]="card.badgeIcon" [cardStackIcon]="card.cardStackIcon" [cardIconColor]="card.cardIconColor" [cardStackIconColor]="card.cardStackIconColor"></app-card-small>
+                    [badgeIcon]="card.badgeIcon" [cardStackIcon]="card.cardStackIcon" [cardIconColor]="card.cardIconColor" [cardStackIconColor]="card.cardStackIconColor" [callback]="card.callback" [parentObject]="this" [cardPermissions]='card.cardPermissions'></app-card-small>
             </div>
         </div>
     </div>

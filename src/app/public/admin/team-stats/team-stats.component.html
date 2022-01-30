@@ -37,7 +37,7 @@
                                 <i class="fa fa-user "></i> <label style="margin-left:5px;font-weight: 100; ">{{ user.user_id }}</label>
                             </td>
                             <td style="text-align:left; ">
-                                <label mat-tooltip="user.user_name " style="overflow:hidden;white-space:nowrap; text-overflow: ellipsis;font-weight: 100; ">{{ user.user_name }}</label>
+                                <label [matTooltip]="user.user_name" style="overflow:hidden;white-space:nowrap; text-overflow: ellipsis;font-weight: 100; ">{{ user.user_name }}</label>
                             </td>
                             <td>
                                 <span *ngIf="user.is_teamLead=='1' "><i class="fa fa-check-circle "></i></span>
@@ -45,17 +45,17 @@
                             </td>
                             <td>
                                 <div>
-                                    <span mat-tooltip="Create User? " *ngIf="user.create_user=='1' "><i class="fa fa-check-circle "></i></span>
-                                    <span mat-tooltip="Create User? " *ngIf="user.create_user=='0' "><i class="fa fa-times-circle "></i></span>,
+                                    <span [matTooltip]="'Create User?'" *ngIf="user.create_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span [matTooltip]="'Create User?'" *ngIf="user.create_user=='0' "><i class="fa fa-times-circle "></i></span>,
 
-                                    <span mat-tooltip="Edit User? " *ngIf="user.update_user=='1' "><i class="fa fa-check-circle "></i></span>
-                                    <span mat-tooltip="Edit User? " *ngIf="user.update_user=='0' "><i class="fa fa-times-circle "></i></span>,
+                                    <span [matTooltip]="'Edit User?'" *ngIf="user.update_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span [matTooltip]="'Edit User?'" *ngIf="user.update_user=='0' "><i class="fa fa-times-circle "></i></span>,
 
-                                    <span mat-tooltip="Delete User? " *ngIf="user.delete_user=='1' "><i class="fa fa-check-circle "></i></span>
-                                    <span mat-tooltip="Delete User? " *ngIf="user.delete_user=='0' "><i class="fa fa-times-circle "></i></span>,
+                                    <span [matTooltip]="'Delete User?'" *ngIf="user.delete_user=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span [matTooltip]="'Delete User?'" *ngIf="user.delete_user=='0' "><i class="fa fa-times-circle "></i></span>,
 
-                                    <span mat-tooltip="Remove VM? " *ngIf="user.delete_vm=='1' "><i class="fa fa-check-circle "></i></span>
-                                    <span mat-tooltip="Remove VM? " *ngIf="user.delete_vm=='0' "><i class="fa fa-times-circle "></i></span>
+                                    <span [matTooltip]="'Remove VM?'" *ngIf="user.delete_vm=='1' "><i class="fa fa-check-circle "></i></span>
+                                    <span [matTooltip]="'Remove VM?'" *ngIf="user.delete_vm=='0' "><i class="fa fa-times-circle "></i></span>
                                 </div>
 
                             </td>

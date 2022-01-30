@@ -2,6 +2,7 @@ const express = require('express');
 var cookieParser = require('cookie-parser')
 var cookieSession = require('cookie-session')
 var expressPino = require('express-pino-logger');
+const fileUpload = require('express-fileupload');
 var session = require('express-session')
 const passport = require('passport');
 var path = require('path');
@@ -16,8 +17,10 @@ logger.info("Checking node version ..." + global.process.version);
 var app = express();
 app.disable('x-powered-by');
 
-
-
+// enable files upload
+app.use(fileUpload({
+    createParentPath: true
+}));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

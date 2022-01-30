@@ -1,6 +1,6 @@
 <div class="root-container">
     <app-top-nav (sidenavToggle)="sidenav.toggle()"></app-top-nav>
-    <mat-sidenav-container class="sidenav-container" fxFlexFill>
+    <mat-sidenav-container class="sidenav-container" [ngStyle]="{'height': sideNavContainerHeght +'% !important'}" fxFlexFill>
         <mat-sidenav #sidenav fxHide.gt-sm>
             <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
         </mat-sidenav>

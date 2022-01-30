@@ -11,6 +11,9 @@ export class AdminConfig {
         badgeIcon: 'fa fa-plus',
         cardRouterLink: ['../addTeam'],
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
       },
       {
         cardTitle: 'Edit Team',
@@ -21,6 +24,9 @@ export class AdminConfig {
         cardIconClass: 'fa fa-users',
         badgeIcon: 'fa fa-edit',
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
       },
       {
         cardTitle: 'Create Team Leader',
@@ -32,6 +38,9 @@ export class AdminConfig {
         cardIconClass: 'fa fa-user ',
         badgeIcon: 'fa fa-plus',
         cardTextClamp: 2,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
       },
       {
         cardTitle: 'Edit Team Leader',
@@ -42,12 +51,15 @@ export class AdminConfig {
         cardRouterLink: ['../editTeamLead'],
         badgeIcon: 'fa fa-edit',
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
       },
     ],
     [
       {
-        cardTitle: 'Delete Team Leader',
-        cardText: 'This will remove the team leader user from the database.',
+        cardTitle: 'Delete Team ',
+        cardText: 'This will remove the team from the database.',
         cardWidth: '250',
         cardHeight: '200',
         cardIconClass: 'fa fa-trash ',
@@ -57,6 +69,12 @@ export class AdminConfig {
         cardIconColor: 'red',
         cardStackIconColor: 'red',
         cardStackIcon: 'fa fa-user ml-4 mt-0',
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
+        callback: function (parentObject: any) {
+          parentObject.deleteTeam();
+        },
       },
       {
         cardTitle: 'Team Stats',
@@ -67,6 +85,12 @@ export class AdminConfig {
         cardIconClass: 'fa fa-group ',
         badgeIcon: 'fa fa-pie-chart',
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.is_admin ||
+            loggedUser.permissions.is_teamLead
+          );
+        },
       },
       {
         cardTitle: 'Activity Logs',
@@ -77,6 +101,12 @@ export class AdminConfig {
         cardIconClass: 'fa fa-history ',
         badgeIcon: 'fa fa-check-circle',
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.is_admin ||
+            loggedUser.permissions.is_teamLead
+          );
+        },
       },
       {
         cardTitle: 'Application Properties',
@@ -87,6 +117,9 @@ export class AdminConfig {
         cardIconClass: 'fa fa-cog ',
         badgeIcon: 'fa fa-cog',
         cardTextClamp: 0,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
       },
     ],
   ];

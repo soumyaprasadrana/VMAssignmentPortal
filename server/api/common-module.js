@@ -6,9 +6,14 @@ const { logger } = require('../config');
 var config = require('../config');
 const _client = require('./client');
 var request_promise = require('request-promise');
+var sshMetadata = require('./sshMetadata');
 module.exports = {
+    getSSHMetadata: function(req, res, next) {
+        res.status(200).json(sshMetadata);
+        next();
+    },
     getProps: function(req, res, next) {
-        console.log(req.body);
+        logger.debug(req.body);
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + config.props_path,
             headers: _client.getStaticHeaders(req),
@@ -22,7 +27,7 @@ module.exports = {
         _client.post(_client.getHttpPostOptions(req, config.stream_exec), req, res, next);
     },
     getStreamOutput: function(req, res, next) {
-        console.log(req.body);
+        logger.debug(req.body);
         var file = req.params['file'];
         var threadID = req.params['threadID']
         var httpOptions = {

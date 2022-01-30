@@ -3,25 +3,25 @@
         <mat-icon class="white-icon">menu</mat-icon>
     </button>
     <a mat-button [routerLink]="['/portal/home/dash']">
-        <h1 style="color:white">VM Management Portal</h1>
+        <h1 style="color:white">VM Assignment Portal</h1>
     </a>
 
     <div fxFlex fxLayout fxLayoutAlign="end">
         <div class="navflex" fxHide.lt-md>
 
 
-            <input *ngIf="showGlobalSearch" class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" placeholder="What are you looking for ?">
+            <!--   <input *ngIf="showGlobalSearch" class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" placeholder="What are you looking for ?">-->
 
 
             <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
             <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
-            <a [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
+            <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
             <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
-            <a [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
+            <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
             <button mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
                 class="fa fa-user"></i> {{loggedUser.name | uppercase }}  </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">
-                <button mat-menu-item><span><i
+                <button mat-menu-item (click)="openDialog()"><span><i
                     class="fa fa-lock"></i> Change Password</span></button>
                 <button mat-menu-item (click)="signOut()"><span><i
                     class="fa fa-sign-out"></i> Sign Out </span></button>

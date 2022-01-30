@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { HomePageComponent } from '../public/home/home-page/home-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSlickgridModule } from 'angular-slickgrid';
-import { HomePageGroupComponent } from '../public/home/home-page-group/home-page-group.component';
 import { HomeViewComponent } from '../public/home/home-view/home-view.component';
 import { PageNotFoundHomeComponent } from '../public/widget/page-not-found-home/page-not-found-home.component';
 import { MaterialModule } from '../material.module';
@@ -23,7 +22,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
   declarations: [
     HomeViewComponent,
     HomePageComponent,
-    HomePageGroupComponent,
     PageNotFoundHomeComponent,
     VmChartComponent,
     ContactPageComponent,

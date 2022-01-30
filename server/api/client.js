@@ -13,7 +13,7 @@ module.exports = {
     authenticateToAPI: function(authString, userAgent, callback) {
         const fun = "client.js :-: authenticateToAPI";
 
-        console.log("inside authenticateToAPI:" + authString);
+        logger.debug("inside authenticateToAPI:" + authString);
 
         // verify auth credentials
         var extServerOptions = {
@@ -28,10 +28,10 @@ module.exports = {
         try {
             request_promise(extServerOptions, function(error, response, body) {
                 if (error) {
-                    console.log("Error Occurred!");
+                    logger.debug("Error Occurred!");
                     err = {};
                     if (error.code == "ECONNREFUSED")
-                        err.message = "Unable to connect VM Management Portal API , Contact System Administrator.";
+                        err.message = "Unable to connect VM Assignment Portal API , Contact System Administrator.";
                     else
                         err.message = error.code
                     callback(err, null);
@@ -40,7 +40,7 @@ module.exports = {
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response Status:" + JSON.stringify(response));
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
-
+                logger.debug(fun + "- Response body:" + body)
                 body = JSON.parse(body);
                 headers = JSON.parse(JSON.stringify(response.headers))
 
@@ -61,7 +61,7 @@ module.exports = {
                     user.activeUser = tempUser;
                     callback(null, user)
                 } else {
-                    console.log("failed'");
+                    logger.debug("failed'");
                     err = {};
                     err.message = body.message;
                     callback(err, null);
@@ -74,15 +74,15 @@ module.exports = {
         }
 
         function getCookie(ckList, key) {
-            // console.log("getCookie : " + ckList)
+            // logger.debug("getCookie : " + ckList)
             for (var i = 0; i < ckList.length; i++) {
-                // console.log("Inside for");
-                // console.log(ckList[i]);
+                // logger.debug("Inside for");
+                // logger.debug(ckList[i]);
                 cookieSplit = ckList[i].split(";");
 
-                //  console.log("cookie" + cookieSplit);
+                //  logger.debug("cookie" + cookieSplit);
                 ck = cookieSplit[0].split("=");
-                //   console.log(ck[0]);
+                //   logger.debug(ck[0]);
                 if (ck[0] == key) {
                     return cookieSplit[0].replace(ck[0] + '=', '');
                 }
@@ -96,7 +96,7 @@ module.exports = {
         try {
             const fun = "client.js :-: checkSession";
             var session = req.session;
-            console.log(typeof(session.passport));
+            logger.debug(typeof(session.passport));
             if (session.passport == null || typeof(session.passport) == 'undefined') {
                 res.status(401).json({ "status": false });
                 next();
@@ -139,23 +139,25 @@ module.exports = {
                 }
             })
         } catch (e) {
-            console.log(e);
+            logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
 
     },
     logout: function(req, res, next) {
+        logger.debug("iniside real logout")
         try {
             const fun = "client.js :-: logout";
             var session = req.session;
-            console.log(typeof(session.passport));
+            logger.debug(typeof(session.passport));
             if (session.passport == null || typeof(session.passport) == 'undefined') {
+                logger.debug("iniside if");
                 res.status(200).json({ "status": true });
                 next();
                 return;
             }
-
+            logger.debug("outside if");
             // verify auth credentials
             var extServerOptions = {
 
@@ -167,7 +169,7 @@ module.exports = {
                 }
 
             };
-
+            logger.debug("before promise");
             request_promise(extServerOptions, function(error, response, body) {
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response body:" + body);
@@ -194,15 +196,16 @@ module.exports = {
                 }
             })
         } catch (e) {
-            console.log(e);
+            logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
+        logger.debug("after promise");
 
     },
     getCookie: function(ckList, key) {
         for (var i = 0; i < ckList.length; i++) {
-            console.log(ckList[i]);
+            logger.debug(ckList[i]);
         }
     },
     get: function(httpOptions, req, res, next) {
@@ -235,7 +238,7 @@ module.exports = {
                 next();
             });
         } catch (e) {
-            console.log(e);
+            logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
@@ -255,7 +258,9 @@ module.exports = {
 
                 logger.info(fun + "- POST request to " + httpOptions.uri);
 
-                logger.debug(fun + "- Response error:" + JSON.stringify(body));
+                logger.debug(fun + "- POST request httpOptions ", httpOptions);
+
+                logger.debug(fun + "- Response body:" + JSON.stringify(body));
 
                 if (body) {
                     res.status(200).json(body);
@@ -266,12 +271,17 @@ module.exports = {
                     next();
                 }
             }).catch(function(error) {
-                logger.info(fun + JSON.stringify(error));
+                logger.info(fun + "- POST request to " + httpOptions.uri);
+
+                logger.debug(fun + "- POST request httpOptions: " + JSON.stringify(httpOptions));
+
+
+                logger.info(fun + "- Catch Block :" + JSON.stringify(error));
                 res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
                 next();
             })
         } catch (e) {
-            console.log(e);
+            logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
@@ -307,7 +317,7 @@ module.exports = {
                 next();
             })
         } catch (e) {
-            console.log(e);
+            logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
@@ -348,6 +358,17 @@ module.exports = {
             uri: config.apiBase + '/' + config.apiContextRoot + apiPath,
             headers: this.getStaticHeaders(req),
             qs: this.getStaticQueryParam(req),
+            jar: this.getStaticCookieJar(req),
+            json: false,
+            body: JSON.stringify(req.body.params)
+        }
+        return httpOptions;
+    },
+    getHttpPostOptionsWithCustomQS: function(req, apiPath, qs) {
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + apiPath,
+            headers: this.getStaticHeaders(req),
+            qs: qs,
             jar: this.getStaticCookieJar(req),
             json: false,
             body: JSON.stringify(req.body.params)

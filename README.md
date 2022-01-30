@@ -1,29 +1,25 @@
-# VM Management Portal
-
+# VM Assignment Portal
 
 In organizational level we use large no of VMs for our day today work, this portal will help to keep a track on usage of each and every vm.
 
-
 ## Description
 
-VM Manage Portal is created to easily manage all VM related activities within a team. Entries of VMs can be created in this portal and then various operationslike Assign, Release etc. can be performed.
+VM Assignment Portal is created to easily manage all VM related activities within a team. Entries of VMs can be created in this portal and then various operationslike Assign, Release etc. can be performed.
 
-It is integrated with VCenter through powerCLI to get VM information and to perform actions like Take and Revert Snapshot on them.Two  very  useful  features:  Linux  Toolbox  and  DB  Toolbox  are  also  provided  to  perform  many  important actions.It  can  be  used  by multiple teams. VMs of one team won’t be visible to another team.All  Team Leaders, Users and VMs are mapped with theirTeam.
-
+It is integrated with VCenter through powerCLI to get VM information and to perform actions like Take and Revert Snapshot on them.Two very useful features: Linux Toolbox and DB Toolbox are also provided to perform many important actions.It can be used by multiple teams. VMs of one team won’t be visible to another team.All Team Leaders, Users and VMs are mapped with theirTeam.
 
 ## Getting Started
 
 Clone this project and it's dependay projects run it then.
 
 ### Dependencies
+
 - Node 14 +
 - Angular 12+
 
 ### Installing
 
 - points to be added
-
-
 
 ### Executing program
 

@@ -20,6 +20,8 @@ import { AuthInterceptor } from './public/services/customHttp';
 import { Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
 
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,7 @@ import { SpinnerService } from './public/services/spinner-service';
     MaterialModule,
 
     HttpClientModule,
+    NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
 
     /*  AngularSlickgridModule.forRoot({
         // add any Global Grid Options/Config you might want

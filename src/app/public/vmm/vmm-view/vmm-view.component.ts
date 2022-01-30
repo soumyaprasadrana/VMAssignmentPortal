@@ -7,23 +7,24 @@ import { RoutehandleService } from '../../widget/animations/routehandle.service'
   selector: 'app-vmm-view',
   templateUrl: './vmm-view.component.html',
   styleUrls: ['./vmm-view.component.scss'],
-  animations: [vmmModule]
+  animations: [vmmModule],
 })
 export class VmmViewComponent implements OnInit {
+  constructor(private routeHandle: RoutehandleService) {}
 
-  constructor(private routeHandle:RoutehandleService) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   public getRouterOutletState(outlet: RouterOutlet) {
-   /* console.log("VMM Module:getRouterOutletState:");
-    console.log(outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']);
+    /* //console.log("VMM Module:getRouterOutletState:");
+    //console.log(outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']);
     */
-    return  outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']
+    return (
+      outlet &&
+      outlet.activatedRouteData &&
+      outlet.activatedRouteData['animation']
+    );
   }
 
-  public onRouterOutletActivate(outlet : RouterOutlet){
+  public onRouterOutletActivate(outlet: RouterOutlet) {
     this.routeHandle.setVMMRouterOutlet(outlet);
   }
-
 }
