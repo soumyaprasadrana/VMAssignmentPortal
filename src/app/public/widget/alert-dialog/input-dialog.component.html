@@ -30,7 +30,7 @@
             <div class="col float-end">
 
                 <button type="submit" mat-button class="float-end">Ok</button>
-                <button mat-button mat-dialog-close class="float-end">Cancel</button>
+                <button type="button" mat-button (click)="onClose()" class="float-end">Cancel</button>
 
             </div>
         </div>

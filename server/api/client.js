@@ -2,7 +2,6 @@
  * Client to communicate with JAVA Rest API
  */
 var http = require('http');
-const { CONSOLE_APPENDER } = require('karma/lib/constants');
 const { cookie } = require('request');
 const tough = require('tough-cookie');
 var request = require('request');
@@ -146,7 +145,7 @@ module.exports = {
 
     },
     logout: function(req, res, next) {
-        logger.debug("iniside real logout")
+        logger.debug("inside real logout")
         try {
             const fun = "client.js :-: logout";
             var session = req.session;

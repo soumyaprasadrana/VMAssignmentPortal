@@ -17,7 +17,7 @@ import { Config } from './app.config';
 
 import { AdminConfig } from './public/admin/admin.config';
 import { AuthInterceptor } from './public/services/customHttp';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
 
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
@@ -62,11 +62,11 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     AdminConfig,
     {
       provide: HTTP_INTERCEPTORS,
-      useFactory: function (router: Router) {
-        return new AuthInterceptor(router);
+      useFactory: function (router: Router, route: ActivatedRoute) {
+        return new AuthInterceptor(router, route);
       },
       multi: true,
-      deps: [Router],
+      deps: [Router, ActivatedRoute],
     },
   ],
   bootstrap: [AppComponent],

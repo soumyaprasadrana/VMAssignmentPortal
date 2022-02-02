@@ -10,6 +10,8 @@ var config = require('./config');
 var logger = config.logger;
 var cors = require('cors');
 const bodyParser = require('body-parser');
+var compression = require('compression');
+const gzipAll = require('gzip-all')
 const expressLogger = expressPino({ logger });
 logger.info("Initializing node server");
 logger.info("Checking node version ..." + global.process.version);
@@ -21,7 +23,17 @@ app.disable('x-powered-by');
 app.use(fileUpload({
     createParentPath: true
 }));
-
+// enable compression
+logger.info("Creating gzip files ...");
+gzipAll('../dist/VMPORTAL/*.js').then(newFiles => {
+    logger.info('Created compressed files for javascript:');
+    logger.info(newFiles);
+})
+gzipAll('../dist/VMPORTAL/*.css').then(newFiles => {
+    logger.info('Created compressed files for css:');
+    logger.info(newFiles);
+})
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

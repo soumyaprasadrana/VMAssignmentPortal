@@ -129,6 +129,9 @@ export class EditTeamComponent implements OnInit {
         placeholder: 'Select Team',
         list: list,
         bindLabel: 'team_name',
+        closeCallback: () => {
+          this.router.navigate(['/portal/home/admin/dash']);
+        },
       },
       (res: any) => {
         //console.log('data from close:', res);
