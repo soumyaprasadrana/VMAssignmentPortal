@@ -154,7 +154,8 @@ export class FileChooseDialogComponent implements OnInit {
       } else if (
         (event.status == 400 && event.error.duplicateIP) ||
         (event.status == 400 && event.error.nofile) ||
-        (event.status == 400 && event.error.noRecord)
+        (event.status == 400 && event.error.noRecord) ||
+        (event.status == 400 && event.error.dataValidationFailed)
       ) {
         this.openDialog(
           {

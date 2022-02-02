@@ -5,7 +5,7 @@ var pino = require('pino');
 module.exports = {
     "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
-    logger: pino({ level: process.env.LOG_LEVEL || 'debug', prettyPrint: { colorize: true } }),
+    logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
     PORT: process.env.PORT || 3000,
     useCORS: process.env.USECORS || true,
     vm_rest_path: '/vmDetails/getAll',

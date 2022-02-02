@@ -129,6 +129,9 @@ export class EditVmComponent implements OnInit {
         placeholder: 'Select VM',
         list: list,
         bindLabel: 'ip',
+        closeCallback: () => {
+          this.router.navigate(['/portal/home/vmm/dash']);
+        },
       },
       (res: any) => {
         //console.log('data from close:', res);

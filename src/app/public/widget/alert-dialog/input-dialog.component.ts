@@ -24,6 +24,7 @@ export interface DialogData {
   isText?: boolean;
   titleIcon?: boolean;
   defaultValue?: string;
+  closeCallback?: any;
 }
 @Component({
   selector: 'app-input-dialog',
@@ -61,5 +62,14 @@ export class InputDialogComponent implements OnInit {
       return;
     }
     this.dialogRef.close(this.registerForm.value);
+  }
+  onClose() {
+    this.dialogRef.close();
+    if (
+      this.data.closeCallback &&
+      typeof this.data.closeCallback == 'function'
+    ) {
+      this.data.closeCallback();
+    }
   }
 }

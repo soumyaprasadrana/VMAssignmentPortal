@@ -67,6 +67,11 @@ export class HomePageComponent implements OnInit {
   private subscription!: Subscription;
   selectedRows: any;
   loggedUser: any;
+  isDeviceMobilReset: boolean = false;
+  defaultPageSizeList: any;
+  osList: any;
+  osTypes: any = [];
+  osVersiontypes: any = [];
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
     private route: ActivatedRoute,
@@ -83,19 +88,6 @@ export class HomePageComponent implements OnInit {
     //Load VM Data
     this.spinner.setSpinnerState(true);
     var promise = this.vms.getVms();
-    promise
-      .then((res: any[]) => {
-        this.spinner.setSpinnerState(false);
-        ////console.log('inside promise.then -< setting vmdataset');
-        this.vmDataSet = res;
-        ////console.log(res);
-        this.isLoaded = true;
-      })
-      .catch((err: any) => {
-        this.spinner.setSpinnerState(false);
-        //console.log('error occurred ', err);
-        this.isLoaded = false;
-      });
 
     //If you want to use a observable
     /* this.vms.getVms2().subscribe((data:any)=>{
@@ -110,6 +102,52 @@ export class HomePageComponent implements OnInit {
       .then((res) => {
         //console.log('Props=>', res);
         this.properties = JSON.parse('' + res);
+        this.defaultPageSizeList =
+          this.properties.paginationPageSizesList.split(':');
+        this.osList = this.properties.osList.split('#');
+        try {
+          this.osTypes.push({ osType: '', value: '' });
+          this.osVersiontypes.push({ osVersionTypes: '', value: '' });
+          for (var item in this.osList) {
+            var temp = this.osList[item].split(':');
+            this.osTypes.push({ osType: temp[0], value: temp[0] });
+            this.osVersiontypes.push({
+              osVersionTypes: temp[1],
+              value: temp[1],
+            });
+          }
+          this.osTypes = [
+            ...new Map(
+              this.osTypes.map((item: any) => [item['osType'], item])
+            ).values(),
+          ];
+        } catch (e) {
+          console.log(e);
+        }
+
+        /*console.log(
+          ' this.properties.paginationPageSizesList=>',
+          this.properties
+        );*/
+        const presets = JSON.parse(localStorage[LOCAL_STORAGE_KEY] || null);
+
+        // use some Grid State preset defaults if you wish or just restore from Locale Storage
+        // presets = presets || this.useDefaultPresets();
+        this.defineGrid(presets);
+        //this.auth.ensureAuth();
+        promise
+          .then((res: any[]) => {
+            this.spinner.setSpinnerState(false);
+            ////console.log('inside promise.then -< setting vmdataset');
+            this.vmDataSet = res;
+            ////console.log(res);
+            this.isLoaded = true;
+          })
+          .catch((err: any) => {
+            this.spinner.setSpinnerState(false);
+            //console.log('error occurred ', err);
+            this.isLoaded = false;
+          });
       })
       .catch((error) => {
         //console.log(error);
@@ -137,14 +175,7 @@ export class HomePageComponent implements OnInit {
     // also unsubscribe all Angular Subscriptions
   }
 
-  ngOnInit(): void {
-    const presets = JSON.parse(localStorage[LOCAL_STORAGE_KEY] || null);
-
-    // use some Grid State preset defaults if you wish or just restore from Locale Storage
-    // presets = presets || this.useDefaultPresets();
-    this.defineGrid(presets);
-    //this.auth.ensureAuth();
-  }
+  ngOnInit(): void {}
 
   renderUnsavedStylingOnAllVisibleCells() {
     for (const lastEdit of this.editQueue) {
@@ -771,10 +802,27 @@ export class HomePageComponent implements OnInit {
         }
       });
   }
+
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
-    localStorage[LOCAL_STORAGE_KEY] = null;
-    this.angularGrid.gridService.resetGrid(this.columnDef);
+    if (this._client.deviceIsMobile()) {
+      localStorage[LOCAL_STORAGE_KEY] = JSON.stringify({
+        // the column position in the array is very important and represent
+        // the position that will show in the grid
+        columns: [
+          { columnId: 'ip' },
+          { columnId: 'status' },
+          { columnId: 'owner' },
+          { columnId: 'action' },
+        ],
+      });
+      this.isDeviceMobilReset = true;
+      window.location.reload();
+    } else {
+      localStorage[LOCAL_STORAGE_KEY] = null;
+      this.angularGrid.gridService.resetGrid(this.columnDef);
+      window.location.reload();
+    }
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
@@ -901,6 +949,48 @@ export class HomePageComponent implements OnInit {
         }
       },
     };
+    var tempOsFiler = {
+      // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
+      // enableRenderHtml: true,
+      // collection: [{ value: '', label: '' }, { value: true, label: 'True', labelPrefix: `<i class="fa fa-check"></i> ` }, { value: false, label: 'False' }],
+
+      collection: this.osTypes,
+      customStructure: {
+        value: 'value',
+        label: 'osType',
+      },
+      model: Filters.singleSelect,
+
+      // we could add certain option(s) to the "multiple-select" plugin
+      filterOptions: { autoDropWidth: true } as MultipleSelectOption,
+    };
+    var tempostypefilter = {
+      // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
+      // enableRenderHtml: true,
+      // collection: [{ value: '', label: '' }, { value: true, label: 'True', labelPrefix: `<i class="fa fa-check"></i> ` }, { value: false, label: 'False' }],
+
+      collection: this.osVersiontypes,
+      customStructure: {
+        value: 'value',
+        label: 'osVersionTypes',
+      },
+      model: Filters.singleSelect,
+
+      // we could add certain option(s) to the "multiple-select" plugin
+      filterOptions: { autoDropWidth: true } as MultipleSelectOption,
+    };
+    var osFilterModel;
+    var osVersionTypeModel;
+    if (this.osTypes) {
+      osFilterModel = tempOsFiler;
+    } else {
+      osFilterModel = { model: Filters.compoundInputText };
+    }
+    if (this.osVersiontypes) {
+      osVersionTypeModel = tempostypefilter;
+    } else {
+      osVersionTypeModel == { model: Filters.compoundInputText };
+    }
     this.columnDef = [
       {
         id: 'ip',
@@ -928,7 +1018,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText },
+        filter: osFilterModel,
       },
       {
         id: 'ver',
@@ -937,7 +1027,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
-        filter: { model: Filters.compoundInputText },
+        filter: osVersionTypeModel,
       },
       {
         id: 'group',
@@ -1279,7 +1369,7 @@ export class HomePageComponent implements OnInit {
         };
       }
     });
-
+    console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.vmGridOptions = {
       enableSorting: true,
       enableFiltering: true,
@@ -1291,7 +1381,9 @@ export class HomePageComponent implements OnInit {
       enableAutoResize: true,
       enablePagination: true,
       pagination: {
-        pageSizes: [5, 10, 20, 25, 50],
+        pageSizes: this.defaultPageSizeList
+          ? this.defaultPageSizeList
+          : [5, 10, 20, 25, 50],
         pageSize: 25,
       },
       enableExcelCopyBuffer: true,
@@ -1444,7 +1536,10 @@ export class HomePageComponent implements OnInit {
     if (gridStatePresets) {
       this.vmGridOptions.presets = gridStatePresets;
     }
+    // alert('gridStatePresets' + JSON.stringify(gridStatePresets));
+    //  alert('this._client.deviceIsMobile():' + this._client.deviceIsMobile());
     if (!gridStatePresets && this._client.deviceIsMobile()) {
+      // alert('seeting for mobile');
       this.vmGridOptions.presets = {
         // the column position in the array is very important and represent
         // the position that will show in the grid
@@ -1467,10 +1562,13 @@ export class HomePageComponent implements OnInit {
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridStateChanges: GridStateChange) {
     ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
-    const gridState: GridState =
-      this.angularGrid.gridStateService.getCurrentGridState();
-    //console.log('Grid State before destroy :: ', gridState);
-    localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
+    if (!this.isDeviceMobilReset) {
+      const gridState: GridState =
+        this.angularGrid.gridStateService.getCurrentGridState();
+      //console.log('Grid State before destroy :: ', gridState);
+      localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    }
   }
 
   //Group By Column

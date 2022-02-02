@@ -70,12 +70,12 @@ export class AuthserviceService {
             }
             resolve(result);
           })
-          .catch(function (res) {
-            //console.log(
-            //  'authservice- checkSession - catch(reject) ' + JSON.stringify(res)
-            // );
+          .catch((res: any) => {
+            console.log(
+              'authservice- checkSession - catch(reject) ' + JSON.stringify(res)
+            );
             result.status = false;
-            result.message = res.error.message || '';
+            //result.message = res.error.message ? res.error.message : '';
             reject(result);
           });
       }
@@ -124,12 +124,18 @@ export class AuthserviceService {
     promise
       .then((result) => {
         if (!result.status) {
-          this.router.navigate(['/portal/login']);
+          this.router.navigate(['/portal/login']).then(() => {
+            //alert('Going to reload');
+            window.location.reload();
+          });
         }
       })
       .catch((result) => {
         //Handle error case
-        this.router.navigate(['/portal/login']);
+        this.router.navigate(['/portal/login']).then(() => {
+          // alert('Going to reload');
+          window.location.reload();
+        });
       });
   }
   signOut() {

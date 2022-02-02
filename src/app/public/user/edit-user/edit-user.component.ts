@@ -100,6 +100,9 @@ export class EditUserComponent implements OnInit {
         placeholder: 'Select user',
         list: list,
         bindLabel: 'user_id',
+        closeCallback: () => {
+          this.router.navigate(['/portal/home/user/dash']);
+        },
       },
       (res: any) => {
         //console.log('data from close:', res);
