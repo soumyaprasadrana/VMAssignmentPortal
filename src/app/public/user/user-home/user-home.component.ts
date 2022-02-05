@@ -24,6 +24,15 @@ export class UserHomeComponent implements OnInit {
     private userService: UserService
   ) {
     this.cardsMetaData = UserConfig.cardsMetaData;
+    if (_client.deviceIsMobile()) {
+      for (var row in this.cardsMetaData) {
+        for (var col in this.cardsMetaData[row]) {
+          //console.log(this.cardsMetaData[row][col]);
+          this.cardsMetaData[row][col].cardHeight = '200';
+          this.cardsMetaData[row][col].cardWidth = '300';
+        }
+      }
+    }
   }
   deleteUser() {
     //console.log('Delete User Called');

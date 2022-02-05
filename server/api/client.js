@@ -65,7 +65,11 @@ module.exports = {
                     err.message = body.message;
                     callback(err, null);
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             err = {};
             err.message = "Internal Server Error occurred!";
@@ -136,7 +140,11 @@ module.exports = {
                     res.status(401).json({ "status": false });
                     next();
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
@@ -193,7 +201,11 @@ module.exports = {
                     res.status(401).json({ "status": false });
                     next();
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PassChangeDialogComponent } from '../../alert-dialog/change-pass-dialog';
 import { AlertDialogComponent } from '../../alert-dialog/alert-dialog.component';
 import { SpinnerService } from 'src/app/public/services/spinner-service';
+import { PortalThemesService } from 'src/app/public/services/portal.thems.service';
 @Component({
   selector: 'app-top-nav',
   templateUrl: './top-nav.component.html',
@@ -17,12 +18,14 @@ export class TopNavComponent implements OnInit {
   @Input() globarSearchText!: string;
   showGlobalSearch: boolean = false;
   loggedUser!: any;
+  THEME_LOCAL = 'theme';
   constructor(
     private searchService: GlobalSearchService,
     private auth: AuthserviceService,
     private router: Router,
     private dialog: MatDialog,
-    private _spinner: SpinnerService
+    private _spinner: SpinnerService,
+    private themeService: PortalThemesService
   ) {
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -131,6 +134,13 @@ export class TopNavComponent implements OnInit {
     this.dialog.open(AlertDialogComponent, {
       data: data,
       panelClass: 'app-dialog-class',
+    });
+  }
+  setTheme(theme: string) {
+    this.themeService.setThemeText(theme);
+    localStorage[this.THEME_LOCAL] = JSON.stringify({
+      userModified: true,
+      theme: theme,
     });
   }
 }

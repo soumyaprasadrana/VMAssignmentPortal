@@ -6,7 +6,13 @@ module.exports = {
     "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
     logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
-    PORT: process.env.PORT || 3000,
+    PORT: process.env.PORT || 3001,
+    /* Choose the theme for angular UI 
+    Available Themes : default,dark,pink,blue
+    */
+    theme: 'blue',
+    /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
+    includedSPA: ['androidassetstudio', 'converter', 'textcompare', 'prettier'],
     useCORS: process.env.USECORS || true,
     vm_rest_path: '/vmDetails/getAll',
     vm_additional_data: '/vmDetails/getAdditionalData',
@@ -28,6 +34,7 @@ module.exports = {
     add_or_update_multiple_vms: '/vmActions/addMultipleVMS',
     users_path: '/user/getAll',
     user_path: '/user/getUser',
+    normal_users: '/user/getNormalUsers',
     delete_uesr_path: '/user/removeUser',
     user_pass_change: '/user/changePassword',
     teamLeads_path: '/user/getTeamLeads',
@@ -36,6 +43,7 @@ module.exports = {
     delete_team_path: '/admin/removeTeam',
     update_props_rest_path: '/prop/update',
     update_tl_rest_path: '/admin/updateTeamLead',
+    promote_user: '/admin/promoteUser',
     team_stats_path: '/user/getAllWithProtocols',
     get_recent_activitylogs: '/activitylog/getRecentLogs',
     get_next_activitylogs: '/activitylog/getActivityLogs',

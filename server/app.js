@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 var compression = require('compression');
 const gzipAll = require('gzip-all')
 const expressLogger = expressPino({ logger });
+const fs = require("fs");
 logger.info("Initializing node server");
 logger.info("Checking node version ..." + global.process.version);
 
@@ -24,7 +25,7 @@ app.use(fileUpload({
     createParentPath: true
 }));
 // enable compression
-logger.info("Creating gzip files ...");
+/*logger.info("Creating gzip files ...");
 gzipAll('../dist/VMPORTAL/*.js').then(newFiles => {
     logger.info('Created compressed files for javascript:');
     logger.info(newFiles);
@@ -33,7 +34,7 @@ gzipAll('../dist/VMPORTAL/*.css').then(newFiles => {
     logger.info('Created compressed files for css:');
     logger.info(newFiles);
 })
-app.use(compression());
+app.use(compression());*/
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -69,7 +70,8 @@ app.use(cookieSession({
     */
 
 //app.use(express.static(__dirname));
-app.use(express.static('../dist/VMPORTAL'))
+app.use(express.static('../dist/VMPORTAL'));
+app.use(express.static(__dirname + '/spa'));
 app.set('view engine', 'pug');
 
 
@@ -104,7 +106,75 @@ function getUndefined(request, response) {
 
     response.sendFile(path.resolve('../dist/VMPORTAL/index.html'));
 }
+
+function loadSPA(req, res) {
+    const fun = "app.js :: loadSPA :: ";
+    const app = req.params.app;
+    if (!config.includedSPA.includes(app)) {
+        logger.info(fun + app + "not found in included list.");
+        res.status(200).send(app + " is not available please contact your system administrtor!");
+    } else {
+        const app_path = './spa/' + app + '/index.html';
+        logger.debug("Resolved path :" + path.resolve(app_path));
+        try {
+            if (fs.existsSync(app_path)) {
+                // path exists
+                logger.info(fun + "Found single page application " + app + ". Resolving the application.");
+                res.sendFile(path.resolve(app_path));
+                //res.status(200).send(path.resolve(app_path));
+            } else {
+                logger.info(fun + app + " found in single page application list but unable to find application resotce inside spa .");
+                res.status(200).send("Unable to find resource for " + app + " , please contact your system administrtor!");
+            }
+        } catch (e) {
+            logger.debug(e);
+            console.log(e);
+            res.status(500).send("Internal Server Error!");
+        }
+
+    }
+
+}
+
+function loadSPAAsset(req, res) {
+    const fun = "app.js :: loadSPAAsset :: ";
+    const app = req.params.app;
+    const reqUrl = req.url;
+    var requestPath = reqUrl.replace('/portal/spa/' + app, '');
+    if (requestPath.includes(app)) {
+        requestPath = requestPath.replace('/' + app + '/', '');
+    }
+    logger.info("Asset requested :" + requestPath);
+    if (!config.includedSPA.includes(app)) {
+        logger.info(fun + app + "not found in included list.");
+        res.status(200).send(app + " is not available please contact your system administrtor!");
+    } else {
+        const app_path = './spa/' + app + '/' + requestPath;
+        logger.debug("Resolved path :" + path.resolve(app_path));
+        try {
+            if (fs.existsSync(app_path)) {
+                // path exists
+                logger.info(fun + "Asset found : " + requestPath + ' for app' + app + ". Resolving the file.");
+                res.sendFile(path.resolve(app_path));
+                //res.status(200).send(path.resolve(app_path));
+            } else {
+                logger.info(fun + app + " found in single page application list but unable to find application resotce inside spa .");
+                res.status(200).send("Unable to find resource for " + app + " , please contact your system administrtor!");
+            }
+        } catch (e) {
+            logger.debug(e);
+            console.log(e);
+            res.status(500).send("Internal Server Error!");
+        }
+
+    }
+
+}
+
+
 app.get('/portal', getRoot);
+app.get('/portal/spa/:app', loadSPA);
+app.get('/portal/spa/:app/*', loadSPAAsset);
 app.get('/portal/login', getRoot);
 app.get('/portal/home/*', portalAuth.ensureAuthenticated, getUndefined);
 

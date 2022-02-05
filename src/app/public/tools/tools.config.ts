@@ -24,6 +24,16 @@ export class ToolConfig {
         badgeIcon: 'fa fa-terminal',
         cardTextClamp: 0,
       },
+      {
+        cardTitle: 'Single Page Applications',
+        cardText: 'Dynamically configurable single page apps.',
+        cardWidth: '300',
+        cardHeight: '200',
+        cardRouterLink: ['../spa'],
+        cardIconClass: 'fa fa-window-restore',
+        badgeIcon: 'fa fa-firefox',
+        cardTextClamp: 0,
+      },
     ],
   ];
 

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthserviceService } from 'src/app/public/services/authservice.service';
 import { GlobalSearchService } from 'src/app/public/services/global-search.service';
+import { PortalThemesService } from 'src/app/public/services/portal.thems.service';
 import { SpinnerService } from 'src/app/public/services/spinner-service';
 import { AlertDialogComponent } from '../../alert-dialog/alert-dialog.component';
 import { PassChangeDialogComponent } from '../../alert-dialog/change-pass-dialog';
@@ -15,12 +16,14 @@ import { PassChangeDialogComponent } from '../../alert-dialog/change-pass-dialog
 export class SideNavComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
   loggedUser!: any;
+  THEME_LOCAL = 'theme';
   constructor(
     private searchService: GlobalSearchService,
     private auth: AuthserviceService,
     private router: Router,
     private dialog: MatDialog,
-    private _spinner: SpinnerService
+    private _spinner: SpinnerService,
+    private themeService: PortalThemesService
   ) {}
 
   ngOnInit() {
@@ -104,6 +107,13 @@ export class SideNavComponent implements OnInit {
     this.dialog.open(AlertDialogComponent, {
       data: data,
       panelClass: 'app-dialog-class',
+    });
+  }
+  setTheme(theme: string) {
+    this.themeService.setThemeText(theme);
+    localStorage[this.THEME_LOCAL] = JSON.stringify({
+      userModified: true,
+      theme: theme,
     });
   }
 }

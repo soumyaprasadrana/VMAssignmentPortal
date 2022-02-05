@@ -8,6 +8,7 @@ const userCtrl = require('./user-module')
 module.exports = function(app) {
     app.get('/api/vm/*', portalAuth.ensureAuthenticated);
     app.post('/api/vm/*', portalAuth.ensureAuthenticated);
+    app.get("/portal/spa/*", portalAuth.ensureAuthenticated);
     app.get('/api/admin/*', portalAuth.ensureAuthenticated);
     app.post('/api/admin/*', portalAuth.ensureAuthenticated);
     app.get('/api/user/*', portalAuth.ensureAuthenticated);
@@ -41,12 +42,15 @@ module.exports = function(app) {
     app.post('/api/admin/team/delete/:team', admnCtrl.deleteTeam);
     app.post('/api/admin/addTeamLead', admnCtrl.createTeamLeader);
     app.post('/api/admin/prop/update', admnCtrl.updateProps);
+    app.post('/api/admin/promoteUser/:user', admnCtrl.promteUser);
     app.post('/api/user/addUser', userCtrl.addUser);
     app.post('/api/user/updateUser', userCtrl.updateUser);
     app.post('/api/user/updateTeamLead', admnCtrl.updateTeamLead);
     app.post('/api/user/changePassword', userCtrl.changePassword);
     app.get('/api/public/getUIProps', commonCtrl.getProps);
     app.get('/api/public/getUsers', userCtrl.getUsers);
+    app.get('/api/config/theme', commonCtrl.getThemeName);
+    app.get('/api/public/getNormalUsers', userCtrl.getNormalUsers);
     app.get('/api/admin/getTeamLeads', userCtrl.getTL);
     app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
     app.get('/api/user/getUser/:id', userCtrl.getUser);
@@ -55,5 +59,7 @@ module.exports = function(app) {
     app.post('/api/stream/exec', commonCtrl.streamExec);
     app.get("/api/stream/getOut/:file/:threadID", commonCtrl.getStreamOutput);
     app.get("/api/public/sshMetadata", commonCtrl.getSSHMetadata);
+    app.get("/api/public/spaMetadata", commonCtrl.getSPAMetadata);
+
 
 }

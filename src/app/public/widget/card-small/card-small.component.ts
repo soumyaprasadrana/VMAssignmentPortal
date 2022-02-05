@@ -23,6 +23,7 @@ export class CardSmallComponent implements OnInit {
   @Input() cardStackIconColor?: string = '';
   @Input() callback?: any;
   @Input() parentObject?: any;
+  @Input() cardRouterState?: any;
 
   loggedUser: any;
   visible: any = true;

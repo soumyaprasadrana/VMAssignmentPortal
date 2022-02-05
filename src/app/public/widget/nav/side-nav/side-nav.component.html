@@ -17,7 +17,11 @@
     <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" mat-list-item [routerLink]="['/portal/home/admin/dash']" (click)="onSidenavClose()">
         <mat-icon>settings</mat-icon> <span class="ml-1">Administration</span>
     </a>
-
+    <a mat-list-item [matMenuTriggerFor]="themeMenu" id="themeDropdown">
+        <mat-icon>
+            format_color_fill
+        </mat-icon><span class="ml-1">Themes</span>
+    </a>
     <a mat-list-item [matMenuTriggerFor]="sideMenu">
         <mat-icon>perm_identity</mat-icon> <span class="ml-1">{{loggedUser.name | uppercase }}</span>
 
@@ -32,4 +36,15 @@
         <button mat-menu-item (click)="signOut()"><span><i
             class="fa fa-sign-out"></i> Sign Out </span></button>
     </mat-menu>
+    <mat-menu #themeMenu="matMenu" yPosition="below">
+        <button mat-menu-item (click)="setTheme('default')"><span><i
+            style="color:#280071" class="fa fa-circle"></i> <b>Default</b> </span></button>
+        <button mat-menu-item (click)="setTheme('blue')"><span><i
+                style="color:#3498db;" class="fa fa-circle"></i> <b>Blue Ivy</b> </span></button>
+        <button mat-menu-item (click)="setTheme('pink')"><span><i
+                style="color:#e91e63;" class="fa fa-circle"></i> <b>Hot Pink</b> </span></button>
+        <button mat-menu-item (click)="setTheme('dark')"><span><i
+              style="color:#37474f"  class="fa fa-circle"></i> <b>Grey</b> </span></button>
+    </mat-menu>
+
 </mat-nav-list>

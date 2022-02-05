@@ -13,6 +13,7 @@ export class UserService {
   users: Array<any> = [];
   promise: any;
   promiseTL: any;
+  promiseNU: any;
   promiseTeamStats: any;
   constructor(private _client: NodeclientService) {
     var headers = new HttpHeaders({
@@ -24,6 +25,7 @@ export class UserService {
     };
     this.promise = _client.get('api/public/getUsers', httpOptions);
     this.promiseTL = _client.get('api/admin/getTeamLeads', httpOptions);
+    this.promiseNU = _client.get('api/public/getNormalUsers', httpOptions);
     this.promiseTeamStats = _client.get('api/admin/teamStats', httpOptions);
   }
   getUsers() {
@@ -94,6 +96,59 @@ export class UserService {
         .then((res: any) => {
           //console.log('Users Service=>', res);
           resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          //console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  getNormalUsers() {
+    const promisey = new Promise((resolve, reject) => {
+      function parseResult(res: any): User[] {
+        var result = JSON.parse(res);
+
+        var id = 1;
+        var returnObject: User[] = [];
+        for (var user in result) {
+          returnObject.push({
+            id: id,
+            user_name: user,
+            user_id: user,
+          });
+          id++;
+        }
+        ////console.log('returnObject=>', returnObject);
+        return returnObject;
+      }
+
+      this.promiseNU
+        .then((res: any) => {
+          //console.log('Users Service=>', res);
+          resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          //console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  promoteUser(user: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .post('api/admin/promoteUser/' + user, null, httpOptions)
+        .then((res: any) => {
+          //console.log('Users Service:delete=>', res);
+          resolve(res);
         })
         .catch((error: any) => {
           //console.log(error);

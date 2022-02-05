@@ -11,6 +11,8 @@ import { LTBButtonModule } from '../public/widget/ltb-button/ltb-button.module';
 import { DBButtonModule } from '../public/widget/db-button/db-button.module';
 import { CardsButtonModule } from '../public/widget/card-button/card.button.module';
 import { LTBDialogModule } from '../public/widget/ltb-output-dialog/ltb-dialog.module';
+import { ToolsSpaComponent } from '../public/tools/tools-spa/tools-spa.component';
+import { ToolsSpaAppComponent } from '../public/tools/tools-spa-app/tools-spa-app.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { LTBDialogModule } from '../public/widget/ltb-output-dialog/ltb-dialog.m
     ToolsDbtComponent,
     ToolsLtbComponent,
     ToolsViewComponent,
+    ToolsSpaComponent,
+    ToolsSpaAppComponent,
   ],
   imports: [
     CommonModule,

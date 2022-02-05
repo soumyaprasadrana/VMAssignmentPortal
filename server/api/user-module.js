@@ -42,6 +42,17 @@ module.exports = {
         }
         _client.post(_client.getHttpPostOptions(req, config.user_pass_change), req, res, next);
     },
+    getNormalUsers: function(req, res, next) {
+        logger.debug(req.body);
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.normal_users,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+
+    },
     getUsers: function(req, res, next) {
         logger.debug(req.body);
         var httpOptions = {
