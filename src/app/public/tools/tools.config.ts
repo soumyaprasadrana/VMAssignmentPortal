@@ -16,8 +16,7 @@ export class ToolConfig {
       },*/
       {
         cardTitle: 'SSH Tool Box',
-        cardText:
-          'Helps to run ssh commands.Current design only supports single line command execution.',
+        cardText: 'Helps to run single line ssh commands.',
         cardWidth: '200',
         cardHeight: '200',
         cardRouterLink: ['../ltb'],
