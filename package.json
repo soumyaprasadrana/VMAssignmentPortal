@@ -2,11 +2,10 @@
     "name": "vmportal",
     "version": "1.0.0",
     "scripts": {
-        "ng": "ng",
-        "start": "ng serve",
-        "build": "ng --watch --configuration development",
-        "watch": "ng build --watch --configuration development",
-        "test": "ng test"
+        "build-dev": "npm install del adm-zip && node ./build.js dev",
+        "build-prod": "npm install del adm-zip && node ./build.js prod",
+        "start-dev": "node server/app.js",
+        "start-prod": "node build/server/app.js"
     },
     "private": true,
     "dependencies": {

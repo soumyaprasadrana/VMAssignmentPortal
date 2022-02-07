@@ -1,5 +1,6 @@
 var path = require('path')
 const { spawn } = require("child_process");
+const { exec } = require("child_process");
 const build_list = ["prod", "dev"];
 const arg = process.argv.slice(2);
 const fs = require('fs');
@@ -23,78 +24,8 @@ if (buildType == "prod") {
 var adm_zip;
 var del;
 console.log("Initializing application build...");
-try {
-    adm_zip = require('adm-zip');
-    //console.log(adm_zip);
-} catch (e) {
-    console.log(e);
-    console.log("adm-zip not found!");
-    console.log("Going to install adm-zip");
-    const adm_zip_install = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ["install", "--save", , "adm-zip"], {
-        cwd: process.cwd(),
-        stdio: 'inherit'
-    });
-    adm_zip_install.on('error', (error) => {
-        console.log(`error: ${error.message}`);
-    });
-
-    adm_zip_install.on("close", code => {
-        if (code == 0) {
-            try {
-                adm_zip = require('adm-zip');
-            } catch (e) {
-                console.log(e);
-            }
-            if (adm_zip == null) {
-                console.log("Unable to find adm-zip; try installing adm-zip manually by npm install adm-zip");
-                process.exit(1);
-            } else {
-                console.log("successflly installed adm-zip.", adm_zip);
-            }
-
-        } else {
-            console.log("Unable to install adm-zip!try installing adm-zip manually by npm install adm-zip");
-            process.exit(1);
-        }
-    });
-
-}
-try {
-    del = require('del');
-    //console.log(adm_zip);
-} catch (e) {
-    console.log(e);
-    console.log("del not found!");
-    console.log("Going to install del");
-    const del_zip_install = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ["install", "--save", , "del"], {
-        cwd: process.cwd(),
-        stdio: 'inherit'
-    });
-    del_zip_install.on('error', (error) => {
-        console.log(`error: ${error.message}`);
-    });
-
-    del_zip_install.on("close", code => {
-        if (code == 0) {
-            try {
-                del = require('del');
-            } catch (e) {
-                console.log(e);
-            }
-            if (del == null) {
-                console.log("Unable to find del; try installing del manually by npm install adm-zip");
-                process.exit(1);
-            } else {
-                console.log("successflly installed del.", del);
-            }
-
-        } else {
-            console.log("Unable to install del ! try installing del manually by npm install adm-zip");
-            process.exit(1);
-        }
-    });
-
-}
+adm_zip = require('adm-zip');
+del = require('del');
 
 async function extractArchive(filepath, output_dir) {
     try {
@@ -200,7 +131,7 @@ async function copySaaSFiles() {
         if (!fs.existsSync('./build/docker/saas/portal-db/files')) {
             fs.mkdirSync('./build/docker/saas/portal-db/files', { recursive: true });
         }
-        fs.copyFile('./portaldb.sql', './build/docker/saas/portal-ui/files/portaldb.sql', (err) => {
+        fs.copyFile('./portaldb.sql', './build/docker/saas/portal-db/files/portaldb.sql', (err) => {
             if (err) {
                 console.log(err);
                 console.log("Unable to copy resorce: ./portaldb.sql to docker directory.")
@@ -235,12 +166,12 @@ async function createSaaSFiles() {
         'ENV MYSQL_DATABASE=vmportal02 ' + '\n' +
         'ENV MYSQL_ROOT_PASSWORD=DBfull@cess123 ' + '\n' +
         'EXPOSE 3306 ' + '\n' +
-        'CMD [ "--max_connections=1000000" ]"';
+        'CMD [ "--max_connections=1000000" ]';
     const portal_api_docker_file_data = 'FROM tomcat:9.0 ' + '\n' +
         'USER root ' + '\n' +
         'ENV JAVA_OPTS="-Xmx1024m -Xms1024m " ' + '\n' +
         'COPY files/VMManagementPortalAPI.war /usr/local/tomcat/webapps/ ' + '\n' +
-        'COPY files/wait-for-it.sh /usr/local/tomcat/bin/" ';
+        'COPY files/wait-for-it.sh /usr/local/tomcat/bin/ ';
     const docker_compose = 'version: \'3.7\'\n\nservices:\n  ui:\n    image: portal_ui:1.0\n    ports:\n      - \"3000:3000\"\n    environment:\n      LOG_LEVEL: \'info\'\n      APIBASE: http:\/\/api:8080\/VMManagementPortalAPI\n    networks:\n      - portal_net\n    volumes:\n      - logs:\/app\/server\/logs\n    depends_on:\n        - \"api\"\n\n  api:\n    image: portal_api:1.0\n    ports:\n      - \"8080\"\n    environment:\n      JAVA_OPTS : -Xmx1024m -Xms1024m \n      DB_NAME : vmportal02\n      DB_USER : alex\n      DB_PASSWORD : Full@ccess123\n      DB_SERVER:  db\n      DB_USE_SSL: false\n    networks:\n      - portal_net\n    depends_on:\n        - \"db\"\n    command: [\"wait-for-it.sh\", \"db:3306\",\"-t\",\"300\", \"--\", \"catalina.sh\", \"run\"]\n        \n  db:\n    image: portal_db:1.0\n    ports:\n        - \"3306\"\n    networks:\n        - portal_net\n    volumes:\n        - .\/data\/db:\/var\/lib\/mysql\nnetworks:\n  portal_net:\n    driver: bridge\n\nvolumes:\n  logs:\n  ';
     createFile('./build/docker/saas/portal-ui', 'Dockerfile', docker_file_data);
     createFile('./build/docker/saas/portal-db', 'Dockerfile', portal_db_docker_file_data);
