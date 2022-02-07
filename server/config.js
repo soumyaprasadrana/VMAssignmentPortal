@@ -6,15 +6,20 @@ module.exports = {
     "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
     logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
-    PORT: process.env.PORT || 3001,
+    PORT: process.env.PORT || 3000,
     /* Choose the theme for angular UI 
     Available Themes : default,dark,pink,blue
     */
-    theme: 'blue',
+    theme: 'default',
     /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
-    includedSPA: ['androidassetstudio', 'converter', 'textcompare', 'prettier'],
+    includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
+    useGzip: false,
     useCORS: process.env.USECORS || true,
     vm_rest_path: '/vmDetails/getAll',
+    technotes_rest_path: '/technotes/getAll',
+    technotes_add_rest_path: '/technotes/addTechnote',
+    technotes_update_rest_path: '/technotes/updateTechnote',
+    technotes_remove_rest_path: '/technotes/removeTechnote',
     vm_additional_data: '/vmDetails/getAdditionalData',
     update_vm_additional_data: '/vmActions/updateVMAdditionalData',
     add_team_rest_path: '/admin/addTeam',

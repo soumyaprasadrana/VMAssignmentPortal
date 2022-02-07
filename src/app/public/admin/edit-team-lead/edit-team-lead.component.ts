@@ -8,16 +8,12 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AnyCnameRecord } from 'dns';
-import { Team } from '../../DataModel/team';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
-import { MustMatch } from '../../widget/utils/must-match.validator';
-import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 
 @Component({
   selector: 'app-edit-team-lead',
@@ -148,6 +144,7 @@ export class EditTeamLeadComponent implements OnInit {
         //console.log('Res', JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
+          this.userService.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',

@@ -16,13 +16,25 @@ export class ToolConfig {
       },*/
       {
         cardTitle: 'SSH Tool Box',
-        cardText: 'Helps to run ssh commands.',
+        cardText:
+          'Helps to run ssh commands.Current design only supports single line command execution.',
         cardWidth: '200',
         cardHeight: '200',
         cardRouterLink: ['../ltb'],
         cardIconClass: 'fa fa-linux',
         badgeIcon: 'fa fa-terminal',
-        cardTextClamp: 0,
+        cardTextClamp: 3,
+      },
+      {
+        cardTitle: 'Technotes',
+        cardText:
+          'Technotes can help to resolve day to day know issues of team members.',
+        cardWidth: '200',
+        cardHeight: '200',
+        cardRouterLink: ['../technotes'],
+        cardIconClass: 'fa fa-sticky-note-o',
+        badgeIcon: 'fa fa-edit',
+        cardTextClamp: 3,
       },
       {
         cardTitle: 'Single Page Applications',

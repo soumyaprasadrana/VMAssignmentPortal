@@ -179,6 +179,7 @@ export class EditUserComponent implements OnInit {
         //console.log('Res', JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
+          this.userService.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',

@@ -10,6 +10,10 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~material-icons-font/sass/main";
 @import "~material-icons-font/sass/Regular";
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~quill/dist/quill.snow.css';
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
+.technote-header {
+    font-family: 'Roboto' !important;
+}

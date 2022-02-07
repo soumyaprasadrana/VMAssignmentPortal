@@ -2,6 +2,7 @@ const { apiBase } = require('../config');
 const client = require('./client');
 const portalAuth = require('./portal-auth');
 const vmCtrl = require('./vm-module');
+const technotesCtrl = require('./technotes-module');
 const admnCtrl = require('./admin-module')
 const commonCtrl = require('./common-module');
 const userCtrl = require('./user-module')
@@ -36,6 +37,10 @@ module.exports = function(app) {
     app.post('/api/vm/:ip/comment/add', vmCtrl.addComment);
     app.post('/api/vm/upload', vmCtrl.upload);
     app.get('/api/vm/excelimport/sample', vmCtrl.downloadSampleXlsx);
+    app.get('/api/technotes/getAll', technotesCtrl.getAll);
+    app.post('/api/technotes/addTechnote', technotesCtrl.addTechnote);
+    app.post('/api/technotes/editTechnote/:id', technotesCtrl.updateTechnote);
+    app.post('/api/technotes/delete/:id', technotesCtrl.deleteTechnote);
     app.post('/api/admin/addTeam', admnCtrl.addTeam);
     app.post('/api/admin/updateTeam/:team', admnCtrl.updateTeam);
     app.get('/api/admin/getTeam/:team', admnCtrl.getTeam);

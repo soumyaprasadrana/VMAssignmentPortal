@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Team } from '../DataModel/team';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { NodeclientService } from './nodeclient.service';
 import { HttpHeaders } from '@angular/common/http';
 import { UIPropService } from './properties.services';
@@ -12,13 +12,40 @@ import { async } from '@angular/core/testing';
 export class TeamService {
   teams: Array<Team> = [];
   promise: any;
+  observable: any;
+  private needRefresh = new Subject<any>();
+  subscription: Subscription;
+  private needReload: any;
+  setNeedRefresh(value: boolean) {
+    this.needRefresh.next({ value: value });
+  }
+
+  clearneedRefreshState() {
+    this.needRefresh.next();
+  }
+
+  getNeedRefreshState(): Observable<any> {
+    return this.needRefresh.asObservable();
+  }
   constructor(
     private _props: UIPropService,
     private _client: NodeclientService
   ) {
     this.promise = this._props.getDataFromNode();
+    this.setNeedRefresh(false);
+    this.subscription = this.getNeedRefreshState().subscribe((value) => {
+      if (value) {
+        //console.log('Spinner state:' + value.value);
+        this.needReload = value.value;
+      } else {
+      }
+    });
   }
   getTeams() {
+    if (this.needReload) {
+      this._props.setNeedRefresh(true);
+      this.promise = this._props.getDataFromNode();
+    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): Team[] {
         var result = JSON.parse(res);
@@ -40,9 +67,15 @@ export class TeamService {
       this.promise
         .then((res: any) => {
           ////console.log('TeamServices=>', res);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           resolve(parseResult(res));
         })
         .catch((error: any) => {
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           //console.log(error);
           reject(error);
         });

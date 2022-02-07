@@ -16,6 +16,7 @@ import { AppCommonModule } from './public/widget/utils/common.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { AngularFileUploaderModule } from 'angular-file-uploader';
+import { QuillModule } from 'ngx-quill';
 @NgModule({
   declarations: [],
   imports: [
@@ -36,6 +37,7 @@ import { AngularFileUploaderModule } from 'angular-file-uploader';
     AppCommonModule,
     MatTooltipModule,
     MatTableModule,
+    QuillModule,
   ],
   exports: [
     AngularFileUploaderModule,
@@ -54,6 +56,7 @@ import { AngularFileUploaderModule } from 'angular-file-uploader';
     AppCommonModule,
     MatTooltipModule,
     MatTableModule,
+    QuillModule,
   ],
 })
 export class MaterialModule {}
