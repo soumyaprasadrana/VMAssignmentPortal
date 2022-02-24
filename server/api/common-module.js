@@ -7,11 +7,22 @@ var config = require('../config');
 const _client = require('./client');
 var request_promise = require('request-promise');
 var sshMetadata = require('./sshMetadata');
+var spaMetadata = require('../spa/spaMetadata');
+var quickLinks = require('./quickLinks')
 module.exports = {
     getSSHMetadata: function(req, res, next) {
         res.status(200).json(sshMetadata);
         next();
     },
+    getQuickLinks: function(req, res, next) {
+        res.status(200).json(quickLinks);
+        next();
+    },
+    getSPAMetadata: function(req, res, next) {
+        res.status(200).json(spaMetadata);
+        next();
+    },
+
     getProps: function(req, res, next) {
         logger.debug(req.body);
         var httpOptions = {
@@ -22,6 +33,11 @@ module.exports = {
         }
         _client.get(httpOptions, req, res, next);
 
+    },
+    getThemeName: function(req, res, next) {
+        const theme = config.theme ? config.theme : 'default';
+        res.status(200).json({ theme: theme });
+        next();
     },
     streamExec: function(req, res, next) {
         _client.post(_client.getHttpPostOptions(req, config.stream_exec), req, res, next);

@@ -854,13 +854,13 @@ export class HomePageComponent implements OnInit {
       //   'Ce;ll no:',
       //  _cell
       //  );
-      if (vm.status == 'Available' && _cell == 7) {
+      if (vm.status == 'Available') {
         //console.log('statusCellFormatter: Available true', vm.status);
         return {
           text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='alert show alert-success'>${value}</span></div>`,
           toolTip: value,
         };
-      } else if (vm.status == 'Occupied' && _cell == 7) {
+      } else if (vm.status == 'Occupied') {
         return {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='alert show alert-dark'>${value}</span></div>`,
           toolTip: value,

@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { SpinnerService } from '../../services/spinner-service';
 import { Router } from '@angular/router';
+import { TeamService } from '../../services/teams.service';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
@@ -27,7 +28,8 @@ export class AddTeamComponent implements OnInit {
     private _client: NodeclientService,
     private dialog: MatDialog,
     private _spinner: SpinnerService,
-    private router: Router
+    private router: Router,
+    private tms: TeamService
   ) {}
 
   ngOnInit(): void {
@@ -70,6 +72,7 @@ export class AddTeamComponent implements OnInit {
         //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS') {
+          this.tms.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',

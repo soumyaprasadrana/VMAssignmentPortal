@@ -23,7 +23,7 @@ export class TeamActivityLogsComponent implements OnInit {
 
   columnDef: Column[] = [];
   alGridOptions: GridOption = {
-    enableSorting: true,
+    enableSorting: false,
     enableFiltering: false,
     //Auto tooltip
     enableAutoTooltip: true,
@@ -43,12 +43,28 @@ export class TeamActivityLogsComponent implements OnInit {
       if (typeof value == 'undefined') {
         value = '';
       }
-      if (vm.activity_status == 'SUCCESS' && _cell == 4) {
+
+      return {
+        text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+        toolTip: value,
+      };
+    };
+    const statuscellFormatter: Formatter<ActivityLog> = (
+      _row,
+      _cell,
+      value,
+      colDef,
+      vm
+    ) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      if (vm.activity_status == 'SUCCESS') {
         return {
           text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='alert show alert-success'>${value}</span></div>`,
           toolTip: value,
         };
-      } else if (vm.activity_status == 'FAILED' && _cell == 4) {
+      } else if (vm.activity_status == 'FAILED') {
         return {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='alert show alert-danger'>${value}</span></div>`,
           toolTip: value,
@@ -111,7 +127,7 @@ export class TeamActivityLogsComponent implements OnInit {
         field: 'activity_status',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: statuscellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
         width: 20,

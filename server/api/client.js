@@ -26,6 +26,7 @@ module.exports = {
         };
         try {
             request_promise(extServerOptions, function(error, response, body) {
+
                 if (error) {
                     logger.debug("Error Occurred!");
                     err = {};
@@ -36,6 +37,7 @@ module.exports = {
                     callback(err, null);
                     return;
                 }
+
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response Status:" + JSON.stringify(response));
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
@@ -65,7 +67,11 @@ module.exports = {
                     err.message = body.message;
                     callback(err, null);
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             err = {};
             err.message = "Internal Server Error occurred!";
@@ -115,6 +121,21 @@ module.exports = {
             };
 
             request_promise(extServerOptions, function(error, response, body) {
+                if (error) {
+                    logger.debug("Error Occurred!");
+                    err = {};
+                    if (error.code == "ECONNREFUSED")
+                        err.message = "Unable to connect VM Assignment Portal API , Contact System Administrator.";
+                    else
+                        err.message = error.code
+                    res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                    next();
+                    return;
+                }
+                if (typeof response.headers == 'undefined') {
+                    res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                    next();
+                }
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response body:" + body);
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
@@ -136,7 +157,11 @@ module.exports = {
                     res.status(401).json({ "status": false });
                     next();
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
@@ -170,6 +195,21 @@ module.exports = {
             };
             logger.debug("before promise");
             request_promise(extServerOptions, function(error, response, body) {
+                if (error) {
+                    logger.debug("Error Occurred!");
+                    err = {};
+                    if (error.code == "ECONNREFUSED")
+                        err.message = "Unable to connect VM Assignment Portal API , Contact System Administrator.";
+                    else
+                        err.message = error.code
+                    res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                    next();
+                    return;
+                }
+                if (typeof response.headers == 'undefined') {
+                    res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                    next();
+                }
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response body:" + body);
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
@@ -193,7 +233,11 @@ module.exports = {
                     res.status(401).json({ "status": false });
                     next();
                 }
-            })
+            }).catch(function(error) {
+                logger.info(fun + JSON.stringify(error));
+                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
+                next();
+            });
         } catch (e) {
             logger.debug(e);
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });

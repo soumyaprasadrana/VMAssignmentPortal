@@ -2,7 +2,7 @@
     <div class="alert-custom">
         <ul id="breadcrumb">
             <li *ngFor="let item of path">
-                <a class="path-item" [routerLink]="item.path">
+                <a class="path-item" [routerLink]="item.path" [style.pointer-events]="item.parent=='technotes' && item.title=='edit' ?'none':'auto'">
                     <!-- Home Icon-->
                     <i class="fa fa-home" *ngIf="item.title=='home'" area-label="false"></i>
 
@@ -70,8 +70,17 @@
 
                     <!-- Edit User -->
                     <i *ngIf="item.parent=='user' && item.title=='edit'" class="fa fa-user" area-hideen="true"></i>
-                    <i *ngIf="item.parent=='user' && item.title=='edit'" class="fa fa-edit" area-hidden="true" style="font-size: 8px;"></i> {{item.title | uppercase}}
-
+                    <i *ngIf="item.parent=='user' && item.title=='edit'" class="fa fa-edit" area-hidden="true" style="font-size: 8px;"></i>
+                    <!--SPA Component-->
+                    <i *ngIf="item.title=='spa'" class="fa fa-window-restore" area-hideen="true"></i>
+                    <!--Technote Component-->
+                    <i *ngIf="item.title=='technotes'" class="fa fa-sticky-note-o" area-hideen="true"></i>
+                    <!-- Add Technote -->
+                    <i *ngIf="item.parent=='technotes' && item.title=='add'" class="fa fa-sticky-note-o" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='technotes' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>
+                    <!--Edit Technote-->
+                    <i *ngIf="item.parent=='technotes' && item.title=='edit'" class="fa fa-sticky-note-o" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='technotes' && item.title=='edit'" class="fa fa-edit" area-hidden="true" style="font-size: 8px;"></i> {{item.title | uppercase}}
                 </a>
 
             </li>

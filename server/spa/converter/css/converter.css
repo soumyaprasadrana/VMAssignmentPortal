@@ -1,0 +1,146 @@
+* {
+  margin:0;
+  padding:0;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+html {
+  background-color:white;
+  font:normal normal 13px/1.4 Helmet,FreeSans,Sans-Serif;
+  color:black;
+  padding:1em;
+}
+a {
+  color:blue;
+  text-decoration:none;
+}
+a:focus,
+a:hover {text-decoration:underline}
+button,
+input,
+select,
+textarea {
+  display:inline-block;
+  vertical-align:middle;
+  background-color:#ffa;
+  border:1px solid;
+  font:inherit;
+  line-height:normal;
+  padding:2px;
+  width:12em;
+}
+label {
+  display:inline-block;
+  cursor:pointer;
+  line-height:normal;
+  overflow:hidden;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  margin:0;
+  padding:0;
+  border:0;
+}
+button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+  background-color:black;
+  border-color:transparent;
+  color:white;
+  padding-right:6px;
+  padding-left:6px;
+  cursor:pointer;
+  width:auto;
+}
+input[type=checkbox],
+input[type=file],
+input[type=image],
+input[type=radio] {
+  width:auto;
+  height:auto;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:0;
+  background:none;
+  border:0;
+}
+input[type=file] {
+  font-size:86%;
+  cursor:pointer;
+}
+label input[type=checkbox],
+label input[type=radio] {
+  display:block;
+  float:left;
+  margin:.15em .25em 0 0;
+}
+p {margin:0 0 1em}
+textarea {
+  width:100%;
+  min-height:30em;
+  font-family:"Courier New",Courier,"Nimbus Mono L",Monospace;
+  resize:vertical;
+}
+fieldset,
+iframe {
+  display:block;
+  border:1px solid;
+  margin:0 0 1em;
+  padding:.5em 1em 1em;
+}
+fieldset fieldset,
+fieldset + p,
+main + p {margin-bottom:0}
+fieldset fieldset + fieldset {margin-top:1em}
+iframe {
+  padding:0;
+  border:0;
+  width:100%;
+  height:30em;
+}
+legend {
+  font-weight:bold;
+  padding:0 .2em;
+}
+hr {
+  border:0;
+  border-top:1px solid;
+  color:inherit;
+  height:0;
+  margin:0 0 1em;
+}
+main {
+  margin-bottom:1em;
+  *zoom:1;
+  overflow:hidden;
+}
+main:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+main > div {
+  width:50%;
+  float:left;
+}
+main > div + div {float:right}
+main > div > fieldset {margin:0 .5em 0 0}
+main > div + div > fieldset {margin:0 0 0 .5em}
+main > div:only-child {width:100%}
+@media (max-width:600px) {
+  main > div,
+  main > div + div {
+    float:none;
+    display:block;
+    width:auto;
+  }
+  main > div + div {margin-top:1em}
+  main > div > fieldset,
+  main > div + div > fieldset {
+    margin-right:0;
+    margin-left:0;
+  }
+}

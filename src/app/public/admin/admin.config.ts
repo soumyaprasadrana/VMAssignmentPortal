@@ -4,7 +4,7 @@ export class AdminConfig {
       {
         cardTitle: 'Create Team',
         cardText:
-          'Creating a team will help youto manage team members and virutal machines under this team.',
+          'Creating a team will help you to manage team members and virutal machines under this team.',
         cardWidth: '300',
         cardHeight: '200',
         cardIconClass: 'fa fa-users',
@@ -57,6 +57,22 @@ export class AdminConfig {
       },
     ],
     [
+      {
+        cardTitle: 'Promote User ',
+        cardText: 'This will promote user to team lead.',
+        cardWidth: '250',
+        cardHeight: '200',
+        cardIconClass: 'fa fa-user ',
+        badgeIcon: 'fa fa-edit',
+        cardTextClamp: 2,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
+        callback: function (parentObject: any) {
+          parentObject.promoteUser();
+        },
+      },
+
       {
         cardTitle: 'Delete Team ',
         cardText: 'This will remove the team from the database.',

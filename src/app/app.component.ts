@@ -5,6 +5,7 @@ import { SpinnerService } from './public/services/spinner-service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { AuthserviceService } from './public/services/authservice.service';
+import { PortalThemesService } from './public/services/portal.thems.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,17 +15,35 @@ export class AppComponent {
   title = 'VM Assignment Portal';
   isLoading: boolean = false;
   private subscription!: Subscription;
+  private subscription2!: Subscription;
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date;
+  themeUrl: any;
+  THEME_LOCAL = 'theme';
   constructor(
     private route: ActivatedRoute,
     private spinner: SpinnerService,
     private idle: Idle,
     private keepalive: Keepalive,
     private auth: AuthserviceService,
-    private router: Router
+    private router: Router,
+    public themeService: PortalThemesService
   ) {
+    themeService.getThemeUrl().then((res) => {
+      if (localStorage[this.THEME_LOCAL] != null) {
+        console.log(
+          '<{App Component}> Theme from local storage.',
+          JSON.parse(localStorage[this.THEME_LOCAL]).theme
+        );
+        this.themeUrl = themeService.getThemeUrlWithThemeName(
+          JSON.parse(localStorage[this.THEME_LOCAL]).theme
+        );
+      } else {
+        console.log('<{App Component}> Theme from server.', res);
+        this.themeUrl = res;
+      }
+    });
     this.subscription = this.spinner.getSpinnerState().subscribe((value) => {
       if (value) {
         //console.log('Spinner state:' + value.value);
@@ -32,9 +51,18 @@ export class AppComponent {
       } else {
       }
     });
+    this.subscription = this.themeService.getFilterText().subscribe((text) => {
+      if (text) {
+        console.log(
+          '<{App Component}> Recieved from theme service :' + text.text
+        );
+        this.themeUrl = this.themeService.getThemeUrlWithThemeName(text.text);
+      } else {
+      }
+    });
 
     // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(5 * 60);
+    idle.setIdle(10 * 60);
 
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
     idle.setTimeout(5);

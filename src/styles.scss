@@ -10,10 +10,148 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~material-icons-font/sass/main";
 @import "~material-icons-font/sass/Regular";
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import "variable";
+@import '~quill/dist/quill.snow.css';
+@import "node_modules/font-awesome/scss/font-awesome.scss";
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
+.technote-header {
+    font-family: 'Roboto' !important;
+}
+
+$primary-color:#280071;
+$primary-btn-hover-color: #5803f5;
+$side-nav-color: $primary-color;
+$blue-gray: #8972b4;
+$blue-gray-darken: #604a8a;
+$blue: $primary-color;
+$blue-darken: #1b014b;
+$green: #7400b8;
+$green-darken: #31014d;
+$custom-alert-background:#d3d1f1;
+$custom-alert-border:#bed8eb;
+$row-mouse-hover-color: #e1dcfc;
+$row-selected-color: #d2c9fd;
+$form-control-focus-box-shadow:$custom-alert-background;
+@import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
+@import "~compass-mixins/lib/compass/css3";
+
+/* Breadcrumb css*/
+
+.alert-custom {
+    background-color: $custom-alert-background;
+    border-color: $custom-alert-border;
+}
+
+#breadcrumb {
+    list-style: none;
+    display: inline-block;
+    margin: 10px;
+    .icon {
+        font-size: 14px;
+    }
+    li {
+        float: left;
+        a {
+            color: #fff;
+            display: block;
+            background: $blue;
+            text-decoration: none;
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px 0 5px;
+            text-align: center;
+            margin-right: 23px;
+        }
+        &:nth-child(even) {
+            a {
+                background-color: $blue-darken;
+                &:before {
+                    border-color: $blue-darken;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $blue-darken;
+                }
+            }
+        }
+        &:first-child {
+            a {
+                padding-left: 15px;
+                @include border-radius(4px 0 0 4px);
+                &:before {
+                    border: none;
+                }
+            }
+        }
+        &:last-child {
+            a {
+                padding-right: 15px;
+                @include border-radius(0 4px 4px 0);
+                &:after {
+                    border: none;
+                }
+            }
+        }
+        a {
+            &:before,
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                border: 0 solid $blue;
+                border-width: 20px 10px;
+                width: 0;
+                height: 0;
+            }
+            &:before {
+                left: -20px;
+                border-left-color: transparent;
+            }
+            &:after {
+                left: 100%;
+                border-color: transparent;
+                border-left-color: $blue;
+            }
+            &:hover {
+                background-color: $green;
+                &:before {
+                    border-color: $green;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $green;
+                }
+            }
+            &:active {
+                background-color: $green-darken;
+                &:before {
+                    border-color: $green-darken;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $green-darken;
+                }
+            }
+        }
+    }
+}
+
+.path-item {
+    margin-left: 5px;
+}
+
+.disabled {
+    pointer-events: none !important;
+    cursor: default !important;
+    text-decoration: none !important;
+    color: black !important;
+}
+
+
+/*End breadcrumb*/
+
 .text-primary {
     color: $primary-color !important;
 }
@@ -270,4 +408,43 @@ div:has(input[data-columnid="global"]) {
 .app-scroller::-webkit-scrollbar-thumb {
     background: $primary-color;
     border-radius: 10px;
+}
+
+.dialog-title {
+    float: left;
+    font-family: "SourceSansPro", Helvetica, Arial, sans-serif;
+    margin: 0;
+    margin-top: 5px;
+    vertical-align: middle;
+    border-bottom: 2px $primary-color solid;
+    width: 100%;
+    font-size: 18px;
+    color: black;
+}
+
+mat-nav-list a {
+    color: $primary-color !important;
+}
+
+.form-control:focus {
+    color: #495057 !important;
+    background-color: #fff !important;
+    border-color: $primary-color !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem $form-control-focus-box-shadow !important;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: $primary-color!important;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 0 3px $form-control-focus-box-shadow !important;
+}
+
+.keyword-container {
+    width: auto;
+    .keyword {
+        color: white;
+        background-color: $primary-color;
+        border-radius: 5px;
+        font-size: small;
+    }
 }

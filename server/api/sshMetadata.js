@@ -57,123 +57,123 @@ module.exports = {
                 },
             },
 
-            {
-                cardTitle: 'IP Config Linux',
-                cardCommand: 'ifconfig',
-                cardWidth: 150,
-                cardHeight: 150,
-                cardFields: [
-                    [
-                        { label: 'Machine IP', field_name: 'machine_ip' },
-                        { label: 'SSH Username', field_name: 'ssh_username' },
-                        { label: 'SSH Password', field_name: 'ssh_password' },
-                    ],
-                    {
-                        machine_ip: [null, "required"],
-                        ssh_username: [null, "required"],
-                        ssh_password: [null, "required"],
-                        command: ['ifconfig', "required"],
-                    },
-                ],
-            },
-            {
-                cardTitle: 'DIR',
-                cardCommand: 'dir',
-                cardWidth: 150,
-                cardHeight: 150,
-                cardFields: [
-                    [
-                        { label: 'Machine IP', field_name: 'machine_ip' },
-                        { label: 'SSH Username', field_name: 'ssh_username' },
-                        { label: 'SSH Password', field_name: 'ssh_password' },
-                    ],
-                    {
-                        machine_ip: [null, "required"],
-                        ssh_username: [null, "required"],
-                        ssh_password: [null, "required"],
-                        command: ['dir && sleep 40 && dir', "required"],
-                    },
-                ],
-            },
-            {
-                cardTitle: 'PING',
-                cardCommand: 'ping {hostname}',
-                cardWidth: 150,
-                cardHeight: 150,
-                cardFields: [
-                    [
-                        { label: 'Machine IP', field_name: 'machine_ip' },
-                        { label: 'SSH Username', field_name: 'ssh_username' },
-                        { label: 'SSH Password', field_name: 'ssh_password' },
-                        { label: 'Hostname to ping', field_name: 'hostname' },
-                    ],
-                    {
-                        machine_ip: [null, "required"],
-                        ssh_username: [null, "required"],
-                        ssh_password: [null, "required"],
-                        command: ['ping {hostname}', "required"],
-                        hostname: [null, "required"],
-                    },
-                ],
-                commandQuerryParser: true,
-                queryFields: ['hostname'],
-            },
-            {
-                cardTitle: 'TEST2',
-                cardCommand: 'ls -ltrh',
-                cardWidth: 150,
-                cardHeight: 150,
-                cardFields: [
-                    [
-                        { label: 'Machine IP', field_name: 'machine_ip' },
-                        { label: 'SSH Username', field_name: 'ssh_username' },
-                        { label: 'SSH Password', field_name: 'ssh_password' },
-
-                    ],
-                    {
-                        machine_ip: [null, "required"],
-                        ssh_username: [null, "required"],
-                        ssh_password: [null, "required"],
-                        command: [
-                            'ls -ltrh',
-                            "required",
+            /*    {
+                    cardTitle: 'IP Config Linux',
+                    cardCommand: 'ifconfig',
+                    cardWidth: 150,
+                    cardHeight: 150,
+                    cardFields: [
+                        [
+                            { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Username', field_name: 'ssh_username' },
+                            { label: 'SSH Password', field_name: 'ssh_password' },
                         ],
-
-                    },
-                ],
-                commandQuerryParser: false,
-
-            },
-            {
-                cardTitle: 'TEST',
-                cardCommand: 'cd C:\\ && mkdir {folder1} && cd {folder1} && mkdir {folder2} && netstat -ano |findstr :{port}',
-                cardWidth: 150,
-                cardHeight: 150,
-                cardFields: [
-                    [
-                        { label: 'Machine IP', field_name: 'machine_ip' },
-                        { label: 'SSH Username', field_name: 'ssh_username' },
-                        { label: 'SSH Password', field_name: 'ssh_password' },
-                        { label: 'Folder1', field_name: 'folder1' },
-                        { label: 'Folder1', field_name: 'folder2' },
-                        { label: 'Port', field_name: 'port' },
+                        {
+                            machine_ip: [null, "required"],
+                            ssh_username: [null, "required"],
+                            ssh_password: [null, "required"],
+                            command: ['ifconfig', "required"],
+                        },
                     ],
-                    {
-                        machine_ip: [null, "required"],
-                        ssh_username: [null, "required"],
-                        ssh_password: [null, "required"],
-                        command: [
-                            'cd C:\\ && mkdir {folder1} && cd {folder1} && mkdir {folder2} && netstat -ano |findstr :{port}',
-                            "required",
+                },
+                {
+                    cardTitle: 'DIR',
+                    cardCommand: 'dir',
+                    cardWidth: 150,
+                    cardHeight: 150,
+                    cardFields: [
+                        [
+                            { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Username', field_name: 'ssh_username' },
+                            { label: 'SSH Password', field_name: 'ssh_password' },
                         ],
-                        folder1: [null, "required"],
-                        folder2: [null, "required"],
-                        port: [null, "required"],
-                    },
-                ],
-                commandQuerryParser: true,
-                queryFields: ['folder1', 'folder2', 'port'],
-            },
+                        {
+                            machine_ip: [null, "required"],
+                            ssh_username: [null, "required"],
+                            ssh_password: [null, "required"],
+                            command: ['dir && sleep 40 && dir', "required"],
+                        },
+                    ],
+                },
+                {
+                    cardTitle: 'PING',
+                    cardCommand: 'ping {hostname}',
+                    cardWidth: 150,
+                    cardHeight: 150,
+                    cardFields: [
+                        [
+                            { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Username', field_name: 'ssh_username' },
+                            { label: 'SSH Password', field_name: 'ssh_password' },
+                            { label: 'Hostname to ping', field_name: 'hostname' },
+                        ],
+                        {
+                            machine_ip: [null, "required"],
+                            ssh_username: [null, "required"],
+                            ssh_password: [null, "required"],
+                            command: ['ping {hostname}', "required"],
+                            hostname: [null, "required"],
+                        },
+                    ],
+                    commandQuerryParser: true,
+                    queryFields: ['hostname'],
+                },
+                {
+                    cardTitle: 'TEST2',
+                    cardCommand: 'ls -ltrh',
+                    cardWidth: 150,
+                    cardHeight: 150,
+                    cardFields: [
+                        [
+                            { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Username', field_name: 'ssh_username' },
+                            { label: 'SSH Password', field_name: 'ssh_password' },
+
+                        ],
+                        {
+                            machine_ip: [null, "required"],
+                            ssh_username: [null, "required"],
+                            ssh_password: [null, "required"],
+                            command: [
+                                'ls -ltrh',
+                                "required",
+                            ],
+
+                        },
+                    ],
+                    commandQuerryParser: false,
+
+                },
+                {
+                    cardTitle: 'TEST',
+                    cardCommand: 'cd C:\\ && mkdir {folder1} && cd {folder1} && mkdir {folder2} && netstat -ano |findstr :{port}',
+                    cardWidth: 150,
+                    cardHeight: 150,
+                    cardFields: [
+                        [
+                            { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Username', field_name: 'ssh_username' },
+                            { label: 'SSH Password', field_name: 'ssh_password' },
+                            { label: 'Folder1', field_name: 'folder1' },
+                            { label: 'Folder1', field_name: 'folder2' },
+                            { label: 'Port', field_name: 'port' },
+                        ],
+                        {
+                            machine_ip: [null, "required"],
+                            ssh_username: [null, "required"],
+                            ssh_password: [null, "required"],
+                            command: [
+                                'cd C:\\ && mkdir {folder1} && cd {folder1} && mkdir {folder2} && netstat -ano |findstr :{port}',
+                                "required",
+                            ],
+                            folder1: [null, "required"],
+                            folder2: [null, "required"],
+                            port: [null, "required"],
+                        },
+                    ],
+                    commandQuerryParser: true,
+                    queryFields: ['folder1', 'folder2', 'port'],
+                },*/
         ],
     ],
     defaultSSHUsername: 'default',

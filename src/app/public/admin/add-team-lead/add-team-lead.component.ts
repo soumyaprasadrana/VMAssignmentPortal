@@ -12,6 +12,7 @@ import { Team } from '../../DataModel/team';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
+import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
@@ -32,6 +33,7 @@ export class AddTeamLeadComponent implements OnInit {
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
+    private userService: UserService,
     private router: Router
   ) {
     tms
@@ -96,6 +98,7 @@ export class AddTeamLeadComponent implements OnInit {
         //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
+          this.userService.setNeedRefresh(true);
           this.openDialog(
             {
               type: 'message',

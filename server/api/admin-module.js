@@ -26,6 +26,16 @@ module.exports = {
         _client.post(_client.getHttpPostOptions(req, config.update_props_rest_path), req, res, next);
 
     },
+    promteUser: function(req, res, next) {
+        var user = req.params['user']
+        req.body.params = {}
+        req.body.params.user_name = user;
+        req.body.params.user_id = user;
+        req.body.params.authProtocol = {};
+        req.body.params.authProtocol.is_teamLead = "Yes";
+        _client.post(_client.getHttpPostOptions(req, config.promote_user), req, res, next);
+
+    },
 
     createTeamLeader: function(req, res, next) {
         logger.debug(req.body);

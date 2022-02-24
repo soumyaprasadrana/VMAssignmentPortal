@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../DataModel/user';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { NodeclientService } from './nodeclient.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Team } from '../DataModel/team';
@@ -13,7 +13,22 @@ export class UserService {
   users: Array<any> = [];
   promise: any;
   promiseTL: any;
+  promiseNU: any;
   promiseTeamStats: any;
+  private needRefresh = new Subject<any>();
+  subscription: Subscription;
+  private needReload: any;
+  setNeedRefresh(value: boolean) {
+    this.needRefresh.next({ value: value });
+  }
+
+  clearneedRefreshState() {
+    this.needRefresh.next();
+  }
+
+  getNeedRefreshState(): Observable<any> {
+    return this.needRefresh.asObservable();
+  }
   constructor(private _client: NodeclientService) {
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -24,9 +39,28 @@ export class UserService {
     };
     this.promise = _client.get('api/public/getUsers', httpOptions);
     this.promiseTL = _client.get('api/admin/getTeamLeads', httpOptions);
+    this.promiseNU = _client.get('api/public/getNormalUsers', httpOptions);
     this.promiseTeamStats = _client.get('api/admin/teamStats', httpOptions);
+    this.setNeedRefresh(false);
+    this.subscription = this.getNeedRefreshState().subscribe((value) => {
+      if (value) {
+        //console.log('Spinner state:' + value.value);
+        this.needReload = value.value;
+      } else {
+      }
+    });
   }
   getUsers() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    if (this.needReload) {
+      this.promise = this._client.get('api/public/getUsers', httpOptions);
+    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): User[] {
         var result = JSON.parse(res);
@@ -48,9 +82,15 @@ export class UserService {
       this.promise
         .then((res: any) => {
           //console.log('Users Service=>', res);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           resolve(parseResult(res));
         })
         .catch((error: any) => {
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           //console.log(error);
           reject(error);
         });
@@ -58,20 +98,49 @@ export class UserService {
     return promisey;
   }
   getTeamStats() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    if (this.needReload) {
+      this.promiseTeamStats = this._client.get(
+        'api/admin/teamStats',
+        httpOptions
+      );
+    }
     const promisey = new Promise((resolve, reject) => {
       this.promiseTeamStats
         .then((res: any) => {
           //console.log('Users Service:-: Team Stats=>', res);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           resolve(res);
         })
         .catch((error: any) => {
           //console.log(error);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           reject(error);
         });
     });
     return promisey;
   }
   getTeamLeads() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    if (this.needReload) {
+      this.promiseTL = this._client.get('api/admin/getTeamLeads', httpOptions);
+    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): User[] {
         var result = JSON.parse(res);
@@ -93,7 +162,85 @@ export class UserService {
       this.promiseTL
         .then((res: any) => {
           //console.log('Users Service=>', res);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
           resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          //console.log(error);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  getNormalUsers() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    if (this.needReload) {
+      this.promiseNU = this._client.get(
+        'api/public/getNormalUsers',
+        httpOptions
+      );
+    }
+    const promisey = new Promise((resolve, reject) => {
+      function parseResult(res: any): User[] {
+        var result = JSON.parse(res);
+
+        var id = 1;
+        var returnObject: User[] = [];
+        for (var user in result) {
+          returnObject.push({
+            id: id,
+            user_name: user,
+            user_id: user,
+          });
+          id++;
+        }
+        ////console.log('returnObject=>', returnObject);
+        return returnObject;
+      }
+
+      this.promiseNU
+        .then((res: any) => {
+          //console.log('Users Service=>', res);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
+          resolve(parseResult(res));
+        })
+        .catch((error: any) => {
+          //console.log(error);
+          if (this.needReload) {
+            this.setNeedRefresh(false);
+          }
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  promoteUser(user: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .post('api/admin/promoteUser/' + user, null, httpOptions)
+        .then((res: any) => {
+          //console.log('Users Service:delete=>', res);
+          resolve(res);
         })
         .catch((error: any) => {
           //console.log(error);
