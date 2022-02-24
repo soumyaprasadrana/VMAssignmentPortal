@@ -4,7 +4,7 @@ export class AdminConfig {
       {
         cardTitle: 'Create Team',
         cardText:
-          'Creating a team will help youto manage team members and virutal machines under this team.',
+          'Creating a team will help you to manage team members and virutal machines under this team.',
         cardWidth: '300',
         cardHeight: '200',
         cardIconClass: 'fa fa-users',
