@@ -4,6 +4,10 @@ $primary-text-color-hover: #fff;
     color: $primary-text-color;
 }
 
+.btn-primary:hover {
+    text-decoration: none !important;
+}
+
 .navflex a:hover {
     color: primary-text-color-hover !important;
     text-decoration: none !important;

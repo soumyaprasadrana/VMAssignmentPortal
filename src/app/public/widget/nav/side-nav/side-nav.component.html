@@ -22,6 +22,15 @@
             format_color_fill
         </mat-icon><span class="ml-1">Themes</span>
     </a>
+    <a mat-list-item *ngIf="quicklinks.length>0" [matMenuTriggerFor]="LinkMenu" id="linkDropdown">
+        <mat-icon>
+            link
+        </mat-icon><span class="ml-1">Quick Links</span>
+    </a>
+    <mat-menu #LinkMenu="matMenu" yPosition="below">
+        <a *ngFor="let item of quicklinks" class="btn-primary m-2" mat-flat-button href="{{item.linkUrl}}" target="_blank"><span> <i *ngIf="item.iconClass" class="{{item.iconClass}}"></i><img *ngIf="iconSrc" src="item.iconSrc"></span><span>  {{item.linkTitle}}</span> </a>
+    </mat-menu>
+
     <a mat-list-item [matMenuTriggerFor]="sideMenu">
         <mat-icon>perm_identity</mat-icon> <span class="ml-1">{{loggedUser.name | uppercase }}</span>
 

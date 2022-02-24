@@ -19,6 +19,7 @@ export class TopNavComponent implements OnInit {
   showGlobalSearch: boolean = false;
   loggedUser!: any;
   THEME_LOCAL = 'theme';
+  quicklinks: [] = [];
   constructor(
     private searchService: GlobalSearchService,
     private auth: AuthserviceService,
@@ -41,6 +42,9 @@ export class TopNavComponent implements OnInit {
           this.showGlobalSearch = false;
         }
       });
+    this.themeService.getQuickLinks().then((res: any) => {
+      this.quicklinks = res.quickLinksMetaData;
+    });
   }
 
   ngOnInit() {
@@ -112,6 +116,9 @@ export class TopNavComponent implements OnInit {
           });
       }
     );
+  }
+  openLink(link: string) {
+    window.open(link, '_blank');
   }
   openDialogInput(data: any, callback: any) {
     this.dialog

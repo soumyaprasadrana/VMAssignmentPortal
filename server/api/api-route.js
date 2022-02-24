@@ -64,6 +64,7 @@ module.exports = function(app) {
     app.post('/api/stream/exec', commonCtrl.streamExec);
     app.get("/api/stream/getOut/:file/:threadID", commonCtrl.getStreamOutput);
     app.get("/api/public/sshMetadata", commonCtrl.getSSHMetadata);
+    app.get("/api/public/quicklinks", commonCtrl.getQuickLinks);
     app.get("/api/public/spaMetadata", commonCtrl.getSPAMetadata);
 
 

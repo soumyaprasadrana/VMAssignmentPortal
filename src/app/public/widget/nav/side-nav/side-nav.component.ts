@@ -17,6 +17,7 @@ export class SideNavComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
   loggedUser!: any;
   THEME_LOCAL = 'theme';
+  quicklinks: [] = [];
   constructor(
     private searchService: GlobalSearchService,
     private auth: AuthserviceService,
@@ -24,7 +25,11 @@ export class SideNavComponent implements OnInit {
     private dialog: MatDialog,
     private _spinner: SpinnerService,
     private themeService: PortalThemesService
-  ) {}
+  ) {
+    this.themeService.getQuickLinks().then((res: any) => {
+      this.quicklinks = res.quickLinksMetaData;
+    });
+  }
 
   ngOnInit() {
     this.loggedUser = this.auth.getUser();
@@ -68,6 +73,9 @@ export class SideNavComponent implements OnInit {
           });
       }
     );
+  }
+  openLink(link: string) {
+    window.open(link, '_blank');
   }
   signOut() {
     //console.log('Signing out user ...');

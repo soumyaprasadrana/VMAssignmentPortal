@@ -73,4 +73,28 @@ export class PortalThemesService {
     });
     return promise;
   }
+  getQuickLinks() {
+    var promise = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      var quicklinks;
+      this._client
+        .get('api/public/quicklinks', httpOptions)
+        .then((res: any) => {
+          quicklinks = res.quicklinks;
+          console.log('Quick Links loded from server :', quicklinks);
+
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+    return promise;
+  }
 }

@@ -8,9 +8,14 @@ const _client = require('./client');
 var request_promise = require('request-promise');
 var sshMetadata = require('./sshMetadata');
 var spaMetadata = require('../spa/spaMetadata');
+var quickLinks = require('./quickLinks')
 module.exports = {
     getSSHMetadata: function(req, res, next) {
         res.status(200).json(sshMetadata);
+        next();
+    },
+    getQuickLinks: function(req, res, next) {
+        res.status(200).json(quickLinks);
         next();
     },
     getSPAMetadata: function(req, res, next) {

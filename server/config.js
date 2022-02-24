@@ -3,7 +3,7 @@
  */
 var pino = require('pino');
 module.exports = {
-    "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
+    "apiBase": process.env.APIBASE || "http://localhost:8080/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
     logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
     PORT: process.env.PORT || 3000,
@@ -13,7 +13,7 @@ module.exports = {
     theme: 'default',
     /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
-    useGzip: false,
+    useGzip: true,
     useCORS: process.env.USECORS || true,
     vm_rest_path: '/vmDetails/getAll',
     technotes_rest_path: '/technotes/getAll',
