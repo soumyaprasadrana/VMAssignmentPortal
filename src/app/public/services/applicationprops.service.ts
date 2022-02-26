@@ -1,6 +1,16 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Application Property Service
+ */
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { ActivityLog } from '../DataModel/activitylog';
 import { NodeclientService } from './nodeclient.service';
 import { Property } from '../DataModel/prop';
 

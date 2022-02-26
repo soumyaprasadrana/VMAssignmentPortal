@@ -1,8 +1,18 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Tools LTB Component
+ */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NodeclientService } from '../../services/nodeclient.service';
-import { ToolsLTBConfig } from './tools-ltb.config';
 @Component({
   selector: 'app-tools-ltb',
   templateUrl: './tools-ltb.component.html',

@@ -1,14 +1,19 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * File Responsible for VM related API calls
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:02:04
+ * @modify date 2022-02-26 18:02:04
+ * @desc File Responsible for User related API calls
  */
-const tough = require('tough-cookie');
 const { logger } = require('../config');
 var config = require('../config');
 const _client = require('./client');
-var request_promise = require('request-promise');
 module.exports = {
     addUser: function(req, res, next) {
-
         var temp = {
             create_user: req.body.params.addUser,
             delete_user: req.body.params.removeUser,
@@ -21,7 +26,6 @@ module.exports = {
 
     },
     updateUser: function(req, res, next) {
-
         var temp = {
             create_user: req.body.params.addUser,
             delete_user: req.body.params.removeUser,
@@ -31,7 +35,6 @@ module.exports = {
         req.body.params.authProtocol = temp;
         logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.update_user_rest_path), req, res, next);
-
     },
     changePassword: function(req, res, next) {
         logger.debug(req.body);
@@ -62,7 +65,6 @@ module.exports = {
             jar: _client.getStaticCookieJar(req)
         }
         _client.get(httpOptions, req, res, next);
-
     },
     deleteUser: function(req, res, next) {
         //req.body.params.user_id = req.body.params.user;
@@ -72,7 +74,6 @@ module.exports = {
         req.body.params.user_id = user_id;
         logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.delete_uesr_path), req, res, next);
-
     },
     getUsersWithProtocols: function(req, res, next) {
         logger.debug(req.body);
@@ -83,7 +84,6 @@ module.exports = {
             jar: _client.getStaticCookieJar(req)
         }
         _client.get(httpOptions, req, res, next);
-
     },
     getTL: function(req, res, next) {
         logger.debug(req.body);
@@ -94,7 +94,6 @@ module.exports = {
             jar: _client.getStaticCookieJar(req)
         }
         _client.get(httpOptions, req, res, next);
-
     },
     getUser: function(req, res, next) {
         var user_id = req.params['id']
@@ -108,6 +107,5 @@ module.exports = {
             jar: _client.getStaticCookieJar(req)
         }
         _client.get(httpOptions, req, res, next);
-
     }
 }

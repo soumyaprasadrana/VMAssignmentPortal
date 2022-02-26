@@ -1,3 +1,14 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Team Activity Logs Component
+ */
 import { Component, OnInit } from '@angular/core';
 import { Column, GridOption } from '@slickgrid-universal/common';
 import { Filters, Formatter, Formatters } from 'angular-slickgrid';
@@ -25,11 +36,13 @@ export class TeamActivityLogsComponent implements OnInit {
   alGridOptions: GridOption = {
     enableSorting: false,
     enableFiltering: false,
+    enableExcelExport: false,
     //Auto tooltip
     enableAutoTooltip: true,
-    gridHeight: 400,
+    gridHeight: 350,
     // gridWidth: 900,
     enableAutoSizeColumns: true,
+    //autoHeight: true,
   };
 
   ngOnInit(): void {

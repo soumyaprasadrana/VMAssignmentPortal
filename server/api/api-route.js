@@ -1,5 +1,14 @@
-const { apiBase } = require('../config');
-const client = require('./client');
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 17:53:04
+ * @modify date 2022-02-26 17:53:04
+ * @desc Node API Routing
+ */
 const portalAuth = require('./portal-auth');
 const vmCtrl = require('./vm-module');
 const technotesCtrl = require('./technotes-module');
@@ -55,6 +64,7 @@ module.exports = function(app) {
     app.get('/api/public/getUIProps', commonCtrl.getProps);
     app.get('/api/public/getUsers', userCtrl.getUsers);
     app.get('/api/config/theme', commonCtrl.getThemeName);
+    app.get('/api/config/hideloginfooter', commonCtrl.getLoginFooter);
     app.get('/api/public/getNormalUsers', userCtrl.getNormalUsers);
     app.get('/api/admin/getTeamLeads', userCtrl.getTL);
     app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
@@ -66,6 +76,4 @@ module.exports = function(app) {
     app.get("/api/public/sshMetadata", commonCtrl.getSSHMetadata);
     app.get("/api/public/quicklinks", commonCtrl.getQuickLinks);
     app.get("/api/public/spaMetadata", commonCtrl.getSPAMetadata);
-
-
 }

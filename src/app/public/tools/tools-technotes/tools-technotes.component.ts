@@ -1,40 +1,38 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Tools Technotes Component
+ */
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import {
   Column,
   GridOption,
-  Formatters,
   EditCommand,
   Filters,
-  MultipleSelectOption,
-  FieldType,
   AngularGridInstance,
   GridStateChange,
   GridState,
-  unsubscribeAllObservables,
-  Grouping,
-  AngularSlickgridComponent,
   GridService,
   Formatter,
-  CurrentColumn,
-  FileType,
-  MenuCommandItem,
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
-import { GlobalSearchService } from '../../services/global-search.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { UIPropService } from '../../services/properties.services';
 import { UserService } from '../../services/users.service';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
-import { AdditionalDataDialogComponent } from '../../widget/alert-dialog/additional-data-dialog';
 import { NodeclientService } from '../../services/nodeclient.service';
-import { FileChooseDialogComponent } from '../../widget/alert-dialog/file-choose-dialog.component';
 import { TechnotesService } from '../../services/technotes.service';
 
 const LOCAL_STORAGE_KEY = 'technotesGridState';
@@ -272,7 +270,7 @@ export class ToolsTechnotesComponent implements OnInit {
       if (list.length == 1 || value == '') {
         html = `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`;
       } else {
-        html += `<div style='text-align:center;width:auto;height:50px;overflow-x:scroll;overflow-y:hidden;'>`;
+        html += `<div style='text-align:center;width:auto;height:50px;overflow-x:auto;overflow-y:hidden;'>`;
         for (var item in list) {
           html += `<span class="keyword-container ml-1">
           <span class="keyword p-1">${list[item]}</span>
@@ -469,20 +467,8 @@ export class ToolsTechnotesComponent implements OnInit {
           : [5, 10, 20, 25, 50],
         pageSize: 25,
       },
-      enableExcelCopyBuffer: true,
-      enableExcelExport: true,
-      exportOptions: {
-        // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
-        exportWithFormatter: true,
-        sanitizeDataExport: true,
-      },
-      registerExternalResources: [this.excelExportService],
-
-      // enableCompositeEditor: true,
-      rowSelectionOptions: {
-        // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false,
-      },
+      enableExcelCopyBuffer: false,
+      enableExcelExport: false,
 
       enableCheckboxSelector: false,
       enableRowSelection: false,
@@ -505,7 +491,7 @@ export class ToolsTechnotesComponent implements OnInit {
         iconCssClass: 'fa fa-bars',
         hideForceFitButton: true,
         hideSyncResizeButton: true,
-        hideToggleFilterCommand: false, // show/hide internal custom commands
+        hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
         customItems: [
@@ -518,24 +504,14 @@ export class ToolsTechnotesComponent implements OnInit {
             title: 'Add Technote',
             disabled: false,
             command: 'addTechnote',
-
             textCssClass: 'title',
-            positionOrder: 90,
+            positionOrder: 1,
           },
           {
             iconCssClass: 'fa fa-times text-danger',
             title: 'Reset Grid',
             disabled: false,
             command: 'resetGrid',
-
-            textCssClass: 'title',
-            positionOrder: 90,
-          },
-          {
-            iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
-            title: 'Export to Excel',
-            disabled: false,
-            command: 'exportExcel',
 
             textCssClass: 'title',
             positionOrder: 90,
@@ -547,25 +523,6 @@ export class ToolsTechnotesComponent implements OnInit {
             this.clearGridStateFromLocalStorage();
           } else if (args.command === 'addTechnote') {
             this.addTechnote();
-          } else if (args.command === 'exportExcel') {
-            //console.log('excelExport :: ', this.excelExportService);
-            this.openDialogInput(
-              {
-                title: 'Excel Export',
-                label: 'Filename',
-                bindLabel: 'file_name',
-                isText: true,
-                titleIcon: true,
-                iconClass:
-                  'slick-gridmenu-icon fa fa-file-excel-o text-success',
-              },
-              (res: any) => {
-                this.excelExportService.exportToExcel({
-                  filename: res.dataCtrl,
-                  format: FileType.xlsx,
-                });
-              }
-            );
           }
         },
         onColumnsChanged: (_e: any, _args: any) => {

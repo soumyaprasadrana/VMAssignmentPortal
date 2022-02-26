@@ -1,11 +1,20 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Home Page Component
+ */
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import {
   Column,
   GridOption,
-  Formatters,
   EditCommand,
   Filters,
   MultipleSelectOption,
@@ -13,9 +22,7 @@ import {
   AngularGridInstance,
   GridStateChange,
   GridState,
-  unsubscribeAllObservables,
   Grouping,
-  AngularSlickgridComponent,
   GridService,
   Formatter,
   CurrentColumn,
@@ -1459,7 +1466,7 @@ export class HomePageComponent implements OnInit {
             command: 'exportExcel',
 
             textCssClass: 'title',
-            positionOrder: 90,
+            positionOrder: 1,
           },
           {
             iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
@@ -1470,7 +1477,7 @@ export class HomePageComponent implements OnInit {
               return this.loggedUser.permissions.is_admin;
             },
             textCssClass: 'title',
-            positionOrder: 90,
+            positionOrder: 2,
           },
         ],
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments

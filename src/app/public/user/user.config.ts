@@ -1,5 +1,14 @@
-import { userInfo } from 'os';
-
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc User Config
+ */
 export class UserConfig {
   static cardsMetaData: any = [
     [
@@ -7,12 +16,12 @@ export class UserConfig {
         cardTitle: 'Create User',
         cardText:
           'Add a normal user to the system, normal user will have access basic fuctionality.',
-        cardWidth: '300',
+        cardWidth: '200',
         cardHeight: '200',
-        cardIconClass: 'fa fa-users',
+        cardIconClass: 'fa fa-user-plus',
         badgeIcon: 'fa fa-plus',
         cardRouterLink: ['../add'],
-        cardTextClamp: 0,
+        cardTextClamp: 3,
         cardPermissions: function (loggedUser: any) {
           return (
             loggedUser.permissions.create_user ||
@@ -41,13 +50,13 @@ export class UserConfig {
         cardText: 'Delete user from the system.',
         cardWidth: '250',
         cardHeight: '200',
-        cardIconClass: 'fa fa-trash ',
+        cardIconClass: 'fa fa-user-times ',
         badgeIcon: 'fa fa-trash',
         cardTextClamp: 2,
         cardDanger: true,
         cardIconColor: 'red',
-        cardStackIconColor: 'red',
-        cardStackIcon: 'fa fa-user ml-4 mt-0',
+        //cardStackIconColor: 'red',
+        //cardStackIcon: 'fa fa-user ml-4 mt-0',
         callback: function (parentObject: any) {
           //console.log('called callback fnction', parentObject);
           parentObject.deleteUser();

@@ -1,19 +1,25 @@
+// Copyright (c) 2022 soumy
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * Client to communicate with JAVA Rest API
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 17:54:18
+ * @modify date 2022-02-26 17:54:18
+ * @desc Client to communicate with JAVA Rest API
  */
-var http = require('http');
-const { cookie } = require('request');
 const tough = require('tough-cookie');
-var request = require('request');
 var request_promise = require('request-promise');
 const { logger } = require('../config');
 var config = require('../config')
 module.exports = {
+    /*
+     * Authenticate a user to JAVA Rest API
+     */
     authenticateToAPI: function(authString, userAgent, callback) {
         const fun = "client.js :-: authenticateToAPI";
-
         logger.debug("inside authenticateToAPI:" + authString);
-
         // verify auth credentials
         var extServerOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + '/auth/login',
@@ -26,7 +32,6 @@ module.exports = {
         };
         try {
             request_promise(extServerOptions, function(error, response, body) {
-
                 if (error) {
                     logger.debug("Error Occurred!");
                     err = {};
@@ -37,15 +42,12 @@ module.exports = {
                     callback(err, null);
                     return;
                 }
-
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response Status:" + JSON.stringify(response));
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
                 logger.debug(fun + "- Response body:" + body)
                 body = JSON.parse(body);
                 headers = JSON.parse(JSON.stringify(response.headers))
-
-
                 if (body.status) {
                     permissions = JSON.parse(JSON.stringify(body.permissions))
                     logger.info(permissions)
@@ -79,24 +81,19 @@ module.exports = {
         }
 
         function getCookie(ckList, key) {
-            // logger.debug("getCookie : " + ckList)
             for (var i = 0; i < ckList.length; i++) {
-                // logger.debug("Inside for");
-                // logger.debug(ckList[i]);
                 cookieSplit = ckList[i].split(";");
-
-                //  logger.debug("cookie" + cookieSplit);
                 ck = cookieSplit[0].split("=");
-                //   logger.debug(ck[0]);
                 if (ck[0] == key) {
                     return cookieSplit[0].replace(ck[0] + '=', '');
                 }
 
             }
         }
-
-
     },
+    /*
+     * Check if session is valid
+     */
     checkSession: function(req, res, next) {
         try {
             const fun = "client.js :-: checkSession";
@@ -107,19 +104,15 @@ module.exports = {
                 next();
                 return;
             }
-
             // verify auth credentials
             var extServerOptions = {
-
                 uri: config.apiBase + '/' + config.apiContextRoot + '/auth/ensureAuth/' + req.session.passport.user.jsession + '/' + req.session.passport.user.auth,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'text/html',
                     'User-Agent': req.headers['user-agent'] || req.headers['User-Agent']
                 }
-
             };
-
             request_promise(extServerOptions, function(error, response, body) {
                 if (error) {
                     logger.debug("Error Occurred!");
@@ -142,11 +135,8 @@ module.exports = {
                 if (body != '') {
                     body = JSON.parse(body);
                     headers = JSON.parse(JSON.stringify(response.headers));
-
                     if (body.status) {
-
                         res.status(200).json({ "status": true });
-
                         next();
                     } else {
                         req.session = null;
@@ -167,10 +157,12 @@ module.exports = {
             res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
             next();
         }
-
     },
+    /*
+     * Signout a user from Rest API
+     */
     logout: function(req, res, next) {
-        logger.debug("inside real logout")
+        logger.debug("Inside logout")
         try {
             const fun = "client.js :-: logout";
             var session = req.session;
@@ -184,14 +176,12 @@ module.exports = {
             logger.debug("outside if");
             // verify auth credentials
             var extServerOptions = {
-
                 uri: config.apiBase + '/' + config.apiContextRoot + '/auth/signOut/' + req.session.passport.user.auth,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'text/html',
                     'User-Agent': req.headers['user-agent'] || req.headers['User-Agent']
                 }
-
             };
             logger.debug("before promise");
             request_promise(extServerOptions, function(error, response, body) {
@@ -216,12 +206,10 @@ module.exports = {
                 if (body != '') {
                     body = JSON.parse(body);
                     headers = JSON.parse(JSON.stringify(response.headers));
-
                     if (body.status) {
                         req.session = null;
                         res.clearCookie('activeUser');
                         res.status(200).json({ "status": true });
-
                         next();
                     } else {
                         req.session = null;
@@ -244,33 +232,38 @@ module.exports = {
             next();
         }
         logger.debug("after promise");
-
     },
+    /*
+     * Return cookie from list
+     */
     getCookie: function(ckList, key) {
         for (var i = 0; i < ckList.length; i++) {
             logger.debug(ckList[i]);
         }
     },
+    /*
+     * Get Call to Rest API
+     * @httpOptions
+     * @req
+     * @res
+     * @next
+     */
     get: function(httpOptions, req, res, next) {
         try {
             const fun = "client.js :-: get";
             var session = req.session;
-
             if (session.passport == null || typeof(session.passport) == 'undefined') {
                 res.status(401).json({ "status": false });
                 next();
                 return;
             }
-
             request_promise.get(httpOptions).then(function(body) {
-
                 logger.info(fun + "- GET request to " + httpOptions.uri);
                 logger.debug(fun + "- Response body:" + body);
 
                 if (body) {
                     res.status(200).json(body);
                     next();
-
                 } else {
                     res.status(401).json({ "status": false });
                     next();
@@ -286,39 +279,36 @@ module.exports = {
             next();
         }
     },
+    /*
+     * POST Call to Rest API
+     * @httpOptions
+     * @req
+     * @res
+     * @next
+     */
     post: function(httpOptions, req, res, next) {
         try {
             const fun = "client.js :-: post";
             var session = req.session;
-
             if (session.passport == null || typeof(session.passport) == 'undefined') {
                 res.status(401).json({ "status": false });
                 next();
                 return;
             }
-
             request_promise.post(httpOptions.uri, httpOptions).then(function(body) {
-
                 logger.info(fun + "- POST request to " + httpOptions.uri);
-
                 logger.debug(fun + "- POST request httpOptions ", httpOptions);
-
                 logger.debug(fun + "- Response body:" + JSON.stringify(body));
-
                 if (body) {
                     res.status(200).json(body);
                     next();
-
                 } else {
                     res.status(401).json({ "status": false });
                     next();
                 }
             }).catch(function(error) {
                 logger.info(fun + "- POST request to " + httpOptions.uri);
-
                 logger.debug(fun + "- POST request httpOptions: " + JSON.stringify(httpOptions));
-
-
                 logger.info(fun + "- Catch Block :" + JSON.stringify(error));
                 res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
                 next();
@@ -329,27 +319,29 @@ module.exports = {
             next();
         }
     },
+    /*
+     * Get Call to Rest API with custom callback
+     * @httpOptions
+     * @req
+     * @res
+     * @next
+     * @callback
+     */
     post_callback: function(httpOptions, req, res, next, callback) {
         try {
             const fun = "client.js :-: post";
             var session = req.session;
-
             if (session.passport == null || typeof(session.passport) == 'undefined') {
                 res.status(401).json({ "status": false });
                 next();
                 return;
             }
-
             request_promise.post(httpOptions.uri, httpOptions).then(function(body) {
-
                 logger.info(fun + "- POST request to " + httpOptions.uri);
-
                 logger.debug(fun + "- Response :" + JSON.stringify(body));
-
                 if (body) {
                     callback(body);
                     next();
-
                 } else {
                     res.status(401).json({ "status": false });
                     next();
@@ -365,12 +357,20 @@ module.exports = {
             next();
         }
     },
+    /*
+     * Get static headers for a Rest API call
+     * @req
+     */
     getStaticHeaders: function(req) {
         return {
             'Content-Type': 'application/json',
             'User-Agent': req.headers['user-agent'] || req.headers['User-Agent']
         };
     },
+    /*
+     * Get static query params for a Rest API call
+     * @req
+     */
     getStaticQueryParam(req) {
         return {
             AUTH: req.user.auth,
@@ -378,24 +378,30 @@ module.exports = {
 
         };
     },
+    /*
+     * Get static cookie jar for a Rest API call
+     * @req
+     */
     getStaticCookieJar: function(req) {
         let cookie = new tough.Cookie({
             key: "AUTH",
             value: req.user.auth,
             httpOnly: true,
-
         });
         let cookie2 = new tough.Cookie({
             key: "JSESSIONID",
             value: req.user.jsession,
             httpOnly: true,
-
         });
         var cookiejar = request_promise.jar();
         cookiejar.setCookie(cookie, config.apiBase);
         cookiejar.setCookie(cookie2, config.apiBase);
         return cookiejar;
     },
+    /*
+     * Get static http post options for a Rest API call
+     * @req
+     */
     getHttpPostOptions: function(req, apiPath) {
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + apiPath,
@@ -407,6 +413,10 @@ module.exports = {
         }
         return httpOptions;
     },
+    /*
+     * Get static http post options with custom query parameters for a Rest API call
+     * @req
+     */
     getHttpPostOptionsWithCustomQS: function(req, apiPath, qs) {
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + apiPath,
@@ -418,5 +428,4 @@ module.exports = {
         }
         return httpOptions;
     }
-
 }

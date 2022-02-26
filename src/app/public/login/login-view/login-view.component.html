@@ -31,13 +31,16 @@
                             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                                 <ngb-alert *ngIf="showAlert" [type]="alert.type" [dismissible]="false">{{ alert.message }}</ngb-alert>
                                 <div class="form-group mb-3">
-                                    <input id="username" type="text" placeholder="Username" formControlName="username" class="form-control " [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                                    <span class="fa fa-user form-control-prefix-icon text-muted" area-label="false"></span>
+                                    <input id="username" type="text" placeholder="Username" formControlName="username" class="form-control form-control-include-icon " [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
                                     <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                                         <div *ngIf="f.username.errors.required">Username is required</div>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input id="password" type="password" placeholder="Password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                                    <span *ngIf="f.password.value.toString().length > 0" [ngClass]="{ 'fa-eye-slash': !hide,'fa-eye': hide }" class="fa form-control-icon text-muted" area-label="false" (click)="hide=!hide"></span>
+                                    <span class="fa fa-lock form-control-prefix-icon text-muted" area-label="false" (click)="hide = !hide"></span>
+                                    <input id="password" [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" class="form-control form-control-include-icon" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
                                     <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                                         <div *ngIf="f.password.errors.required">Password is required</div>
                                     </div>
@@ -55,4 +58,4 @@
         <!-- End -->
     </div>
 </div>
-<app-footer></app-footer>
+<app-footer *ngIf="!hideloginfooter"></app-footer>

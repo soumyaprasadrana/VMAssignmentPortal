@@ -1,8 +1,18 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Login Form Component
+ */
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',

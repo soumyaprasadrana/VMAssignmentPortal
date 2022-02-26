@@ -1,3 +1,14 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc VM Chart Component
+ */
 /**
  * Chart Compnent for VM management Portal , this componenet will be used to cuisualize existing
  * VM Data
@@ -184,7 +195,7 @@ export class VmChartComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       field: ['OS', Validators.required],
       chartType: ['PIE GRID', Validators.required],
-      height: [150, Validators.required],
+      height: [300, Validators.required],
     });
   }
   /**

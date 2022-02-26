@@ -1,3 +1,14 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc VMM Config
+ */
 export class VMMConfig {
   static cardsMetaData: any = [
     [
@@ -17,7 +28,7 @@ export class VMMConfig {
         cardText: 'Edit a Vitual Machine to update Virtual Machine Details.',
         cardWidth: '200',
         cardHeight: '200',
-        cardIconClass: 'fa fa-users',
+        cardIconClass: 'fa fa-desktop',
         badgeIcon: 'fa fa-edit',
         cardTextClamp: 2,
         cardRouterLink: ['../edit'],

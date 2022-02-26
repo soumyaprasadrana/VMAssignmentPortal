@@ -1,6 +1,16 @@
-import { ThrowStmt } from '@angular/compiler';
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Portal Path Component
+ */
 import { Component, OnInit } from '@angular/core';
-import { Router, Route } from '@angular/router';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-path',
   templateUrl: './path.component.html',

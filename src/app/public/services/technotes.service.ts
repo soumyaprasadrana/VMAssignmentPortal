@@ -1,5 +1,15 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Technote Services
+ */
 import { Injectable } from '@angular/core';
-import { VM } from '../DataModel/vm';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { NodeclientService } from './nodeclient.service';

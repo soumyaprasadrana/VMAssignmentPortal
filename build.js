@@ -1,7 +1,17 @@
-var path = require('path')
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:16:40
+ * @modify date 2022-02-26 18:16:40
+ * @desc Helps to build the application
+ */
 const { spawn } = require("child_process");
 const { exec } = require("child_process");
-const build_list = ["prod", "dev"];
 const arg = process.argv.slice(2);
 const fs = require('fs');
 
@@ -58,23 +68,6 @@ async function createProdZipArchive() {
     }
 }
 
-async function deleteDirectory(dir) {
-
-    return new Promise(function(resolve, reject) {
-        console.log("delete called...");
-        fs.rmdirSync(dir, { recursive: true, force: true }, (err) => {
-            console.log(`delete command return :${err}`);
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            console.log(`${dir} is deleted!`);
-            resolve(true);
-
-        })
-    });
-
-}
 async function copySaaSFiles() {
     console.log("Starting resource copy to saas ...");
     if (fs.existsSync('./build/docker/saas/portal-ui')) {

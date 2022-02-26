@@ -1,17 +1,22 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * File Responsible for VM related API calls
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:00:59
+ * @modify date 2022-02-26 18:00:59
+ * @desc File Responsible for Technotes related API calls
  */
 const { logger } = require('../config');
 var config = require('../config');
 const _client = require('./client');
-
-
 module.exports = {
     getAll: function(req, res, next) {
         const fn = "technotesmodule.js :-: getAll -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + config.technotes_rest_path,
             headers: _client.getStaticHeaders(req),

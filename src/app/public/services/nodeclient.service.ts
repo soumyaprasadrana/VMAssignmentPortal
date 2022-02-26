@@ -1,7 +1,17 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Node Client Services
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Config } from '../../app.config';
-import { AnyCnameRecord } from 'dns';
 import { map, catchError } from 'rxjs/operators';
 import { DeviceDetectorService } from 'ngx-device-detector';
 @Injectable({

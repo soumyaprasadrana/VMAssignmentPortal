@@ -1,3 +1,17 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:20:07
+ * @modify date 2022-02-26 18:20:07
+ * @desc Default css file
+ */
+
+
 /* You can add global styles to this file, and also import other style files */
 
 
@@ -15,10 +29,6 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 //$primary-color: #007bff  0070ad 00ad9e;
 //$primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
-.technote-header {
-    font-family: 'Roboto' !important;
-}
-
 $primary-color:#280071;
 $primary-btn-hover-color: #5803f5;
 $side-nav-color: $primary-color;
@@ -205,6 +215,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
 
 html,
 body {
+    font-family: "Roboto" !important;
     min-height: 100% !important;
     height: auto;
     margin: 0;
@@ -253,7 +264,6 @@ body {
         z-index: -1;
         width: 500px;
         h1 {
-            font-family: montserrat, sans-serif;
             font-size: 236px;
             font-weight: 200;
             margin: 0;
@@ -267,7 +277,6 @@ body {
             transform: translate(-50%, -50%);
         }
         h2 {
-            font-family: montserrat, sans-serif;
             font-size: 28px;
             font-weight: 400;
             text-transform: uppercase;
@@ -283,7 +292,6 @@ body {
         }
     }
     a {
-        font-family: montserrat, sans-serif;
         display: inline-block;
         font-weight: 700;
         text-decoration: none;
@@ -320,7 +328,6 @@ div:has(input[data-columnid="global"]) {
 .chart-header {
     text-decoration: underline;
     text-decoration-color: $primary-color;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .app-side-nav {
@@ -412,7 +419,6 @@ div:has(input[data-columnid="global"]) {
 
 .dialog-title {
     float: left;
-    font-family: "SourceSansPro", Helvetica, Arial, sans-serif;
     margin: 0;
     margin-top: 5px;
     vertical-align: middle;
@@ -447,4 +453,50 @@ mat-nav-list a {
         border-radius: 5px;
         font-size: small;
     }
+}
+
+
+/* Card badge*/
+
+.card-notify-badge {
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    background: #f2d900;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: #000;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.form-group .form-control-icon {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    margin-left: 75% !important;
+    line-height: 2.375rem;
+    text-align: center;
+    cursor: pointer;
+    color: #000;
+    float: right;
+}
+
+.form-group .form-control-include-icon {
+    padding-left: 2.375rem;
+}
+
+.form-group .form-control-prefix-icon {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #000;
+    float: right;
 }

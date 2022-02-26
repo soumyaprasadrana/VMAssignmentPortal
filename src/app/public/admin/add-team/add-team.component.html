@@ -1,14 +1,12 @@
 <app-path></app-path>
 
-<div class="container-fluid-lg p-3 my-3 text-muted  ">
+<div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-
-            <h1 class="ml-3">
-
-                <i class="fa fa-desktop" area-label="false"></i> {{title}}
+            <h3 class="ml-3">
+                <i class="fa fa-users" area-label="false"></i> {{title}}
                 <hr>
-            </h1>
+            </h3>
         </div>
     </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">

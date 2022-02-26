@@ -1,11 +1,23 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Login View Component
+ */
 import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthserviceService } from '../../services/authservice.service';
 import { FormGroup } from '@angular/forms';
-import { first } from 'rxjs/operators';
 import { SpinnerService } from '../../services/spinner-service';
+import { NodeclientService } from '../../services/nodeclient.service';
+import { HttpHeaders } from '@angular/common/http';
 interface Alert {
   type: string;
   message: string;
@@ -35,6 +47,8 @@ export class LoginViewComponent implements OnInit {
     message: '',
   };
   showAlert: boolean = false;
+  hideloginfooter: boolean = false;
+  hide: boolean = true;
 
   constructor(
     config: NgbCarouselConfig,
@@ -42,12 +56,34 @@ export class LoginViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthserviceService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private _client: NodeclientService
   ) {
     // customize default values of carousels used by this component tree
 
     config.showNavigationArrows = true;
     config.showNavigationIndicators = true;
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    var httpOptions = {
+      headers: headers,
+    };
+
+    var hideloginfooter;
+    this._client
+      .get('api/config/hideloginfooter', httpOptions)
+      .then((res: any) => {
+        hideloginfooter = res.hideloginfooter;
+        console.log(
+          'Confi hideloginfooter loded from server :',
+          hideloginfooter
+        );
+        this.hideloginfooter = hideloginfooter;
+      })
+      .catch((err) => {
+        console.log('Error Occurred! Using default value!');
+      });
   }
 
   ngOnInit(): void {
