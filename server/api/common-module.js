@@ -1,11 +1,17 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * File Responsible for VM related API calls
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 17:55:02
+ * @modify date 2022-02-26 17:55:02
+ * @desc File Responsible for VM related API calls
  */
-const tough = require('tough-cookie');
 const { logger } = require('../config');
 var config = require('../config');
 const _client = require('./client');
-var request_promise = require('request-promise');
 var sshMetadata = require('./sshMetadata');
 var spaMetadata = require('../spa/spaMetadata');
 var quickLinks = require('./quickLinks')
@@ -37,6 +43,11 @@ module.exports = {
     getThemeName: function(req, res, next) {
         const theme = config.theme ? config.theme : 'default';
         res.status(200).json({ theme: theme });
+        next();
+    },
+    getLoginFooter: function(req, res, next) {
+        const hideloginfooter = config.hideloginfooter ? config.hideloginfooter : false;
+        res.status(200).json({ hideloginfooter: hideloginfooter });
         next();
     },
     streamExec: function(req, res, next) {

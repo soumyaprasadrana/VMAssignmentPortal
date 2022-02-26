@@ -1,3 +1,14 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Activity Logs Service
+ */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivityLog } from '../DataModel/activitylog';

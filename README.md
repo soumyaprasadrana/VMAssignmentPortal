@@ -1,68 +1,145 @@
-# VM Assignment Portal
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="./desktop-solid.png" alt="Project logo"></a>
+</p>
 
-In organizational level we use large no of VMs for our day today work, this portal will help to keep a track on usage of each and every vm.
+<h3 align="center"> <b>VM Assignment Portal</b> </h3>
 
-## Description
+<div align="center">
 
-VM Assignment Portal is created to easily manage all VM related activities within a team. Entries of VMs can be created in this portal and then various operationslike Assign, Release etc. can be performed.
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/soumyaprasadrana/VMManagementPortal.svg)](https://github.com/soumyaprasadrana/VMManagementPortal/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/soumyaprasadrana/VMManagementPortal.svg)](https://github.com/soumyaprasadrana/VMManagementPortal/pulls)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
-It is integrated with VCenter through powerCLI to get VM information and to perform actions like Take and Revert Snapshot on them.Two very useful features: Linux Toolbox and DB Toolbox are also provided to perform many important actions.It can be used by multiple teams. VMs of one team won’t be visible to another team.All Team Leaders, Users and VMs are mapped with theirTeam.
+</div>
 
-## Getting Started
+---
 
-Clone this project and it's dependay projects run it then.
+<p align="center"> In organizational level we use large no of VMs for our day today work, this portal will help to keep a track on usage of each and every vm.
+    <br> 
+</p>
 
-### Dependencies
+## 📝 Table of Contents
+
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+- [License](#license)
+
+## 🧐 About <a name = "about"></a>
+
+VM Assignment Portal is created to easily manage all VM related activities within a team. Entries of VMs can be created in this portal and then various operations like Assign, Release etc. can be performed.
+
+## 🏁 Getting Started <a name = "getting_started"></a>
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+
+### Prerequisites
 
 - Node 14 +
 - Angular 12+
+- Docker & Docker Compose ( Production SaaS )
+- VM Assignment Portal API ( Check Readme for more details )
 
-### Installing
+## Installing
 
-- points to be added
+Check Pre-requisites , VM Assignment portal Server must be running before using this project
 
-### Executing program
-
-- How to run the program
-- Step-by-step bullets
-
-```
-code blocks for commands
-```
-
-## Help
-
-Any advise for common problems or issues.
+### Dev Enviroment
 
 ```
-command to run if program contains helper info
+git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+cd {repositoryPath}
+npm install
+cd server
+npm install
 ```
 
-## Authors
+Open project in visual studio code and open two terminals run
 
-Contributors names and contact info
+1.  ```
+    ng build --configuration="development" --watch
+    ```
+2.  ```
+    cd server
+    node app.js
+    ```
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+### Prod Enviroment
 
-## Version History
+```
+git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+cd {repositoryPath}
+npm run build-prod
+cd build/server
+set APIBASE="http://localhost:8080/VMMangementPortalAPI
+node app
+```
 
-- 0.2
-  - Various bug fixes and optimizations
-  - See [commit change]() or See [release history]()
-- 0.1
-  - Initial Release
+### Prod Enviroment ( SaaS - Docker )
 
-## License
+Pre-requisite- Docker Compose
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+```
+git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+cd {repositoryPath}
+npm run build-prod
+cd build\docker\saas
+cd portal-api
+docker build -t portal_api:1.0 .
+cd ..
+cd portal-ui
+docker build -t portal_ui:1.0 .
+cd ..
+cd portal-db
+docker build -t portal_db:1.0 .
+cd ..
+docker-compose up
+```
 
-## Acknowledgments
+Access the application by http://localhost:3000/
 
-Inspiration, code snippets, etc.
+## ⛏️ Built Using <a name = "built_using"></a>
 
-- [awesome-readme](https://github.com/matiassingers/awesome-readme)
-- [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-- [dbader](https://github.com/dbader/readme-template)
-- [zenorocha](https://gist.github.com/zenorocha/4526327)
-- [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+- [Express](https://expressjs.com/) - Server Framework
+- [Angular](https://angular.io/) - Web Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@soumya](https://github.com/soumyaprasadrana) - Architecture & Devlopment
+
+See also the list of [contributors](https://github.com/soumyaprasadrana/VMManagementPortal/contributors) who participated in this project.
+
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- References
+
+## License <a name = "license"></a>
+
+MIT License
+
+Copyright (c) 2022 soumya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,3 +1,14 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Main application module
+ */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,12 +25,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterModule } from './public/widget/footer/footer.module';
 import { MaterialModule } from './material.module';
 import { Config } from './app.config';
-
 import { AdminConfig } from './public/admin/admin.config';
 import { AuthInterceptor } from './public/services/customHttp';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
-
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 @NgModule({
@@ -43,17 +52,6 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
     HttpClientModule,
     NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
-
-    /*  AngularSlickgridModule.forRoot({
-        // add any Global Grid Options/Config you might want
-        // to avoid passing the same options over and over in each grids of your App
-        enableAutoResize: true,
-        autoResize: {
-          container: '#container',
-          rightPadding: 10
-        }
-      })
-    */
   ],
   exports: [],
   providers: [

@@ -1,38 +1,49 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:00:14
+ * @modify date 2022-02-26 18:00:14
+ * @desc Configuarble list for SSH Tools
+ */
 module.exports = {
     /**
- * Card Template
- * [ //row
- * { //item
- *      cardTitle: string, //title of the card
-        cardCommand: string, // command to be executed on remote machine
-        cardWidth: number, //width of the card
-        cardHeight: number, //height of the card
-        cardFields: [
-          [
-            { label: string, field_name: string }, //should pass same value inside form control for field_name
-            ...
-          ],
-          {
-            field_name: Validator // Validators for exmple [null, "required"],
-            command: [default_command]    
-          },
-        ],
-        cardCallback: function //callback if any
-        commandQuerryParser:boolean; if true will parse command with nput fields
-        queryFields: [], //list of field names
- * }
-        example of query parse 
-        command: ping {ip}
-        commandQuerryParser:true
-        queryFields: ['ip'],
-        cardFields: [
-          {label:'IP to ping' field_ame:ip}
-        ],
-        {
-          ip:[null,Validators.required]
-        }
- * ]
- */
+     * Card Template
+     * [ //row
+     * { //item
+     *      cardTitle: string, //title of the card
+            cardCommand: string, // command to be executed on remote machine
+            cardWidth: number, //width of the card
+            cardHeight: number, //height of the card
+            cardFields: [
+              [
+                { label: string, field_name: string }, //should pass same value inside form control for field_name
+                ...
+              ],
+              {
+                field_name: Validator // Validators for exmple [null, "required"],
+                command: [default_command]    
+              },
+            ],
+            cardCallback: function //callback if any
+            commandQuerryParser:boolean; if true will parse command with nput fields
+            queryFields: [], //list of field names
+     * }
+            example of query parse 
+            command: ping {ip}
+            commandQuerryParser:true
+            queryFields: ['ip'],
+            cardFields: [
+              {label:'IP to ping' field_ame:ip}
+            ],
+            {
+              ip:[null,Validators.required]
+            }
+     * ]
+     */
     cardsMetaData: [
         [{
                 cardTitle: 'Hostname',

@@ -1,3 +1,16 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:26:41
+ * @modify date 2022-02-26 18:26:41
+ * @desc Blue Theme
+ */
+
 $primary-color:#3498db;
 $primary-btn-hover-color: #73c9ff;
 $side-nav-color: $primary-color;
@@ -232,7 +245,6 @@ body {
         z-index: -1;
         width: 500px;
         h1 {
-            font-family: montserrat, sans-serif;
             font-size: 236px;
             font-weight: 200;
             margin: 0;
@@ -246,7 +258,6 @@ body {
             transform: translate(-50%, -50%);
         }
         h2 {
-            font-family: montserrat, sans-serif;
             font-size: 28px;
             font-weight: 400;
             text-transform: uppercase;
@@ -262,7 +273,6 @@ body {
         }
     }
     a {
-        font-family: montserrat, sans-serif;
         display: inline-block;
         font-weight: 700;
         text-decoration: none;
@@ -299,7 +309,6 @@ div:has(input[data-columnid="global"]) {
 .chart-header {
     text-decoration: underline;
     text-decoration-color: $primary-color;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .app-side-nav {
@@ -391,7 +400,6 @@ div:has(input[data-columnid="global"]) {
 
 .dialog-title {
     float: left;
-    font-family: "SourceSansPro", Helvetica, Arial, sans-serif;
     margin: 0;
     margin-top: 5px;
     vertical-align: middle;

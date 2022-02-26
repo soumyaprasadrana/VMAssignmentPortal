@@ -1,13 +1,21 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * File is responsible for passport authentication service for node API
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 17:57:19
+ * @modify date 2022-02-26 17:57:19
+ * @desc File is responsible for passport authentication service for node API
  */
-
-
 var passport = require('passport');
 var passportCustom = require('passport-custom');
 const { logger } = require('../config');
-
 module.exports = {
+    /**
+     * Node JS Express custom strategy
+     */
     custStrategyConfigure: function() {
         logger.debug("Portal strategy set ");
         passport.use('portal-auth', new passportCustom(
@@ -22,7 +30,6 @@ module.exports = {
                     err.message = "No authorization header found !"
                     callback(err, null);
                 } else {
-
                     require('./client').authenticateToAPI(req.headers.Authorization || req.headers.authorization, req.headers['user-agent'] || req.headers['User-Agent'], function(err, user) {
                         logger.debug(fun + "- callback for authenticateToAPI");
                         callback(err, user);
@@ -33,7 +40,6 @@ module.exports = {
             logger.info("serializing " + JSON.stringify(user.name));
             callback(null, user);
         });
-
         passport.deserializeUser(function(obj, callback) {
             logger.info("deserializing " + JSON.stringify(obj.name));
             callback(null, obj);
@@ -43,30 +49,24 @@ module.exports = {
     authenticate: function(req, res, next) {
         const fun = "portal-auth.js :-: Authenticate";
         logger.debug(fun);
-
-
         passport.authenticate('portal-auth', function(error, user) {
-            logger.debug("Error:" + JSON.stringify(error) + "User:" + JSON.stringify(user))
-
-            if (error) {
-                logger.debug(fun + "- Error found while authenticating");
-                res.status(200).json({ "status": false, "message": error.message });
-                next(error);
-                return;
-
-            } else {
-                logger.debug(fun + "- No error going to serialize the user");
-                req.login(user, function(error) {
-                    if (error) return next(error);
-                    res.cookie('activeUser', JSON.stringify(user.activeUser));
-                    res.status(200).json({ "status": true, "message": "Authentication Successfull", "permissons": user.permissons });
-                    next();
-                });
-
-            }
-        })
-
-        (req, res, next);
+                logger.debug("Error:" + JSON.stringify(error) + "User:" + JSON.stringify(user))
+                if (error) {
+                    logger.debug(fun + "- Error found while authenticating");
+                    res.status(200).json({ "status": false, "message": error.message });
+                    next(error);
+                    return;
+                } else {
+                    logger.debug(fun + "- No error going to serialize the user");
+                    req.login(user, function(error) {
+                        if (error) return next(error);
+                        res.cookie('activeUser', JSON.stringify(user.activeUser));
+                        res.status(200).json({ "status": true, "message": "Authentication Successfull", "permissons": user.permissons });
+                        next();
+                    });
+                }
+            })
+            (req, res, next);
     },
     checkSession: function(req, res, next) {
         require('./client').checkSession(req, res, next);
@@ -81,7 +81,6 @@ module.exports = {
     ensureAuthenticated: function(req, res, next) {
         logger.debug("ensureAuthenticated:" + req.isAuthenticated());
         if (req.isAuthenticated()) {
-
             next();
             return;
         }
@@ -93,5 +92,4 @@ module.exports = {
         logger.debug("inside logout")
         require('./client').logout(req, res, next);
     }
-
 }

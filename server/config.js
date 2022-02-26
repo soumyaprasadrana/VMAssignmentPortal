@@ -1,9 +1,17 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * Configuration file for node api server
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:06:39
+ * @modify date 2022-02-26 18:06:39
+ * @desc Configuration file for node api server
  */
 var pino = require('pino');
 module.exports = {
-    "apiBase": process.env.APIBASE || "http://localhost:8080/VMManagementPortalAPI",
+    "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
     logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
     PORT: process.env.PORT || 3000,
@@ -11,9 +19,11 @@ module.exports = {
     Available Themes : default,dark,pink,blue
     */
     theme: 'default',
+    /* To hide the footer in login page */
+    hideloginfooter: false,
     /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
-    useGzip: true,
+    useGzip: false,
     useCORS: process.env.USECORS || true,
     vm_rest_path: '/vmDetails/getAll',
     technotes_rest_path: '/technotes/getAll',
@@ -55,5 +65,4 @@ module.exports = {
     get_prev_activitylogs: '/activitylog/getActivityLogsPrev',
     stream_exec: '/stream/exec',
     stream_output: '/stream/getOut'
-
 }

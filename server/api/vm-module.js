@@ -1,7 +1,14 @@
+// Copyright (c) 2022 soumya
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 /**
- * File Responsible for VM related API calls
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-02-26 18:03:08
+ * @modify date 2022-02-26 18:03:08
+ * @desc File Responsible for VM related API calls
  */
-const tough = require('tough-cookie');
 const { logger } = require('../config');
 var config = require('../config');
 const _client = require('./client');
@@ -14,7 +21,6 @@ module.exports = {
         const fn = "vm-module.js :-: getAll -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + config.vm_rest_path,
             headers: _client.getStaticHeaders(req),
@@ -31,8 +37,6 @@ module.exports = {
         req.body.params.vm_owner_lab = req.body.params.owner || '';
         req.body.params.ram = req.body.params.ram || 0;
         req.body.params.group = req.body.params.group || '';
-
-
         logger.info(req.body);
         _client.post(_client.getHttpPostOptions(req, config.add_vm_rest_path), req, res, next);
     },
@@ -90,14 +94,12 @@ module.exports = {
             req.body.params.fields.vm_owner_lab = req.body.params.fields.owner;
             delete req.body.params.fields.owner;
         }
-
         delete req.body.params.fields.ip;
         logger.debug("req.body.params.fields.length", typeof(Object.keys(req.body.params.fields).length));
         if (Object.keys(req.body.params.fields).length == 0) {
             res.status(400).json({ 'status': 'Failed', 'message': 'Bad Request' });
             return;
         }
-
         logger.info(req.body);
         _client.post(_client.getHttpPostOptions(req, config.update_multiple_vms_rest_path), req, res, next);
 
@@ -119,7 +121,6 @@ module.exports = {
             JSESSIONID: req.user.jsession,
             ip: ip,
         }), req, res, next);
-
     },
     deleteVM: function(req, res, next) {
         var ip = req.params['ip']
@@ -151,20 +152,14 @@ module.exports = {
                 };
                 console.log(httpOptions);
                 request_promise.get(httpOptions).then(function(body) {
-
                     logger.info(fun + "- GET request to " + httpOptions.uri);
                     logger.debug(fun + "- Response body:" + body);
                     var teamList = [];
                     if (body) {
-
                         var propJson = JSON.parse(body);
                         teamList = propJson.teamList.split(":");
-
                     }
                     console.log(teamList);
-
-
-
                     console.log(req.user.activeUser.permissions.is_admin);
                     if (typeof req.user.activeUser.permissions.is_admin != 'undefined' && (req.user.activeUser.permissions.is_admin == 1 || req.user.activeUser.permissions.is_admin == '1') && teamList.length > 0) {
                         for (var item in xlsData) {
@@ -201,7 +196,6 @@ module.exports = {
 
         function checkMandatoryCols(columns) {
             var list = ["RAM", "Owner", "Group", "Comment", "IP Address", "Hostname", "OS", "OS Version", "Team", "Assignee", "Availability"];
-
             if (columns.includes("IP Address") && columns.includes("Hostname") && columns.includes("OS") && columns.includes("OS Version"), columns.includes("Team")) {
                 for (var item in columns) {
                     if (!list.includes(columns[item])) {
@@ -232,15 +226,12 @@ module.exports = {
                 for (var i = 0; i != data.length; ++i)
                     arr[i] = String.fromCharCode(data[i]);
                 var bstr = arr.join("");
-
                 /* Call XLSX */
                 var workbook = XLSX.read(bstr, {
                     type: "binary"
                 });
-
                 /* Get the work sheet name */
                 var first_sheet_name = workbook.SheetNames[0];
-
                 /* Get worksheet */
                 var worksheet = workbook.Sheets[first_sheet_name];
                 let columnHeaders = [];
@@ -278,28 +269,19 @@ module.exports = {
                     logger.info(req.body);
                     _client.post(_client.getHttpPostOptions(req, config.add_or_update_multiple_vms), req, res, next);
                 });
-
-                /* Convert it to json*/
-
-                // console.log(xlsData);
-
             } else {
                 return res.status(400).json({ status: "failed", message: "Internal Server Error!" });
             }
         } catch (e) {
             console.log(e);
             return res.status(400).json({ status: "failed", message: "Internal Server Error!" });
-
         }
-
     },
     downloadSampleXlsx: function(req, res, next) {
         var fun = "downloadSampleXlsx";
         console.log("downloadSampleXlsx");
-
         let workbook = new ExcelJS.Workbook();
         let worksheet = workbook.addWorksheet('VM List');
-
         worksheet.columns = [
             { header: 'IP Address', key: 'ip' },
             { header: 'Hostname', key: 'hostname' },
@@ -313,7 +295,6 @@ module.exports = {
             { header: 'Group', key: 'group' },
             { header: 'Comment', key: 'comment' }
         ]
-
         worksheet.columns.forEach(column => {
                 column.width = column.header.length < 20 ? 20 : column.header.length
             })
@@ -332,15 +313,10 @@ module.exports = {
             logger.debug(fun + "- Response body:" + body);
             var teamList = [];
             if (body) {
-
                 var propJson = JSON.parse(body);
                 teamList = propJson.teamList.split(":");
-
             }
             console.log(teamList);
-
-
-
             console.log(req.user.activeUser.permissions.is_admin);
             if (typeof req.user.activeUser.permissions.is_admin != 'undefined' && (req.user.activeUser.permissions.is_admin == 1 || req.user.activeUser.permissions.is_admin == '1') && teamList.length > 0) {
                 let joineddropdownlist = "\"" + teamList.join(',') + "\"";
@@ -368,7 +344,6 @@ module.exports = {
                 }
             }
             workbook.xlsx.writeBuffer().then((data) => {
-
                 res.writeHead(200, [
                     ['Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
                 ]);
@@ -385,14 +360,11 @@ module.exports = {
                 };
             }
             workbook.xlsx.writeBuffer().then((data) => {
-
                 res.writeHead(200, [
                     ['Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
                 ]);
                 res.end(new Buffer(data, 'base64'));
             });
         });
-
-
     }
 }

@@ -35,7 +35,7 @@ export class AdminConfig {
         cardWidth: '250',
         cardHeight: '200',
         cardRouterLink: ['../addTeamLead'],
-        cardIconClass: 'fa fa-user ',
+        cardIconClass: 'fa fa-user-plus ',
         badgeIcon: 'fa fa-plus',
         cardTextClamp: 2,
         cardPermissions: function (loggedUser: any) {
@@ -78,13 +78,13 @@ export class AdminConfig {
         cardText: 'This will remove the team from the database.',
         cardWidth: '250',
         cardHeight: '200',
-        cardIconClass: 'fa fa-trash ',
+        cardIconClass: 'fa fa-user-times ',
         badgeIcon: 'fa fa-trash',
         cardTextClamp: 2,
         cardDanger: true,
         cardIconColor: 'red',
-        cardStackIconColor: 'red',
-        cardStackIcon: 'fa fa-user ml-4 mt-0',
+        //cardStackIconColor: 'red',
+        //cardStackIcon: 'fa fa-user- ml-4 mt-0',
         cardPermissions: function (loggedUser: any) {
           return loggedUser.permissions.is_admin;
         },

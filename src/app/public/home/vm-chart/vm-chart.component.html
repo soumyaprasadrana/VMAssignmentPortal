@@ -83,7 +83,7 @@
                 </ngx-charts-bar-horizontal>
             </div>
             <div class="chart" *ngIf="showBarVer" [ngStyle]="{'height.px': cardHeight}">
-                <ngx-charts-bar-vertical [results]="resultSet" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="'Count'" [yAxisLabel]="f.field.value">
+                <ngx-charts-bar-vertical [results]="resultSet" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [yAxisLabel]="'Count'" [xAxisLabel]="f.field.value">
                 </ngx-charts-bar-vertical>
             </div>
             <div class="chart" *ngIf="showAdv" [ngStyle]="{'height.px': cardHeight}">

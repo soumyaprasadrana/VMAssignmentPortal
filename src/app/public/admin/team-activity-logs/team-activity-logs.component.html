@@ -2,12 +2,10 @@
 
 
 
-<div class="container-fluid-lg pt-2 mt-2 text-muted  ">
+<div class="container-fluid-lg pl-3  pr-3 ml-3 mt-3">
     <div class="row">
         <div class="col-xs-6 ">
-
             <h3 class="ml-3">
-
                 <i class="fa fa-history" area-label="false"></i> Activity Logs
                 <hr>
             </h3>
@@ -29,8 +27,8 @@
 
             </div>
         </div>
-        <div *ngIf="!isLoadingActivityList  && !endOfData" style="height:70%">
-            <div class="p-20">
+        <div *ngIf="!isLoadingActivityList  && !endOfData">
+            <div class="p-2">
                 <angular-slickgrid gridId="grid2" [columnDefinitions]="columnDef" [gridOptions]="alGridOptions" [dataset]="alDataSet">
                 </angular-slickgrid>
             </div>
