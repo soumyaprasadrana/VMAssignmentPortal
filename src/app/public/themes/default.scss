@@ -1,4 +1,424 @@
-// Copyright (c) 2022 soumy
-// 
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
+$primary-color:#280071;
+$primary-btn-hover-color: #5803f5;
+$side-nav-color: $primary-color;
+$blue-gray: #8972b4;
+$blue-gray-darken: #604a8a;
+$blue: $primary-color;
+$blue-darken: #1b014b;
+$green: #7400b8;
+$green-darken: #31014d;
+$custom-alert-background:#d3d1f1;
+$custom-alert-border:#bed8eb;
+$row-mouse-hover-color: #e1dcfc;
+$row-selected-color: #d2c9fd;
+$form-control-focus-box-shadow:$custom-alert-background;
+@import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
+@import "~compass-mixins/lib/compass/css3";
+
+/* Breadcrumb css*/
+
+.alert-custom {
+    background-color: $custom-alert-background;
+    border-color: $custom-alert-border;
+}
+
+#breadcrumb {
+    list-style: none;
+    display: inline-block;
+    margin: 10px;
+    .icon {
+        font-size: 14px;
+    }
+    li {
+        float: left;
+        a {
+            color: #fff;
+            display: block;
+            background: $blue;
+            text-decoration: none;
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px 0 5px;
+            text-align: center;
+            margin-right: 23px;
+        }
+        &:nth-child(even) {
+            a {
+                background-color: $blue-darken;
+                &:before {
+                    border-color: $blue-darken;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $blue-darken;
+                }
+            }
+        }
+        &:first-child {
+            a {
+                padding-left: 15px;
+                @include border-radius(4px 0 0 4px);
+                &:before {
+                    border: none;
+                }
+            }
+        }
+        &:last-child {
+            a {
+                padding-right: 15px;
+                @include border-radius(0 4px 4px 0);
+                &:after {
+                    border: none;
+                }
+            }
+        }
+        a {
+            &:before,
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                border: 0 solid $blue;
+                border-width: 20px 10px;
+                width: 0;
+                height: 0;
+            }
+            &:before {
+                left: -20px;
+                border-left-color: transparent;
+            }
+            &:after {
+                left: 100%;
+                border-color: transparent;
+                border-left-color: $blue;
+            }
+            &:hover {
+                background-color: $green;
+                &:before {
+                    border-color: $green;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $green;
+                }
+            }
+            &:active {
+                background-color: $green-darken;
+                &:before {
+                    border-color: $green-darken;
+                    border-left-color: transparent;
+                }
+                &:after {
+                    border-left-color: $green-darken;
+                }
+            }
+        }
+    }
+}
+
+.path-item {
+    margin-left: 5px;
+}
+
+.disabled {
+    pointer-events: none !important;
+    cursor: default !important;
+    text-decoration: none !important;
+    color: black !important;
+}
+
+
+/*End breadcrumb*/
+
+.text-primary {
+    color: $primary-color !important;
+}
+
+.mat-toolbar {
+    background-color: $primary-color !important;
+    height: 50px;
+    position: relative;
+    box-shadow: 0px 0px 15px #656363;
+    z-index: 5;
+}
+
+.carousel-indicators {
+    li {
+        visibility: visible;
+        box-sizing: content-box;
+        flex: 0 1 auto;
+        width: 30px;
+        height: 3px;
+        border-radius: 20px;
+        margin-right: 3px;
+        margin-left: 3px;
+        text-indent: -999px;
+        cursor: pointer;
+        background-color: $primary-color !important;
+        background-clip: padding-box;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        opacity: 0.5;
+        transition: opacity 0.6s ease;
+    }
+}
+
+.btn-portal {
+    background-color: $primary-color !important;
+}
+
+.btn-portal:hover {
+    background-color: $primary-btn-hover-color !important;
+}
+
+.btn-primary {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+}
+
+.btn-primary:hover {
+    background-color: $primary-btn-hover-color !important;
+    border-color: $primary-btn-hover-color !important;
+}
+
+html,
+body {
+    min-height: 100% !important;
+    height: auto;
+    margin: 0;
+}
+
+.alertSnapshot {
+    color: #dc3545 !important;
+    //background-color: #f8d7da !important;
+    //border-color: #fafafa !important;
+    // background-color: #dc3545 !important;
+}
+
+.warnSnapshot {
+    color: #a28a0b !important;
+    // background-color: #fff3cd !important;
+    // border-color: #ffeeba !important;
+    // background-color: #ffc107 !important;
+}
+
+.gridRow {
+    text-align: center !important;
+}
+
+.slick-header-column {
+    display: grid !important;
+    text-align: center !important;
+}
+
+.login-navbar {
+    padding: 0;
+    padding-left: 20px;
+    background-color: $primary-color;
+}
+
+#notfound .notfound {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    .notfound-404 {
+        position: relative;
+        height: 200px;
+        margin: 0 auto 20px;
+        z-index: -1;
+        width: 500px;
+        h1 {
+            font-size: 236px;
+            font-weight: 200;
+            margin: 0;
+            color: #211b19;
+            text-transform: uppercase;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #211b19;
+            background: #fff;
+            padding: 10px 5px;
+            margin: auto;
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+    a {
+        display: inline-block;
+        font-weight: 700;
+        text-decoration: none;
+        color: #fff;
+        text-transform: uppercase;
+        padding: 13px 23px;
+        background-color: $primary-color;
+        font-size: 18px;
+        -webkit-transition: 0.2s all;
+        transition: 0.2s all;
+    }
+}
+
+.hidden {
+    display: none !important;
+    width: 0px !important;
+}
+
+.hiddenWidth {
+    display: none !important;
+    width: 0px !important;
+}
+
+input[data-columnid="global"] {
+    display: none !important;
+    width: 0px !important;
+}
+
+div:has(input[data-columnid="global"]) {
+    display: none !important;
+    width: 0px !important;
+}
+
+.chart-header {
+    text-decoration: underline;
+    text-decoration-color: $primary-color;
+}
+
+.app-side-nav {
+    width: 200px !important;
+}
+
+.bg-portal-primary {
+    background-color: $primary-color;
+}
+
+.portal-box-shadow {
+    box-shadow: 0 0.125rem 0.5em rgb(0 0 0 / 69%) !important;
+}
+
+.card-top {
+    border-top: 2px solid $primary-color !important;
+}
+
+.is-ngx-invalid div {
+    border-color: #dc3545 !important;
+}
+
+.is-ngx-invalid div input:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgb(220 53 69 / 25%) !important;
+}
+
+.form-group.required label:before {
+    content: "*";
+    color: red;
+}
+
+.spinner {
+    display: block;
+    position: fixed;
+    background-color: #fff;
+    z-index: 1031;
+    top: 40%;
+    left: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    height: 120px;
+    width: 120px;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: $primary-color;
+}
+
+.modal-backdrop {
+    opacity: 0.5 !important;
+}
+
+.spinner-modal {
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.card-icon-color {
+    color: $primary-color
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-scroller::-webkit-scrollbar {
+    width: 4px;
+    overflow-y: scroll;
+    background: grey;
+    box-shadow: inset 0 0 4px #707070;
+}
+
+.app-scroller::-webkit-scrollbar-thumb {
+    background: $primary-color;
+    border-radius: 10px;
+}
+
+.dialog-title {
+    float: left;
+    margin: 0;
+    margin-top: 5px;
+    vertical-align: middle;
+    border-bottom: 2px $primary-color solid;
+    width: 100%;
+    font-size: 18px;
+    color: black;
+}
+
+mat-nav-list a {
+    color: $primary-color !important;
+}
+
+.form-control:focus {
+    color: #495057 !important;
+    background-color: #fff !important;
+    border-color: $primary-color !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem $form-control-focus-box-shadow !important;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: $primary-color!important;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 0 3px $form-control-focus-box-shadow !important;
+}
+
+.keyword-container {
+    width: auto;
+    .keyword {
+        color: white;
+        background-color: $primary-color;
+        border-radius: 5px;
+        font-size: small;
+    }
+}
