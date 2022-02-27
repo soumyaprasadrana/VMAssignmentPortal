@@ -42,7 +42,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Node 14 +
 - Angular 12+
 - Docker & Docker Compose ( Production SaaS )
-- VM Assignment Portal API ( Check Readme for more details )
+- VM Assignment Portal API ( See VM Management Portal API Project's [Readme](https:/github.com/soumyaprasadrana/VMManagementPortalAPI#readme) )
 
 ## Installing
 
@@ -84,6 +84,7 @@ node app
 Pre-requisite- Docker Compose
 
 ```
+git config --global core.autocrlf false
 git clone https://github.com/soumyaprasadrana/VMAssignmentPortal.git
 cd {repositoryPath}
 npm run build-prod
@@ -97,6 +98,7 @@ cd ..
 cd portal-db
 docker build -t portal_db:1.0 .
 cd ..
+git config --global core.autocrlf true
 docker-compose up
 ```
 
