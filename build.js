@@ -53,7 +53,7 @@ async function extractArchive(filepath, output_dir) {
 async function createProdZipArchive() {
     try {
         const zip = new adm_zip();
-        const outputFile = "./build/VMManagementPortal.zip";
+        const outputFile = "./build/VMAssignmentPortal.zip";
         zip.addLocalFolder("./dist", "./dist");
         zip.addLocalFolder("./server", "./server");
         console.log("Writing production zip...")
@@ -74,18 +74,18 @@ async function copySaaSFiles() {
         if (!fs.existsSync('./build/docker/saas/portal-ui/files')) {
             fs.mkdirSync('./build/docker/saas/portal-ui/files', { recursive: true });
         }
-        fs.copyFile('./build/VMManagementPortal.zip', './build/docker/saas/portal-ui/files/VMManagementPortal.zip', (err) => {
+        fs.copyFile('./build/VMAssignmentPortal.zip', './build/docker/saas/portal-ui/files/VMAssignmentPortal.zip', (err) => {
             if (err) {
                 console.log(err);
-                console.log("Unable to copy resorce: VMManagementPortal.zip to saas directory.")
+                console.log("Unable to copy resorce: VMAssignmentPortal.zip to saas directory.")
             } else {
-                console.log("Rousource: VMManagementPortal.zip copied to saas directory.");
+                console.log("Rousource: VMAssignmentPortal.zip copied to saas directory.");
                 console.log("Deleting old archive...");
                 (async() => {
                     try {
-                        await del('./build/VMManagementPortal.zip');
+                        await del('./build/VMAssignmentPortal.zip');
 
-                        console.log(`/build/VMManagementPortal.zip is deleted!`);
+                        console.log(`/build/VMAssignmentPortal.zip is deleted!`);
 
                     } catch (err) {
                         console.error(`Error while deleting build.`);
@@ -149,8 +149,8 @@ async function createSaaSFiles() {
     }
     const docker_file_data = 'FROM node:14' + '\n' +
         'WORKDIR /app' + '\n' +
-        'COPY files/VMManagementPortal.zip /app/' + '\n' +
-        'RUN unzip VMManagementPortal.zip' + '\n' +
+        'COPY files/VMAssignmentPortal.zip /app/' + '\n' +
+        'RUN unzip VMAssignmentPortal.zip' + '\n' +
         'WORKDIR  /app/server' + '\n' +
         'EXPOSE 3000' + '\n' +
         'ENTRYPOINT ["node","/app/server/app.js"]';
@@ -251,7 +251,7 @@ async function start_build() {
                                     if (createProdZipArchive()) {
                                         copySaaSFiles();
                                         console.log("Extracting build resources ...");
-                                        if (extractArchive('./build/VMManagementPortal.zip', './build/')) {
+                                        if (extractArchive('./build/VMAssignmentPortal.zip', './build/')) {
                                             console.log("Remving old resources...");
                                             (async() => {
 

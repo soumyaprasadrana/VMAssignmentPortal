@@ -8,8 +8,8 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/soumyaprasadrana/VMManagementPortal.svg)](https://github.com/soumyaprasadrana/VMManagementPortal/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/soumyaprasadrana/VMManagementPortal.svg)](https://github.com/soumyaprasadrana/VMManagementPortal/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/soumyaprasadrana/VMAssignmentPortal.svg)](https://github.com/soumyaprasadrana/VMAssignmentPortal/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/soumyaprasadrana/VMAssignmentPortal.svg)](https://github.com/soumyaprasadrana/VMAssignmentPortal/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -51,7 +51,7 @@ Check Pre-requisites , VM Assignment portal Server must be running before using 
 ### Dev Enviroment
 
 ```
-git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+git clone https://github.com/soumyaprasadrana/VMAssignmentPortal.git
 cd {repositoryPath}
 npm install
 cd server
@@ -71,7 +71,7 @@ Open project in visual studio code and open two terminals run
 ### Prod Enviroment
 
 ```
-git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+git clone https://github.com/soumyaprasadrana/VMAssignmentPortal.git
 cd {repositoryPath}
 npm run build-prod
 cd build/server
@@ -84,7 +84,7 @@ node app
 Pre-requisite- Docker Compose
 
 ```
-git clone https://github.com/soumyaprasadrana/VMManagementPortal.git
+git clone https://github.com/soumyaprasadrana/VMAssignmentPortal.git
 cd {repositoryPath}
 npm run build-prod
 cd build\docker\saas
@@ -112,7 +112,7 @@ Access the application by http://localhost:3000/
 
 - [@soumya](https://github.com/soumyaprasadrana) - Architecture & Devlopment
 
-See also the list of [contributors](https://github.com/soumyaprasadrana/VMManagementPortal/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/soumyaprasadrana/VMAssignmentPortal/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
