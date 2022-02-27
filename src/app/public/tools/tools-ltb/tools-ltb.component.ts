@@ -28,24 +28,36 @@ export class ToolsLtbComponent implements OnInit {
     if (typeof history.state.ip != 'undefined') {
       this.selectedDataContext = history.state;
     }
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
+    var res = {
+      cardsMetaData: [
+        [
+          {
+            cardTitle: 'Hostname',
+            cardCommand: 'hostname',
+            cardWidth: 150,
+            cardHeight: 150,
+            cardFields: [
+              [
+                { label: 'Machine IP', field_name: 'machine_ip' },
+                { label: 'SSH Username', field_name: 'ssh_username' },
+                { label: 'SSH Password', field_name: 'ssh_password' },
+              ],
+              {
+                machine_ip: [null, 'required'],
+                ssh_username: [null, 'required'],
+                ssh_password: [null, 'required'],
+                command: ['hostname', 'required'],
+              },
+            ],
+          },
+        ],
+      ],
+      defaultSSHUsername: 'default',
+      defaultSSHPassword: 'passwod',
     };
-    this._client.get('api/public/sshMetadata', httpOptions).then(
-      (res: any) => {
-        this.defaultSSHUsername = res.defaultSSHUsername;
-        this.defaultSSHPassword = res.defaultSSHPassword;
-        this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
-        //console.log('api/public/sshMetadata res:', res);
-      },
-      (error) => {
-        //console.log('error', error);
-      }
-    );
+    this.defaultSSHUsername = res.defaultSSHUsername;
+    this.defaultSSHPassword = res.defaultSSHPassword;
+    this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
   }
   parseMetadata(metadata: any) {
     for (var i = 0; i < metadata.length; i++) {

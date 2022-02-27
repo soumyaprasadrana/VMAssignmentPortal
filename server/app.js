@@ -156,6 +156,6 @@ app.get('/portal', getRoot);
 app.get('/portal/spa/:app', loadSPA);
 app.get('/portal/spa/:app/*', loadSPAAsset);
 app.get('/portal/login', getRoot);
-app.get('/portal/home/*', portalAuth.ensureAuthenticated, getUndefined);
+app.get('/portal/home/*', getUndefined);
 const port = config.PORT;
 app.listen(port, () => logger.info('App listening on port ' + port));

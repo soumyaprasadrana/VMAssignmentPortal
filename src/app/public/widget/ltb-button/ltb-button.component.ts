@@ -51,55 +51,7 @@ export class LtbButtonComponent implements OnInit {
         commandQuerryParser: this.commandQuerryParser,
         queryFields: this.queryFields,
       },
-      (res: any) => {
-        //console.log(res);
-        if (typeof this.callback == 'function') {
-          this.callback(res);
-        } else {
-          //console.log('usual path to show result');
-          this.submitted = true;
-          this._spinner.setSpinnerState(true);
-
-          // display form values on success
-          var headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-          });
-
-          var httpOptions = {
-            headers: headers,
-          };
-          var _promise = this._client.post('api/stream/exec', res, httpOptions);
-          _promise
-            .then((res: any) => {
-              this._spinner.setSpinnerState(false);
-
-              if (res) res = JSON.parse(res);
-              if (res.execStatus == 'true') {
-                //pass case
-                this.openOutputDialog(res);
-              } else {
-                this._spinner.setSpinnerState(false);
-                this.openDialog(
-                  {
-                    type: 'alert',
-                    message: res.message,
-                  },
-                  null
-                );
-              }
-            })
-            .catch((err: any) => {
-              this._spinner.setSpinnerState(false);
-              this.openDialog(
-                {
-                  type: 'alert',
-                  message: err.message,
-                },
-                null
-              );
-            });
-        }
-      }
+      (res: any) => {}
     );
   }
   openDialogInput(data: any, callback: any) {

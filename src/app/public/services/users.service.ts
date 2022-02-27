@@ -40,17 +40,6 @@ export class UserService {
     return this.needRefresh.asObservable();
   }
   constructor(private _client: NodeclientService) {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    this.promise = _client.get('api/public/getUsers', httpOptions);
-    this.promiseTL = _client.get('api/admin/getTeamLeads', httpOptions);
-    this.promiseNU = _client.get('api/public/getNormalUsers', httpOptions);
-    this.promiseTeamStats = _client.get('api/admin/teamStats', httpOptions);
     this.setNeedRefresh(false);
     this.subscription = this.getNeedRefreshState().subscribe((value) => {
       if (value) {
@@ -61,20 +50,9 @@ export class UserService {
     });
   }
   getUsers() {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    if (this.needReload) {
-      this.promise = this._client.get('api/public/getUsers', httpOptions);
-    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): User[] {
         var result = JSON.parse(res);
-
         var id = 1;
         var returnObject: User[] = [];
         for (var user in result) {
@@ -88,69 +66,23 @@ export class UserService {
         ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
-
-      this.promise
-        .then((res: any) => {
-          //console.log('Users Service=>', res);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          resolve(parseResult(res));
-        })
-        .catch((error: any) => {
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          //console.log(error);
-          reject(error);
-        });
+      resolve(
+        parseResult(
+          '{"support_tl":"Support TL","devops_tl":"Devops TL","qa_tl":"QA TL","dev_tl":"Dev Team Lead","dev_user1":"Dev User1","admin":"Administrator","dev_user2":"DEV USER2","support_user1":"SUPPORT USER1","qa_user1":"QA USER1","support_user2":"SUPPORT USER2","devops_user1":"DEVOPS USER1","qa_user2":"QA USER2","devops_user2":"DEVOPS USER2"}'
+        )
+      );
     });
     return promisey;
   }
   getTeamStats() {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    if (this.needReload) {
-      this.promiseTeamStats = this._client.get(
-        'api/admin/teamStats',
-        httpOptions
-      );
-    }
     const promisey = new Promise((resolve, reject) => {
-      this.promiseTeamStats
-        .then((res: any) => {
-          //console.log('Users Service:-: Team Stats=>', res);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          resolve(res);
-        })
-        .catch((error: any) => {
-          //console.log(error);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          reject(error);
-        });
+      resolve(
+        '[{"update_user":"1","user_id":"support_tl","delete_vm":"1","user_name":"Support TL","is_teamLead":"1","create_user":"1","user_team":"Support","delete_user":"1"},{"update_user":"1","user_id":"devops_tl","delete_vm":"1","user_name":"Devops TL","is_teamLead":"1","create_user":"1","user_team":"DevOps","delete_user":"1"},{"update_user":"1","user_id":"qa_tl","delete_vm":"1","user_name":"QA TL","is_teamLead":"1","create_user":"1","user_team":"QA","delete_user":"1"},{"update_user":"1","user_id":"dev_tl","delete_vm":"1","user_name":"Dev Team Lead","is_teamLead":"1","create_user":"1","user_team":"DEV","delete_user":"1"},{"update_user":"0","user_id":"dev_user1","delete_vm":"0","user_name":"Dev User1","is_teamLead":"0","create_user":"0","user_team":"DEV","delete_user":"0"},{"update_user":"0","user_id":"dev_user2","delete_vm":"1","user_name":"DEV USER2","is_teamLead":"0","create_user":"0","user_team":"DEV","delete_user":"1"},{"update_user":"0","user_id":"support_user1","delete_vm":"0","user_name":"SUPPORT USER1","is_teamLead":"0","create_user":"0","user_team":"Support","delete_user":"1"},{"update_user":"1","user_id":"qa_user1","delete_vm":"0","user_name":"QA USER1","is_teamLead":"0","create_user":"1","user_team":"QA","delete_user":"0"},{"update_user":"1","user_id":"support_user2","delete_vm":"0","user_name":"SUPPORT USER2","is_teamLead":"0","create_user":"0","user_team":"Support","delete_user":"0"},{"update_user":"1","user_id":"devops_user1","delete_vm":"1","user_name":"DEVOPS USER1","is_teamLead":"0","create_user":"0","user_team":"DevOps","delete_user":"0"},{"update_user":"0","user_id":"qa_user2","delete_vm":"0","user_name":"QA USER2","is_teamLead":"0","create_user":"1","user_team":"QA","delete_user":"1"},{"update_user":"0","user_id":"devops_user2","delete_vm":"1","user_name":"DEVOPS USER2","is_teamLead":"0","create_user":"1","user_team":"DevOps","delete_user":"0"}]'
+      );
     });
     return promisey;
   }
   getTeamLeads() {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    if (this.needReload) {
-      this.promiseTL = this._client.get('api/admin/getTeamLeads', httpOptions);
-    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): User[] {
         var result = JSON.parse(res);
@@ -168,39 +100,15 @@ export class UserService {
         ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
-
-      this.promiseTL
-        .then((res: any) => {
-          //console.log('Users Service=>', res);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          resolve(parseResult(res));
-        })
-        .catch((error: any) => {
-          //console.log(error);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          reject(error);
-        });
+      resolve(
+        parseResult(
+          '{"support_tl":"Support TL","devops_tl":"Devops TL","qa_tl":"QA TL","dev_tl":"Dev Team Lead"}'
+        )
+      );
     });
     return promisey;
   }
   getNormalUsers() {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    if (this.needReload) {
-      this.promiseNU = this._client.get(
-        'api/public/getNormalUsers',
-        httpOptions
-      );
-    }
     const promisey = new Promise((resolve, reject) => {
       function parseResult(res: any): User[] {
         var result = JSON.parse(res);
@@ -218,22 +126,11 @@ export class UserService {
         ////console.log('returnObject=>', returnObject);
         return returnObject;
       }
-
-      this.promiseNU
-        .then((res: any) => {
-          //console.log('Users Service=>', res);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          resolve(parseResult(res));
-        })
-        .catch((error: any) => {
-          //console.log(error);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          reject(error);
-        });
+      resolve(
+        parseResult(
+          '{"support_user1":"SUPPORT USER1","qa_user1":"QA USER1","support_user2":"SUPPORT USER2","dev_user1":"Dev User1","dev_user2":"DEV USER2","devops_user1":"DEVOPS USER1","qa_user2":"QA USER2","devops_user2":"DEVOPS USER2"}'
+        )
+      );
     });
     return promisey;
   }

@@ -24,15 +24,46 @@ export class ToolsSpaComponent implements OnInit {
     private _client: NodeclientService,
     private _common: CommonService
   ) {
-    _common.getSpaList().then(
-      (res: any) => {
-        this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
-        //console.log('api/public/sshMetadata res:', res);
-      },
-      (error: any) => {
-        console.log('Unable to get single page applications list :', error);
-      }
-    );
+    var res = {
+      cardsMetaData: [
+        [
+          {
+            cardTitle: 'Monaco Text Compare',
+            cardWidth: 300,
+            cardText:
+              "Monaco is the tool drive microsoft visula studio code editing. Check it's github page for more details",
+            cardHeight: 200,
+            cardSPAName: 'textcompare',
+            cardIconClass: 'fa fa-list-alt ',
+            badgeIcon: 'fa fa-firefox ',
+            cardTextClamp: 3,
+          },
+          {
+            cardTitle: 'Prettier',
+            cardWidth: 300,
+            cardText:
+              "Monaco is the tool drive microsoft visula studio code editing. Check it's github page for more details",
+            cardHeight: 200,
+            cardSPAName: 'prettier',
+            cardIconClass: 'fa fa-file-code-o',
+            badgeIcon: 'fa fa-pencil-square-o ',
+            cardTextClamp: 3,
+          },
+          {
+            cardTitle: 'Android Asset Studio',
+            cardWidth: 300,
+            cardText:
+              "A collection of tools to easily generate assets such as launcher icons for your Android app.Check out it's github repository",
+            cardHeight: 200,
+            cardSPAName: 'androidassetstudio',
+            cardIconClass: 'fa fa-android',
+            badgeIcon: 'fa fa-pencil-square-o ',
+            cardTextClamp: 3,
+          },
+        ],
+      ],
+    };
+    this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
   }
   parseMetadata(metadata: any) {
     for (var i = 0; i < metadata.length; i++) {

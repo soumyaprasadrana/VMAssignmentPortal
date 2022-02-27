@@ -95,15 +95,6 @@ export class HomePageComponent implements OnInit {
     //Load VM Data
     this.spinner.setSpinnerState(true);
     var promise = this.vms.getVms();
-
-    //If you want to use a observable
-    /* this.vms.getVms2().subscribe((data:any)=>{
-      //console.log("Inside observer")  ;
-      var dataSet=this.vms.parseData(data);
-        //console.log(dataSet);
-        this.vmDataSet=dataSet;
-        this.gridService.resetGrid();
-    });*/
     this._props
       .getProps()
       .then((res) => {
@@ -248,7 +239,14 @@ export class HomePageComponent implements OnInit {
         ) {
           //console.log('selected rows true');
           args.ipList = this.selectedRows;
-          this.assignMultipleVMS(this.userList, args);
+          //this.assignMultipleVMS(this.userList, args);
+          this.openDialog(
+            {
+              type: 'alert',
+              message: 'Clicked for multiple assignment.',
+            },
+            null
+          );
         } else {
           this.getData(this.userList, args);
         }
@@ -413,88 +411,14 @@ export class HomePageComponent implements OnInit {
         return;
       }
       args.ipList = this.selectedRows;
-      this.vms
-        .releaseMultipleVMS(args.ipList)
-        .then((res2: any) => {
-          //console.log('Assign Result: ', res2);
-          res2 = JSON.parse(res2);
-          var refreshRequired: boolean = false;
-          if (res2.resultList) {
-            var html = '<h3>Result </h3>';
-            html +=
-              '<table class="table table-striped dataTable ">' +
-              '<th>IP</th>' +
-              '<th>Status</th>' +
-              '<th>Message</th>';
-            for (var i = 0; i < res2.resultList.length; i++) {
-              var item: any = res2.resultList[i];
-              html += '<tr>';
-              html += '<td>';
-              html += item.ip;
-              html += '</td>';
+      this.openDialog(
+        {
+          type: 'message',
+          message: 'Clicked Release for multiple vms',
+        },
+        null
+      );
 
-              html += '<td>';
-              html += '<div>';
-              if (item.status == 'Success') {
-                refreshRequired = true;
-                html +=
-                  '<span ><i class="fa fa-check-circle text-success"></i></span>';
-              } else {
-                html +=
-                  '<span ><i class="fa fa-times-circle text-danger"></i></span>';
-              }
-              html += '<span>';
-
-              html += '</span>';
-              html += '</td>';
-
-              html += '<td>';
-              if (typeof item.message != 'undefined') html += item.message;
-              html += '</td>';
-
-              html += '</tr>';
-            }
-            html += '</table>';
-            if (refreshRequired) {
-              this.openDialog(
-                {
-                  type: 'message',
-                  message: html,
-                },
-                (res: any) => {
-                  window.location.reload();
-                }
-              );
-            } else {
-              this.openDialog(
-                {
-                  type: 'message',
-                  message: html,
-                },
-                null
-              );
-            }
-          } else {
-            this.openDialog(
-              {
-                type: 'alert',
-                message: res2.message,
-              },
-              null
-            );
-          }
-          this.spinner.setSpinnerState(false);
-        })
-        .catch((error: any) => {
-          this.spinner.setSpinnerState(false);
-          this.openDialog(
-            {
-              type: 'alert',
-              message: error.message,
-            },
-            null
-          );
-        });
       return;
     }
     if (!window.confirm('Release VM:' + dataContext.ip + '?')) {

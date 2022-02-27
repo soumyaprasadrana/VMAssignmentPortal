@@ -54,37 +54,24 @@ export class TechnotesService {
   }
   getTechnotes(): any {
     console.log('getTecnotes() :: this.needReload ::', this.needReload);
-    if (this.needReload) {
-      this.promiseX = this.getDataFromNode();
-    }
+
     const promise = new Promise((resolve, reject) => {
-      this.promiseX
-        .then((res: any) => {
-          //console.log('getVms() ', res);
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          resolve(this.parseData(res));
-        })
-        .catch((err: any) => {
-          if (this.needReload) {
-            this.setNeedRefresh(false);
-          }
-          reject(err);
-        });
+      resolve(
+        this.parseData(
+          '{"1":{"technote":"<h2>How to stop/start firewall on Redhat 8 step by step instructions<\\/h2><ol><li>To check firewall status execute the following command:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl status firewalld\\n? firewalld.service - firewalld - dynamic firewall daemon\\n   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)\\n   Active: active (running) since Sun 2018-11-25 15:08:56 EST; 8min ago\\n     Docs: man:firewalld(1)\\n Main PID: 4567 (firewalld)\\n    Tasks: 2 (limit: 24007)\\n   Memory: 24.4M\\n   CGroup: /system.slice/firewalld.service\\n           ??4567 /usr/libexec/platform-python -s /usr/sbin/firewalld --nofork --nopid\\n<\\/pre><ol><li>Stop firewall by running the following command:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># service firewalld stop\\nOR\\n# systemctl stop firewalld\\n<\\/pre><ol><li>To permanently disable firewall even after the RHEL 8 / CentOS 8 system reboot execute:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl disable firewalld\\n<\\/pre><ol><li>To start firewall after it was stopped execute:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># service firewalld start\\nOR\\n# systemctl start firewalld\\n<\\/pre><ol><li>To enable the firewall to start after the system reboot run:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl enable firewalld\\n<\\/pre>","keywords":"firewall,linux,rhel,network","description":"How to stop/start firewall on RHEL 8 / CentOS 8","is_global":true,"id":"1","team":"DEV"}}'
+        )
+      );
     });
     return promise;
   }
   getDataFromNode(): any {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    return new Promise((resolve, reject) => {
+      resolve(
+        this.parseData(
+          '{"1":{"technote":"<h2>How to stop/start firewall on Redhat 8 step by step instructions<\\/h2><ol><li>To check firewall status execute the following command:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl status firewalld\\n? firewalld.service - firewalld - dynamic firewall daemon\\n   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)\\n   Active: active (running) since Sun 2018-11-25 15:08:56 EST; 8min ago\\n     Docs: man:firewalld(1)\\n Main PID: 4567 (firewalld)\\n    Tasks: 2 (limit: 24007)\\n   Memory: 24.4M\\n   CGroup: /system.slice/firewalld.service\\n           ??4567 /usr/libexec/platform-python -s /usr/sbin/firewalld --nofork --nopid\\n<\\/pre><ol><li>Stop firewall by running the following command:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># service firewalld stop\\nOR\\n# systemctl stop firewalld\\n<\\/pre><ol><li>To permanently disable firewall even after the RHEL 8 / CentOS 8 system reboot execute:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl disable firewalld\\n<\\/pre><ol><li>To start firewall after it was stopped execute:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># service firewalld start\\nOR\\n# systemctl start firewalld\\n<\\/pre><ol><li>To enable the firewall to start after the system reboot run:<\\/li><\\/ol><pre class=\\"ql-syntax\\" spellcheck=\\"false\\"># systemctl enable firewalld\\n<\\/pre>","keywords":"firewall,linux,rhel,network","description":"How to stop/start firewall on RHEL 8 / CentOS 8","is_global":true,"id":"1","team":"DEV"}}'
+        )
+      );
     });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    var promise = this._client.get('api/technotes/getAll', httpOptions);
-    return promise;
   }
 
   getTechnotesObservable(): any {
@@ -103,15 +90,9 @@ export class TechnotesService {
   }
 
   deleteTechnote(id: string) {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    return new Promise((resolve, reject) => {
+      resolve('{"status":"Success"}');
     });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    var data: any = {};
-    return this._client.post('api/technotes/delete/' + id, data, httpOptions);
   }
 
   parseData(res: any) {

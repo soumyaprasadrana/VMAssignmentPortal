@@ -63,27 +63,6 @@ export class LoginViewComponent implements OnInit {
 
     config.showNavigationArrows = true;
     config.showNavigationIndicators = true;
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    var httpOptions = {
-      headers: headers,
-    };
-
-    var hideloginfooter;
-    this._client
-      .get('api/config/hideloginfooter', httpOptions)
-      .then((res: any) => {
-        hideloginfooter = res.hideloginfooter;
-        console.log(
-          'Confi hideloginfooter loded from server :',
-          hideloginfooter
-        );
-        this.hideloginfooter = hideloginfooter;
-      })
-      .catch((err) => {
-        console.log('Error Occurred! Using default value!');
-      });
   }
 
   ngOnInit(): void {
@@ -91,22 +70,6 @@ export class LoginViewComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
-    var promise = this.auth.checkSession();
-    promise
-      .then((result) => {
-        //console.log('After Result');
-        if (result.status) {
-          //console.log('Authentication Sucessfull');
-          this.alert.type = 'success';
-          this.alert.message = 'Login Success';
-          this.router.navigate(['/portal/home/dash']);
-          this.showAlert = true;
-        }
-      })
-      .catch((result) => {
-        //Handle error case
-        //console.log('Login Failed.', result);
-      });
   }
   // convenience getter for easy access to form fields
   get f() {
@@ -125,32 +88,26 @@ export class LoginViewComponent implements OnInit {
     //console.log(this.f.username.value);
     //console.log(this.f.password.value);
     //this.auth.login(this.f.username.value, this.f.password.value);
-    var promise = this.auth.login(this.f.username.value, this.f.password.value);
-    promise
-      .then((result) => {
-        //console.log('After Result');
-        if (result.status) {
-          //console.log('Login Success true');
-          this.alert.type = 'success';
-          this.alert.message = 'Login Success';
-          this.router.navigate(['/portal/home']);
-          this.showAlert = true;
 
-          this.spinner.setSpinnerState(false);
-        } else {
-          this.alert.type = 'danger';
-          this.alert.message = result.message;
-          this.showAlert = true;
+    //console.log('After Result');
+    if (
+      this.f.username.value == 'admin' &&
+      this.f.password.value == 'Full@ccess123'
+    ) {
+      //console.log('Login Success true');
+      this.alert.type = 'success';
+      this.alert.message = 'Login Success';
+      this.router.navigate(['/portal/home']);
+      this.showAlert = true;
 
-          this.spinner.setSpinnerState(false);
-        }
-      })
-      .catch((result) => {
-        this.alert.type = 'danger';
-        this.alert.message = result.message;
-        this.showAlert = true;
+      this.spinner.setSpinnerState(false);
+    } else {
+      this.alert.type = 'danger';
+      this.alert.message =
+        'Username and password combination are not valid. Please try again.';
+      this.showAlert = true;
 
-        this.spinner.setSpinnerState(false);
-      });
+      this.spinner.setSpinnerState(false);
+    }
   }
 }

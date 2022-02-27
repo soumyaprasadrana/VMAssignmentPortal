@@ -16,17 +16,6 @@ const admnCtrl = require('./admin-module')
 const commonCtrl = require('./common-module');
 const userCtrl = require('./user-module')
 module.exports = function(app) {
-    app.get('/api/vm/*', portalAuth.ensureAuthenticated);
-    app.post('/api/vm/*', portalAuth.ensureAuthenticated);
-    app.get("/portal/spa/*", portalAuth.ensureAuthenticated);
-    app.get('/api/admin/*', portalAuth.ensureAuthenticated);
-    app.post('/api/admin/*', portalAuth.ensureAuthenticated);
-    app.get('/api/user/*', portalAuth.ensureAuthenticated);
-    app.post('/api/public/*', portalAuth.ensureAuthenticated);
-    app.get('/api/public/*', portalAuth.ensureAuthenticated);
-    app.post('/api/user/*', portalAuth.ensureAuthenticated);
-    app.get('/api/stream/*', portalAuth.ensureAuthenticated);
-    app.post('/api/stream/*', portalAuth.ensureAuthenticated);
     app.get("/api/login", portalAuth.authenticate);
     app.post('/api/login', portalAuth.authenticate);
     app.post('/api/logout', portalAuth.logOut);

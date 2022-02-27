@@ -39,6 +39,7 @@ export class TopNavComponent implements OnInit {
     private _spinner: SpinnerService,
     private themeService: PortalThemesService
   ) {
+    this.loggedUser = this.auth.getUser();
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
@@ -58,9 +59,7 @@ export class TopNavComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.loggedUser = this.auth.getUser();
-  }
+  ngOnInit() {}
 
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();

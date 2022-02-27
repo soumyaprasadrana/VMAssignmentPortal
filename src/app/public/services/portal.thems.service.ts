@@ -49,62 +49,29 @@ export class PortalThemesService {
       var httpOptions = {
         headers: headers,
       };
-      var theme;
-      this._client
-        .get('api/config/theme', httpOptions)
-        .then((res: any) => {
-          theme = res.theme;
-          console.log('Theme loded from server :', theme);
-          this.setThemeText(theme);
-          if (
-            !localStorage[this.THEME_SERVER] ||
-            JSON.parse(localStorage[this.THEME_SERVER])['serverTheme'] != theme
-          ) {
-            console.log(
-              '<{Theme Service}> No Server theme and local theme is not previous server theme!= current server theme'
-            );
-            localStorage[this.THEME_SERVER] = JSON.stringify({
-              serverTheme: theme,
-            });
-            localStorage.removeItem(this.THEME_LOCAL);
-          }
-          resolve(
-            this.sanitizer.bypassSecurityTrustResourceUrl(`${theme}.css`)
-          );
-        })
-        .catch((err) => {
-          console.log('Error Occurred! Using default theme!');
-          console.log(err);
-          theme = 'default';
-          this.setThemeText(theme);
-          resolve(
-            this.sanitizer.bypassSecurityTrustResourceUrl(`${theme}.css`)
-          );
-        });
+      var theme = 'default';
+      this.setThemeText(theme);
+      resolve(this.sanitizer.bypassSecurityTrustResourceUrl(`${theme}.css`));
     });
     return promise;
   }
   getQuickLinks() {
     var promise = new Promise((resolve, reject) => {
-      var headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-      });
-
-      var httpOptions = {
-        headers: headers,
+      var quicklinks = {
+        quickLinksMetaData: [
+          {
+            linkTitle: 'Google',
+            linkUrl: 'http://google.com',
+            iconClass: 'fa fa-google',
+          },
+          {
+            linkTitle: 'Firefox',
+            linkUrl: 'http://firefox.com',
+            iconClass: 'fa fa-firefox',
+          },
+        ],
       };
-      var quicklinks;
-      this._client
-        .get('api/public/quicklinks', httpOptions)
-        .then((res: any) => {
-          quicklinks = res.quicklinks;
-          console.log('Quick Links loded from server :', quicklinks);
-
-          resolve(res);
-        })
-        .catch((err) => {
-          reject(err);
-        });
+      resolve(quicklinks);
     });
     return promise;
   }

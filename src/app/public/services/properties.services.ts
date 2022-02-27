@@ -24,7 +24,7 @@ export class UIPropService {
   private needRefresh = new Subject<any>();
   subscription: Subscription;
   private needReload: any;
-  promise: Promise<unknown>;
+  promise?: Promise<unknown>;
   setNeedRefresh(value: boolean) {
     this.needRefresh.next({ value: value });
   }
@@ -37,15 +37,6 @@ export class UIPropService {
     return this.needRefresh.asObservable();
   }
   constructor(private _client: NodeclientService) {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    this.promise = this._client.get('api/public/getUIProps', httpOptions);
-    this.setNeedRefresh(false);
     this.subscription = this.getNeedRefreshState().subscribe((value) => {
       if (value) {
         //console.log('Spinner state:' + value.value);
@@ -56,33 +47,18 @@ export class UIPropService {
   }
 
   getDataFromNode(): any {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    return new Promise((resolve, reject) => {
+      resolve(
+        '{"osList":"Windows:Server 2016#Windows:Server 2008 R2#Windows:Server 2012#Windows:Server 2012R2#Windows:Server 2019#Windows:10#Linux:RHEL 6#Linux:RHEL 7#Linux:RHEL 7.2#Linux:RHEL 7.4#Linux:RHEL 7.6#Linux:RHEL 7.7#Linux:RHEL 7.8#Linux:RHEL 8#Linux:Ubuntu 14#Linux:Ubuntu 16#Linux:Ubuntu 18#AIX:7.2#AIX:7.1#NA:NA","warnSnapshot":"5","paginationPageSize":"25","teamList":"DEV:DevOps:FreePool:QA:Support","alertSnapshot":"9","paginationPageSizesList":"25:50:75:100:125"}'
+      );
     });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    if (this.needReload) {
-      this.promise = this._client.get('api/public/getUIProps', httpOptions);
-    }
-    if (this.needReload) {
-      this.setNeedRefresh(false);
-    }
-    return this.promise;
   }
 
   getProps() {
     const promisey = new Promise((resolve, reject) => {
-      this.getDataFromNode()
-        .then((res: any) => {
-          ////console.log('TeamServices=>', res);
-          resolve(res);
-        })
-        .catch((error: any) => {
-          //console.log(error);
-          reject(error);
-        });
+      resolve(
+        '{"osList":"Windows:Server 2016#Windows:Server 2008 R2#Windows:Server 2012#Windows:Server 2012R2#Windows:Server 2019#Windows:10#Linux:RHEL 6#Linux:RHEL 7#Linux:RHEL 7.2#Linux:RHEL 7.4#Linux:RHEL 7.6#Linux:RHEL 7.7#Linux:RHEL 7.8#Linux:RHEL 8#Linux:Ubuntu 14#Linux:Ubuntu 16#Linux:Ubuntu 18#AIX:7.2#AIX:7.1#NA:NA","warnSnapshot":"5","paginationPageSize":"25","teamList":"DEV:DevOps:FreePool:QA:Support","alertSnapshot":"9","paginationPageSizesList":"25:50:75:100:125"}'
+      );
     });
     return promisey;
   }
