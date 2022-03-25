@@ -24,7 +24,7 @@ module.exports = {
     /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
     /* Enable gzip on server */
-    useGzip: process.env.USEGZIP || false,
+    useGzip: process.env.USEGZIP || true,
     /* Enable CORS */
     useCORS: process.env.USECORS || true,
     /* Enable Toast Notification Service; If disabled success result will show in dialog */
