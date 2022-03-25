@@ -25,6 +25,7 @@ import { SpinnerService } from '../../services/spinner-service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { AuthserviceService } from '../../services/authservice.service';
 import { TechnotesService } from '../../services/technotes.service';
+import { ToastService } from '../../widget/toast/toast-service';
 @Component({
   selector: 'app-edit-technotes',
   templateUrl: '../add-technotes/add-technotes.component.html',
@@ -45,7 +46,6 @@ export class EditTechnotesComponent implements OnInit {
   technotesDataSet!: any[];
   technote: any;
   isLoaded!: boolean;
-  spinner: any;
   isDataloadFailed: any;
   constructor(
     private formBuilder: FormBuilder,
@@ -56,7 +56,8 @@ export class EditTechnotesComponent implements OnInit {
     private router: Router,
     private _auth: AuthserviceService,
     private technoteService: TechnotesService,
-    private actRoute: ActivatedRoute
+    private actRoute: ActivatedRoute,
+    private toastService:ToastService
   ) {
     tms
       .getTeams()
@@ -68,19 +69,20 @@ export class EditTechnotesComponent implements OnInit {
       });
     this._spinner.setSpinnerState(true);
     this.technoteID = this.actRoute.snapshot.params.technoteID;
-    var promise = this.technoteService.getTechnotes();
+    var promise = this.technoteService.getTechnote(this.technoteID);
     promise
-      .then((res: any[]) => {
+      .then((res:any) => {
         this._spinner.setSpinnerState(false);
-        console.log('inside promise.then -< setting technotesDataSet', res);
-        this.technotesDataSet = res;
-        console.log(res);
-        this.technote = this.technotesDataSet.filter(
-          (data) => data.id == this.technoteID
-        )[0];
+        console.log('inside promise.then -< setting technote');
+        this.technote=JSON.parse(res)
         console.log(this.technote);
-        if (this.technote == null) {
+        this.isLoaded = true;
+        if (this.technote.failed) {
           console.log('No technotefound with this id.');
+          if(this.loggedUser.useToast){
+            this.toastService.showDanger('Technote not found!!',5000);
+            this.router.navigate(['/portal/home/tools/technotes']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -90,7 +92,9 @@ export class EditTechnotesComponent implements OnInit {
               this.router.navigate(['/portal/home/tools/technotes']);
             }
           );
-        } else {
+        } 
+      }
+        else {
           console.log('Setting form values..');
           var teamValidation;
           if (this.loggedUser.permissions.is_admin) {
@@ -104,7 +108,7 @@ export class EditTechnotesComponent implements OnInit {
               [Validators.required, Validators.maxLength(500)],
             ],
             keywords: [this.technote.keywords],
-            technote: [this.technote.technotes, Validators.required],
+            technote: [this.technote.technote, Validators.required],
             is_global: [this.technote.is_global ? 'Yes' : 'No'],
             ngxteam: [this.technote.team, teamValidation],
           });
@@ -112,12 +116,12 @@ export class EditTechnotesComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        this.spinner.setSpinnerState(false);
+        this._spinner.setSpinnerState(false);
         //console.log('error occurred ', err);
         this.isLoaded = false;
-        this.isDataloadFailed;
+        this.isDataloadFailed=true;
       });
-
+   
     this.loggedUser = this._auth.getUser();
   }
   public ngxteam = new FormControl();
@@ -177,6 +181,10 @@ export class EditTechnotesComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.technoteService.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+            this.toastService.showSuccess('Technote updated successfully!',7000);
+            this.router.navigate(['/portal/home/tools/technotes']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -186,6 +194,7 @@ export class EditTechnotesComponent implements OnInit {
               this.router.navigate(['/portal/home/tools/technotes']);
             }
           );
+          }
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(
@@ -218,7 +227,7 @@ export class EditTechnotesComponent implements OnInit {
       .toPromise()
       .then((res) => {
         if (typeof callback == 'function') {
-          callback();
+          callback(res);
         }
       });
   }

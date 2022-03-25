@@ -25,6 +25,19 @@ module.exports = {
         }
         _client.get(httpOptions, req, res, next);
     },
+    getTechnote: function(req, res, next) {
+        var id= req.params.id;
+        const fn = "technotesmodule.js :-: getTechnote -"
+            //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
+            //logger.debug(fn + "AUTH:" + req.user.auth);
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.get_technote_rest_path+'/'+id,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+    },
     addTechnote: function(req, res, next) {
         if (req.body.params.ngxteam) {
             req.body.params.team = req.body.params.ngxteam;

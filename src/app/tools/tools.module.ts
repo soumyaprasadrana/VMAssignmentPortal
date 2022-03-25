@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Tools Module
  */
 import { NgModule } from '@angular/core';
@@ -33,6 +33,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModule } from '../material.module';
 import { ViewTechnoteComponent } from '../public/tools/view-technote/view-technote.component';
+import { FAIconsComponent } from '../public/tools/tools-spa-internal-faicons/tools-spa-internal-faicons.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ViewTechnoteComponent } from '../public/tools/view-technote/view-techno
     EditTechnotesComponent,
     AddTechnotesComponent,
     ViewTechnoteComponent,
+    FAIconsComponent
   ],
   imports: [
     CommonModule,

@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:54:18
- * @modify date 2022-02-26 17:54:18
+ * @modify date 2022-03-25 17:54:18
  * @desc Client to communicate with JAVA Rest API
  */
 const tough = require('tough-cookie');
@@ -61,7 +61,8 @@ module.exports = {
                     var tempUser = {};
                     tempUser.name = body.user;
                     tempUser.permissions = permissions;
-                    user.activeUser = tempUser;
+                    tempUser.useToast=config.useToast;
+                    user.activeUser = tempUser; 
                     callback(null, user)
                 } else {
                     logger.debug("failed'");

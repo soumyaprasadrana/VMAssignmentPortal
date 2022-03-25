@@ -8,13 +8,18 @@
 @author [soumya]
 @email [soumyaprasad.rana@gmail.com]
 @create date 2022-02-26 18:30:37
-@modify date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
 @desc App Component Html
 -->
 
 <link *ngIf="themeUrl" [href]="themeUrl" type="text/css" rel="stylesheet">
-<router-outlet></router-outlet>
 
+    <!-- Position it -->
+    <div class="toast-container" >
+        <app-portal-toasts aria-live="polite" aria-atomic="true"></app-portal-toasts>
+    </div>
+ 
+<router-outlet></router-outlet>
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="timer" [showSpinner]="isLoading" [fullScreen]="true">
     <p style="color: white"> Loading... </p>
 </ngx-spinner>

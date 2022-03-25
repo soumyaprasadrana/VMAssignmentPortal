@@ -1,3 +1,16 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Path Component Html
+-->
 <div class="alert-container">
     <div class="alert-custom">
         <ul id="breadcrumb">
@@ -13,6 +26,9 @@
 
                     <!--Chart Icon-->
                     <i *ngIf="item.parent=='home' && item.title=='chart'" class="fa fa-pie-chart" area-hidden="true"></i>
+                    <!--Relationships Icon-->
+                    <i *ngIf="item.parent=='chart' && item.title=='relationships'" class="fa fa-random" area-hidden="true"></i>
+
                     <!-- Tools Icon-->
                     <i *ngIf="item.parent=='home' && item.title=='tools'" class="fa fa-wrench" area-hidden="true"></i>
                     <!-- Tools LTB Icon-->

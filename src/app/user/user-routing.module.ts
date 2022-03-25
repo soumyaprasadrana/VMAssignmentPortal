@@ -25,15 +25,15 @@ const routes: Routes = [
       {
         path: 'dash',
         component: UserHomeComponent,
-        data: { animation: 'user' },
+        data: { animation: 'user',title:'Users' },
       },
 
-      { path: 'add', component: AddUserComponent, data: { animation: 'add' } },
+      { path: 'add', component: AddUserComponent, data: { animation: 'add',title:'Add User' } },
 
       {
         path: 'edit',
         component: EditUserComponent,
-        data: { animation: 'add' },
+        data: { animation: 'add',title:'Edit User' },
       },
 
       {
@@ -44,7 +44,7 @@ const routes: Routes = [
       {
         path: '**',
         component: PageNotFoundHomeComponent,
-        data: { animation: 'notFound' },
+        data: { animation: 'notFound',title:'404-Page Not Found' },
       },
     ],
   },

@@ -6,17 +6,19 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc VMM Home Component
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { VmsService } from '../../services/vms.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { VMMConfig } from '../vmm.config';
 
 @Component({
@@ -27,12 +29,15 @@ import { VMMConfig } from '../vmm.config';
 export class VmmHomeComponent implements OnInit {
   cardsMetaData: any;
   vmList: any = [];
+  loggedUser: any;
   constructor(
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
     private router: Router,
-    private vms: VmsService
+    private vms: VmsService,
+    private toastService:ToastService,
+    private _auth: AuthserviceService,
   ) {
     this.cardsMetaData = VMMConfig.cardsMetaData;
     if (_client.deviceIsMobile()) {
@@ -44,6 +49,7 @@ export class VmmHomeComponent implements OnInit {
         }
       }
     }
+    this.loggedUser = this._auth.getUser();
   }
 
   ngOnInit(): void {}
@@ -85,7 +91,10 @@ export class VmmHomeComponent implements OnInit {
             res = JSON.parse(res);
             this._spinner.setSpinnerState(false);
             if (res.status == 'Success') {
-              this.openDialog(
+              this.vms.setNeedRefresh(true);
+              if(this.loggedUser.useToast)
+                this.toastService.showDanger('VM removed successfully',5000);
+              /*this.openDialog(
                 {
                   type: 'message',
                   message: 'VM removed successfully',
@@ -93,12 +102,12 @@ export class VmmHomeComponent implements OnInit {
                 function () {
                   window.location.reload();
                 }
-              );
+              );*/
             } else {
               this.openDialog(
                 {
                   type: 'alert',
-                  message: 'VM removed successfully',
+                  message: res.message,
                 },
                 null
               );

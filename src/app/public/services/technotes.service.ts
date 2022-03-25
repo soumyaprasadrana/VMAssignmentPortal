@@ -75,6 +75,25 @@ export class TechnotesService {
     });
     return promise;
   }
+  getTechnote(id:any): any {
+    console.log('getTecnote() :: this.needReload ::');
+   
+      var tnp = this.getTechnoteFromNode(id);
+    
+    const promise = new Promise((resolve, reject) => {
+      tnp
+        .then((res: any) => {
+          //console.log('getVms() ', res);
+        
+          resolve(res);
+        })
+        .catch((err: any) => {
+          
+          reject(err);
+        });
+    });
+    return promise;
+  }
   getDataFromNode(): any {
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -84,6 +103,17 @@ export class TechnotesService {
       headers: headers,
     };
     var promise = this._client.get('api/technotes/getAll', httpOptions);
+    return promise;
+  }
+  getTechnoteFromNode(id:any): any {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    var promise = this._client.get('api/technotes/getTechnote/'+id, httpOptions);
     return promise;
   }
 

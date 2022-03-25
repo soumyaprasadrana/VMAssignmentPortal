@@ -1,0 +1,144 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Relationships Graph Component Html
+-->
+<app-path></app-path>
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-y: scroll;
+        overflow-x: hidden !important;
+    }
+    
+    .no-scroller {
+        overflow-y: hidden !important;
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="row p-2">
+    <div class="col">
+        <label for="linktype">Link type </label>
+        <select id="linktype" [(ngModel)]="treeView.config.linkType">
+          <option value="M">Cross</option>
+          <option value="L">Lines</option>
+          <option value="B">Blaizer</option>
+        </select>
+      </div>  
+      <div class="col">
+       <label for="orientation"> Orientation </label>
+        <select
+          id="orientation"
+          [ngModel]="treeView.config.iRootOrientation"
+          (ngModelChange)="treeView.config.iRootOrientation=$event;treeView.update()"
+        >
+          <option [ngValue]="Orientation.RO_TOP">Top</option>
+          <option [ngValue]="Orientation.RO_BOTTOM">Bottom</option>
+          <option [ngValue]="Orientation.RO_RIGHT">Rigth</option>
+          <option [ngValue]="Orientation.RO_LEFT">Left</option>
+        </select>
+      </div>
+      <div class="col">
+        <label id="sliderlabel" for="sliderzoom" >Graph Zoom</label>
+        <mat-slider
+          id="sliderzoom"
+          max="300"
+          min="0"
+          step="1"
+          thumbLabel="'Zoom(%)'"
+          [(ngModel)]="graphZoom"
+          aria-labelledby="sliderlabel"
+          >
+      </mat-slider>
+    </div>
+</div>
+
+  
+ 
+  <div class="graph-bg d-flex justify-content-center mt-1 p-3" style="overflow:auto !important;width:auto !important;height:auto !important;">
+  <div class=" d-flex justify-content-center " >
+    <tree-view [style.zoom.%]="graphZoom" #treeView [data]="data" [template]="treeTemplate"> 
+    </tree-view>
+ </div>
+ <br>   
+ 
+</div>
+  <ng-template #treeTemplate let-node let-tree="tree">
+    <div class="container h-100 w-100 alert-custom node-container" >
+        <div class=" h-100 d-flex justify-content-center align-items-center">
+            <div class="justify-content-center align-items-center">
+                <table>
+                    <tr>
+                        <td class="text-center">
+                          <ng-template #tipContent>
+                            <b>{{node.data.item.name}} </b>
+                          </ng-template>
+                            <i *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent" container="body" class="{{node.data.iconClass}}" [ngClass]="{ 'fa-4x': node.canCollapse,'fa-5x':!node.canCollapse }"></i>
+                            <i *ngIf="node.data.isRoot"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-4x': node.canCollapse,'fa-5x':!node.canCollapse }"></i>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                      <td  class="text-center">
+                        <b>{{node.data.id}}</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <ng-template #nodePopOver>
+                          <p class="p">
+                            <span><b>Name:</b></span><span>{{node.data.item.name}}</span> <br>
+                            <span><b>Source:</b></span><span>{{node.data.item.source}}</span> <br>
+                            <span><b>Destination:</b></span><span>{{node.data.item.destination}}</span> <br>
+                            <span><b>Description:</b></span><span>{{node.data.item.description}}</span> <br>
+                            <span><b>Group:</b></span><span>{{node.data.item.group}}</span>
+                          </p>
+                        </ng-template>
+                        <table class="w-100">
+                          <tr>
+                            <td *ngIf="!node.data.isRoot" [ngbPopover]="nodePopOver" [autoClose]="'outside'"  container="body" placement="bottom">
+                              
+                              <span class="bold btn btn-primary load-child" style="zoom: 60% !important;" >
+                                <i  class="fa fa-info-circle" ></i>
+                              </span> 
+                              <!--<button type="button" [autoClose]="false" ngbPopover="vjhvhjjdshjh" style="zoom: 60% !important;" class="bold btn btn-primary load-child" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title"><i  class="fa fa-info-circle" ></i> </button>-->
+                            </td>
+                            <td *ngIf="!node.canCollapse && !node.isEmpty">
+                              <span style="zoom: 60% !important;" class="bold btn btn-primary load-child"  (click)="loadChildren(tree,node);"><i  class="fa fa-plus-circle" ></i> Load Child </span>
+                            </td>
+                            <td *ngIf="node.canCollapse && !node.isCollapsed">
+                              <span style="zoom: 60% !important;" class="bold btn btn-primary"  (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-minus-circle" ></i> Collapse  </span>
+                            </td>
+                            <td *ngIf="node.canCollapse && node.isCollapsed">
+                              <span style="zoom: 60% !important;" class="bold btn btn-primary"  (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-plus-circle" ></i> Expand </span>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        
+                      </td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+        
+    </div>
+  </ng-template>
+  

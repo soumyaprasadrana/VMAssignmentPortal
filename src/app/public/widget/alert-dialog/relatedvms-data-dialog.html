@@ -1,0 +1,181 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Relationships Component Html
+-->
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+         {{data.title}}
+         <button  type="button" class="close" style="background: white;
+    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
+        <span style="font-size:30px;" aria-hidden="true">&times;</span>
+    </button>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg ml-2">
+    <br> {{data.label}}
+    <label *ngIf="norecordFound" class="label label-default" style="color:#3e3b3b;background-color:#f5f5f5;">
+        No Relationships found;  
+        <span (click)="toggleNoRecordScreen()">
+            <a style="cursor:pointer;color: rgb(94, 129, 182);font-weight: bold;">'click here'</a> </span> 
+            to add.</label>
+    <form *ngIf="dataLoaded && !norecordFound && editMode" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <label *ngIf="onlyChildPresent" class="label label-default" style="color:#3e3b3b;background-color:#f5f5f5;">
+            No parent relationships for this vm found. Child relationships can not be updated from here!;  
+            </label>
+        <div class="row p-3  " *ngFor="let item of data.list;let i = index">
+            <label [matTooltip]="'Delete field!'" (click)="deleteField(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
+            <div class="col ">
+                <div class="form-group required">
+
+                    <label for="relationship_{{i}}">Relationship name:</label>
+                    <input maxlength="31" id="relationship_{{i}}" class="form-control" formControlName="relationship_{{i}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i) }">
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i)" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i)">Relationship name is required</div>
+                        <div class="ml-1" *ngIf="checkIsInvalidLength('relationship_'+i)">Maximum lengh exceeded.</div>
+                        <div *ngIf="checkIsInvalidWhiteSpace('relationship_'+i)">White Space is not allowed.</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group required">
+
+                    <label for="relationship_{{i}}_source">Source: </label>
+                    <input id="relationship_{{i}}_source" class="form-control" formControlName="relationship_{{i}}_source" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_source') }" disabled>
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_source')" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_source')">Source is required</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col ">
+                <div class="form-group required">
+
+                    <label for="relationship_{{i}}_destination">Destination: </label>
+                    <!--<input id="relationship_{{i}}_destination" class="form-control" formControlName="relationship_{{i}}_destination" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_destination') }">-->
+                    <ng-select  [items]="vmList" bindValue="ip" bindLabel="ip" placeholder="Select VM"  formControlName="relationship_{{i}}_destination" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && checkIsInvalid('relationship_'+i+'_destination') }" ngDefaultControl>
+                    </ng-select>
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_destination')" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_destination')">Destination is required</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col ">
+                <div class="form-group ">
+
+                    <label for="relationship_{{i}}_description">Description: </label>
+                    <input id="relationship_{{i}}_description" class="form-control" formControlName="relationship_{{i}}_description" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_description') }">
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_description')" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_description')">Description is required</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col ">
+                <div class="form-group ">
+
+                    <label for="relationship_{{i}}_group">Group: </label>
+                    <input id="relationship_{{i}}_group" class="form-control" formControlName="relationship_{{i}}_group" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_group') }">
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_group')" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_group')">Group is required</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group">
+
+                    <label for="relationship_{{i}}_icon">icon: </label>
+                    <span class="{{getFormCotrolData('relationship_'+i+'_icon')}} form-control-prefix-icon text-muted form-control" style="padding:0 !important;" area-label="false"></span>
+                    <ng-select class="form-control-include-icon"  [items]="iconList" bindValue="item" bindLabel="item" placeholder="Select icon class"  formControlName="relationship_{{i}}_icon" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && checkIsInvalid('relationship_'+i+'_icon') }" ngDefaultControl>
+                    </ng-select>
+                    
+                    <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_icon')" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_icon')">Icon is required</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="row p-3">
+            <div class="col">
+                <label [matTooltip]="'Multiple VMS can be ralted to a single VM by unique relationship names and multiple relationships can be bundled under a single group'" (click)="toggleTooltip()" class="label btn btn-primary"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></label>
+                <label [matTooltip]="'Add a new related vm!'" (click)="addField()" class="label btn btn-primary"><i class="fa fa-plus fa-2" aria-hidden="true"></i></label>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col float-end">
+
+                <button type="submit" mat-button class="float-end">Ok</button>
+                <button mat-button mat-dialog-close class="float-end">Cancel</button>
+
+            </div>
+        </div>
+    </form>
+    <form  *ngIf="dataLoaded && !norecordFound && !editMode" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row p-3 " *ngFor="let item of data.list;let i = index">
+            <div class="col ">
+                <div  class="form-group required">
+                    <label for="name">Relationship name:</label>
+                    <input id="name" class="form-control" formControlName="list_item_{{i}}_name" disabled>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group required">
+                    <label for="source">Source:</label>
+                    <input id="source" class="form-control" formControlName="list_item_{{i}}_source" disabled>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group required">
+                    <label for="destination">Destination:</label>
+                    <input id="destination" class="form-control" formControlName="list_item_{{i}}_destination" disabled>
+                    
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group ">
+                    <label for="description">Description:</label>
+                    <input id="description" class="form-control" formControlName="list_item_{{i}}_description" disabled>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group ">
+                    <label for="group">Group:</label>
+                    <input id="group" class="form-control" formControlName="list_item_{{i}}_group" disabled>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="form-group ">
+                    <label for="icon">Icon:</label>
+                    <span class="{{getFormCotrolData('list_item_'+i+'_icon')}} form-control-prefix-icon text-muted form-control" style="padding:0 !important;" area-label="false"></span>
+                    <input id="icon" class="form-control form-control-include-icon" formControlName="list_item_{{i}}_icon" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col float-end">
+
+
+                <button mat-button mat-dialog-close class="float-end">Close</button>
+                <button type="button" mat-button class="float-end" (click)="toggleToUpdateScreen()">Update</button>
+                <button type="submit" style="display:none"></button>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

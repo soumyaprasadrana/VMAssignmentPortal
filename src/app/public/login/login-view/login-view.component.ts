@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Login View Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -32,7 +32,7 @@ export class LoginViewComponent implements OnInit {
   /* For View */
   showNavigationArrows = false;
   showNavigationIndicators = true;
-  images = [1, 2, 3, 4, 5].map((n) => `assets/images/${n}.PNG`);
+  images = [1, 2, 3, 4, 5,6].map((n) => `assets/images/${n}.PNG`);
   /* For Validation */
   form: FormGroup = new FormGroup({
     password: new FormControl('', Validators.minLength(2)),

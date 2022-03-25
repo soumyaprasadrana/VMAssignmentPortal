@@ -1,3 +1,16 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-03-25 18:26:41
+ * @modify date 2022-03-25 18:26:41
+ * @desc Relationships Component Css
+ */
+
 a.carousel-control-prev,
 a.carousel-control-next {
   span {
@@ -13,7 +26,13 @@ a.carousel-control-next {
 }
 .row {
   /*  border: solid 3px blue;  for debugging purposes */
-  min-height: 60vh !important;
   padding: 20px;
   padding-bottom: 0px;
+}
+.app-login-content{
+  top:50px;
+ bottom: 50px;
+ margin: 0;
+ overflow: hidden;
+ position: absolute;
 }

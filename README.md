@@ -61,7 +61,7 @@ npm install
 Open project in visual studio code and open two terminals run
 
 1.  ```
-    ng build --configuration="development" --watch
+    .\node_modules\.bin\ng.cmd build --configuration="development" --watch
     ```
 2.  ```
     cd server
@@ -121,6 +121,10 @@ See also the list of [contributors](https://github.com/soumyaprasadrana/VMAssign
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
+
+## Known Dev Env Issues
+
+https://stackoverflow.com/questions/52801814/this-syntax-requires-an-imported-helper-but-module-tslib-cannot-be-found-wit
 
 ## License <a name = "license"></a>
 

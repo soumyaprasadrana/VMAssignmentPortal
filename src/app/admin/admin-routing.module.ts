@@ -30,43 +30,43 @@ const routes: Routes = [
       {
         path: 'dash',
         component: AdminHomeComponent,
-        data: { animation: 'admin' },
+        data: { animation: 'admin',title:'Administration' },
       },
 
       {
         path: 'addTeam',
         component: AddTeamComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Add Team' },
       },
       {
         path: 'editTeam',
         component: EditTeamComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Edit Team' },
       },
       {
         path: 'editTeamLead',
         component: EditTeamLeadComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Edit Team Lead' },
       },
       {
         path: 'teamStats',
         component: TeamStatsComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Team Stats' },
       },
       {
         path: 'addTeamLead',
         component: AddTeamLeadComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Add Team Lead' },
       },
       {
         path: 'activityLogs',
         component: TeamActivityLogsComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Activity Logs' },
       },
       {
         path: 'properties',
         component: ApplicationPropertiesComponent,
-        data: { animation: 'addTeam' },
+        data: { animation: 'addTeam',title:'Properties' },
       },
 
       {
@@ -77,7 +77,7 @@ const routes: Routes = [
       {
         path: '**',
         component: PageNotFoundHomeComponent,
-        data: { animation: 'notFound' },
+        data: { animation: 'notFound',title:'404-Page Not Found' },
       },
     ],
   },
