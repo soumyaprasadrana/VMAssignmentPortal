@@ -6,17 +6,21 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc App Component
  */
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SpinnerService } from './public/services/spinner-service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { AuthserviceService } from './public/services/authservice.service';
 import { PortalThemesService } from './public/services/portal.thems.service';
+import { ToastService } from './public/widget/toast/toast-service';
+import { TemplateRef } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -39,7 +43,10 @@ export class AppComponent {
     private keepalive: Keepalive,
     private auth: AuthserviceService,
     private router: Router,
-    public themeService: PortalThemesService
+    public themeService: PortalThemesService,
+    public toastService: ToastService,
+    private titleService: Title,
+    private activatedRoute: ActivatedRoute,
   ) {
     themeService.getThemeUrl().then((res) => {
       if (localStorage[this.THEME_LOCAL] != null) {
@@ -112,7 +119,28 @@ export class AppComponent {
     keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
 
     this.reset();
+    this.router.events.pipe(  
+      filter(event => event instanceof NavigationEnd),  
+    ).subscribe(() => {  
+      const rt = this.getChild(this.activatedRoute);  
+      rt.data.subscribe((data:any) => {  
+        console.log('<{App Component}> Recieved from router service title:' ,data);  
+
+        if(data==null)
+          data={title:'VMPORTAL'};
+        else if(!data.title)
+          data.title='VMPORTAL';
+        this.titleService.setTitle(data.title)});  
+    });  
   }
+  getChild (activatedRoute: ActivatedRoute):any {  
+    if (activatedRoute.firstChild) {  
+      return this.getChild(activatedRoute.firstChild);  
+    } else {  
+      return activatedRoute;  
+    }  
+  
+  }  
   reset() {
     this.idle.watch();
     this.idleState = 'Started.';
@@ -139,4 +167,6 @@ export class AppComponent {
   ngOnInit() {}
 
   ngAfterContentInit() {}
+
+  isTemplate(toast:any) { return toast.textOrTpl instanceof TemplateRef; }
 }

@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:55:02
- * @modify date 2022-02-26 17:55:02
+ * @modify date 2022-03-25 17:55:02
  * @desc File Responsible for VM related API calls
  */
 const { logger } = require('../config');
@@ -43,6 +43,11 @@ module.exports = {
     getThemeName: function(req, res, next) {
         const theme = config.theme ? config.theme : 'default';
         res.status(200).json({ theme: theme });
+        next();
+    },
+    getUseToast: function(req, res, next) {
+        const useToast = config.useToast ? config.useToast : false;
+        res.status(200).json({ useToast: useToast });
         next();
     },
     getLoginFooter: function(req, res, next) {

@@ -6,32 +6,40 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:06:39
- * @modify date 2022-02-26 18:06:39
+ * @modify date 2022-03-25 18:06:39
  * @desc Configuration file for node api server
  */
 var pino = require('pino');
 module.exports = {
-    "apiBase": process.env.APIBASE || "http://localhost/VMManagementPortalAPI",
+    "apiBase": process.env.APIBASE || "http://localhost:8080/VMManagementPortalAPI",
     "apiContextRoot": process.env.APICONTEXTROOT || "rest",
     logger: pino({ level: process.env.LOG_LEVEL || 'info', prettyPrint: { colorize: true } }),
     PORT: process.env.PORT || 3000,
     /* Choose the theme for angular UI 
     Available Themes : default,dark,pink,blue
     */
-    theme: 'default',
+    theme: process.env.THEME || 'default',
     /* To hide the footer in login page */
-    hideloginfooter: false,
+    hideloginfooter: process.env.HIDELOGINFOOTER || false,
     /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
-    useGzip: false,
+    /* Enable gzip on server */
+    useGzip: process.env.USEGZIP || true,
+    /* Enable CORS */
     useCORS: process.env.USECORS || true,
+    /* Enable Toast Notification Service; If disabled success result will show in dialog */
+    useToast: process.env.USETOAST || true,
+
     vm_rest_path: '/vmDetails/getAll',
     technotes_rest_path: '/technotes/getAll',
+    get_technote_rest_path: '/technotes/getTechnote',
     technotes_add_rest_path: '/technotes/addTechnote',
     technotes_update_rest_path: '/technotes/updateTechnote',
     technotes_remove_rest_path: '/technotes/removeTechnote',
     vm_additional_data: '/vmDetails/getAdditionalData',
     update_vm_additional_data: '/vmActions/updateVMAdditionalData',
+    related_vms_data:'/relatedvms/getAll',
+    update_related_vms:'/relatedvms/updateRelatedVMS',
     add_team_rest_path: '/admin/addTeam',
     props_path: '/prop/getProp',
     add_team_lead_rest_path: '/user/addTeamLead',

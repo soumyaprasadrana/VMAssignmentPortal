@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Edit User Component
  */
 import { HttpHeaders } from '@angular/common/http';
@@ -28,6 +28,7 @@ import { TeamService } from '../../services/teams.service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 
@@ -53,7 +54,8 @@ export class EditUserComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private userService: UserService,
-    private _auth: AuthserviceService
+    private _auth: AuthserviceService,
+    private toastService:ToastService
   ) {
     tms
       .getTeams()
@@ -191,6 +193,11 @@ export class EditUserComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.userService.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+            this.toastService.showSuccess("User updated successfully!",5000);
+            this.router.navigate(['/portal/home/user/dash']);
+            
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -200,6 +207,7 @@ export class EditUserComponent implements OnInit {
               this.router.navigate(['/portal/home/user/dash']);
             }
           );
+        }
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

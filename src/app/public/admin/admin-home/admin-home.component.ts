@@ -12,13 +12,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Console } from 'console';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { AdminConfig } from '../admin.config';
 @Component({
   selector: 'app-admin-home',
@@ -29,13 +30,16 @@ export class AdminHomeComponent implements OnInit {
   cardsMetaData: any;
   teamList: any;
   userList: any;
+  loggedUser:any;
   constructor(
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
     private router: Router,
     private tms: TeamService,
-    private userService: UserService
+    private userService: UserService,
+    private _auth:AuthserviceService,
+    private toastService:ToastService
   ) {
     this.cardsMetaData = AdminConfig.cardsMetaData;
     if (_client.deviceIsMobile()) {
@@ -47,6 +51,7 @@ export class AdminHomeComponent implements OnInit {
         }
       }
     }
+    this.loggedUser=_auth.getUser();
   }
   deleteTeam() {
     //console.log('Delete User Called');
@@ -96,6 +101,7 @@ export class AdminHomeComponent implements OnInit {
             res2 = JSON.parse(res2);
             if (res2.status == 'SUCCESS') {
               this._spinner.setSpinnerState(false);
+              
               this.openDialog(
                 {
                   type: 'message',
@@ -202,15 +208,16 @@ export class AdminHomeComponent implements OnInit {
               .then((res2: any) => {
                 res2 = JSON.parse(res2);
                 if (res2.status == 'Success') {
+                  if(this.loggedUser.useToast){
+                    this.toastService.showSuccess('User promoted to Team Lead.',5000);
+                  }else{
                   this.openDialog(
                     {
                       type: 'message',
                       message: 'User promoted to Team Lead.',
                     },
-                    function () {
-                      window.location.reload();
-                    }
-                  );
+                    null
+                  );}
                 } else {
                   this._spinner.setSpinnerState(false);
                   this.openDialog(

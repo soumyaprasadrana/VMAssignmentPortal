@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Home Page Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -43,9 +43,13 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { AdditionalDataDialogComponent } from '../../widget/alert-dialog/additional-data-dialog';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { FileChooseDialogComponent } from '../../widget/alert-dialog/file-choose-dialog.component';
-
+import { RelatedvmsDataDialogComponent } from '../../widget/alert-dialog/relatedvms-data-dialog';
+import { ToastService } from '../../widget/toast/toast-service';
+import { ViewChild } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -79,6 +83,8 @@ export class HomePageComponent implements OnInit {
   osList: any;
   osTypes: any = [];
   osVersiontypes: any = [];
+
+
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
     private route: ActivatedRoute,
@@ -90,8 +96,9 @@ export class HomePageComponent implements OnInit {
     private _props: UIPropService,
     private userService: UserService,
     private dialog: MatDialog,
-    private _client: NodeclientService
-  ) {
+    private _client: NodeclientService,
+    private toastService: ToastService
+  ) {   
     //Load VM Data
     this.spinner.setSpinnerState(true);
     var promise = this.vms.getVms();
@@ -230,7 +237,6 @@ export class HomePageComponent implements OnInit {
   }
   assign(_event: any, args: any) {
     //console.log('assign clicked');
-
     this.spinner.setSpinnerState(true);
 
     this.userService
@@ -260,6 +266,85 @@ export class HomePageComponent implements OnInit {
       });
     this.spinner.setSpinnerState(false);
   }
+  relatedVMSList(_event: any, _args: any) {
+    const dataContext = _args.dataContext;
+    this.openRelatedVMSDataDialog(
+      { title: 'Relationships', ip: dataContext.ip },
+      (res: any) => {
+        if (res && !res.message) {
+          res=Object.keys(res).map(function(resIndex){
+            let relation = res[resIndex];
+            return relation;
+          });
+          var html = '<h3>Result </h3>';
+          html +=
+            '<table class="table table-striped dataTable ">' +
+            '<th>Relationship</th>' +
+            '<th>Source</th>' +
+            '<th>Destination</th>'+
+            '<th>Status</th>' +
+            '<th>Message</th>' 
+            ;
+          for (var i = 0; i < res.length; i++) {
+            var item: any = res[i];
+            html += '<tr>';
+            html += '<td>';
+            html += item.name;
+            html += '</td>';
+            html += '<td>';
+            html += item.source;
+            html += '</td>';
+            html += '<td>';
+            html += item.destination;
+            html += '</td>';
+            html += '<td>';
+            html += '<div>';
+            if (item.status == 'Success') {
+              html +=
+                '<span ><i class="fa fa-check-circle text-success"></i></span>';
+            } else {
+              html +=
+                '<span ><i class="fa fa-times-circle text-danger"></i></span>';
+            }
+            html += '<span>';
+
+            html += '</span>';
+            html += '</td>';
+
+            html += '<td>';
+            if (typeof item.message != 'undefined') {
+              if(item.status=='Success' && item.isDeleted)
+                html+=`<span class="text-danger">${item.message}</span>`;
+              else
+                html += item.message;}
+            html += '</td>';
+
+            html += '</tr>';
+          }
+          html += '</table>';
+           
+            this.openDialog(
+              {
+                type: 'message',
+                message: html,
+              },
+              null
+            );
+          }
+         else if(res && res.message){
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+        }
+        this.spinner.setSpinnerState(false);
+      }
+    );
+  }
+ 
   getAddtionalData(_event: any, _args: any) {
     const dataContext = _args.dataContext;
     this.openAdditionalDataDialog(
@@ -312,6 +397,8 @@ export class HomePageComponent implements OnInit {
         //console.log('Assign Result: ', res2);
         res2 = JSON.parse(res2);
         if (res2.status == 'Success') {
+          if(this.loggedUser.useToast)
+            this.toastService.showSuccess("Comment deleted from "+args.dataContext.ip,5000);
           this.vms.setNeedRefresh(true);
           const dataContext = args.dataContext;
           var updated: any = args.dataContext;
@@ -364,6 +451,8 @@ export class HomePageComponent implements OnInit {
             //console.log('Assign Result: ', res2);
             res2 = JSON.parse(res2);
             if (res2.status == 'Success') {
+              if(this.loggedUser.useToast)
+                this.toastService.showSuccess("Comment added to "+args.dataContext.ip,5000);
               this.vms.setNeedRefresh(true);
               const dataContext = args.dataContext;
               var updated: any = args.dataContext;
@@ -507,6 +596,8 @@ export class HomePageComponent implements OnInit {
         //console.log('Release Result: ', res2);
         res2 = JSON.parse(res2);
         if (res2.status == 'Success') {
+          if(this.loggedUser.useToast)
+            this.toastService.showSuccess(args.dataContext.ip+" released from use.",5000)
           this.vms.setNeedRefresh(true);
           const dataContext = args.dataContext;
           var updated: any = args.dataContext;
@@ -555,6 +646,48 @@ export class HomePageComponent implements OnInit {
     this.router.navigate(['../portal/home/vmm/edit'], {
       state: args.dataContext,
     });
+  }
+  openRelatedVMSGraph(_event: any, args: any) {
+    //console.log(args);
+    this.spinner.setSpinnerState(true);
+    this.vms
+      .getRelatedVMSData(args.dataContext.ip)
+      .then((res: any) => {
+        res=JSON.parse(res);
+        this.spinner.setSpinnerState(false);
+        if (res.status == 'FAILED' && res.message == 'No record found!') {
+          console.log('No record found');
+          if(this.loggedUser.useToast){
+            this.toastService.showDanger('No record found! Please add relationships to Action > Relationships',10000);
+          }else{
+          this.openDialog(
+            {
+              type: 'message',
+              message: 'No record found! Please add relationships to Action > Relationships',
+            },
+            null
+          );
+          }
+        } else {
+          res=Object.keys(res).map(function(resIndex){
+            let relation = res[resIndex];
+            return relation;
+          });
+          if(res.length>0){
+            args.dataContext.relationships=res;
+            this.router.navigate(['../portal/home/chart/relationships'], {
+              state: args.dataContext,
+            });
+          }
+        }
+        
+      })
+      .catch((error: any) => {
+        this.spinner.setSpinnerState(false);
+        this.router.navigate(['../portal/chart/relationships'], {
+          state: args.dataContext,
+        });
+      });
   }
   openSSHTools(_event: any, args: any) {
     //console.log(args);
@@ -701,6 +834,8 @@ export class HomePageComponent implements OnInit {
             //console.log('Assign Result: ', res2);
             res2 = JSON.parse(res2);
             if (res2.status == 'Success') {
+              if(this.loggedUser.useToast)
+                this.toastService.showSuccess(args.dataContext.ip+" assigned to "+res+".",5000)
               this.vms.setNeedRefresh(true);
               const dataContext = args.dataContext;
               var updated: any = args.dataContext;
@@ -751,6 +886,33 @@ export class HomePageComponent implements OnInit {
       })
       .catch((err) => {
         //console.log('err from dialog=>', err);
+
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
+      });
+  }
+  openRelatedVMSDataDialog(data: any, callback: any) {
+    this.dialog
+      .open(RelatedvmsDataDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        console.log('res from dialog=>', res);
+
+        if (typeof callback == 'function') {
+          callback(res);
+        }
+      })
+      .catch((err) => {
+        console.log('err from dialog=>', err);
 
         this.openDialog(
           {
@@ -880,6 +1042,18 @@ export class HomePageComponent implements OnInit {
       }
     };
     /* Custom Formatter for cells to check snapshot count */
+    const ipcellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          toolTip: value,
+        };
+      
+    };
+    /* Custom Formatter for cells to check snapshot count */
     const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
@@ -1005,7 +1179,7 @@ export class HomePageComponent implements OnInit {
         field: 'ip',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: ipcellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
       },
@@ -1243,6 +1417,12 @@ export class HomePageComponent implements OnInit {
             iconCssClass: 'fa fa-pencil',
             positionOrder: 66,
             action: (_event, args) => this.edit(_event, args),
+            itemVisibilityOverride: (args: any) => {
+              return (
+                this.loggedUser.permissions.is_admin ||
+                this.loggedUser.permissions.is_teamLead ||
+                this.loggedUser.permissions.update_vm
+              );}
           },
           {
             command: 'addtionaldata',
@@ -1250,6 +1430,27 @@ export class HomePageComponent implements OnInit {
             iconCssClass: 'fa fa-list',
             positionOrder: 66,
             action: (_event, args) => this.getAddtionalData(_event, args),
+          },
+          {
+            command: 'relatedvms',
+            title: 'Relationships',
+            iconCssClass: 'fa fa-random',
+            positionOrder: 66,
+            action: (_event, args) => this.relatedVMSList(_event, args),
+            itemVisibilityOverride: (args: any) => {
+              return (
+                this.loggedUser.permissions.is_admin ||
+                this.loggedUser.permissions.is_teamLead ||
+                this.loggedUser.permissions.update_vm
+              );}
+          },
+          {
+            command: 'relatedvmsgraph',
+            title: 'Relationships Graph',
+            iconCssClass: 'fa fa-random',
+            positionOrder: 66,
+            action: (_event, args) => this.openRelatedVMSGraph(_event, args),
+            
           },
           {
             command: 'sshTool',

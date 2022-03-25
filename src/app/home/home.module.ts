@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Home Module
  */
 import { NgModule } from '@angular/core';
@@ -25,9 +25,11 @@ import { NavModule } from '../public/widget/nav/nav.module';
 import { FooterModule } from '../public/widget/footer/footer.module';
 import { PathModule } from '../public/widget/path/path.module';
 import { VmChartComponent } from '../public/home/vm-chart/vm-chart.component';
+import { RealtedVMSGraphComponent } from '../public/home/related-vms-graph/related-vms-graph.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContactPageComponent } from '../public/home/contact-page/contact-page.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TreeModule } from '../public/widget/tree-diagram/tree.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     HomePageComponent,
     PageNotFoundHomeComponent,
     VmChartComponent,
+    RealtedVMSGraphComponent,
     ContactPageComponent,
   ],
   imports: [
@@ -48,6 +51,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NavModule,
     FooterModule,
     PathModule,
+    TreeModule,
     NgxChartsModule,
     AngularSlickgridModule.forRoot({
       // add any Global Grid Options/Config you might want

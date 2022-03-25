@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc VMM Module
  */
 import { NgModule } from '@angular/core';
@@ -16,7 +16,6 @@ import { PathModule } from '../public/widget/path/path.module';
 import { VMMRoutingModule } from './vmm-routing.module';
 import { VmmHomeComponent } from '../public/vmm/vmm-home/vmm-home.component';
 import { AddVmComponent } from '../public/vmm/add-vm/add-vm.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { CardsModule } from '../public/widget/card-small/card.module';
@@ -35,7 +34,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CommonModule,
     PathModule,
     VMMRoutingModule,
-    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,

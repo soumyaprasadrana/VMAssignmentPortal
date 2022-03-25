@@ -235,6 +235,24 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `vmportal02`.`relatedvms`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `vmportal02`.`relatedvms` ;
+
+CREATE  TABLE IF NOT EXISTS `vmportal02`.`relatedvms` (
+  `relationship_source` VARCHAR(200) NOT NULL ,
+  `relationship_destination` VARCHAR(200) NOT NULL ,
+  `relationship_name` VARCHAR(200) NOT NULL ,
+  `relationship_description` VARCHAR(600) NULL DEFAULT NULL,
+  `relationship_group` VARCHAR(600) NULL DEFAULT NULL ,
+  `relationship_icon` VARCHAR(600) NULL DEFAULT 'fa fa-desktop' ,
+  PRIMARY KEY (`relationship_name`,`relationship_source`,`relationship_destination`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 100
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `vmportal02`.`vm`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `vmportal02`.`vm` ;

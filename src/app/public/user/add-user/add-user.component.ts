@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Add User Component
  */
 import { HttpHeaders } from '@angular/common/http';
@@ -26,6 +26,7 @@ import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 
@@ -50,7 +51,8 @@ export class AddUserComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _auth: AuthserviceService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService:ToastService
   ) {
     tms
       .getTeams()
@@ -127,6 +129,10 @@ export class AddUserComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.userService.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+            this.toastService.showSuccess("User created successfully!",5000);
+            this.router.navigate(['/portal/home/user/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -135,7 +141,7 @@ export class AddUserComponent implements OnInit {
             () => {
               this.router.navigate(['/portal/home/user/dash']);
             }
-          );
+          );}
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Angular Material Module
  */
 import { NgModule } from '@angular/core';
@@ -26,8 +26,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppCommonModule } from './public/widget/utils/common.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
+import {MatSliderModule} from '@angular/material/slider';
 import { AngularFileUploaderModule } from 'angular-file-uploader';
 import { QuillModule } from 'ngx-quill';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastModule } from './public/widget/toast/toast.module';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 @NgModule({
   declarations: [],
   imports: [
@@ -49,6 +53,10 @@ import { QuillModule } from 'ngx-quill';
     MatTooltipModule,
     MatTableModule,
     QuillModule,
+    MatSliderModule,
+    NgbModule,
+    ToastModule,
+    ClipboardModule
   ],
   exports: [
     AngularFileUploaderModule,
@@ -68,6 +76,10 @@ import { QuillModule } from 'ngx-quill';
     MatTooltipModule,
     MatTableModule,
     QuillModule,
+    MatSliderModule,
+    NgbModule,
+    ToastModule,
+    ClipboardModule
   ],
 })
 export class MaterialModule {}

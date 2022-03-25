@@ -1,0 +1,60 @@
+// Copyright (c) 2022 soumya
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+/**
+ * @author [soumya]
+ * @email [soumyaprasad.rana@gmail.com]
+ * @create date 2022-03-25 18:26:41
+ * @modify date 2022-03-25 18:26:41
+ * @desc Relationship Component CSS
+ */
+.snapDialog {
+    padding: 20px;
+    margin: 30px;
+}
+
+.adtnal-data-view {
+    width: 600px;
+}
+
+.titleBar {
+    float: right;
+    margin-top: 3px;
+    width: 100%;
+    text-align: end;
+    background: #a5a5a5;
+    padding-right: 3px;
+}
+
+.titleicon {
+    margin-left: 5px;
+}
+
+.alertMssg {
+    color: #000;
+    font-size: 13px;
+    width: 100%;
+    margin-top: 20px;
+    height: 80%;
+}
+
+.ngx-select__choices {
+    z-index: 9999;
+}
+
+::ng-deep .app-dialog-class {
+    mat-dialog-container {
+        padding-top: 10px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        overflow: hidden;
+    }
+}
+
+.float-end {
+    float: inline-end !important;
+    /*fallback for chrome*/
+    float: right !important;
+}

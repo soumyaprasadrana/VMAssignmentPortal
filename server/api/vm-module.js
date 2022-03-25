@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:03:08
- * @modify date 2022-02-26 18:03:08
+ * @modify date 2022-03-25 18:03:08
  * @desc File Responsible for VM related API calls
  */
 const { logger } = require('../config');
@@ -117,6 +117,24 @@ module.exports = {
     updateAdditional: function(req, res, next) {
         var ip = req.params['ip']
         _client.post(_client.getHttpPostOptionsWithCustomQS(req, config.update_vm_additional_data, {
+            AUTH: req.user.auth,
+            JSESSIONID: req.user.jsession,
+            ip: ip,
+        }), req, res, next);
+    },
+    getRelatedvms: function(req, res, next) {
+        var ip = req.params['ip']
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.related_vms_data + '/' + ip,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+    },
+    updateRelatedvms: function(req, res, next) {
+        var ip = req.params['ip']
+        _client.post(_client.getHttpPostOptionsWithCustomQS(req, config.update_related_vms, {
             AUTH: req.user.auth,
             JSESSIONID: req.user.jsession,
             ip: ip,

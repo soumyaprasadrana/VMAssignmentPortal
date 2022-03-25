@@ -7,7 +7,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Pink Theme
  */
 
@@ -435,3 +435,11 @@ mat-nav-list a {
         font-size: small;
     }
 }
+
+.my-tooltip .tooltip-inner {
+    background-color: $custom-alert-background;
+    font-size: 125%;
+  }
+.my-tooltip .arrow::before {
+    border-top-color: $custom-alert-background;
+  }

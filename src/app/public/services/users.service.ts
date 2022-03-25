@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc User Services
  */
 import { Injectable } from '@angular/core';
@@ -115,12 +115,12 @@ export class UserService {
     var httpOptions = {
       headers: headers,
     };
-    if (this.needReload) {
+    
       this.promiseTeamStats = this._client.get(
         'api/admin/teamStats',
         httpOptions
       );
-    }
+    
     const promisey = new Promise((resolve, reject) => {
       this.promiseTeamStats
         .then((res: any) => {

@@ -25,6 +25,8 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { SpinnerService } from '../../services/spinner-service';
 import { Router } from '@angular/router';
 import { TeamService } from '../../services/teams.service';
+import { AuthserviceService } from '../../services/authservice.service';
+import { ToastService } from '../../widget/toast/toast-service';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
@@ -34,14 +36,19 @@ export class AddTeamComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   title: string = 'Add Team';
+  loggedUser:any;
   constructor(
     private formBuilder: FormBuilder,
     private _client: NodeclientService,
     private dialog: MatDialog,
     private _spinner: SpinnerService,
     private router: Router,
-    private tms: TeamService
-  ) {}
+    private tms: TeamService,
+    private _auth:AuthserviceService,
+    private toastService:ToastService
+  ) {
+    this.loggedUser=_auth.getUser();
+  }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -84,6 +91,10 @@ export class AddTeamComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS') {
           this.tms.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+            this.toastService.showSuccess(res.message,5000);
+            this.router.navigate(['/portal/home/admin/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -93,6 +104,7 @@ export class AddTeamComponent implements OnInit {
               this.router.navigate(['/portal/home/admin/dash']);
             }
           );
+          }
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

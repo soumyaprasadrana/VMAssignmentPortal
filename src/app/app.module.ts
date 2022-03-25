@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Main application module
  */
 import { NgModule } from '@angular/core';
@@ -30,14 +30,15 @@ import { AuthInterceptor } from './public/services/customHttp';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-
+import {MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import { ToastModule } from './public/widget/toast/toast.module';
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     NavbarComponent,
     LoginViewComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -49,8 +50,8 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     BrowserAnimationsModule,
     FooterModule,
     MaterialModule,
-
     HttpClientModule,
+    ToastModule,
     NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
   ],
   exports: [],
@@ -66,6 +67,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
       multi: true,
       deps: [Router, ActivatedRoute],
     },
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {disableClose: true,hasBackdrop:true}}
   ],
   bootstrap: [AppComponent],
 })

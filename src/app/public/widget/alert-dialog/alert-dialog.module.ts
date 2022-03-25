@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Alert Dialog Module
  */
 import { NgModule } from '@angular/core';
@@ -20,6 +20,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { LTBButtonInputDialogComponent } from './ltb-button-input-dialog.component';
 import { PassChangeDialogComponent } from './change-pass-dialog';
 import { AdditionalDataDialogComponent } from './additional-data-dialog';
+import { RelatedvmsDataDialogComponent } from './relatedvms-data-dialog';
 import { FileChooseDialogComponent } from './file-choose-dialog.component';
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
+    RelatedvmsDataDialogComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
+    RelatedvmsDataDialogComponent
   ],
 })
 export class AlertModule {}

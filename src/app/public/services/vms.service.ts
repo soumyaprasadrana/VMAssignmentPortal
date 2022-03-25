@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc VM Services
  */
 import { Injectable } from '@angular/core';
@@ -175,6 +175,16 @@ export class VmsService {
     };
     return this._client.get('api/vm/' + ip + '/additionalData', httpOptions);
   }
+  getRelatedVMSData(ip: string) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.get('api/vm/' + ip + '/relatedvms', httpOptions);
+  }
   deleteVM(ip: string) {
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -200,6 +210,21 @@ export class VmsService {
       httpOptions
     );
   }
+  updateRelatedVMSData(ip: string, data: any) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post(
+      'api/vm/' + ip + '/relatedvms',
+      data,
+      httpOptions
+    );
+  }
+
 
   parseData(res: any) {
     const vmDataset: VM[] = [];

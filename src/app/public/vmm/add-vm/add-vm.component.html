@@ -1,3 +1,16 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Add VM Component Html
+-->
 <app-path></app-path>
 
 <div class="container-fluid-lg p-3 my-3">
@@ -18,7 +31,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="ip">IP Address:</label>
-                            <input [readonly]="editMode" id="ip" type="text" class="form-control" formControlName="ip" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }">
+                            <span class=" form-control-prefix-icon text-muted" area-label="false"><img style="height:20px;width:20px;" src="/assets/images/ip.png"/></span>
+                            <input [readonly]="editMode" id="ip" type="text" class="form-control form-control-include-icon" formControlName="ip" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }">
                             <div *ngIf="submitted && f.ip.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.ip.errors.required">IP is required</div>
                             </div>
@@ -27,7 +41,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="host">Hostname:</label>
-                            <input id="host" type="text" class="form-control" formControlName="host" [ngClass]="{ 'is-invalid': submitted && f.host.errors }">
+                            <span class="fa fa-desktop form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="host" type="text" class="form-control form-control-include-icon" formControlName="host" [ngClass]="{ 'is-invalid': submitted && f.host.errors }">
                             <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.host.errors.required">Hostname is required</div>
                             </div>
@@ -40,7 +55,8 @@
                             <label for="os">OS:</label>
                             <!-- <ngx-select [allowClear]="true" [items]="osList" [optionValueField]="'os_full'" placeholder="Select OS" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
                             </ngx-select>-->
-                            <ng-select [items]="osList" bindLabel="os_full" placeholder="Select OS" bindValue="os_full" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
+                            <span class="fa form-control-prefix-icon text-muted form-control" style="padding:0 !important;" area-label="false" area-label="false"><img style="height:20px;width:20px;" src="/assets/images/os.png"/></span>
+                            <ng-select class="form-control-include-icon" [items]="osList" bindLabel="os_full" placeholder="Select OS" bindValue="os_full" [formControl]="ngxos" formControlName="ngxos" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxos.errors }" ngDefaultControl>
                             </ng-select>
                             <div *ngIf="submitted && f.ngxos.errors" class="invalid-feedback">
 
@@ -52,7 +68,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="ram">RAM:</label>
-                            <input id="ram" type="number" class="form-control" formControlName="ram" [ngClass]="{ 'is-invalid': submitted && f.ram.errors }">
+                            <span class="fa fa-microchip form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="ram" type="number" class="form-control form-control-include-icon" formControlName="ram" [ngClass]="{ 'is-invalid': submitted && f.ram.errors }">
                             <div *ngIf="submitted && f.ram.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.ram.errors.required">RAM is required</div>
                             </div>
@@ -67,7 +84,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="group">Group:</label>
-                            <input id="group" type="text" class="form-control" formControlName="group" [ngClass]="{ 'is-invalid': submitted && f.group.errors }">
+                            <span class="fa fa-umbrella form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="group" type="text" class="form-control form-control-include-icon" formControlName="group" [ngClass]="{ 'is-invalid': submitted && f.group.errors }">
                             <div *ngIf="submitted && f.group.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.group.errors.required">Group is required</div>
                             </div>
@@ -77,7 +95,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="owner">Owner:</label>
-                            <input id="owner" type="text" class="form-control" formControlName="owner" [ngClass]="{ 'is-invalid': submitted && f.owner.errors }">
+                            <span class="fa fa-user form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="owner" type="text" class="form-control form-control-include-icon" formControlName="owner" [ngClass]="{ 'is-invalid': submitted && f.owner.errors }">
                             <div *ngIf="submitted && f.owner.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.owner.errors.required">Owner is required</div>
                             </div>
@@ -93,7 +112,8 @@
                             <!-- <ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }"
                                 ngDefaultControl>
                             </ngx-select>-->
-                            <ng-select [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }" ngDefaultControl>
+                            <span class="fa fa-users form-control-prefix-icon text-muted form-control" style="padding:0 !important;" area-label="false" area-label="false"></span>
+                            <ng-select class="form-control-include-icon" [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }" ngDefaultControl>
                             </ng-select>
                             <div *ngIf="submitted && f.ngxteam.errors" class="invalid-feedback">
 

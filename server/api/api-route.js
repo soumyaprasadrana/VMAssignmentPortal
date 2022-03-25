@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:53:04
- * @modify date 2022-02-26 17:53:04
+ * @modify date 2022-25-03 17:53:04
  * @desc Node API Routing
  */
 const portalAuth = require('./portal-auth');
@@ -42,11 +42,14 @@ module.exports = function(app) {
     app.post('/api/vm/updateMultipleVMS', vmCtrl.updateMultipleVMS);
     app.get('/api/vm/:ip/additionalData', vmCtrl.getAdditional);
     app.post('/api/vm/:ip/additionalData', vmCtrl.updateAdditional);
+    app.get('/api/vm/:ip/relatedvms', vmCtrl.getRelatedvms);
+    app.post('/api/vm/:ip/relatedvms', vmCtrl.updateRelatedvms);
     app.post('/api/vm/delete/:ip', vmCtrl.deleteVM);
     app.post('/api/vm/:ip/comment/add', vmCtrl.addComment);
     app.post('/api/vm/upload', vmCtrl.upload);
     app.get('/api/vm/excelimport/sample', vmCtrl.downloadSampleXlsx);
     app.get('/api/technotes/getAll', technotesCtrl.getAll);
+    app.get('/api/technotes/getTechnote/:id', technotesCtrl.getTechnote);
     app.post('/api/technotes/addTechnote', technotesCtrl.addTechnote);
     app.post('/api/technotes/editTechnote/:id', technotesCtrl.updateTechnote);
     app.post('/api/technotes/delete/:id', technotesCtrl.deleteTechnote);
@@ -65,6 +68,7 @@ module.exports = function(app) {
     app.get('/api/public/getUsers', userCtrl.getUsers);
     app.get('/api/config/theme', commonCtrl.getThemeName);
     app.get('/api/config/hideloginfooter', commonCtrl.getLoginFooter);
+    app.get('/api/config/useToast', commonCtrl.getUseToast);
     app.get('/api/public/getNormalUsers', userCtrl.getNormalUsers);
     app.get('/api/admin/getTeamLeads', userCtrl.getTL);
     app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
