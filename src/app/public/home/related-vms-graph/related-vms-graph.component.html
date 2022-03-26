@@ -72,7 +72,7 @@
 
   
  
-  <div class="graph-bg d-flex justify-content-center mt-1 p-3" style="overflow:auto !important;width:auto !important;height:auto !important;">
+  <div class="graph-bg d-flex justify-content-center mt-1 p-3" style="overflow:auto !important;width:auto !important;height:100% !important;">
   <div class=" d-flex justify-content-center " >
     <tree-view [style.zoom.%]="graphZoom" #treeView [data]="data" [template]="treeTemplate"> 
     </tree-view>
@@ -81,7 +81,7 @@
  
 </div>
   <ng-template #treeTemplate let-node let-tree="tree">
-    <div class="container h-100 w-100 alert-custom node-container" >
+    <div class="container card h-100 w-100 alert-custom node-container" >
         <div class=" h-100 d-flex justify-content-center align-items-center">
             <div class="justify-content-center align-items-center">
                 <table>
@@ -90,8 +90,8 @@
                           <ng-template #tipContent>
                             <b>{{node.data.item.name}} </b>
                           </ng-template>
-                            <i *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent" container="body" class="{{node.data.iconClass}}" [ngClass]="{ 'fa-4x': node.canCollapse,'fa-5x':!node.canCollapse }"></i>
-                            <i *ngIf="node.data.isRoot"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-4x': node.canCollapse,'fa-5x':!node.canCollapse }"></i>
+                            <i *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-3x': node.canCollapse,'fa-4x':!node.canCollapse }"></i>
+                            <i *ngIf="node.data.isRoot"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-3x': node.canCollapse,'fa-4x':!node.canCollapse }"></i>
                         </td>
                         
                     </tr>
@@ -113,7 +113,7 @@
                         </ng-template>
                         <table class="w-100">
                           <tr>
-                            <td *ngIf="!node.data.isRoot" [ngbPopover]="nodePopOver" [autoClose]="'outside'"  container="body" placement="bottom">
+                            <td *ngIf="!node.data.isRoot" [ngbPopover]="nodePopOver" [autoClose]="'outside'"   placement="bottom">
                               
                               <span class="bold btn btn-primary load-child" style="zoom: 60% !important;" >
                                 <i  class="fa fa-info-circle" ></i>

@@ -25,7 +25,7 @@ import { ECOTree,Orientation,Aligment,Search,Select } from "../utils/econode";
         </path>
     </svg>
     <ng-container *ngFor="let node of tree.nDatabaseNodes;let i=index">
-      <div *ngIf="!node._isAncestorCollapsed() || (!node._isAncestorCollapsed() && node.isCollapsed)" class="item"
+      <div *ngIf="!node._isAncestorCollapsed() || (!node._isAncestorCollapsed() && node.isCollapsed)" class="item" style="overflow:visible !important"
         [ngStyle]="{left:node.XPosition+'px',top:node.YPosition+'px',width:node.w+'px',height:node.h+'px','background-color':node.bc,color:node.c}">
         <ng-container *ngTemplateOutlet="template?template:defaultTemplate;context:{$implicit:node,tree:tree}" ></ng-container>
       </div>

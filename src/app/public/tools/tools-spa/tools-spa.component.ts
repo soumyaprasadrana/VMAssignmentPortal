@@ -38,11 +38,13 @@ export class ToolsSpaComponent implements OnInit {
     for (var i = 0; i < metadata.length; i++) {
       //row
       for (var j = 0; j < metadata[i].length; j++) {
+        if(metadata[metadata.length-1][metadata[metadata.length-1].length-1].cardTitle!='Font Awsome Icons'){
         //item
         if (!metadata[i][j].cardIconClass)
           metadata[i][j].cardIconClass = ' fa-firefox';
         metadata[i][j].cardRouterLink = [metadata[i][j].cardSPAName];
         metadata[i][j].cardRouterState = { data: metadata[i][j] };
+      }
       }
     }
     /*Adding Internal apps */
