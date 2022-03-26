@@ -330,7 +330,7 @@ export class RealtedVMSGraphComponent implements OnInit {
          null
         );
       });
-
+      
     
     
   }
