@@ -7,7 +7,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Blue Theme
  */
 
@@ -446,3 +446,9 @@ mat-nav-list a {
 .my-tooltip .arrow::before {
     border-top-color: $blue;
   }
+.mat-step-header .mat-step-icon-selected{
+  background-color: $primary-color;
+}
+.mat-step-header .mat-step-icon-state-edit{
+    background-color: $primary-color;
+}

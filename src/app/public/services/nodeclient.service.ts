@@ -94,4 +94,7 @@ export class NodeclientService {
   deviceIsDesktop() {
     return this.deviceService.isDesktop();
   }
+  deviceBrowser() {
+    return this.deviceService.browser;
+  }
 }

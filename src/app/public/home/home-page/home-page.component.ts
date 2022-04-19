@@ -720,7 +720,8 @@ export class HomePageComponent implements OnInit {
         label: 'Username',
         placeholder: 'Select user',
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: 'user_name',
+        bindValue: 'user_id'
       },
       (res: any) => {
         //console.log('data from close:', res);
@@ -821,7 +822,8 @@ export class HomePageComponent implements OnInit {
         label: 'Username',
         placeholder: 'Select user',
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: 'user_name',
+        bindValue: 'user_id'
       },
       (res: any) => {
         //console.log('data from close:', res);

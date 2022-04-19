@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc User Services
  */
 import { Injectable } from '@angular/core';
@@ -80,7 +80,7 @@ export class UserService {
         for (var user in result) {
           returnObject.push({
             id: id,
-            user_name: user,
+            user_name: result[user]+' ('+user+') ',
             user_id: user,
           });
           id++;
@@ -160,7 +160,7 @@ export class UserService {
         for (var user in result) {
           returnObject.push({
             id: id,
-            user_name: user,
+            user_name: result[user]+' ('+user+') ',
             user_id: user,
           });
           id++;
@@ -210,7 +210,7 @@ export class UserService {
         for (var user in result) {
           returnObject.push({
             id: id,
-            user_name: user,
+            user_name: result[user]+' ('+user+') ',
             user_id: user,
           });
           id++;

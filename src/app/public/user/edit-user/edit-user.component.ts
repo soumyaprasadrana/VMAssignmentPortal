@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Edit User Component
  */
 import { HttpHeaders } from '@angular/common/http';
@@ -112,7 +112,8 @@ export class EditUserComponent implements OnInit {
         label: 'Username',
         placeholder: 'Select user',
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: 'user_name',
+        bindValue: 'user_id',
         closeCallback: () => {
           this.router.navigate(['/portal/home/user/dash']);
         },

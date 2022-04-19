@@ -7,7 +7,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:20:07
- * @modify date 2022-02-26 18:20:07
+ * @modify date 2022-04-19 18:20:07
  * @desc Default css file
  */
 
@@ -215,7 +215,6 @@ $form-control-focus-box-shadow:$custom-alert-background;
 
 html,
 body {
-    font-family: "Roboto" !important;
     min-height: 100% !important;
     height: auto;
     margin: 0;
@@ -499,4 +498,51 @@ mat-nav-list a {
     pointer-events: none;
     color: #000;
     float: right;
+}
+.form-group .form-control-prefix-icon-with-event {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    cursor: pointer;
+    color: #000;
+    float: right;
+}
+
+.graph-btn{
+    height: 25px ;
+    font-size: 0.6em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0;
+    padding-top: 3px;
+}
+.graph-btn-info{
+    height: 25px ;
+    font-size: 0.6em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0;
+    padding-top: 3px;
+}
+.graph-btn-load-child{
+    height: 25px ;
+    width: 100px;
+    font-size: 0.6em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0;
+    padding-top: 4px;
+}
+.graph-btn-expand{
+    height: 25px ;
+    width: 100px;
+    font-size: 0.6em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0;
+    padding-top: 4px;
 }

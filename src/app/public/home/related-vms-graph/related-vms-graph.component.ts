@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-03-25 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Relationships Graph Component
  */
 /**
@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { VM } from '../../DataModel/vm';
 import { AuthserviceService } from '../../services/authservice.service';
+import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { VmsService } from '../../services/vms.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
@@ -49,9 +50,11 @@ export class RealtedVMSGraphComponent implements OnInit {
   Orientation=Orientation;
   ip:any;
   data!: IECONode;
-  graphZoom:number=100;
+  graphZoom:number=1;
   loggedUser:any;
   relationships:any;
+  browser:any;
+  graphZoomVal:number=100;
   constructor(
     private vms: VmsService,
     private spinner: SpinnerService,
@@ -59,10 +62,12 @@ export class RealtedVMSGraphComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _auth:AuthserviceService,
-    private toastService:ToastService
+    private toastService:ToastService,
+    private _client:NodeclientService
   ) {
     console.log("constructor called");
     this.loggedUser=_auth.getUser();
+    this.browser=_client.deviceBrowser(); 
   }
   ngOnInit(): void {
     console.log("ngOninit called");

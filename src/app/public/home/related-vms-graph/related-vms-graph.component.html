@@ -8,7 +8,7 @@
 @author [soumya]
 @email [soumyaprasad.rana@gmail.com]
 @create date 2022-03-25 18:30:37
-@modify date 2022-03-25 18:30:37
+@modify date 2022-04-19 18:30:37
 @desc Relationships Graph Component Html
 -->
 <app-path></app-path>
@@ -57,24 +57,35 @@
       </div>
       <div class="col">
         <label id="sliderlabel" for="sliderzoom" >Graph Zoom</label>
-        <mat-slider
+        <mat-slider *ngIf="browser.toLowerCase()!='chrome'"
           id="sliderzoom"
-          max="300"
+          max="5"
           min="0"
-          step="1"
+          step="0.01"
           thumbLabel="'Zoom(%)'"
           [(ngModel)]="graphZoom"
           aria-labelledby="sliderlabel"
           >
       </mat-slider>
+      
+      <mat-slider *ngIf="browser.toLowerCase()=='chrome'"
+      id="sliderzoom"
+      max="300"
+      min="0"
+      step="1"
+      thumbLabel="'Zoom(%)'"
+      [(ngModel)]="graphZoomVal"
+      aria-labelledby="sliderlabel"
+      ></mat-slider>
     </div>
 </div>
 
   
  
   <div class="graph-bg d-flex justify-content-center mt-1 p-3" style="overflow:auto !important;width:auto !important;height:100% !important;">
-  <div class=" d-flex justify-content-center " >
-    <tree-view [style.zoom.%]="graphZoom" #treeView [data]="data" [template]="treeTemplate"> 
+  <div  class=" d-flex justify-content-center " >
+    
+    <tree-view  [ngStyle]="{'zoom':browser.toLowerCase()=='chrome'?graphZoomVal +'%':'NA','transform':browser.toLowerCase()!='chrome'?'scale('+graphZoom+','+graphZoom+')':'NA','transform-origin':browser.toLowerCase()!='chrome'?'top':'NA'}" #treeView [data]="data" [template]="treeTemplate"> 
     </tree-view>
  </div>
  <br>   
@@ -115,19 +126,19 @@
                           <tr>
                             <td *ngIf="!node.data.isRoot" [ngbPopover]="nodePopOver" [autoClose]="'outside'"   placement="bottom">
                               
-                              <span class="bold btn btn-primary load-child" style="zoom: 60% !important;" >
+                              <span class="bold btn btn-primary load-child graph-btn-info "  >
                                 <i  class="fa fa-info-circle" ></i>
                               </span> 
-                              <!--<button type="button" [autoClose]="false" ngbPopover="vjhvhjjdshjh" style="zoom: 60% !important;" class="bold btn btn-primary load-child" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title"><i  class="fa fa-info-circle" ></i> </button>-->
+                              <!--<button type="button" [autoClose]="false" ngbPopover="vjhvhjjdshjh"  class="bold btn btn-primary load-child" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title"><i  class="fa fa-info-circle" ></i> </button>-->
                             </td>
                             <td *ngIf="!node.canCollapse && !node.isEmpty">
-                              <span style="zoom: 60% !important;" class="bold btn btn-primary load-child"  (click)="loadChildren(tree,node);"><i  class="fa fa-plus-circle" ></i> Load Child </span>
+                              <span  class="bold btn btn-primary load-child graph-btn-load-child"   (click)="loadChildren(tree,node);"><i  class="fa fa-plus-circle" ></i> Load Child </span>
                             </td>
                             <td *ngIf="node.canCollapse && !node.isCollapsed">
-                              <span style="zoom: 60% !important;" class="bold btn btn-primary"  (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-minus-circle" ></i> Collapse  </span>
+                              <span  class="bold btn btn-primary graph-btn"   (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-minus-circle" ></i> Collapse  </span>
                             </td>
-                            <td *ngIf="node.canCollapse && node.isCollapsed">
-                              <span style="zoom: 60% !important;" class="bold btn btn-primary"  (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-plus-circle" ></i> Expand </span>
+                            <td *ngIf="node.canCollapse && node.isCollapsed graph-btn-expand">
+                              <span  class="bold btn btn-primary graph-btn"   (click)="tree.collapseNode(node.id,true);"><i  class="fa fa-plus-circle" ></i> Expand </span>
                             </td>
                           </tr>
                         </table>

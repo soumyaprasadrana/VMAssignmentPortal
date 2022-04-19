@@ -8,7 +8,7 @@
 @author [soumya]
 @email [soumyaprasad.rana@gmail.com]
 @create date 2022-03-25 18:30:37
-@modify date 2022-03-25 18:30:37
+@modify date 2022-04-19 18:30:37
 @desc Tools SPA FA Icons Html
 -->
 <app-path></app-path>
@@ -40,9 +40,9 @@
             <label id="sliderlabel" for="sliderzoom" >Graph Zoom</label>
             <mat-slider
               id="sliderzoom"
-              max="300"
+              max="5"
               min="0"
-              step="1"
+              step="0.01"
               thumbLabel="'Zoom(%)'"
               [(ngModel)]="graphZoom"
               aria-labelledby="sliderlabel"
@@ -53,7 +53,7 @@
     </div>
     
     <div class="ml-2 h-100 w-100" style="overflow:auto;">
-        <div class="row ml-5" [style.zoom.%]="graphZoom"   >
+        <div class="row ml-5" [ngStyle]="{'transform':'scale('+graphZoom+')'}" style="transform-origin:top;"   >
            <div  class="col m-2 p-2" *ngFor='let item of iconList'>
                <table >
                    <tr>

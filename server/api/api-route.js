@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:53:04
- * @modify date 2022-25-03 17:53:04
+ * @modify date 2022-04-19 17:53:04
  * @desc Node API Routing
  */
 const portalAuth = require('./portal-auth');
@@ -15,6 +15,7 @@ const technotesCtrl = require('./technotes-module');
 const admnCtrl = require('./admin-module')
 const commonCtrl = require('./common-module');
 const userCtrl = require('./user-module')
+const dynamicObjectCtrl= require('./dynamic-object.module')
 module.exports = function(app) {
     app.get('/api/vm/*', portalAuth.ensureAuthenticated);
     app.post('/api/vm/*', portalAuth.ensureAuthenticated);
@@ -48,6 +49,16 @@ module.exports = function(app) {
     app.post('/api/vm/:ip/comment/add', vmCtrl.addComment);
     app.post('/api/vm/upload', vmCtrl.upload);
     app.get('/api/vm/excelimport/sample', vmCtrl.downloadSampleXlsx);
+    app.get('/api/dynamicobjects/getAll', dynamicObjectCtrl.getAll);
+    app.get('/api/dynamicobjects/:app/getAll', dynamicObjectCtrl.getObjectRecords);
+    app.get('/api/dynamicobjects/:app/attributes', dynamicObjectCtrl.getObjectAttributes);
+    app.post('/api/dynamicobjects/:app/add', dynamicObjectCtrl.addObjectRecord);
+    app.post('/api/dynamicobjects/:app/update', dynamicObjectCtrl.updateObjectRecord);
+    app.post('/api/dynamicobjects/:app/delete', dynamicObjectCtrl.deleteObjectRecord);
+    app.get('/api/dynamicobjects/get/:id', dynamicObjectCtrl.getObject);
+    app.post('/api/dynamicobjects/add', dynamicObjectCtrl.addObject);
+    app.post('/api/dynamicobjects/update', dynamicObjectCtrl.updateObject);
+    app.post('/api/dynamicobjects/delete/:id', dynamicObjectCtrl.deleteObject);
     app.get('/api/technotes/getAll', technotesCtrl.getAll);
     app.get('/api/technotes/getTechnote/:id', technotesCtrl.getTechnote);
     app.post('/api/technotes/addTechnote', technotesCtrl.addTechnote);
@@ -80,4 +91,6 @@ module.exports = function(app) {
     app.get("/api/public/sshMetadata", commonCtrl.getSSHMetadata);
     app.get("/api/public/quicklinks", commonCtrl.getQuickLinks);
     app.get("/api/public/spaMetadata", commonCtrl.getSPAMetadata);
+    app.get("/api/public/lists", commonCtrl.getListsNames);
+    app.get("/api/public/lists/:id", commonCtrl.getListItems);
 }

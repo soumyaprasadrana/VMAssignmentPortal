@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Tools SPA FA Icons Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -20,7 +20,7 @@ import { ToastService } from '../../widget/toast/toast-service';
 })
 export class FAIconsComponent implements OnInit {
   iconList=FontAwsomeIconList.iconList;
-  graphZoom:any=100;
+  graphZoom:any=1;
   constructor(private clipboard: Clipboard,
     private toastService:ToastService) {
     
