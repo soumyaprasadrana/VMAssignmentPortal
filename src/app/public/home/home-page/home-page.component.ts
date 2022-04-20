@@ -1581,6 +1581,7 @@ export class HomePageComponent implements OnInit {
     });
     console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.vmGridOptions = {
+      gridHeight:'95%',
       enableSorting: true,
       enableFiltering: true,
       autoResize: {

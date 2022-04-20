@@ -45,6 +45,7 @@
                             <div *ngIf="submitted &&  checkIsInvalid(attributeList[i].name.value.toString())" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="checkIsInvalidRequired(attributeList[i].name.value.toString())">{{attributeList[i].alias.value}} is required</div>
                                 <div class="ml-1" *ngIf="checkIsInvalidWhiteSpace(attributeList[i].name.value.toString())">White Space is not allowed.</div>
+                                <div class="ml-1" *ngIf="checkIsInvalidEmail(attributeList[i].name.value.toString())">Invalid Email !</div>
                             </div>
                         </div>
                     </div>
@@ -66,7 +67,8 @@
                             
                             <div *ngIf="submitted &&  checkIsInvalid(attributeList[i+1].name.value)" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="checkIsInvalidRequired(attributeList[i+1].name.value)">{{attributeList[i+1].alias.value}} is required</div>
-                                <div *ngIf="checkIsInvalidWhiteSpace(attributeList[i+1].name.value)">White Space is not allowed.</div>
+                                <div class="ml-1" *ngIf="checkIsInvalidWhiteSpace(attributeList[i+1].name.value)">White Space is not allowed.</div>
+                                <div class="ml-1" *ngIf="checkIsInvalidEmail(attributeList[i+1].name.value.toString())">Invalid Email !</div>
                             </div>
                         </div>
                     </div>

@@ -438,6 +438,7 @@ export class ToolsDynamicObjectsComponent implements OnInit {
 
     console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.dynamicObjectsGridOptions = {
+      gridHeight:'95%',
       rowHeight: 50,
       autoResize: {
         container: '#grid-container',

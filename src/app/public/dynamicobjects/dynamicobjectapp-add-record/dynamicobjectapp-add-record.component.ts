@@ -136,7 +136,7 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
     var formItems:any={};
     for(var item in this.attributeList){
       var formItemParams=[];
-      var defaultValue=(this.attributeList[item].defaultValue!=null && this.attributeList[item].defaultValue.length>0)?this.attributeList[item].defaultValue.value:(this.attributeList[item].type.value=='number'?0:'');
+      var defaultValue=(this.attributeList[item].defaultValue!=null && this.attributeList[item].defaultValue.length>0)?this.attributeList[item].defaultValue.value:(this.attributeList[item].type.value=='number'?null:'');
       var formItemValidators: ((control: AbstractControl) => ValidationErrors | null)[]=[];
       for(var validator in this.attributeList[item].validators.value){
       switch(this.attributeList[item].validators.value[validator].element.type.value){
@@ -147,6 +147,9 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
         case "whitespace":
         case "whitspace":
           formItemValidators.push(CustomValidator.restrictWhiteSpace);
+          break;
+        case "email":
+          formItemValidators.push(Validators.email);
           break;
       }
     }
@@ -209,6 +212,13 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
     if (this.registerForm.controls[ctrlName].errors) {
       var temp: any = this.registerForm.controls[ctrlName].errors || '';
       return temp.required ? true : false;
+    }
+    return false;
+  }
+  checkIsInvalidEmail(ctrlName: string | number) {
+    if (this.registerForm.controls[ctrlName].errors) {
+      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      return temp.email ? true : false;
     }
     return false;
   }

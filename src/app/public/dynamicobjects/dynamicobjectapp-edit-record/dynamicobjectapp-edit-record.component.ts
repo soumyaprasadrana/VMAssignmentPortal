@@ -167,6 +167,9 @@ export class DynamicObjectAppEditRecordComponent implements OnInit {
         case "whitspace":
           formItemValidators.push(CustomValidator.restrictWhiteSpace);
           break;
+        case "email":
+          formItemValidators.push(Validators.email);
+          break;
       }
     }
       if(this.attributeList[item].type.value.toString().includes('list')){
@@ -231,6 +234,13 @@ export class DynamicObjectAppEditRecordComponent implements OnInit {
     if (this.registerForm.controls[ctrlName].errors) {
       var temp: any = this.registerForm.controls[ctrlName].errors || '';
       return temp.required ? true : false;
+    }
+    return false;
+  }
+  checkIsInvalidEmail(ctrlName: string | number) {
+    if (this.registerForm.controls[ctrlName].errors) {
+      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      return temp.email ? true : false;
     }
     return false;
   }

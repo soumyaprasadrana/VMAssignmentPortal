@@ -25,6 +25,8 @@ module.exports = {
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
     /* Enable gzip on server */
     useGzip: process.env.USEGZIP || true,
+    /* Disable Cache */
+    disableCahe: process.env.DISABLECAHE || true,
     /* Enable CORS */
     useCORS: process.env.USECORS || true,
     /* Enable Toast Notification Service; If disabled success result will show in dialog */

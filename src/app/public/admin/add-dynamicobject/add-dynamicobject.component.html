@@ -109,7 +109,7 @@
         <mat-step [stepControl]="objectAttributeForm" label="Configure Object Attributes" >
             <ng-template #validatorsPopOver>
                 <p class="p">
-                  <span><b>Available Validators: required | whitespace</b></span><br>
+                  <span><b>Available Validators: required | whitespace | email</b></span><br>
                 </p>
               </ng-template>
               <ng-template #namePopOver>
@@ -124,8 +124,6 @@
             </ng-template>
           <div style="padding-top: 3%;">
               <form [formGroup]="objectAttributeForm">
-                <button mat-stroked-button [disabled]="autoKeyAdded" (click)="addAutoKey()" class="btn text-capitalize ">Add AutoKey Column</button>
-                <button mat-stroked-button (click)="addAttribute()" class="btn text-capitalize ">Add Attribute</button>
                 
                 <div class="row  ml-4">
                     <div class="col">
@@ -245,8 +243,12 @@
                                 </div>
                             </div>
 
-                        </div> 
+                        </div>
+                        <button mat-stroked-button [disabled]="autoKeyAdded" (click)="addAutoKey()" class="btn text-capitalize ">Add AutoKey Column</button>
+                        <button mat-stroked-button (click)="addAttribute()" class="btn text-capitalize ">Add Attribute</button>
+                 
                     </div>
+                    
                 </div>
                 <div class="row  ">
                     <div class="col ">

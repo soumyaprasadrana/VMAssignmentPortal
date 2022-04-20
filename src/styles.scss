@@ -170,7 +170,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
     background-color: $primary-color !important;
     height: 50px;
     position: relative;
-    box-shadow: 0px 0px 15px #656363;
+    //box-shadow: 0px 0px 15px #656363;
     z-index: 5;
 }
 
@@ -212,12 +212,8 @@ $form-control-focus-box-shadow:$custom-alert-background;
     background-color: $primary-btn-hover-color !important;
     border-color: $primary-btn-hover-color !important;
 }
-
-html,
-body {
-    min-height: 100% !important;
-    height: auto;
-    margin: 0;
+html,body{
+    min-height: 100vh;
 }
 
 .alertSnapshot {
@@ -545,4 +541,20 @@ mat-nav-list a {
     padding-right: 10px;
     padding-bottom: 0;
     padding-top: 4px;
+}
+
+#grid-container {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 20px;
+    padding-bottom: 1px;
+    background-size: 100% 1.2em;
+  background-image: -webkit-linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -webkit-linear-gradient(#eee .05em, transparent .05em);
+  background-image: -moz-linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -moz-linear-gradient(#eee .05em, transparent .05em);
+  background-image: -ms-linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -ms-linear-gradient(#eee .05em, transparent .05em);
+  background-image: -o-linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -o-linear-gradient(#eee .05em, transparent .05em);
+  background-image: linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(#eee .05em, transparent .05em);
+  -pie-background: linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px) 0 0 / 100% 1.2em, linear-gradient(#eee .05em, transparent .05em) 0 0 / 100% 1.2em #fff;
+  behavior: url(/PIE.htc);
+    
 }

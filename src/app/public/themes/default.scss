@@ -151,7 +151,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
     background-color: $primary-color !important;
     height: 50px;
     position: relative;
-    box-shadow: 0px 0px 15px #656363;
+    //box-shadow: 0px 0px 15px #656363;
     z-index: 5;
 }
 
@@ -192,13 +192,6 @@ $form-control-focus-box-shadow:$custom-alert-background;
 .btn-primary:hover {
     background-color: $primary-btn-hover-color !important;
     border-color: $primary-btn-hover-color !important;
-}
-
-html,
-body {
-    min-height: 100% !important;
-    height: auto;
-    margin: 0;
 }
 
 .alertSnapshot {

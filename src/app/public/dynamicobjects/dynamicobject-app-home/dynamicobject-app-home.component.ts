@@ -508,6 +508,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
 
     //console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.dynamicobjectappGridOptions = {
+      gridHeight:'95%',
       autoResize: {
         container: '#grid-container',
         applyResizeToContainer: true,
