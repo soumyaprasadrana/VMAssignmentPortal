@@ -54,10 +54,7 @@ export class AdminConfig {
         cardPermissions: function (loggedUser: any) {
           return loggedUser.permissions.is_admin;
         },
-      },
-    ],
-    [
-      {
+      },{
         cardTitle: 'Promote User ',
         cardText: 'This will promote user to team lead.',
         cardWidth: '250',
@@ -137,8 +134,6 @@ export class AdminConfig {
           return loggedUser.permissions.is_admin;
         },
       },
-    ],
-    [
       {
         cardTitle: 'Dynamic Objects',
         cardText: 'Dynamic Objects are configurable objects provides a no of configuration items and a custom application can be added from dynamic objects schema.',
@@ -154,7 +149,8 @@ export class AdminConfig {
           );
         },
       },
-    ]
+    ],
+    
   ];
 
   constructor() {}
