@@ -31,7 +31,7 @@ import { DynamicObjectAppHomeComponent } from '../public/dynamicobjects/dynamico
 import { DynamicObjectAppAddRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-add-record/dynamicobjectapp-add-record.component';
 import { DynamicObjectAppEditRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-edit-record/dynamicobjectapp-edit-record.component';
 import { DynamicObjectAppViewRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-view-record/dynamicobjectapp-view-record.component';
-
+import { DynamicObjectChartsViewRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-charts-view/dynamicobjectapp-charts-view.component';
 @NgModule({
   declarations: [
     DynamicObjectsViewComponent,
@@ -39,7 +39,8 @@ import { DynamicObjectAppViewRecordComponent } from '../public/dynamicobjects/dy
     DynamicObjectAppHomeComponent,
     DynamicObjectAppAddRecordComponent,
     DynamicObjectAppEditRecordComponent,
-    DynamicObjectAppViewRecordComponent
+    DynamicObjectAppViewRecordComponent,
+    DynamicObjectChartsViewRecordComponent
   ],
   imports: [
     CommonModule,

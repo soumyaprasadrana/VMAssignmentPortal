@@ -54,6 +54,7 @@ export class AddDynamicObjectComponent implements OnInit {
   objectFunctionsGroupSubmitted:boolean=false;
   formPhoneGroup!: FormGroup ;
   autoKeyAdded:boolean=false;
+  listSelectedOptions:any=[];
   constructor(
     private formBuilder: FormBuilder,
     private _client: NodeclientService,
@@ -460,6 +461,7 @@ export class AddDynamicObjectComponent implements OnInit {
               bindLabel: 'list',
             },(res:any)=>{
               console.log(res);
+              this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
               registerForm.controls[ctrlName].value=registerForm.controls[ctrlName].value+":"+res.dataCtrl;
             }
           );

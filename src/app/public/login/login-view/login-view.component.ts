@@ -115,9 +115,6 @@ export class LoginViewComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.form.invalid) {
-      this.alert.type = 'danger';
-      this.alert.message = 'Form is invalid';
-      this.showAlert = true;
       return;
     }
 

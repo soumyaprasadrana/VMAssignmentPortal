@@ -25,7 +25,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row  ml-4">
             <div class="col-lg-12">
-                <div class="row p-3 " *ngFor='let index of attributeList; let i = index; let even = even'>
+                <div class="row p-0 " *ngFor='let index of attributeList; let i = index; let even = even' [ngClass]="{'hidden':!even}">
                     <div class="col-sm-6" *ngIf="even">
                         <div class="form-group " [ngClass]="{'required': checkIfAttributeRequired(i)}">
                             <label for="{{attributeList[i].name.value}}">{{attributeList[i].alias.value}}:</label>

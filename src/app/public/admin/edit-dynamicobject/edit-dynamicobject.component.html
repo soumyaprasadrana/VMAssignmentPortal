@@ -17,6 +17,8 @@
         <li>Adding user defined functions.</li>
         <li>Modifying primary keys once created.</li>
         <li>TEAM, TEAM TYPE2 scopes are not available.</li>
+        <li>No check for autokey/primary key ; You must add a primary key/autokey manually.</li>
+        <li>No validation check for MySQL keywords, avoid using mysql keywords on attribute name.</li>
     </ul>
 </ngb-alert>
 
@@ -163,6 +165,7 @@
                                         <option value="team">Team</option>
                                         <option value="richtext">Rich Text</option>
                                         <option value="list">List</option>
+                                        <option *ngFor="let item of listSelectedOptions" value="{{item}}">{{item | uppercase}}</option>
                                         <option [disabled]="true" value="autokey">Auto Key</option>
                                     </select>
                                     <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type')" class="invalid-feedback">

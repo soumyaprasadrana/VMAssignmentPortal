@@ -32,6 +32,7 @@ import { ToastService } from '../../widget/toast/toast-service';
 import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service';
 import { CommonService } from '../../services/common.service';
 import { UserService } from '../../services/users.service';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-dynamicobjectapp-view-record',
   templateUrl: './dynamicobjectapp-view-record.component.html',
@@ -61,7 +62,8 @@ export class DynamicObjectAppViewRecordComponent implements OnInit {
     private _auth:AuthserviceService,
     private toastService:ToastService,
     private commonService: CommonService,
-    private userService:UserService
+    private userService:UserService,
+    private sanitizer: DomSanitizer
     
   ) {
     this.loggedUser=_auth.getUser();

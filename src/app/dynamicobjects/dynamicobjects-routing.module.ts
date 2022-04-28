@@ -13,6 +13,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DynamicObjectAppHomeComponent } from '../public/dynamicobjects/dynamicobject-app-home/dynamicobject-app-home.component';
 import { DynamicObjectAppAddRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-add-record/dynamicobjectapp-add-record.component';
+import { DynamicObjectChartsViewRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-charts-view/dynamicobjectapp-charts-view.component';
 import { DynamicObjectAppEditRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-edit-record/dynamicobjectapp-edit-record.component';
 import { DynamicObjectAppViewRecordComponent } from '../public/dynamicobjects/dynamicobjectapp-view-record/dynamicobjectapp-view-record.component';
 import { DynamicobjectsHomeComponent } from '../public/dynamicobjects/dynamicobjects-home/dynamicobjects-home.component';
@@ -47,6 +48,11 @@ const routes: Routes = [
       {
         path: 'app/:app/view',
         component:  DynamicObjectAppViewRecordComponent,
+        data: { animation: 'vmm',title:'View Record' },
+      },
+      {
+        path: 'app/:app/charts',
+        component:  DynamicObjectChartsViewRecordComponent,
         data: { animation: 'vmm',title:'View Record' },
       },
       {

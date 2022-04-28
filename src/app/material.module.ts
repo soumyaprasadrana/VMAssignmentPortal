@@ -32,8 +32,9 @@ import { QuillModule } from 'ngx-quill';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from './public/widget/toast/toast.module';
 import {ClipboardModule} from '@angular/cdk/clipboard';
-import { MatStepperModule } from '@angular/material/stepper'
-import { MatSelectModule } from '@angular/material/select'
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle'
 @NgModule({
   declarations: [],
   imports: [
@@ -60,7 +61,8 @@ import { MatSelectModule } from '@angular/material/select'
     ToastModule,
     ClipboardModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonToggleModule
   ],
   exports: [
     AngularFileUploaderModule,
@@ -85,7 +87,8 @@ import { MatSelectModule } from '@angular/material/select'
     ToastModule,
     ClipboardModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonToggleModule
   ],
 })
 export class MaterialModule {}

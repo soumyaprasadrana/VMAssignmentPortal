@@ -57,6 +57,7 @@ export class EditDynamicObjectComponent implements OnInit {
   recordData:any;
   dataLoaded:boolean=false;
   origionalAttrList:any;
+  listSelectedOptions:any=[];
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -201,6 +202,9 @@ export class EditDynamicObjectComponent implements OnInit {
    
       for (var i = 0; i < list.length; i++) {
         console.log("List[i]=",list[i]);
+        if(/list:*/.test(list[i].type.toString())){
+          this.listSelectedOptions.push(list[i].type.toString());
+        }
         if(list[i].type=='autokey' || list[i].isPrimaryKey==true){
           formControls['attr_' + i] = [
             {value: list[i].name, disabled: true},
@@ -444,6 +448,7 @@ export class EditDynamicObjectComponent implements OnInit {
               bindLabel: 'list',
             },(res:any)=>{
              // console.log(res);
+              this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
               registerForm.controls[ctrlName].value=registerForm.controls[ctrlName].value+":"+res.dataCtrl;
             }
           );

@@ -40,7 +40,7 @@ import { UserService } from '../../services/users.service';
 export class DynamicObjectAppEditRecordComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
-  title: string = 'Add Record';
+  title: string = 'Edit Record';
   loggedUser:any;
   attributeList:any;
   app:any;

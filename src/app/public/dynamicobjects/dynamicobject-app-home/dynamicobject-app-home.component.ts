@@ -22,6 +22,7 @@ import {
   GridState,
   GridService,
   Formatter,
+  FileType,
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
@@ -218,6 +219,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   addRecord() {
     var state={attributes:this.attributeList};
     this.router.navigate(['add'],{ relativeTo: this.route,state:state });
+  }
+  viewCharts(){
+    var state={attributes:this.attributeList,recordData:this.dynamicobjectappDataSet};
+    this.router.navigate(['charts'],{ relativeTo: this.route,state:state });
   }
   openDialog(data: any, callback: any) {
     this.dialog
@@ -524,8 +529,15 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           : [5, 10, 20, 25, 50],
         pageSize: 25,
       },
-      enableExcelCopyBuffer: false,
-      enableExcelExport: false,
+      enableExcelCopyBuffer: true,
+      enableExcelExport: true,
+      exportOptions: {
+        // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
+        exportWithFormatter: true,
+        sanitizeDataExport: true,
+      },
+      registerExternalResources: [this.excelExportService],
+
 
       enableCheckboxSelector: false,
       enableRowSelection: false,
@@ -557,10 +569,27 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           // also note that the internal custom commands are in the positionOrder range of 50-60,
           // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
           {
-            iconCssClass: 'fa fa-plus-circle',
+            iconCssClass: 'fa fa-plus-circle activated',
             title: 'Add Record',
             disabled: false,
             command: 'addRecord',
+            textCssClass: 'title',
+            positionOrder: 1,
+          },
+          {
+            iconCssClass: 'fa fa-pie-chart activated',
+            title: 'Charts',
+            disabled: false,
+            command: 'viewCharts',
+            textCssClass: 'title',
+            positionOrder: 1,
+          },
+          {
+            iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
+            title: 'Export to Excel',
+            disabled: false,
+            command: 'exportExcel',
+
             textCssClass: 'title',
             positionOrder: 1,
           },
@@ -580,6 +609,17 @@ export class DynamicObjectAppHomeComponent implements OnInit {
             this.clearGridStateFromLocalStorage();
           } else if (args.command === 'addRecord') {
             this.addRecord();
+          }else if (args.command === 'viewCharts') {
+            this.viewCharts();
+          }
+          else if (args.command === 'exportExcel') {
+            //console.log('excelExport :: ', this.excelExportService);
+            
+                this.excelExportService.exportToExcel({
+                  filename: this.app+'_'+new Date().toTimeString().replace(' ','_'),
+                  format: FileType.xlsx,
+                });
+             
           }
         },
         onColumnsChanged: (_e: any, _args: any) => {
