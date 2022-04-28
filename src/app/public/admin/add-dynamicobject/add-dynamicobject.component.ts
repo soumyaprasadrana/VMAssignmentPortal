@@ -461,7 +461,8 @@ export class AddDynamicObjectComponent implements OnInit {
               bindLabel: 'list',
             },(res:any)=>{
               console.log(res);
-              this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
+              if(this.listSelectedOptions.indexOf(registerForm.controls[ctrlName].value+":"+res.dataCtrl)===-1)
+                    this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
               registerForm.controls[ctrlName].value=registerForm.controls[ctrlName].value+":"+res.dataCtrl;
             }
           );

@@ -202,8 +202,9 @@ export class EditDynamicObjectComponent implements OnInit {
    
       for (var i = 0; i < list.length; i++) {
         console.log("List[i]=",list[i]);
-        if(/list:*/.test(list[i].type.toString())){
-          this.listSelectedOptions.push(list[i].type.toString());
+        if(list[i].type!=null && /list:*/.test(list[i].type.toString())){
+          if(this.listSelectedOptions.indexOf(list[i].type.toString())===-1)
+              this.listSelectedOptions.push(list[i].type.toString());
         }
         if(list[i].type=='autokey' || list[i].isPrimaryKey==true){
           formControls['attr_' + i] = [
@@ -448,7 +449,8 @@ export class EditDynamicObjectComponent implements OnInit {
               bindLabel: 'list',
             },(res:any)=>{
              // console.log(res);
-              this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
+              if(this.listSelectedOptions.indexOf(registerForm.controls[ctrlName].value+":"+res.dataCtrl))
+                  this.listSelectedOptions.push(registerForm.controls[ctrlName].value+":"+res.dataCtrl);
               registerForm.controls[ctrlName].value=registerForm.controls[ctrlName].value+":"+res.dataCtrl;
             }
           );
