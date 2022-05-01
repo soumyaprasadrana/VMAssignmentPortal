@@ -69,7 +69,8 @@ export class AuthInterceptor implements HttpInterceptor {
         if (
           this.previousUrl != '' &&
           this.currentUrl != '' &&
-          this.previousUrl != this.currentUrl
+          this.previousUrl != this.currentUrl && 
+          this.currentUrl!='/portal/login'
         )
           window.location.reload();
       });

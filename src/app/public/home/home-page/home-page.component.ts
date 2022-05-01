@@ -28,6 +28,8 @@ import {
   CurrentColumn,
   FileType,
   MenuCommandItem,
+  Formatters,
+  AngularUtilService,
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
@@ -47,6 +49,7 @@ import { RelatedvmsDataDialogComponent } from '../../widget/alert-dialog/related
 import { ToastService } from '../../widget/toast/toast-service';
 import { ViewChild } from '@angular/core';
 import { TemplateRef } from '@angular/core';
+import { PathComponent } from '../../widget/path/path.component';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -97,7 +100,8 @@ export class HomePageComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private _client: NodeclientService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private angularUtilService: AngularUtilService
   ) {   
     //Load VM Data
     this.spinner.setSpinnerState(true);
@@ -1055,6 +1059,22 @@ export class HomePageComponent implements OnInit {
         };
       
     };
+    
+    /* Custom Formatter for cells to check snapshot count */
+    const cellFormattercustomToolTip: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      
+        return {
+          text: `<div style='text-align:center;width:auto;'>
+          <span style='text-align:center' >${value}</span>
+          </div>`,
+          toolTip: value,
+        };
+      
+    };
+    
     /* Custom Formatter for cells to check snapshot count */
     const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
@@ -1285,7 +1305,20 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
+        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
+        // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
+        
+        /*// loading formatter, text to display while Post Render gets processed
+        formatter: () => '...',
+
+        // to load an Angular Component, you cannot use a Formatter since Angular needs at least 1 cycle to render everything
+        // you can use a PostRenderer but you will visually see the data appearing,
+        // which is why it's still better to use regular Formatter (with jQuery if need be) instead of Angular Component
+        asyncPostRender: this.renderAngularComponent.bind(this),
+        params: {
+          component: PathComponent,
+          angularUtilService: this.angularUtilService,
+        },*/
       },
       {
         id: 'vm_owner_lab',
@@ -1591,6 +1624,11 @@ export class HomePageComponent implements OnInit {
       },
       enableAutoResize: true,
       enablePagination: true,
+      enableAsyncPostRender: true, // for the Angular PostRenderer, don't forget to enable it
+      asyncPostRenderDelay: 0,
+      params: {
+        angularUtilService: this.angularUtilService // provide the service to all at once (Editor, Filter, AsyncPostRender)
+      },
       pagination: {
         pageSizes: this.defaultPageSizeList
           ? this.defaultPageSizeList
@@ -1891,5 +1929,14 @@ export class HomePageComponent implements OnInit {
   }
   clearGridGrouping() {
     this.dataviewObj.setGrouping([]);
+  }
+  renderAngularComponent(cellNode: HTMLElement, row: number, dataContext: any, colDef: Column) {
+    if (colDef.params.component) {
+      const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
+      Object.assign(componentOutput.componentRef.instance, { item: dataContext });
+
+      // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
+      setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
+    }
   }
 }
