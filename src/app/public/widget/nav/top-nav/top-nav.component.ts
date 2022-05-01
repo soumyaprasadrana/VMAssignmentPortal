@@ -82,7 +82,7 @@ export class TopNavComponent implements OnInit {
       .then((result) => {
         if (result.status) {
           this.router.navigate(['/portal/login']).then(() => {
-            window.location.reload();
+           // window.location.reload();
           });
         } else {
           console.log('Signout Failed');

@@ -34,6 +34,7 @@ export class TeamActivityLogsComponent implements OnInit {
 
   columnDef: Column[] = [];
   alGridOptions: GridOption = {
+    gridHeight:400,
     enableSorting: false,
     enableFiltering: false,
     enableExcelExport: false,

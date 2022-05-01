@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Admin Module Routing
  */
 import { ApplicationInitStatus, NgModule } from '@angular/core';
@@ -21,6 +21,10 @@ import { EditTeamLeadComponent } from '../public/admin/edit-team-lead/edit-team-
 import { TeamStatsComponent } from '../public/admin/team-stats/team-stats.component';
 import { TeamActivityLogsComponent } from '../public/admin/team-activity-logs/team-activity-logs.component';
 import { ApplicationPropertiesComponent } from '../public/admin/application-properties/application-properties.component';
+import { ToolsDynamicObjectsComponent } from '../public/admin/dynamic-objects/dynamic-objects.component';
+import { AddDynamicObjectComponent } from '../public/admin/add-dynamicobject/add-dynamicobject.component';
+import { EditDynamicObjectComponent } from '../public/admin/edit-dynamicobject/edit-dynamicobject.component';
+import { ViewDynamicObjectComponent } from '../public/admin/view-dynamicobject/view-dynamicobject.component';
 
 const routes: Routes = [
   {
@@ -52,6 +56,26 @@ const routes: Routes = [
         path: 'teamStats',
         component: TeamStatsComponent,
         data: { animation: 'addTeam',title:'Team Stats' },
+      },
+      {
+        path: 'dynamicobjects',
+        component: ToolsDynamicObjectsComponent,
+        data: { animation: 'addTeam',title:'Dynamic Object' },
+      },
+      {
+        path: 'dynamicobjects/add',
+        component: AddDynamicObjectComponent,
+        data: { animation: 'addTeam',title:'Add Dynamic Object' },
+      },
+      {
+        path: 'dynamicobjects/edit',
+        component: EditDynamicObjectComponent,  
+        data: { animation: 'addTeam',title:'Edit Dynamic Object' },
+      },
+      {
+        path: 'dynamicobjects/view',
+        component: ViewDynamicObjectComponent,  
+        data: { animation: 'addTeam',title:'Edit Dynamic Object' },
       },
       {
         path: 'addTeamLead',

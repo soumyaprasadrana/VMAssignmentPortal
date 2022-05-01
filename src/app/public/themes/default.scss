@@ -7,7 +7,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Pink Theme
  */
 $primary-color:#280071;
@@ -151,7 +151,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
     background-color: $primary-color !important;
     height: 50px;
     position: relative;
-    box-shadow: 0px 0px 15px #656363;
+    //box-shadow: 0px 0px 15px #656363;
     z-index: 5;
 }
 
@@ -192,13 +192,6 @@ $form-control-focus-box-shadow:$custom-alert-background;
 .btn-primary:hover {
     background-color: $primary-btn-hover-color !important;
     border-color: $primary-btn-hover-color !important;
-}
-
-html,
-body {
-    min-height: 100% !important;
-    height: auto;
-    margin: 0;
 }
 
 .alertSnapshot {
@@ -442,3 +435,12 @@ mat-nav-list a {
 .my-tooltip .arrow::before {
     border-top-color: $custom-alert-background;
   }
+  .mat-step-header .mat-step-icon-selected{
+    background-color: $primary-color;
+  }
+  .mat-step-header .mat-step-icon-state-edit{
+      background-color: $primary-color;
+  }
+  .activated{
+    color: $blue;    
+}

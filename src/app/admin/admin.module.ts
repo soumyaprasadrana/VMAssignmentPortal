@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Admin Module
  */
 import { NgModule } from '@angular/core';
@@ -30,6 +30,11 @@ import { TeamStatsComponent } from '../public/admin/team-stats/team-stats.compon
 import { TeamActivityLogsComponent } from '../public/admin/team-activity-logs/team-activity-logs.component';
 import { AngularSlickgridModule } from 'angular-slickgrid';
 import { ApplicationPropertiesComponent } from '../public/admin/application-properties/application-properties.component';
+import { ToolsDynamicObjectsComponent } from '../public/admin/dynamic-objects/dynamic-objects.component';
+import { AddDynamicObjectComponent } from '../public/admin/add-dynamicobject/add-dynamicobject.component';
+import { EditDynamicObjectComponent } from '../public/admin/edit-dynamicobject/edit-dynamicobject.component';
+import { ViewDynamicObjectComponent } from '../public/admin/view-dynamicobject/view-dynamicobject.component';
+
 @NgModule({
   declarations: [
     AdminViewComponent,
@@ -41,6 +46,10 @@ import { ApplicationPropertiesComponent } from '../public/admin/application-prop
     TeamStatsComponent,
     TeamActivityLogsComponent,
     ApplicationPropertiesComponent,
+    ToolsDynamicObjectsComponent,
+    AddDynamicObjectComponent,
+    EditDynamicObjectComponent,
+    ViewDynamicObjectComponent
   ],
   imports: [
     CommonModule,

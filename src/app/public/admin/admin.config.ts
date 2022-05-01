@@ -31,7 +31,7 @@ export class AdminConfig {
       {
         cardTitle: 'Create Team Leader',
         cardText:
-          'Create a team leader for each team, team leaders has more permissions than a normal user.',
+          'Create a TL for each team, team leaders has more permissions than a normal user.',
         cardWidth: '250',
         cardHeight: '200',
         cardRouterLink: ['../addTeamLead'],
@@ -54,10 +54,7 @@ export class AdminConfig {
         cardPermissions: function (loggedUser: any) {
           return loggedUser.permissions.is_admin;
         },
-      },
-    ],
-    [
-      {
+      },{
         cardTitle: 'Promote User ',
         cardText: 'This will promote user to team lead.',
         cardWidth: '250',
@@ -137,7 +134,23 @@ export class AdminConfig {
           return loggedUser.permissions.is_admin;
         },
       },
+      {
+        cardTitle: 'Dynamic Objects',
+        cardText: 'Dynamic Objects are configurable objects provides a no of configuration items and a custom application can be added from dynamic objects schema.',
+        cardWidth: '220',
+        cardHeight: '200',
+        cardRouterLink: ['../dynamicobjects'],
+        cardIconClass: 'fa fa-first-order ',
+        badgeIcon: 'fa fa-first-order',
+        cardTextClamp: 2,
+        cardPermissions: function (loggedUser: any) {
+          return (
+            loggedUser.permissions.is_admin 
+          );
+        },
+      },
     ],
+    
   ];
 
   constructor() {}

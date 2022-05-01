@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:54:18
- * @modify date 2022-03-25 17:54:18
+ * @modify date 2022-04-19 17:54:18
  * @desc Client to communicate with JAVA Rest API
  */
 const tough = require('tough-cookie');
@@ -42,6 +42,7 @@ module.exports = {
                     callback(err, null);
                     return;
                 }
+                try{
                 logger.info(fun + "- Authenticating to " + extServerOptions.uri);
                 logger.debug(fun + "- Response Status:" + JSON.stringify(response));
                 logger.debug(fun + "- Response headers:" + JSON.stringify(response.headers));
@@ -69,11 +70,15 @@ module.exports = {
                     err = {};
                     err.message = body.message;
                     callback(err, null);
+                }}
+                catch (e) {
+                    err = {};
+                    err.message = "Internal Server Error occurred!";
+                    callback(err, null);
                 }
             }).catch(function(error) {
                 logger.info(fun + JSON.stringify(error));
-                res.status(500).json({ "status": false, "message": "Inernal Server Error occurred." });
-                next();
+                callback(error, null);
             });
         } catch (e) {
             err = {};

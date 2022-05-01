@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Input Dialog Component
  */
 import { Component, Inject, OnInit } from '@angular/core';
@@ -32,6 +32,7 @@ export interface DialogData {
   title?: string;
   placeholder?: string;
   bindLabel?: string;
+  bindValue?:string;
   isText?: boolean;
   titleIcon?: boolean;
   defaultValue?: string;

@@ -30,7 +30,7 @@ import { AuthInterceptor } from './public/services/customHttp';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-import {MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import {MatDialog, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
 import { ToastModule } from './public/widget/toast/toast.module';
 @NgModule({
   declarations: [
@@ -60,12 +60,12 @@ import { ToastModule } from './public/widget/toast/toast.module';
     Config,
     AdminConfig,
     {
-      provide: HTTP_INTERCEPTORS,
-      useFactory: function (router: Router, route: ActivatedRoute) {
-        return new AuthInterceptor(router, route);
+      provide: HTTP_INTERCEPTORS, 
+      useFactory: function (router: Router, route: ActivatedRoute,dialog: MatDialog) {
+        return new AuthInterceptor(router, route,dialog);
       },
       multi: true,
-      deps: [Router, ActivatedRoute],
+      deps: [Router, ActivatedRoute,MatDialog],
     },
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {disableClose: true,hasBackdrop:true}}
   ],

@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:06:39
- * @modify date 2022-03-25 18:06:39
+ * @modify date 2022-04-19 18:06:39
  * @desc Configuration file for node api server
  */
 var pino = require('pino');
@@ -25,12 +25,24 @@ module.exports = {
     includedSPA: ['androidassetstudio', 'textcompare', 'prettier'],
     /* Enable gzip on server */
     useGzip: process.env.USEGZIP || true,
+    /* Disable Cache */
+    disableCahe: process.env.DISABLECAHE || true,
     /* Enable CORS */
     useCORS: process.env.USECORS || true,
     /* Enable Toast Notification Service; If disabled success result will show in dialog */
     useToast: process.env.USETOAST || true,
 
     vm_rest_path: '/vmDetails/getAll',
+    dynamicobjects_rest_path: '/dynamicobjects/getAll',
+    dynamicobjects_get_single_object_rest_path: '/dynamicobjects/get',
+    dynamicobjects_get_object_records_rest_path: '/dynamicobjects/getRecords',
+    dynamicobjects_get_object_attributes_rest_path: '/dynamicobjects/getAttributes',
+    dynamicobjects_add_object_record_rest_path: '/dynamicobjects/addRecord',
+    dynamicobjects_update_object_record_rest_path: '/dynamicobjects/updateRecord',
+    dynamicobjects_delete_object_record_rest_path: '/dynamicobjects/deleteRecord',
+    dynamicobjects_add_rest_path: '/dynamicobjects/addObject',
+    dynamicobjects_update_rest_path: '/dynamicobjects/updateObject',
+    dynamicobjects_delete_rest_path: '/dynamicobjects/deleteObject',
     technotes_rest_path: '/technotes/getAll',
     get_technote_rest_path: '/technotes/getTechnote',
     technotes_add_rest_path: '/technotes/addTechnote',

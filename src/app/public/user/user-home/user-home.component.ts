@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-05-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc User Home Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -75,7 +75,8 @@ export class UserHomeComponent implements OnInit {
         label: 'Username',
         placeholder: 'Select user',
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: 'user_name',
+        bindValue: 'user_id',
       },
       (res: any) => {
         //console.log('data from close:', res);

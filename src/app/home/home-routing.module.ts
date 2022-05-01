@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-219 18:26:41
  * @desc Home Module Routing
  */
 import { NgModule } from '@angular/core';
@@ -53,7 +53,11 @@ const routes: Routes = [
         loadChildren: () =>
           import(`../user/user.module`).then((m) => m.UserModule),
       },
-
+      {
+        path: 'dynamicapps',
+        loadChildren: () =>
+          import(`../dynamicobjects/dynamicobjects.module`).then((m) => m.DynamicObjectModule),
+      },
       {
         path: 'tools',
         loadChildren: () =>

@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Edit VM Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -142,6 +142,7 @@ export class EditVmComponent implements OnInit {
         placeholder: 'Select VM',
         list: list,
         bindLabel: 'ip',
+        bindValue: 'ip',
         closeCallback: () => {
           this.router.navigate(['/portal/home/vmm/dash']);
         },

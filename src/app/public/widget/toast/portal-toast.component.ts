@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-03-25 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Toast Container
  */
 import {Component, TemplateRef} from '@angular/core';
@@ -35,7 +35,7 @@ import {ToastService} from './toast-service';
         
           </div>  
           <div class="col-sm-1" style="width:20px !important">
-            <span class="ml-2" (click)="toastService.remove(toast)" style="cursor: pointer;position:fixed;right:10px;margin:0;top:10px;" > <i class="fa fa-times" aria-label="hidden"></i></span>
+            <span class="ml-2" (click)="toastService.remove(toast)" style="cursor: pointer;position:relative;right:20px;margin:0;" > <i class="fa fa-times" aria-label="hidden"></i></span>
           </div>                
       </div>
       </ng-template>

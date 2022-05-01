@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-03-25 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Angular Material Module
  */
 import { NgModule } from '@angular/core';
@@ -32,6 +32,9 @@ import { QuillModule } from 'ngx-quill';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from './public/widget/toast/toast.module';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle'
 @NgModule({
   declarations: [],
   imports: [
@@ -56,7 +59,10 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatSliderModule,
     NgbModule,
     ToastModule,
-    ClipboardModule
+    ClipboardModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatButtonToggleModule
   ],
   exports: [
     AngularFileUploaderModule,
@@ -79,7 +85,10 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatSliderModule,
     NgbModule,
     ToastModule,
-    ClipboardModule
+    ClipboardModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatButtonToggleModule
   ],
 })
 export class MaterialModule {}

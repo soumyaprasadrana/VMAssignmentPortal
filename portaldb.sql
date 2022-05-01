@@ -281,6 +281,17 @@ DEFAULT CHARACTER SET = utf8;
 
 CREATE INDEX `vm_team_idx` ON `vmportal02`.`vm` (`vm_team` ASC) ;
 
+-- -----------------------------------------------------
+-- Table `vmportal02`.`dynamicobject`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `vmportal02`.`dynamicobject` ;
+
+CREATE  TABLE IF NOT EXISTS `vmportal02`.`dynamicobject` (
+  `object_name` VARCHAR(255) NOT NULL ,
+  `object_design` MEDIUMTEXT NOT NULL ,
+  PRIMARY KEY (`object_name`)) 
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `vmportal02`.`vmextradata`

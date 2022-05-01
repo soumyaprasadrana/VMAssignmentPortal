@@ -1,0 +1,102 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc View Record Component Html
+-->
+<app-path></app-path>
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-y: scroll;
+        overflow-x: hidden !important;
+    }
+    
+    .no-scroller {
+        overflow-y: hidden !important;
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="container-fluid mt-3  no-scroller" *ngIf="isLoadedData && isLoadedAttributes">
+    <ngb-alert type="warning" [dismissible]="false">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="row w-50">
+                <div class="col">
+                    <div class="form-group required">
+                        <label for="field">Field:</label>
+                        <mat-select id="field" class="form-control" formControlName="field" [ngClass]="{ 'is-invalid': submitted && f.field.errors }">
+                            <mat-option value="{{item.name.value}}" *ngFor="let item of attributeList">{{item.alias.value}}</mat-option>
+                        </mat-select>
+                        <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
+                            <div class="ml-1" *ngIf="f.field.errors.required">Field is required</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="form-group required">
+                        <label for="height">Chart Height:</label>
+                        <input id="height" type="text" class="form-control" formControlName="height" [ngClass]="{ 'is-invalid': submitted && f.height.errors }">
+                        <div *ngIf="submitted && f.height.errors" class="invalid-feedback">
+                            <div class="ml-1" *ngIf="f.height.errors.required">Height is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group required ">
+                        <label for="field">Chart Type:</label>        
+                        <mat-button-toggle-group id="chartType"  height="20" formControlName="chartType" [ngClass]="{ 'is-invalid': submitted && f.chartType.errors }">
+                            <mat-button-toggle value="{{item}}" *ngFor="let item of chartTypeList"><i [matTooltip]="item" [ngClass]="{'activated':f.chartType.value==item}" class="fa fa-pie-chart" *ngIf="item=='PIE GRID'"></i>
+                                <i class="fa fa-bar-chart-o" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='BAR VERTICAL'"></i>
+                                <i class="fa fa-bar-chart rotate90" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='BAR HORIZONTAL'"></i>
+                                <i class="fa fa-area-chart" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='ADVANCED'"></i>
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                        </div>
+                </div>
+                <div class="col ml-5">
+                    <div class="form-group ">
+                        <label for="button"> &nbsp; </label>
+                        <button mat-stroked-button name="button" type="submit" (click)="onSubmit" class="btn form-control float-sm-right text-capitalize" style="background-color: white;">Submit</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </ngb-alert>
+  
+    <div class="p-4">
+    <div id="pie-chart-parent" *ngIf="showPie" [ngStyle]="{'height.px': cardHeight}">
+        <ngx-charts-pie-grid [view]="" [scheme]="colorScheme" [results]="resultSet">
+        </ngx-charts-pie-grid>
+    </div>
+    <div class="chart" *ngIf="showBar" [ngStyle]="{'height.px': cardHeight}">
+        <ngx-charts-bar-horizontal [results]="resultSet" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="'Count'" [yAxisLabel]="f.field.value">
+        </ngx-charts-bar-horizontal>
+    </div>
+    <div class="chart" *ngIf="showBarVer" [ngStyle]="{'height.px': cardHeight}">
+        <ngx-charts-bar-vertical [results]="resultSet" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="false" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [yAxisLabel]="'Count'" [xAxisLabel]="f.field.value">
+        </ngx-charts-bar-vertical>
+    </div>
+    <div class="chart" *ngIf="showAdv" [ngStyle]="{'height.px': cardHeight}">
+        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        </ngx-charts-advanced-pie-chart>
+    </div>
+</div>
+ 
