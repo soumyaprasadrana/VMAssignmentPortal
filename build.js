@@ -206,7 +206,7 @@ if (fs.existsSync('./build')) {
     } catch (e) { console.log(e); }
 }
 async function start_build() {
-    const npm_install = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ["install"], {
+    const npm_install = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ["install","--force"], {
         cwd: process.cwd(),
         stdio: 'inherit'
     });

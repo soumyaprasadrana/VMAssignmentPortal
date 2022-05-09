@@ -31,9 +31,12 @@
         <label *ngIf="onlyChildPresent" class="label label-default" style="color:#3e3b3b;background-color:#f5f5f5;">
             No parent relationships for this vm found. Child relationships can not be updated from here!;  
             </label>
-        <div class="row p-3  " *ngFor="let item of data.list;let i = index">
-            <label [matTooltip]="'Delete field!'" (click)="deleteField(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
-            <div class="col ">
+        <div class="row p-3 card mb-2" *ngFor="let item of data.list;let i = index">
+            <div class="row w-100">
+            <div class="col-sm-1">
+                <label [matTooltip]="'Delete field!'" (click)="deleteField(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
+            </div>
+            <div class="col-sm-3 ">
                 <div class="form-group required">
 
                     <label for="relationship_{{i}}">Relationship name:</label>
@@ -46,7 +49,7 @@
 
                 </div>
             </div>
-            <div class="col ">
+            <div class="col-sm-3 ">
                 <div class="form-group required">
 
                     <label for="relationship_{{i}}_source">Source: </label>
@@ -58,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="col ">
+            <div class="col-sm-3 ">
                 <div class="form-group required">
 
                     <label for="relationship_{{i}}_destination">Destination: </label>
@@ -71,8 +74,10 @@
 
                 </div>
             </div>
-
-            <div class="col ">
+            </div>
+            <div class="row w-100">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
                 <div class="form-group ">
 
                     <label for="relationship_{{i}}_description">Description: </label>
@@ -84,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="col ">
+            <div class="col-sm-3 ">
                 <div class="form-group ">
 
                     <label for="relationship_{{i}}_group">Group: </label>
@@ -95,7 +100,7 @@
 
                 </div>
             </div>
-            <div class="col ">
+            <div class="col-sm-3 ">
                 <div class="form-group">
 
                     <label for="relationship_{{i}}_icon">icon: </label>
@@ -107,6 +112,7 @@
                         <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_icon')">Icon is required</div>
                     </div>
                 </div>
+            </div>
             </div>
             
         </div>

@@ -183,7 +183,7 @@ export class AddDynamicObjectComponent implements OnInit {
   }
   addAutoKey(){
     var temp = this.parseFormValues(this.objectAttributeForm.getRawValue());
-    temp.push({ name:  this.formGroupObjectProperties.controls['name'].value+'_id', type: 'autokey',size:20,isPrimaryKey:true,isNullable:false,defaultValue:'',validators:'required',alias: (this.formGroupObjectProperties.controls['name'].value+'id').toUpperCase()});
+    temp.push({ name:  this.formGroupObjectProperties.controls['name'].value+'_id', type: 'autokey',size:20,isPrimaryKey:true,isNullable:false,defaultValue:'',validators:['required'],alias: (this.formGroupObjectProperties.controls['name'].value+'id').toUpperCase()});
     this.objectAttributeForm = this.formBuilder.group(
       this.parseFormControlsAddAutoKey(temp)
     );  

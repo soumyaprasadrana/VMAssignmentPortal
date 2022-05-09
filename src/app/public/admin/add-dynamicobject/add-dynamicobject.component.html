@@ -129,9 +129,13 @@
                 
                 <div class="row  ml-4">
                     <div class="col">
-                        <div class="row p-3 " *ngFor="let item of list;let i = index">
-                            <label [matTooltip]="'Delete field!'" (click)="deleteAttribute(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
-                            <div class="col">
+                        <div class="row card p-3 mb-3" *ngFor="let item of list;let i = index">
+                            
+                        <div class="row w-100">
+                            <div class="col-sm-1">
+                                <label [matTooltip]="'Delete field!'" (click)="deleteAttribute(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
+                            </div>
+                            <div class="col-sm-2">
                                 <div class="form-group required">
                                 <label for="attr_{{i}}"> Name:</label> 
                                 <span [ngbPopover]="namePopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
@@ -143,7 +147,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group required">
                                 <label for="attr_{{i}}_alias"> Alias:</label> 
                                 <span [ngbPopover]="aliasPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
@@ -155,7 +159,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group required">
                                 <label for="attr_{{i}}_type"> Type:</label> 
                                     <select (change)="checkForList(objectAttributeForm,'attr_'+i+'_type')" id="attr_{{i}}_type" required="required" type="text" class="form-control " formControlName="attr_{{i}}_type" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type') }">
@@ -174,7 +178,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group required">
                                 <label for="attr_{{i}}_size"> Size:</label> 
                                     <input id="attr_{{i}}_size" required="required" type="number" class="form-control " formControlName="attr_{{i}}_size" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_size') }">
@@ -185,7 +189,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                        </div>
+                        <div class="row w-100">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-2">
                                 <div class="form-group ">
                                 <label for="attr_{{i}}_defaultValue"> Default Value:</label> 
                                     <input id="attr_{{i}}_defaultValue"  type="text" class="form-control " formControlName="attr_{{i}}_defaultValue" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_defaultValue') }">
@@ -197,7 +204,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                 <label for="attr_{{i}}_validators"> Validators:</label> 
                                 <span [ngbPopover]="validatorsPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" >
@@ -219,9 +226,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group required">
-                                <label for="attr_{{i}}_isPrimaryKey">IS Primary Key?:</label> 
+                                <label for="attr_{{i}}_isPrimaryKey">Primary Key?:</label> 
                                     <select id="attr_{{i}}_isPrimaryKey" required="required"  class="form-control " formControlName="attr_{{i}}_isPrimaryKey" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isPrimaryKey') }">
                                         <option [ngValue]="true">True</option>
                                         <option [ngValue]="false">False</option>
@@ -232,9 +239,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div class="form-group required">
-                                <label for="attr_{{i}}_isNullable">IS Nullable?:</label> 
+                                <label for="attr_{{i}}_isNullable">Nullable?:</label> 
                                     <select id="attr_{{i}}_isNullable" required="required"  class="form-control " formControlName="attr_{{i}}_isNullable" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isNullable') }">
                                         <option [ngValue]="true">True</option>
                                         <option [ngValue]="false">False</option>
@@ -245,11 +252,10 @@
                                     </div>
                                 </div>
                             </div>
-
+                        </div>                        
                         </div>
                         <button mat-stroked-button [disabled]="autoKeyAdded" (click)="addAutoKey()" class="btn text-capitalize ">Add AutoKey Column</button>
                         <button mat-stroked-button (click)="addAttribute()" class="btn text-capitalize ">Add Attribute</button>
-                 
                     </div>
                     
                 </div>

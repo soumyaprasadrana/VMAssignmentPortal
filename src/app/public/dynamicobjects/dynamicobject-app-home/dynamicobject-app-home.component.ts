@@ -23,6 +23,7 @@ import {
   GridService,
   Formatter,
   FileType,
+  SlickGrid,
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
@@ -35,6 +36,7 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { NodeclientService } from '../../services/nodeclient.service';
 import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service';
 import { CommonService } from '../../services/common.service';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 
  
 @Component({
@@ -112,6 +114,57 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           //console.log(this.dynamicobjectappDataSet);
           this.isLoaded = true;
           this.defineGrid(presets);
+
+          /*Checking for List type attributes*/
+     for(var item in this.attributeList){
+      if(this.attributeList[item].type.value.toString().includes('list')){
+        var listArr=this.attributeList[item].type.value.toString().split(":");
+        var listName=listArr[listArr.length-1];
+        this.commonService.getListItems(listName,item).then((res:any)=>{
+          if(res.res!=null && res.res.length!=0){
+            this.listsScope[this.attributeList[res.item].name.value]=res.res;
+            console.log("Lists loaded for application : ",this.listsScope);
+            this.isLoaded = true;
+            this.defineGrid(presets);
+          }
+            else{
+              this.isLoaded = true;
+              this.defineGrid(presets);
+              if(this.attributeList[res.item].required){
+                this.openDialog({
+                  type:'alert',
+                  message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+                },null);
+              }else{
+                this.openDialog({
+                  type:'warn',
+                  message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
+                },null);
+              }
+            }
+        }).catch((err:any)=>{
+          this.isLoaded = true;
+          this.defineGrid(presets);
+          console.log(err);
+          if(this.attributeList[err.item].required){
+            this.openDialog({
+              type:'alert',
+              message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+            },null);
+          }else{
+            this.openDialog({
+              type:'warn',
+              message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
+            },null);
+          }
+        })
+      }
+      else{
+        this.isLoaded = true;
+        this.defineGrid(presets);
+      }
+    }
+          
         }
         else{
           this.openDialog({
@@ -276,44 +329,6 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
 
-    /*Checking for List type attributes*/
-    for(var item in this.attributeList){
-    if(this.attributeList[item].type.value.toString().includes('list')){
-      var listArr=this.attributeList[item].type.value.toString().split(":");
-      var listName=listArr[listArr.length-1];
-      this.commonService.getListItems(listName,item).then((res:any)=>{
-        if(res.res!=null && res.res.length!=0){
-          this.listsScope[this.attributeList[res.item].name.value]=res.res;
-        }
-          else{
-            if(this.attributeList[res.item].required){
-              this.openDialog({
-                type:'alert',
-                message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-              },null);
-            }else{
-              this.openDialog({
-                type:'warn',
-                message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
-              },null);
-            }
-          }
-      }).catch((err:any)=>{
-        console.log(err);
-        if(this.attributeList[err.item].required){
-          this.openDialog({
-            type:'alert',
-            message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-          },null);
-        }else{
-          this.openDialog({
-            type:'warn',
-            message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
-          },null);
-        }
-      })
-    }
-  }
 
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
@@ -362,8 +377,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var getDataFromList:any=(attrName:any,value:any) =>{
       var res="";
       for(var item in this.listsScope[attrName]){
-        if(this.listsScope[attrName][item].value==value){
-          res=this.listsScope[attrName][item].text;
+        var list_item=this.listsScope[attrName][item];
+        if(list_item.value.toString()==value.toString()){
+          res=list_item.text;
+          break;
         }
       }
       return res;
@@ -374,12 +391,11 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       value,
       colDef,
     ) => {
-      value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
       if (typeof value == 'undefined') {
         value = '';
       }
+      value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
       
-
       return {
         text: `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value}</span></div>`,
         toolTip: value,
@@ -392,6 +408,34 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       if(this.attributeList[item].type.value.toString().includes('list')){
         formatter=listAttributeCellFormaterValue;
       }
+      if(this.attributeList[item].type.value=='richtext'){
+        this.columnDef.push({
+          id:this.attributeList[item].name.value,
+          name:this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          filterable: true,
+          formatter: formatter,
+          filter: { model: Filters.compoundInputText },
+          headerCssClass: 'gridRow',
+          customTooltip:{
+            formatter: this.tooltipFormatter.bind(this) as Formatter
+          }
+        });
+      }
+      else if(this.attributeList[item].type.value=='autokey'){
+        this.columnDef.push({
+          id:this.attributeList[item].name.value,
+          name:this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          //filterable: true,
+          formatter: formatter,
+          //filter: { model: Filters.compoundInputNumber },
+          headerCssClass: 'gridRow',
+        });
+      }
+      else{
       this.columnDef.push({
         id:this.attributeList[item].name.value,
         name:this.attributeList[item].alias.value,
@@ -401,7 +445,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         formatter: formatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
-      })
+      });
+    }
     }
      //console.log(this.columnDef);
     this.columnDef.push({
@@ -536,9 +581,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [this.excelExportService],
-
-
+      registerExternalResources: [new SlickCustomTooltip(),this.excelExportService],
+      customTooltip:{
+        hideArrow:true,
+        headerFormatter:this.headerFormatter.bind(this) as Formatter,
+      },
+      autoTooltipOptions:{
+        enableForHeaderCells:true
+      },
       enableCheckboxSelector: false,
       enableRowSelection: false,
       multiSelect: false,
@@ -556,14 +606,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         // basically which offset do we want to use for reposition the grid menu,
         // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
+        
         iconCssClass: 'fa fa-bars',
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -657,4 +707,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
   }
+  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    console.log("Inside ToolTipFormatter :: ");
+    if(typeof  dataContext[column.id]!='undefined')
+         return `<div style='max-height:500px;max-width:500px;height:auto;width:auto;overflow:auto;'><p>${dataContext[column.id]}</p></div>
+        `;
+    else return '';
+  }
+  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    return ``;
+ }
 }

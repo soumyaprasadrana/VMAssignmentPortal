@@ -30,7 +30,7 @@
                         <div class="form-group " [ngClass]="{'required': checkIfAttributeRequired(i)}" >
                             <label for="{{attributeList[i].name.value}}">{{attributeList[i].alias.value}}:</label>
                             <input *ngIf="attributeList[i].type.value=='string'" id="{{attributeList[i].alias.value}}"  type="text" class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
-                            <input *ngIf="attributeList[i].type.value=='number'" id="{{attributeList[i].alias.value}}"  type="number" class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
+                            <input *ngIf="attributeList[i].type.value=='number' || attributeList[i].type.value=='autokey'" id="{{attributeList[i].alias.value}}"  type="number" class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
                             <select *ngIf="attributeList[i].type.value.toString().includes('list') " id="{{attributeList[i].alias.value}}"  class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
                                 <option *ngFor="let index of listsScope[attributeList[i].name.value]; let j=index;" [ngValue]="listsScope[attributeList[i].name.value][j].value">{{listsScope[attributeList[i].name.value][j].text}}</option>
                             </select>
@@ -53,7 +53,7 @@
                         <div class="form-group " [ngClass]="{'required': checkIfAttributeRequired(i+1)}">
                             <label for="{{attributeList[i+1].name.value}}">{{attributeList[i+1].alias.value}}:</label>
                             <input *ngIf="attributeList[i+1].type.value=='string'" id="{{attributeList[i+1].alias.value}}"  type="text" class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
-                            <input *ngIf="attributeList[i+1].type.value=='number'" id="{{attributeList[i+1].alias.value}}"  type="number" class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
+                            <input *ngIf="attributeList[i+1].type.value=='number' || attributeList[i+1].type.value=='autokey'" id="{{attributeList[i+1].alias.value}}"  type="number" class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
                             <select *ngIf="attributeList[i+1].type.value.toString().includes('list')" id="{{attributeList[i+1].alias.value}}"  class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
                                 <option *ngFor="let index of listsScope[attributeList[i+1].name.value]; let j=index;" [ngValue]="listsScope[attributeList[i+1].name.value][j].value">{{listsScope[attributeList[i+1].name.value][j].text}}</option>
                             </select>

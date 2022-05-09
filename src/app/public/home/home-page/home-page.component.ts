@@ -29,7 +29,9 @@ import {
   FileType,
   MenuCommandItem,
   Formatters,
-  AngularUtilService,
+  AngularUtilService,  
+  SlickRowDetailView,
+  SlickGrid
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
@@ -50,6 +52,9 @@ import { ToastService } from '../../widget/toast/toast-service';
 import { ViewChild } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import { PathComponent } from '../../widget/path/path.component';
+import { CommentDialogComponent } from '../../widget/alert-dialog/comment-dialog.component';
+import { RowDetailComponent } from '../../widget/row-detail-view/row-detail-view.component';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -434,7 +439,7 @@ export class HomePageComponent implements OnInit {
     //console.log(list);
     var defaultValue = null;
     if (defaultVal) defaultValue = defaultVal;
-    this.openDialogInput(
+    this.openDialogComment(
       {
         title: 'Add Comment',
         label: 'Comment',
@@ -960,6 +965,23 @@ export class HomePageComponent implements OnInit {
         }
       });
   }
+  openDialogComment(data: any, callback: any) {
+    this.dialog
+      .open(CommentDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+
+        width: '1000px',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        //console.log(res);
+        if (typeof callback == 'function' && res != '' && res != null) {
+          callback(res);
+        }
+      });
+  }
   openImportDialog(data: any, callback: any) {
     this.dialog
       .open(FileChooseDialogComponent, {
@@ -1001,6 +1023,8 @@ export class HomePageComponent implements OnInit {
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
+  
+
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
     const gridState: GridState =
@@ -1013,7 +1037,7 @@ export class HomePageComponent implements OnInit {
   defineGrid(gridStatePresets?: GridState) {
     this.spinner.setSpinnerState(true);
 
-    const statusCellFormatter: Formatter<VM> = (
+    const statusCellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -1048,7 +1072,7 @@ export class HomePageComponent implements OnInit {
       }
     };
     /* Custom Formatter for cells to check snapshot count */
-    const ipcellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const ipcellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1061,7 +1085,7 @@ export class HomePageComponent implements OnInit {
     };
     
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormattercustomToolTip: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormattercustomToolTip: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1076,7 +1100,7 @@ export class HomePageComponent implements OnInit {
     };
     
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1305,7 +1329,13 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
+        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value? value:''}</span></div>`,
+        // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
+        customTooltip: {
+          // 1- loading formatter
+          formatter: this.tooltipFormatter.bind(this) as Formatter
+        }
+        //formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         
         /*// loading formatter, text to display while Post Render gets processed
@@ -1622,6 +1652,7 @@ export class HomePageComponent implements OnInit {
         applyResizeToContainer: true,
         rightPadding: 0,
       },
+      enableRowDetailView: false,
       enableAutoResize: true,
       enablePagination: true,
       enableAsyncPostRender: true, // for the Angular PostRenderer, don't forget to enable it
@@ -1642,9 +1673,12 @@ export class HomePageComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [this.excelExportService],
-
+      registerExternalResources: [new SlickCustomTooltip(),this.excelExportService],
       // enableCompositeEditor: true,
+      customTooltip:{
+        hideArrow:true,
+        headerFormatter:this.headerFormatter.bind(this) as Formatter
+      },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
         selectActiveRow: false,
@@ -1663,22 +1697,16 @@ export class HomePageComponent implements OnInit {
 
       //Grid custom menu
       gridMenu: {
+        
         hideExportExcelCommand: true,
         // we could disable the menu entirely by returning false depending on some code logic
         menuUsabilityOverride: (_args: any) => true,
-
-        // use the click event position to reposition the grid menu (defaults to false)
-        // basically which offset do we want to use for reposition the grid menu,
-        // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
-        // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
-        iconCssClass: 'fa fa-bars',
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
+        hideForceFitButton: false,
+        hideSyncResizeButton: false,
         hideToggleFilterCommand: false, // show/hide internal custom commands
-        menuWidth: 17,
+        menuWidth: 25,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -1779,6 +1807,35 @@ export class HomePageComponent implements OnInit {
           mappedColumnDefinitions
         
       }*/
+      rowDetailView: {
+        // optionally change the column index position of the icon (defaults to 0)
+        // columnIndexPosition: 1,
+
+        // We can load the "process" asynchronously in 2 different ways (httpClient OR even Promise)
+        process: (item) => {return item;},
+        // process: (item) => this.http.get(`api/item/${item.id}`),
+
+        // load only once and reuse the same item detail without calling process method
+        loadOnce: true,
+
+        // limit expanded row to only 1 at a time
+        singleRowExpand: true,
+
+        // false by default, clicking anywhere on the row will open the detail view
+        // when set to false, only the "+" icon would open the row detail
+        // if you use editor or cell navigation you would want this flag set to false (default)
+        useRowClick: true,
+        // you can override the logic for showing (or not) the expand icon
+        // for example, display the expand icon only on every 2nd row
+        // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
+
+        // View Component to load when row detail data is ready
+        viewComponent: RowDetailComponent,
+        panelRows:5,
+
+        // Optionally pass your Parent Component reference to your Child Component (row detail component)
+        parent: this
+      }
     };
 
     // reload the Grid State with the grid options presets
@@ -1938,5 +1995,24 @@ export class HomePageComponent implements OnInit {
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
     }
+  }
+  get rowDetailInstance(): SlickRowDetailView {
+    // you can get the SlickGrid RowDetail plugin (addon) instance via 2 ways
+
+    // option 1
+    return (this.angularGrid.extensions.rowDetailView.instance || {});
+
+    // OR option 2
+    // return this.angularGrid?.extensionService.getExtensionInstanceByName(ExtensionName.rowDetailView) || {};
+  }
+  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    console.log("Inside ToolTipFormatter :: ");
+    if(typeof  dataContext.comment!='undefined')
+         return `<div style='height:auto;overflow:auto;'><p>${dataContext.comment}</p></div>
+        `;
+    else return '';
+  }
+  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+     return '';
   }
 }

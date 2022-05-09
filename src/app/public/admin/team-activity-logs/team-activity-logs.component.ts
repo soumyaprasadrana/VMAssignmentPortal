@@ -10,8 +10,8 @@
  * @desc Team Activity Logs Component
  */
 import { Component, OnInit } from '@angular/core';
-import { Column, GridOption } from '@slickgrid-universal/common';
-import { Filters, Formatter, Formatters } from 'angular-slickgrid';
+import { Column,Formatter, GridOption } from '@slickgrid-universal/common';
+import { Filters, Formatters } from 'angular-slickgrid';
 import { ActivityLog } from '../../DataModel/activitylog';
 import { VM } from '../../DataModel/vm';
 import { ActivitylogsService } from '../../services/activitylogs.service';
@@ -47,7 +47,7 @@ export class TeamActivityLogsComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    const cellFormatter: Formatter<ActivityLog> = (
+    const cellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -63,7 +63,7 @@ export class TeamActivityLogsComponent implements OnInit {
         toolTip: value,
       };
     };
-    const statuscellFormatter: Formatter<ActivityLog> = (
+    const statuscellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,

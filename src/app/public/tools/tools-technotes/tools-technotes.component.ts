@@ -211,7 +211,7 @@ export class ToolsTechnotesComponent implements OnInit {
   defineGrid(gridStatePresets?: GridState) {
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -221,7 +221,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const isGlobalFormatter: Formatter<VM> = (
+    const isGlobalFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -243,7 +243,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const descFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const descFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -253,7 +253,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const keywordCellFormatter: Formatter<VM> = (
+    const keywordCellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -488,14 +488,14 @@ export class ToolsTechnotesComponent implements OnInit {
         // basically which offset do we want to use for reposition the grid menu,
         // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
+        
         iconCssClass: 'fa fa-bars',
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
