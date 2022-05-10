@@ -82,12 +82,13 @@ export class HomePageComponent implements OnInit {
   properties: any = {};
   userList: any = [];
   excelExportService: any = new ExcelExportService();
+  customTooltipService: any =new SlickCustomTooltip();
   /* rxjs Subscription */
   private subscription!: Subscription;
   selectedRows: any;
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
-  defaultPageSizeList: any;
+  defaultPageSizeList: any=[];
   osList: any;
   osTypes: any = [];
   osVersiontypes: any = [];
@@ -125,8 +126,15 @@ export class HomePageComponent implements OnInit {
       .then((res) => {
         //console.log('Props=>', res);
         this.properties = JSON.parse('' + res);
-        this.defaultPageSizeList =
+        var PageSizeList =
           this.properties.paginationPageSizesList.split(':');
+        try{
+          for(var item in PageSizeList){
+            this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
+          }
+        }catch(e){
+          console.log(e);
+        }
         this.osList = this.properties.osList.split('#');
         try {
           this.osTypes.push({ osType: '', value: '' });
@@ -1016,8 +1024,9 @@ export class HomePageComponent implements OnInit {
       this.isDeviceMobilReset = true;
       window.location.reload();
     } else {
-      localStorage[LOCAL_STORAGE_KEY] = null;
       this.angularGrid.gridService.resetGrid(this.columnDef);
+      this.angularGrid.gridStateService.resetColumns();
+      localStorage[LOCAL_STORAGE_KEY] = null;
       window.location.reload();
     }
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
@@ -1228,6 +1237,10 @@ export class HomePageComponent implements OnInit {
         formatter: ipcellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'hostname',
@@ -1237,6 +1250,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'os',
@@ -1246,6 +1263,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: osFilterModel,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'ver',
@@ -1255,6 +1276,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: osVersionTypeModel,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'group',
@@ -1264,6 +1289,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       /* {
         id: 'snap_count',
@@ -1284,6 +1313,10 @@ export class HomePageComponent implements OnInit {
         type: FieldType.number,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputNumber },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'status',
@@ -1311,7 +1344,12 @@ export class HomePageComponent implements OnInit {
 
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: { autoDropWidth: true } as MultipleSelectOption,
+          
         },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'owner',
@@ -1321,6 +1359,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         filter: { model: Filters.compoundInputText },
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'comment',
@@ -1329,11 +1371,14 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value? value:''}</span></div>`,
+        formatter: cellFormatter,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         customTooltip: {
           // 1- loading formatter
-          formatter: this.tooltipFormatter.bind(this) as Formatter
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter,
+          formatter: this.tooltipFormatter.bind(this) as Formatter,
+          position:'auto',
         }
         //formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
@@ -1358,6 +1403,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         filter: { model: Filters.compoundInputText },
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
 
       /* {
@@ -1381,6 +1430,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         filter: { model: Filters.compoundInputText },
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       });
     }
     this.columnDef.push({
@@ -1673,7 +1726,7 @@ export class HomePageComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [new SlickCustomTooltip(),this.excelExportService],
+      registerExternalResources: [this.customTooltipService,this.excelExportService],
       // enableCompositeEditor: true,
       customTooltip:{
         hideArrow:true,
@@ -1704,7 +1757,8 @@ export class HomePageComponent implements OnInit {
         hideForceFitButton: false,
         hideSyncResizeButton: false,
         hideToggleFilterCommand: false, // show/hide internal custom commands
-        menuWidth: 25,
+        menuWidth:17,
+        contentMinWidth:200,
         resizeOnShowHeaderRow: true,
         commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
@@ -1758,23 +1812,11 @@ export class HomePageComponent implements OnInit {
             this.clearGridGrouping();
           } else if (args.command === 'exportExcel') {
             //console.log('excelExport :: ', this.excelExportService);
-            this.openDialogInput(
-              {
-                title: 'Excel Export',
-                label: 'Filename',
-                bindLabel: 'file_name',
-                isText: true,
-                titleIcon: true,
-                iconClass:
-                  'slick-gridmenu-icon fa fa-file-excel-o text-success',
-              },
-              (res: any) => {
-                this.excelExportService.exportToExcel({
-                  filename: res.dataCtrl,
-                  format: FileType.xlsx,
-                });
-              }
-            );
+            this.excelExportService;
+            this.excelExportService.exportToExcel({
+              filename: 'VM_List'+'_'+new Date().toTimeString().replace(' ','_'),
+              format: FileType.xlsx,
+            });
           } else if (args.command === 'importExcel') {
             //console.log('excelExport :: ', this.excelExportService);
             this.openImportDialog(
@@ -2007,9 +2049,12 @@ export class HomePageComponent implements OnInit {
   }
   tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
     console.log("Inside ToolTipFormatter :: ");
-    if(typeof  dataContext.comment!='undefined')
-         return `<div style='height:auto;overflow:auto;'><p>${dataContext.comment}</p></div>
-        `;
+    if(typeof  dataContext.comment!='undefined' && dataContext.comment.toString().trim().length!=0)
+         return {
+           text:`<div style='height:auto;overflow:auto;'><p>${dataContext.comment}</p></div>
+        `,
+        toolTip:dataContext.comment
+      };
     else return '';
   }
   headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {

@@ -31,7 +31,14 @@
                             <label for="{{attributeList[i].name.value}}" class="bold">{{attributeList[i].alias.value}}:</label>
                             <p  *ngIf="attributeList[i].type.value=='string' || attributeList[i].type.value=='autokey' || attributeList[i].type.value=='number' || attributeList[i].type.value=='user' || attributeList[i].type.value=='team' ">{{recordData[attributeList[i].name.value]}}</p>
                             <p  *ngIf="attributeList[i].type.value=='richtext'" [styles]="{height: '200px'}" [innerHtml]="sanitizer.bypassSecurityTrustHtml(recordData[attributeList[i].name.value])"></p>
-                            <p  *ngIf="attributeList[i].type.value.toString().includes('list')" ><span *ngFor="let index of listsScope[attributeList[i].name.value];let j=index;"><p *ngIf="listsScope[attributeList[i].name.value][j].value==recordData[attributeList[i].name.value]">{{listsScope[attributeList[i].name.value][j].text}}</p></span></p>
+                            <p  *ngIf="attributeList[i].type.value.toString().includes('list')" >
+                                <span *ngFor="let index of listsScope[attributeList[i].name.value];let j=index;">
+                                    <p *ngIf="listsScope[attributeList[i].name.value][j].value==recordData[attributeList[i].name.value]">
+                                        <span  [innerHtml]="sanitizer.bypassSecurityTrustHtml(listsScope[attributeList[i].name.value][j].template?listsScope[attributeList[i].name.value][j].template:listsScope[attributeList[i].name.value][j].text)" [autoClose]="true"></span>
+                                        <span *ngIf="listsScope[attributeList[i].name.value][j].template">({{listsScope[attributeList[i].name.value][j].template?listsScope[attributeList[i].name.value][j].text:null}})</span>
+                                    </p>
+                                </span>
+                            </p>
                             <!--<input *ngIf="attributeList[i].type.value=='string'" id="{{attributeList[i].alias.value}}"  type="text" class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
                             <input *ngIf="attributeList[i].type.value=='number'" id="{{attributeList[i].alias.value}}"  type="number" class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
                             <select *ngIf="attributeList[i].type.value.toString().includes('list') " id="{{attributeList[i].alias.value}}"  class="form-control " formControlName="{{attributeList[i].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i].name.value.toString()) }">
@@ -56,7 +63,14 @@
                             <label for="{{attributeList[i+1].name.value}}" class="bold">{{attributeList[i+1].alias.value}}:</label>
                             <p  *ngIf="attributeList[i+1].type.value=='string' || attributeList[i+1].type.value=='number' || attributeList[i+1].type.value=='number' || attributeList[i+1].type.value=='user' || attributeList[i+1].type.value=='team' || attributeList[i+1].type.value=='autokey'">{{recordData[attributeList[i+1].name.value]}}</p>
                             <p  *ngIf="attributeList[i+1].type.value=='richtext'" [styles]="{height: '200px'}" [innerHtml]="sanitizer.bypassSecurityTrustHtml(recordData[attributeList[i+1].name.value])"></p>
-                            <p  *ngIf="attributeList[i+1].type.value.toString().includes('list')" ><span *ngFor="let index of listsScope[attributeList[i+1].name.value];let j=index;"><p *ngIf="listsScope[attributeList[i+1].name.value][j].value==recordData[attributeList[i+1].name.value]">{{listsScope[attributeList[i+1].name.value][j].text}}</p></span></p>
+                            <p  *ngIf="attributeList[i+1].type.value.toString().includes('list')" >
+                                <span *ngFor="let index of listsScope[attributeList[i+1].name.value];let j=index;">
+                                    <p *ngIf="listsScope[attributeList[i+1].name.value][j].value==recordData[attributeList[i+1].name.value]">
+                                        <span [innerHtml]="sanitizer.bypassSecurityTrustHtml(listsScope[attributeList[i+1].name.value][j].template?listsScope[attributeList[i+1].name.value][j].template:listsScope[attributeList[i+1].name.value][j].text)" [autoClose]="true"></span>
+                                        <span *ngIf="listsScope[attributeList[i+1].name.value][j].template">({{listsScope[attributeList[i+1].name.value][j].template?listsScope[attributeList[i+1].name.value][j].text:null}})</span>
+                                    </p>
+                                </span>
+                            </p>
                             <!--input *ngIf="attributeList[i+1].type.value=='string'" id="{{attributeList[i+1].alias.value}}"  type="text" class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
                             <input *ngIf="attributeList[i+1].type.value=='number'" id="{{attributeList[i+1].alias.value}}"  type="text" class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">
                             <select *ngIf="attributeList[i+1].type.value.toString().includes('list')" id="{{attributeList[i+1].alias.value}}"  class="form-control " formControlName="{{attributeList[i+1].name.value}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(attributeList[i+1].name.value) }">

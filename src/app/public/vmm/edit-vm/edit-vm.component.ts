@@ -156,7 +156,7 @@ export class EditVmComponent implements OnInit {
           ngxos: [res.os + ' ' + res.ver, Validators.required],
           ram: [res.ram, [Validators.min(0), Validators.max(200)]],
           group: [res.group],
-          owner: [res.group],
+          owner: [res.owner],
           ngxteam: [res.team, Validators.required],
         });
       }

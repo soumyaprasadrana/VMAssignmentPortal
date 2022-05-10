@@ -168,6 +168,7 @@ export class AuthserviceService {
             // );
             if (res.status) {
               result.status = true;
+              window.location.reload();
             } else {
               result.status = false;
             }

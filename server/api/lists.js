@@ -12,15 +12,17 @@
 module.exports = {
     /**
      * Lists Defination:
-     * Lists:<JSON>={
-     * [
+     * Lists:<JSON >={
+     * <item>:<JSONArray>   [
      * {
      * value:string,
-     * text:string
+     * text:string,
+     * template:string
      * },
      * {
      * value:string,
-     * text:string
+     * text:string,
+     * template:string
      * }
      * ]
      * }
@@ -38,6 +40,89 @@ module.exports = {
  * ]
  */
     Lists: {
+        ratings:[
+            {
+                value:"5",
+                text:"Excellent",
+                template:`<span  style="color:var(--success)">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                </span>`
+            },
+            {
+                value:"4",
+                text:"Good",
+                template:`<span style="color:var(--orange)">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>`
+            },
+            {
+                value:"3",
+                text:"Average",
+                template:`<span style="color:var(--orange)">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>`
+            },
+            {
+                value:"2",
+                text:"Poor",
+                template:`<span  style="color:var(--red)">
+                <i class="fa  fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>`
+            },
+            {
+                value:"1",
+                text:"Terrible",
+                template:`<span style="color:var(--red)">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>`
+            }
+            
+        ],
+        status:[
+            {
+                value:"ACTIVE",
+                text:"ACTIVE",
+                template: `<i style=" color: #5cb85c;" class="fa fa-check-circle"></i>`
+
+            },
+            {
+                value:"INACTIVE",
+                text:"INACTIVE",
+                template:`<i style="color:#f90000;" class="fa fa-times-circle"></i>`
+            }
+        ],
+        yorn:[
+        {
+            value:"true",
+            text: "Yes",
+            template:`<span style="padding:5px !important;" class=" alert alert-success"><b>Yes</b></span>`
+        },
+        {
+            value:"false",
+            text: "No",
+            template:`<span style="padding:5px !important;" class=" alert alert-danger"><b>No</b></span>`
+        }
+        ],
         severity:[
         {
             value:"1",

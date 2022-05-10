@@ -379,7 +379,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       for(var item in this.listsScope[attrName]){
         var list_item=this.listsScope[attrName][item];
         if(list_item.value.toString()==value.toString()){
-          res=list_item.text;
+          if(typeof list_item.template=='undefined')
+              res=list_item.text;
+          else
+              res=list_item.template;
           break;
         }
       }
@@ -391,7 +394,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       value,
       colDef,
     ) => {
-      if (typeof value == 'undefined') {
+      if (typeof value == 'undefined' || value==null) {
         value = '';
       }
       value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
@@ -419,6 +422,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           filter: { model: Filters.compoundInputText },
           headerCssClass: 'gridRow',
           customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter,
             formatter: this.tooltipFormatter.bind(this) as Formatter
           }
         });
@@ -433,6 +438,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           formatter: formatter,
           //filter: { model: Filters.compoundInputNumber },
           headerCssClass: 'gridRow',
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter
+          }
         });
       }
       else{
@@ -445,6 +454,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         formatter: formatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       });
     }
     }

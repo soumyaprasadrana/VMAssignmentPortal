@@ -49,6 +49,12 @@ export class VmsService {
       }
     });
   }
+  reset(){
+    this.observable = null;
+    this.promiseX = null;
+    this.observable = this.getVMSObservable();
+    this.promiseX = this.getDataFromNode();
+  }
   getVms2(): Observable<any> {
     return this.observable;
   }
