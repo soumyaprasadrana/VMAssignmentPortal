@@ -95,6 +95,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(this.app);
     var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(this.app);
     const presets = JSON.parse(localStorage[this.LOCAL_STORAGE_KEY] || null);
+    var attributeListPromise: any[]=[];
     promise
     .then((res: any) => {
       this.spinner.setSpinnerState(false);
@@ -103,7 +104,70 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       //console.log(res);
       if(res.status){
         this.attributeList=res.data;
-        promiseR
+        /*Checking for List type attributes*/
+        for(var item in this.attributeList){
+          if(this.attributeList[item].type.value.toString().includes('list')){
+            var listArr=this.attributeList[item].type.value.toString().split(":");
+            var listName=listArr[listArr.length-1];
+            attributeListPromise.push(this.commonService.getListItems(listName,item).then((res:any)=>{
+              if(res.res!=null && res.res.length!=0){
+                this.listsScope[this.attributeList[res.item].name.value]=res.res;
+                console.log("Lists loaded for application : ",this.listsScope);
+              }
+                else{
+                  if(this.attributeList[res.item].required){
+                    this.openDialog({
+                      type:'alert',
+                      message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+                    },null);
+                  }else{
+                    this.openDialog({
+                      type:'warn',
+                      message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
+                    },null);
+                  }
+                }
+            }).catch((err:any)=>{
+              console.log(err);
+              if(this.attributeList[err.item].required){
+                this.openDialog({
+                  type:'alert',
+                  message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+                },null);
+              }else{
+                this.openDialog({
+                  type:'warn',
+                  message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
+                },null);
+              }
+            }));
+          }
+        }
+        Promise.all(attributeListPromise).then((res:any)=>{
+          console.log("Promise all ",res)
+          this.initDataLoad(promiseR,presets);
+        }).catch((err:any)=>{
+          console.log(err);
+        });
+      }
+      else{
+        this.openDialog({
+          type:'alert',
+          message:res.message
+        },null);
+        this.isLoaded = false;
+        this.isDataloadFailed=true;
+      }
+    })
+    .catch((err: any) => {
+      this.spinner.setSpinnerState(false);
+      //console.log('error occurred ', err);
+      this.isLoaded = false;
+    });
+    this.loggedUser = auth.getUser();
+  }
+  initDataLoad(promiseR:any,presets:any){
+       promiseR
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
         //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
@@ -114,57 +178,6 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           //console.log(this.dynamicobjectappDataSet);
           this.isLoaded = true;
           this.defineGrid(presets);
-
-          /*Checking for List type attributes*/
-     for(var item in this.attributeList){
-      if(this.attributeList[item].type.value.toString().includes('list')){
-        var listArr=this.attributeList[item].type.value.toString().split(":");
-        var listName=listArr[listArr.length-1];
-        this.commonService.getListItems(listName,item).then((res:any)=>{
-          if(res.res!=null && res.res.length!=0){
-            this.listsScope[this.attributeList[res.item].name.value]=res.res;
-            console.log("Lists loaded for application : ",this.listsScope);
-            this.isLoaded = true;
-            this.defineGrid(presets);
-          }
-            else{
-              this.isLoaded = true;
-              this.defineGrid(presets);
-              if(this.attributeList[res.item].required){
-                this.openDialog({
-                  type:'alert',
-                  message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-                },null);
-              }else{
-                this.openDialog({
-                  type:'warn',
-                  message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
-                },null);
-              }
-            }
-        }).catch((err:any)=>{
-          this.isLoaded = true;
-          this.defineGrid(presets);
-          console.log(err);
-          if(this.attributeList[err.item].required){
-            this.openDialog({
-              type:'alert',
-              message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-            },null);
-          }else{
-            this.openDialog({
-              type:'warn',
-              message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
-            },null);
-          }
-        })
-      }
-      else{
-        this.isLoaded = true;
-        this.defineGrid(presets);
-      }
-    }
-          
         }
         else{
           this.openDialog({
@@ -181,29 +194,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         //console.log('error occurred ', err);
         this.isLoaded = false;
       });
-      }
-      else{
-        this.openDialog({
-          type:'alert',
-          message:res.message
-        },null);
-        this.isLoaded = false;
-        this.isDataloadFailed=true;
-      }
-      
      
-    })
-    .catch((err: any) => {
-      this.spinner.setSpinnerState(false);
-      //console.log('error occurred ', err);
-      this.isLoaded = false;
-    });
-    
-    this.loggedUser = auth.getUser();
-    
-    
-    
-   
   }
   parseObjectRecords(data:any):any[]{
     var temp:any[]=[];
@@ -577,6 +568,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         applyResizeToContainer: true,
         rightPadding: 0,
       },
+      //forceFitColumns:true,
       enableSorting: true,
       enableAutoResize: true,
       enableFiltering: true,
@@ -621,8 +613,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
         
         iconCssClass: 'fa fa-bars',
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
+        hideForceFitButton: false,
+        hideSyncResizeButton: false,
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
