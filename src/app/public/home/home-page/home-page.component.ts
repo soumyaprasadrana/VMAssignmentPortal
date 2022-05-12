@@ -1133,6 +1133,31 @@ export class HomePageComponent implements OnInit {
         };
       }
     };
+    /* Custom Formatter for cells to check snapshot count */
+    const ownerCellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      if (
+        vm.snap_count >= this.properties.warnSnapshot &&
+        vm.snap_count <= this.properties.alertSnapshot
+      ) {
+        return {
+          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else if (vm.snap_count > this.properties.alertSnapshot) {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else {
+        return {
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          toolTip: value,
+        };
+      }
+    };
     var addComment: MenuCommandItem = {
       command: 'add-domment',
       title: 'Add Comment',
@@ -1185,6 +1210,195 @@ export class HomePageComponent implements OnInit {
         }
       },
     };
+    var commandListsForContextMenu:any=[{
+      command: 'assign',
+      title: 'Assign',
+      iconCssClass: 'fa fa-hand-pointer-o',
+      positionOrder: 66,
+      itemVisibilityOverride: (args: any) => {
+        // console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.owner == null ||
+          args.dataContext.owner == '' ||
+          args.dataContext.owner.length == 0
+        );
+      },
+      action: (_event:any, args:any) => this.assign(_event, args),
+    },
+
+    {
+      command: 'release',
+      title: 'Release',
+      iconCssClass: 'fa fa-hand-pointer-o',
+      positionOrder: 66,
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.owner != null &&
+          args.dataContext.owner != '' &&
+          args.dataContext.owner.length > 0
+        );
+      },
+      action: (_event:any, args:any) => this.release(_event, args),
+    },
+    {
+      command: 'addComment',
+      title: 'Add Comment',
+      iconCssClass: 'fa fa fa-comments-o',
+      itemVisibilityOverride: (args: any) => {
+        // console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment == null ||
+          args.dataContext.comment == '' ||
+          args.dataContext.comment.length == 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.addComment(_event, args),
+    },
+    {
+      command: 'updateComment',
+      title: 'Update Comment',
+      iconCssClass: 'fa fa fa-comments-o',
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment != null &&
+          args.dataContext.comment != '' &&
+          args.dataContext.comment.length > 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.updateComment(_event, args),
+    },
+    {
+      command: 'removeComment',
+      title: 'Remove Comment',
+      iconCssClass: 'fa fa fa-comments-o color-danger',
+      textCssClass: 'text-italic color-danger-light',
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment != null &&
+          args.dataContext.comment != '' &&
+          args.dataContext.comment.length > 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.deleteComment(_event, args),
+    },
+    {
+      command: 'edit',
+      title: 'Edit',
+      iconCssClass: 'fa fa-pencil',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.edit(_event, args),
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.update_vm
+        );}
+    },
+    {
+      command: 'addtionaldata',
+      title: 'Additiona Data',
+      iconCssClass: 'fa fa-list',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.getAddtionalData(_event, args),
+    },
+    {
+      command: 'relatedvms',
+      title: 'Relationships',
+      iconCssClass: 'fa fa-random',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.relatedVMSList(_event, args),
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.update_vm
+        );}
+    },
+    {
+      command: 'relatedvmsgraph',
+      title: 'Relationships Graph',
+      iconCssClass: 'fa fa-random',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.openRelatedVMSGraph(_event, args),
+      
+    },
+    {
+      command: 'sshTool',
+      title: 'Open SSH Tools',
+      iconCssClass: 'fa fa-terminal',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.openSSHTools(_event, args),
+    },
+
+    {
+      command: 'delete-vm',
+      title: 'Remove',
+      iconCssClass: 'fa fa-times color-danger',
+      cssClass: 'red',
+      textCssClass: 'text-italic color-danger-light',
+      // only show command to 'Delete Row' when the task is not completed
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.delete_vm
+        );
+      },
+      action: (_event: any, args: any) => {
+        const dataContext = args.dataContext;
+        const row = args?.row ?? 0;
+        if (
+          confirm(
+            `Do you really want to remove this vm  "${dataContext.ip}"?`
+          )
+        ) {
+          this.spinner.setSpinnerState(true);
+          this.vms
+            .deleteVM(dataContext.ip)
+            .then((res: any) => {
+              res = JSON.parse(res);
+              this.spinner.setSpinnerState(false);
+              if (res.status == 'Success') {
+                this.vms.setNeedRefresh(true);
+                this.angularGrid.gridService.deleteItemById(
+                  dataContext.id
+                );
+                this.openDialog(
+                  {
+                    type: 'message',
+                    message: 'VM removed successfully',
+                  },
+                  null
+                );
+              } else {
+                this.openDialog(
+                  {
+                    type: 'alert',
+                    message: res.message,
+                  },
+                  null
+                );
+              }
+            })
+            .catch((err: any) => {
+              this.spinner.setSpinnerState(false);
+              this.openDialog(
+                {
+                  type: 'alert',
+                  message: err.message,
+                },
+                null
+              );
+            });
+        }
+      },
+    }];
     var tempOsFiler = {
       // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
       // enableRenderHtml: true,
@@ -1358,7 +1572,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
+        formatter: ownerCellFormatter,
         customTooltip:{
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter
@@ -1394,20 +1608,7 @@ export class HomePageComponent implements OnInit {
           component: PathComponent,
           angularUtilService: this.angularUtilService,
         },*/
-      },
-      {
-        id: 'vm_owner_lab',
-        name: 'Owner',
-        field: 'vm_owner_lab',
-        sortable: true,
-        filterable: true,
-        filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
-        customTooltip:{
-          hideArrow:true,
-          headerFormatter:this.headerFormatter.bind(this) as Formatter
-        }
-      },
+      }
 
       /* {
         id: 'global',
@@ -1421,6 +1622,22 @@ export class HomePageComponent implements OnInit {
         width: 0,
       },*/
     ];
+    if(!this.loggedUser.hideOwner){
+      this.columnDef.push(
+        {
+          id: 'vm_owner_lab',
+          name: 'Owner',
+          field: 'vm_owner_lab',
+          sortable: true,
+          filterable: true,
+          filter: { model: Filters.compoundInputText },
+          formatter: cellFormatter,
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter
+          }
+        });
+    }
     if (this.loggedUser.permissions.is_admin) {
       this.columnDef.push({
         id: 'team',
@@ -1451,197 +1668,7 @@ export class HomePageComponent implements OnInit {
         hideCloseButton: false,
         width: 175,
 
-        commandItems: [
-          {
-            command: 'assign',
-            title: 'Assign',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            itemVisibilityOverride: (args: any) => {
-              // console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.owner == null ||
-                args.dataContext.owner == '' ||
-                args.dataContext.owner.length == 0
-              );
-            },
-            action: (_event, args) => this.assign(_event, args),
-          },
-
-          {
-            command: 'release',
-            title: 'Release',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.owner != null &&
-                args.dataContext.owner != '' &&
-                args.dataContext.owner.length > 0
-              );
-            },
-            action: (_event, args) => this.release(_event, args),
-          },
-          {
-            command: 'addComment',
-            title: 'Add Comment',
-            iconCssClass: 'fa fa fa-comments-o',
-            itemVisibilityOverride: (args: any) => {
-              // console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment == null ||
-                args.dataContext.comment == '' ||
-                args.dataContext.comment.length == 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.addComment(_event, args),
-          },
-          {
-            command: 'updateComment',
-            title: 'Update Comment',
-            iconCssClass: 'fa fa fa-comments-o',
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment != null &&
-                args.dataContext.comment != '' &&
-                args.dataContext.comment.length > 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.updateComment(_event, args),
-          },
-          {
-            command: 'removeComment',
-            title: 'Remove Comment',
-            iconCssClass: 'fa fa fa-comments-o color-danger',
-            textCssClass: 'text-italic color-danger-light',
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment != null &&
-                args.dataContext.comment != '' &&
-                args.dataContext.comment.length > 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.deleteComment(_event, args),
-          },
-          {
-            command: 'edit',
-            title: 'Edit',
-            iconCssClass: 'fa fa-pencil',
-            positionOrder: 66,
-            action: (_event, args) => this.edit(_event, args),
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.update_vm
-              );}
-          },
-          {
-            command: 'addtionaldata',
-            title: 'Additiona Data',
-            iconCssClass: 'fa fa-list',
-            positionOrder: 66,
-            action: (_event, args) => this.getAddtionalData(_event, args),
-          },
-          {
-            command: 'relatedvms',
-            title: 'Relationships',
-            iconCssClass: 'fa fa-random',
-            positionOrder: 66,
-            action: (_event, args) => this.relatedVMSList(_event, args),
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.update_vm
-              );}
-          },
-          {
-            command: 'relatedvmsgraph',
-            title: 'Relationships Graph',
-            iconCssClass: 'fa fa-random',
-            positionOrder: 66,
-            action: (_event, args) => this.openRelatedVMSGraph(_event, args),
-            
-          },
-          {
-            command: 'sshTool',
-            title: 'Open SSH Tools',
-            iconCssClass: 'fa fa-terminal',
-            positionOrder: 66,
-            action: (_event, args) => this.openSSHTools(_event, args),
-          },
-
-          {
-            command: 'delete-vm',
-            title: 'Remove',
-            iconCssClass: 'fa fa-times color-danger',
-            cssClass: 'red',
-            textCssClass: 'text-italic color-danger-light',
-            // only show command to 'Delete Row' when the task is not completed
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.delete_vm
-              );
-            },
-            action: (_event: any, args: any) => {
-              const dataContext = args.dataContext;
-              const row = args?.row ?? 0;
-              if (
-                confirm(
-                  `Do you really want to remove this vm  "${dataContext.ip}"?`
-                )
-              ) {
-                this.spinner.setSpinnerState(true);
-                this.vms
-                  .deleteVM(dataContext.ip)
-                  .then((res: any) => {
-                    res = JSON.parse(res);
-                    this.spinner.setSpinnerState(false);
-                    if (res.status == 'Success') {
-                      this.vms.setNeedRefresh(true);
-                      this.angularGrid.gridService.deleteItemById(
-                        dataContext.id
-                      );
-                      this.openDialog(
-                        {
-                          type: 'message',
-                          message: 'VM removed successfully',
-                        },
-                        null
-                      );
-                    } else {
-                      this.openDialog(
-                        {
-                          type: 'alert',
-                          message: res.message,
-                        },
-                        null
-                      );
-                    }
-                  })
-                  .catch((err: any) => {
-                    this.spinner.setSpinnerState(false);
-                    this.openDialog(
-                      {
-                        type: 'alert',
-                        message: err.message,
-                      },
-                      null
-                    );
-                  });
-              }
-            },
-          },
-        ],
+        commandItems: commandListsForContextMenu
       },
     });
     /* Used to hide last global column */
@@ -1704,6 +1731,9 @@ export class HomePageComponent implements OnInit {
         container: '#grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
+      },
+      contextMenu:{
+        commandItems:commandListsForContextMenu
       },
       enableRowDetailView: false,
       enableAutoResize: true,
@@ -2049,7 +2079,7 @@ export class HomePageComponent implements OnInit {
   }
   tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
     console.log("Inside ToolTipFormatter :: ");
-    if(typeof  dataContext.comment!='undefined' && dataContext.comment.toString().trim().length!=0)
+    if(typeof  dataContext.comment!='undefined' && dataContext.comment.toString().trim().length!=0 && dataContext.comment.toString().trim().length>15)
          return {
            text:`<div style='height:auto;overflow:auto;'><p>${dataContext.comment}</p></div>
         `,
