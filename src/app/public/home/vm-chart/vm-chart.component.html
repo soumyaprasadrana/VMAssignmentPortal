@@ -70,7 +70,7 @@
   
     <div class="p-4">
     <div id="pie-chart-parent" *ngIf="showPie" [ngStyle]="{'height.px': cardHeight}">
-        <ngx-charts-pie-grid [view]="" [scheme]="colorScheme" [results]="resultSet">
+        <ngx-charts-pie-grid [view]=""  [results]="resultSet">
         </ngx-charts-pie-grid>
     </div>
     <div class="chart" *ngIf="showBar" [ngStyle]="{'height.px': cardHeight}">
@@ -82,11 +82,11 @@
         </ngx-charts-bar-vertical>
     </div>
     <div class="chart" *ngIf="showAdv" [ngStyle]="{'height.px': cardHeight}">
-        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        <ngx-charts-advanced-pie-chart  [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
         </ngx-charts-advanced-pie-chart>
     </div>
     <div class="chart" *ngIf="showPieC" [ngStyle]="{'height.px': cardHeight}"> 
-        <ngx-charts-pie-chart labels="true" maxLabelLength="100" legends="true" trimLabels="false" [scheme]="colorScheme" [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        <ngx-charts-pie-chart labels="true" maxLabelLength="100" legends="true" trimLabels="false"  [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
         </ngx-charts-pie-chart>
     </div>
 </div>

@@ -63,6 +63,7 @@ module.exports = {
                     tempUser.name = body.user;
                     tempUser.permissions = permissions;
                     tempUser.useToast=config.useToast;
+                    tempUser.hideOwner=config.hideOwner;
                     user.activeUser = tempUser; 
                     callback(null, user)
                 } else {

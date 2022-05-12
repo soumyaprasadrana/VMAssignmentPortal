@@ -452,6 +452,95 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       });
     }
     }
+    var commandItemsForGrid:any=[
+      {
+        command: 'view',
+        title: 'Open ',
+        iconCssClass: 'fa fa-hand-pointer-o',
+        positionOrder: 66,
+        action: (_event:any, args:any) =>
+          /* this.openDialog(
+            {
+              type: 'message',
+              message: args.dataContext.dynamicobjectapp,
+            },
+            null
+          ),*/ this.router.navigate([
+            'view'
+          ],{relativeTo:this.route,state:{recordData:args.dataContext}})
+      },
+
+      {
+        command: 'edit',
+        title: 'Edit ',
+        iconCssClass: 'fa fa-pencil',
+        positionOrder: 66,
+        action: (_event:any, args:any) =>
+          this.router.navigate([
+            'edit'
+          ],{relativeTo:this.route,state:{recordData:args.dataContext}}),
+      },
+      {
+        command: 'deleteRecord',
+        title: 'Remove',
+        iconCssClass: 'fa fa-times color-danger',
+        cssClass: 'red',
+        textCssClass: 'text-italic color-danger-light',
+        // only show command to 'Delete Row' when the task is not completed
+        itemVisibilityOverride: (args: any) => {
+          return (
+            this.loggedUser.permissions.is_admin ||
+            this.loggedUser.permissions.is_teamLead ||
+            this.loggedUser.permissions.delete_vm
+          );
+        },
+        action: (_event: any, args: any) => {
+          const dataContext = args.dataContext;
+    const row = args?.row ?? 0;
+    if (
+      confirm(`Do you really want to remove this record  "${JSON.stringify(dataContext)}"?`)
+    ) {
+      this.spinner.setSpinnerState(true);
+      this.dynamicobjectappServie
+        .deleteDynamicObjectAppRecord(this.app,dataContext)
+        .then((res: any) => {
+          res = JSON.parse(res);
+          this.spinner.setSpinnerState(false);
+          if (res.status == 'Success') {
+            this.angularGrid.gridService.deleteItemById(dataContext.id);
+            this.openDialog(
+              {
+                type: 'message',
+                message: 'Record removed successfully',
+              },
+              null
+            );
+          } else {
+            this.openDialog(
+              {
+                type: 'alert',
+                message: res.message,
+              },
+              null
+            );
+          }
+        })
+        .catch((err: any) => {
+          this.spinner.setSpinnerState(false);
+          this.openDialog(
+            {
+              type: 'alert',
+              message: err.message,
+            },
+            null
+          );
+        });
+    }
+
+        }
+          
+      },
+    ];
      //console.log(this.columnDef);
     this.columnDef.push({
       id: 'action',
@@ -468,95 +557,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         hideCloseButton: false,
         width: 175,
 
-        commandItems: [
-          {
-            command: 'view',
-            title: 'Open ',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            action: (_event, args) =>
-              /* this.openDialog(
-                {
-                  type: 'message',
-                  message: args.dataContext.dynamicobjectapp,
-                },
-                null
-              ),*/ this.router.navigate([
-                'view'
-              ],{relativeTo:this.route,state:{recordData:args.dataContext}})
-          },
-
-          {
-            command: 'edit',
-            title: 'Edit ',
-            iconCssClass: 'fa fa-pencil',
-            positionOrder: 66,
-            action: (_event, args) =>
-              this.router.navigate([
-                'edit'
-              ],{relativeTo:this.route,state:{recordData:args.dataContext}}),
-          },
-          {
-            command: 'deleteRecord',
-            title: 'Remove',
-            iconCssClass: 'fa fa-times color-danger',
-            cssClass: 'red',
-            textCssClass: 'text-italic color-danger-light',
-            // only show command to 'Delete Row' when the task is not completed
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.delete_vm
-              );
-            },
-            action: (_event: any, args: any) => {
-              const dataContext = args.dataContext;
-        const row = args?.row ?? 0;
-        if (
-          confirm(`Do you really want to remove this record  "${JSON.stringify(dataContext)}"?`)
-        ) {
-          this.spinner.setSpinnerState(true);
-          this.dynamicobjectappServie
-            .deleteDynamicObjectAppRecord(this.app,dataContext)
-            .then((res: any) => {
-              res = JSON.parse(res);
-              this.spinner.setSpinnerState(false);
-              if (res.status == 'Success') {
-                this.angularGrid.gridService.deleteItemById(dataContext.id);
-                this.openDialog(
-                  {
-                    type: 'message',
-                    message: 'Record removed successfully',
-                  },
-                  null
-                );
-              } else {
-                this.openDialog(
-                  {
-                    type: 'alert',
-                    message: res.message,
-                  },
-                  null
-                );
-              }
-            })
-            .catch((err: any) => {
-              this.spinner.setSpinnerState(false);
-              this.openDialog(
-                {
-                  type: 'alert',
-                  message: err.message,
-                },
-                null
-              );
-            });
-        }
-
-            }
-              
-          },
-        ],
+        commandItems: commandItemsForGrid
       },
     });
 
@@ -569,6 +570,10 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         rightPadding: 0,
       },
       //forceFitColumns:true,
+      contextMenu:{
+        hideClearAllGrouping:true,
+        commandItems:commandItemsForGrid
+      },
       enableSorting: true,
       enableAutoResize: true,
       enableFiltering: true,
