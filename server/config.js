@@ -31,6 +31,8 @@ module.exports = {
     useCORS: process.env.USECORS || true,
     /* Enable Toast Notification Service; If disabled success result will show in dialog */
     useToast: process.env.USETOAST || true,
+    /*Hide LAB OWNER field ffrom dashboard grid*/
+    hideOwner: process.env.HIDEOWNER || false,
 
     vm_rest_path: '/vmDetails/getAll',
     dynamicobjects_rest_path: '/dynamicobjects/getAll',

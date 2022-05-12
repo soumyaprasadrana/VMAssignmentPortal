@@ -23,7 +23,7 @@
             <span class="ml-2 mt-2 align-middle">{{cardTitle}}</span>
         </h1>
         <ng-template #tipContent>{{cardText}}</ng-template>
-        <p [clamp]="cardTextClamp" [ngbTooltip]="cardTextClamp?tipContent:null" placement="bottom" class="card-text" container="body" >{{cardText}}</p>
+        <p [clamp]="cardTextClamp" [ngbTooltip]="cardTextClamp?tipContent:null" [placement]="cardTitle.includes('Dynamic Objects')?'top':'bottom'" class="card-text" container="body" >{{cardText}}</p>
 
     </div>
 </div>

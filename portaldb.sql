@@ -263,7 +263,7 @@ CREATE  TABLE IF NOT EXISTS `vmportal02`.`vm` (
   `vm_os` VARCHAR(255) NOT NULL ,
   `vm_os_ver` VARCHAR(255) NOT NULL ,
   `vm_owner` VARCHAR(255) NOT NULL DEFAULT '' ,
-  `vm_comment` VARCHAR(255) NOT NULL DEFAULT '' ,
+  `vm_comment` MEDIUMTEXT NULL DEFAULT NULL,
   `vm_group` VARCHAR(255) NOT NULL DEFAULT '' ,
   `is_available` TINYINT(1) NOT NULL DEFAULT '1' ,
   `snapshot_count` INT(11) NOT NULL DEFAULT '0' ,

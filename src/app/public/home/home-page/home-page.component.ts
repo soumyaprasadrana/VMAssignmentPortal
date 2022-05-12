@@ -29,7 +29,9 @@ import {
   FileType,
   MenuCommandItem,
   Formatters,
-  AngularUtilService,
+  AngularUtilService,  
+  SlickRowDetailView,
+  SlickGrid
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
@@ -50,6 +52,9 @@ import { ToastService } from '../../widget/toast/toast-service';
 import { ViewChild } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import { PathComponent } from '../../widget/path/path.component';
+import { CommentDialogComponent } from '../../widget/alert-dialog/comment-dialog.component';
+import { RowDetailComponent } from '../../widget/row-detail-view/row-detail-view.component';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -77,12 +82,13 @@ export class HomePageComponent implements OnInit {
   properties: any = {};
   userList: any = [];
   excelExportService: any = new ExcelExportService();
+  customTooltipService: any =new SlickCustomTooltip();
   /* rxjs Subscription */
   private subscription!: Subscription;
   selectedRows: any;
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
-  defaultPageSizeList: any;
+  defaultPageSizeList: any=[];
   osList: any;
   osTypes: any = [];
   osVersiontypes: any = [];
@@ -120,8 +126,15 @@ export class HomePageComponent implements OnInit {
       .then((res) => {
         //console.log('Props=>', res);
         this.properties = JSON.parse('' + res);
-        this.defaultPageSizeList =
+        var PageSizeList =
           this.properties.paginationPageSizesList.split(':');
+        try{
+          for(var item in PageSizeList){
+            this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
+          }
+        }catch(e){
+          console.log(e);
+        }
         this.osList = this.properties.osList.split('#');
         try {
           this.osTypes.push({ osType: '', value: '' });
@@ -434,7 +447,7 @@ export class HomePageComponent implements OnInit {
     //console.log(list);
     var defaultValue = null;
     if (defaultVal) defaultValue = defaultVal;
-    this.openDialogInput(
+    this.openDialogComment(
       {
         title: 'Add Comment',
         label: 'Comment',
@@ -960,6 +973,23 @@ export class HomePageComponent implements OnInit {
         }
       });
   }
+  openDialogComment(data: any, callback: any) {
+    this.dialog
+      .open(CommentDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+
+        width: '1000px',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        //console.log(res);
+        if (typeof callback == 'function' && res != '' && res != null) {
+          callback(res);
+        }
+      });
+  }
   openImportDialog(data: any, callback: any) {
     this.dialog
       .open(FileChooseDialogComponent, {
@@ -994,12 +1024,15 @@ export class HomePageComponent implements OnInit {
       this.isDeviceMobilReset = true;
       window.location.reload();
     } else {
-      localStorage[LOCAL_STORAGE_KEY] = null;
       this.angularGrid.gridService.resetGrid(this.columnDef);
+      this.angularGrid.gridStateService.resetColumns();
+      localStorage[LOCAL_STORAGE_KEY] = null;
       window.location.reload();
     }
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
+
+  
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
@@ -1013,7 +1046,7 @@ export class HomePageComponent implements OnInit {
   defineGrid(gridStatePresets?: GridState) {
     this.spinner.setSpinnerState(true);
 
-    const statusCellFormatter: Formatter<VM> = (
+    const statusCellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -1048,7 +1081,7 @@ export class HomePageComponent implements OnInit {
       }
     };
     /* Custom Formatter for cells to check snapshot count */
-    const ipcellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const ipcellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1061,7 +1094,7 @@ export class HomePageComponent implements OnInit {
     };
     
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormattercustomToolTip: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormattercustomToolTip: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1076,7 +1109,7 @@ export class HomePageComponent implements OnInit {
     };
     
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -1096,6 +1129,31 @@ export class HomePageComponent implements OnInit {
       } else {
         return {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          toolTip: value,
+        };
+      }
+    };
+    /* Custom Formatter for cells to check snapshot count */
+    const ownerCellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      if (
+        vm.snap_count >= this.properties.warnSnapshot &&
+        vm.snap_count <= this.properties.alertSnapshot
+      ) {
+        return {
+          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else if (vm.snap_count > this.properties.alertSnapshot) {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
+          toolTip: value,
+        };
+      } else {
+        return {
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center'>${value}</span></div>`,
           toolTip: value,
         };
       }
@@ -1152,6 +1210,195 @@ export class HomePageComponent implements OnInit {
         }
       },
     };
+    var commandListsForContextMenu:any=[{
+      command: 'assign',
+      title: 'Assign',
+      iconCssClass: 'fa fa-hand-pointer-o',
+      positionOrder: 66,
+      itemVisibilityOverride: (args: any) => {
+        // console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.owner == null ||
+          args.dataContext.owner == '' ||
+          args.dataContext.owner.length == 0
+        );
+      },
+      action: (_event:any, args:any) => this.assign(_event, args),
+    },
+
+    {
+      command: 'release',
+      title: 'Release',
+      iconCssClass: 'fa fa-hand-pointer-o',
+      positionOrder: 66,
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.owner != null &&
+          args.dataContext.owner != '' &&
+          args.dataContext.owner.length > 0
+        );
+      },
+      action: (_event:any, args:any) => this.release(_event, args),
+    },
+    {
+      command: 'addComment',
+      title: 'Add Comment',
+      iconCssClass: 'fa fa fa-comments-o',
+      itemVisibilityOverride: (args: any) => {
+        // console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment == null ||
+          args.dataContext.comment == '' ||
+          args.dataContext.comment.length == 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.addComment(_event, args),
+    },
+    {
+      command: 'updateComment',
+      title: 'Update Comment',
+      iconCssClass: 'fa fa fa-comments-o',
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment != null &&
+          args.dataContext.comment != '' &&
+          args.dataContext.comment.length > 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.updateComment(_event, args),
+    },
+    {
+      command: 'removeComment',
+      title: 'Remove Comment',
+      iconCssClass: 'fa fa fa-comments-o color-danger',
+      textCssClass: 'text-italic color-danger-light',
+      itemVisibilityOverride: (args: any) => {
+        //console.log('itemVisibilityOverride :: ', args);
+        return (
+          args.dataContext.comment != null &&
+          args.dataContext.comment != '' &&
+          args.dataContext.comment.length > 0
+        );
+      },
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.deleteComment(_event, args),
+    },
+    {
+      command: 'edit',
+      title: 'Edit',
+      iconCssClass: 'fa fa-pencil',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.edit(_event, args),
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.update_vm
+        );}
+    },
+    {
+      command: 'addtionaldata',
+      title: 'Additiona Data',
+      iconCssClass: 'fa fa-list',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.getAddtionalData(_event, args),
+    },
+    {
+      command: 'relatedvms',
+      title: 'Relationships',
+      iconCssClass: 'fa fa-random',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.relatedVMSList(_event, args),
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.update_vm
+        );}
+    },
+    {
+      command: 'relatedvmsgraph',
+      title: 'Relationships Graph',
+      iconCssClass: 'fa fa-random',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.openRelatedVMSGraph(_event, args),
+      
+    },
+    {
+      command: 'sshTool',
+      title: 'Open SSH Tools',
+      iconCssClass: 'fa fa-terminal',
+      positionOrder: 66,
+      action: (_event:any, args:any) => this.openSSHTools(_event, args),
+    },
+
+    {
+      command: 'delete-vm',
+      title: 'Remove',
+      iconCssClass: 'fa fa-times color-danger',
+      cssClass: 'red',
+      textCssClass: 'text-italic color-danger-light',
+      // only show command to 'Delete Row' when the task is not completed
+      itemVisibilityOverride: (args: any) => {
+        return (
+          this.loggedUser.permissions.is_admin ||
+          this.loggedUser.permissions.is_teamLead ||
+          this.loggedUser.permissions.delete_vm
+        );
+      },
+      action: (_event: any, args: any) => {
+        const dataContext = args.dataContext;
+        const row = args?.row ?? 0;
+        if (
+          confirm(
+            `Do you really want to remove this vm  "${dataContext.ip}"?`
+          )
+        ) {
+          this.spinner.setSpinnerState(true);
+          this.vms
+            .deleteVM(dataContext.ip)
+            .then((res: any) => {
+              res = JSON.parse(res);
+              this.spinner.setSpinnerState(false);
+              if (res.status == 'Success') {
+                this.vms.setNeedRefresh(true);
+                this.angularGrid.gridService.deleteItemById(
+                  dataContext.id
+                );
+                this.openDialog(
+                  {
+                    type: 'message',
+                    message: 'VM removed successfully',
+                  },
+                  null
+                );
+              } else {
+                this.openDialog(
+                  {
+                    type: 'alert',
+                    message: res.message,
+                  },
+                  null
+                );
+              }
+            })
+            .catch((err: any) => {
+              this.spinner.setSpinnerState(false);
+              this.openDialog(
+                {
+                  type: 'alert',
+                  message: err.message,
+                },
+                null
+              );
+            });
+        }
+      },
+    }];
     var tempOsFiler = {
       // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
       // enableRenderHtml: true,
@@ -1204,6 +1451,10 @@ export class HomePageComponent implements OnInit {
         formatter: ipcellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'hostname',
@@ -1213,6 +1464,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'os',
@@ -1222,6 +1477,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: osFilterModel,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'ver',
@@ -1231,6 +1490,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: osVersionTypeModel,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'group',
@@ -1240,6 +1503,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       /* {
         id: 'snap_count',
@@ -1260,6 +1527,10 @@ export class HomePageComponent implements OnInit {
         type: FieldType.number,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputNumber },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'status',
@@ -1287,7 +1558,12 @@ export class HomePageComponent implements OnInit {
 
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: { autoDropWidth: true } as MultipleSelectOption,
+          
         },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'owner',
@@ -1296,7 +1572,11 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
+        formatter: ownerCellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'comment',
@@ -1305,7 +1585,16 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
+        formatter: cellFormatter,
+        // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
+        customTooltip: {
+          // 1- loading formatter
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter,
+          formatter: this.tooltipFormatter.bind(this) as Formatter,
+          position:'auto',
+        }
+        //formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         
         /*// loading formatter, text to display while Post Render gets processed
@@ -1319,16 +1608,7 @@ export class HomePageComponent implements OnInit {
           component: PathComponent,
           angularUtilService: this.angularUtilService,
         },*/
-      },
-      {
-        id: 'vm_owner_lab',
-        name: 'Owner',
-        field: 'vm_owner_lab',
-        sortable: true,
-        filterable: true,
-        filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
-      },
+      }
 
       /* {
         id: 'global',
@@ -1342,6 +1622,22 @@ export class HomePageComponent implements OnInit {
         width: 0,
       },*/
     ];
+    if(!this.loggedUser.hideOwner){
+      this.columnDef.push(
+        {
+          id: 'vm_owner_lab',
+          name: 'Owner',
+          field: 'vm_owner_lab',
+          sortable: true,
+          filterable: true,
+          filter: { model: Filters.compoundInputText },
+          formatter: cellFormatter,
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter
+          }
+        });
+    }
     if (this.loggedUser.permissions.is_admin) {
       this.columnDef.push({
         id: 'team',
@@ -1351,6 +1647,10 @@ export class HomePageComponent implements OnInit {
         filterable: true,
         filter: { model: Filters.compoundInputText },
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       });
     }
     this.columnDef.push({
@@ -1368,197 +1668,7 @@ export class HomePageComponent implements OnInit {
         hideCloseButton: false,
         width: 175,
 
-        commandItems: [
-          {
-            command: 'assign',
-            title: 'Assign',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            itemVisibilityOverride: (args: any) => {
-              // console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.owner == null ||
-                args.dataContext.owner == '' ||
-                args.dataContext.owner.length == 0
-              );
-            },
-            action: (_event, args) => this.assign(_event, args),
-          },
-
-          {
-            command: 'release',
-            title: 'Release',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.owner != null &&
-                args.dataContext.owner != '' &&
-                args.dataContext.owner.length > 0
-              );
-            },
-            action: (_event, args) => this.release(_event, args),
-          },
-          {
-            command: 'addComment',
-            title: 'Add Comment',
-            iconCssClass: 'fa fa fa-comments-o',
-            itemVisibilityOverride: (args: any) => {
-              // console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment == null ||
-                args.dataContext.comment == '' ||
-                args.dataContext.comment.length == 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.addComment(_event, args),
-          },
-          {
-            command: 'updateComment',
-            title: 'Update Comment',
-            iconCssClass: 'fa fa fa-comments-o',
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment != null &&
-                args.dataContext.comment != '' &&
-                args.dataContext.comment.length > 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.updateComment(_event, args),
-          },
-          {
-            command: 'removeComment',
-            title: 'Remove Comment',
-            iconCssClass: 'fa fa fa-comments-o color-danger',
-            textCssClass: 'text-italic color-danger-light',
-            itemVisibilityOverride: (args: any) => {
-              //console.log('itemVisibilityOverride :: ', args);
-              return (
-                args.dataContext.comment != null &&
-                args.dataContext.comment != '' &&
-                args.dataContext.comment.length > 0
-              );
-            },
-            positionOrder: 66,
-            action: (_event, args) => this.deleteComment(_event, args),
-          },
-          {
-            command: 'edit',
-            title: 'Edit',
-            iconCssClass: 'fa fa-pencil',
-            positionOrder: 66,
-            action: (_event, args) => this.edit(_event, args),
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.update_vm
-              );}
-          },
-          {
-            command: 'addtionaldata',
-            title: 'Additiona Data',
-            iconCssClass: 'fa fa-list',
-            positionOrder: 66,
-            action: (_event, args) => this.getAddtionalData(_event, args),
-          },
-          {
-            command: 'relatedvms',
-            title: 'Relationships',
-            iconCssClass: 'fa fa-random',
-            positionOrder: 66,
-            action: (_event, args) => this.relatedVMSList(_event, args),
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.update_vm
-              );}
-          },
-          {
-            command: 'relatedvmsgraph',
-            title: 'Relationships Graph',
-            iconCssClass: 'fa fa-random',
-            positionOrder: 66,
-            action: (_event, args) => this.openRelatedVMSGraph(_event, args),
-            
-          },
-          {
-            command: 'sshTool',
-            title: 'Open SSH Tools',
-            iconCssClass: 'fa fa-terminal',
-            positionOrder: 66,
-            action: (_event, args) => this.openSSHTools(_event, args),
-          },
-
-          {
-            command: 'delete-vm',
-            title: 'Remove',
-            iconCssClass: 'fa fa-times color-danger',
-            cssClass: 'red',
-            textCssClass: 'text-italic color-danger-light',
-            // only show command to 'Delete Row' when the task is not completed
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.delete_vm
-              );
-            },
-            action: (_event: any, args: any) => {
-              const dataContext = args.dataContext;
-              const row = args?.row ?? 0;
-              if (
-                confirm(
-                  `Do you really want to remove this vm  "${dataContext.ip}"?`
-                )
-              ) {
-                this.spinner.setSpinnerState(true);
-                this.vms
-                  .deleteVM(dataContext.ip)
-                  .then((res: any) => {
-                    res = JSON.parse(res);
-                    this.spinner.setSpinnerState(false);
-                    if (res.status == 'Success') {
-                      this.vms.setNeedRefresh(true);
-                      this.angularGrid.gridService.deleteItemById(
-                        dataContext.id
-                      );
-                      this.openDialog(
-                        {
-                          type: 'message',
-                          message: 'VM removed successfully',
-                        },
-                        null
-                      );
-                    } else {
-                      this.openDialog(
-                        {
-                          type: 'alert',
-                          message: res.message,
-                        },
-                        null
-                      );
-                    }
-                  })
-                  .catch((err: any) => {
-                    this.spinner.setSpinnerState(false);
-                    this.openDialog(
-                      {
-                        type: 'alert',
-                        message: err.message,
-                      },
-                      null
-                    );
-                  });
-              }
-            },
-          },
-        ],
+        commandItems: commandListsForContextMenu
       },
     });
     /* Used to hide last global column */
@@ -1622,6 +1732,10 @@ export class HomePageComponent implements OnInit {
         applyResizeToContainer: true,
         rightPadding: 0,
       },
+      contextMenu:{
+        commandItems:commandListsForContextMenu
+      },
+      enableRowDetailView: false,
       enableAutoResize: true,
       enablePagination: true,
       enableAsyncPostRender: true, // for the Angular PostRenderer, don't forget to enable it
@@ -1642,9 +1756,12 @@ export class HomePageComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [this.excelExportService],
-
+      registerExternalResources: [this.customTooltipService,this.excelExportService],
       // enableCompositeEditor: true,
+      customTooltip:{
+        hideArrow:true,
+        headerFormatter:this.headerFormatter.bind(this) as Formatter
+      },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
         selectActiveRow: false,
@@ -1663,22 +1780,17 @@ export class HomePageComponent implements OnInit {
 
       //Grid custom menu
       gridMenu: {
+        
         hideExportExcelCommand: true,
         // we could disable the menu entirely by returning false depending on some code logic
         menuUsabilityOverride: (_args: any) => true,
-
-        // use the click event position to reposition the grid menu (defaults to false)
-        // basically which offset do we want to use for reposition the grid menu,
-        // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
-        // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
-        iconCssClass: 'fa fa-bars',
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
+        hideForceFitButton: false,
+        hideSyncResizeButton: false,
         hideToggleFilterCommand: false, // show/hide internal custom commands
-        menuWidth: 17,
+        menuWidth:17,
+        contentMinWidth:200,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -1730,23 +1842,11 @@ export class HomePageComponent implements OnInit {
             this.clearGridGrouping();
           } else if (args.command === 'exportExcel') {
             //console.log('excelExport :: ', this.excelExportService);
-            this.openDialogInput(
-              {
-                title: 'Excel Export',
-                label: 'Filename',
-                bindLabel: 'file_name',
-                isText: true,
-                titleIcon: true,
-                iconClass:
-                  'slick-gridmenu-icon fa fa-file-excel-o text-success',
-              },
-              (res: any) => {
-                this.excelExportService.exportToExcel({
-                  filename: res.dataCtrl,
-                  format: FileType.xlsx,
-                });
-              }
-            );
+            this.excelExportService;
+            this.excelExportService.exportToExcel({
+              filename: 'VM_List'+'_'+new Date().toTimeString().replace(' ','_'),
+              format: FileType.xlsx,
+            });
           } else if (args.command === 'importExcel') {
             //console.log('excelExport :: ', this.excelExportService);
             this.openImportDialog(
@@ -1779,6 +1879,35 @@ export class HomePageComponent implements OnInit {
           mappedColumnDefinitions
         
       }*/
+      rowDetailView: {
+        // optionally change the column index position of the icon (defaults to 0)
+        // columnIndexPosition: 1,
+
+        // We can load the "process" asynchronously in 2 different ways (httpClient OR even Promise)
+        process: (item) => {return item;},
+        // process: (item) => this.http.get(`api/item/${item.id}`),
+
+        // load only once and reuse the same item detail without calling process method
+        loadOnce: true,
+
+        // limit expanded row to only 1 at a time
+        singleRowExpand: true,
+
+        // false by default, clicking anywhere on the row will open the detail view
+        // when set to false, only the "+" icon would open the row detail
+        // if you use editor or cell navigation you would want this flag set to false (default)
+        useRowClick: true,
+        // you can override the logic for showing (or not) the expand icon
+        // for example, display the expand icon only on every 2nd row
+        // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
+
+        // View Component to load when row detail data is ready
+        viewComponent: RowDetailComponent,
+        panelRows:5,
+
+        // Optionally pass your Parent Component reference to your Child Component (row detail component)
+        parent: this
+      }
     };
 
     // reload the Grid State with the grid options presets
@@ -1938,5 +2067,27 @@ export class HomePageComponent implements OnInit {
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
     }
+  }
+  get rowDetailInstance(): SlickRowDetailView {
+    // you can get the SlickGrid RowDetail plugin (addon) instance via 2 ways
+
+    // option 1
+    return (this.angularGrid.extensions.rowDetailView.instance || {});
+
+    // OR option 2
+    // return this.angularGrid?.extensionService.getExtensionInstanceByName(ExtensionName.rowDetailView) || {};
+  }
+  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    console.log("Inside ToolTipFormatter :: ");
+    if(typeof  dataContext.comment!='undefined' && dataContext.comment.toString().trim().length!=0 && dataContext.comment.toString().trim().length>15)
+         return {
+           text:`<div style='height:auto;overflow:auto;'><p>${dataContext.comment}</p></div>
+        `,
+        toolTip:dataContext.comment
+      };
+    else return '';
+  }
+  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+     return '';
   }
 }

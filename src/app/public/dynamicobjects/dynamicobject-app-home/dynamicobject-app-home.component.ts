@@ -23,6 +23,7 @@ import {
   GridService,
   Formatter,
   FileType,
+  SlickGrid,
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
@@ -35,6 +36,7 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { NodeclientService } from '../../services/nodeclient.service';
 import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service';
 import { CommonService } from '../../services/common.service';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 
  
 @Component({
@@ -93,6 +95,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(this.app);
     var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(this.app);
     const presets = JSON.parse(localStorage[this.LOCAL_STORAGE_KEY] || null);
+    var attributeListPromise: any[]=[];
     promise
     .then((res: any) => {
       this.spinner.setSpinnerState(false);
@@ -101,7 +104,70 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       //console.log(res);
       if(res.status){
         this.attributeList=res.data;
-        promiseR
+        /*Checking for List type attributes*/
+        for(var item in this.attributeList){
+          if(this.attributeList[item].type.value.toString().includes('list')){
+            var listArr=this.attributeList[item].type.value.toString().split(":");
+            var listName=listArr[listArr.length-1];
+            attributeListPromise.push(this.commonService.getListItems(listName,item).then((res:any)=>{
+              if(res.res!=null && res.res.length!=0){
+                this.listsScope[this.attributeList[res.item].name.value]=res.res;
+                console.log("Lists loaded for application : ",this.listsScope);
+              }
+                else{
+                  if(this.attributeList[res.item].required){
+                    this.openDialog({
+                      type:'alert',
+                      message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+                    },null);
+                  }else{
+                    this.openDialog({
+                      type:'warn',
+                      message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
+                    },null);
+                  }
+                }
+            }).catch((err:any)=>{
+              console.log(err);
+              if(this.attributeList[err.item].required){
+                this.openDialog({
+                  type:'alert',
+                  message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
+                },null);
+              }else{
+                this.openDialog({
+                  type:'warn',
+                  message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
+                },null);
+              }
+            }));
+          }
+        }
+        Promise.all(attributeListPromise).then((res:any)=>{
+          console.log("Promise all ",res)
+          this.initDataLoad(promiseR,presets);
+        }).catch((err:any)=>{
+          console.log(err);
+        });
+      }
+      else{
+        this.openDialog({
+          type:'alert',
+          message:res.message
+        },null);
+        this.isLoaded = false;
+        this.isDataloadFailed=true;
+      }
+    })
+    .catch((err: any) => {
+      this.spinner.setSpinnerState(false);
+      //console.log('error occurred ', err);
+      this.isLoaded = false;
+    });
+    this.loggedUser = auth.getUser();
+  }
+  initDataLoad(promiseR:any,presets:any){
+       promiseR
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
         //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
@@ -128,29 +194,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         //console.log('error occurred ', err);
         this.isLoaded = false;
       });
-      }
-      else{
-        this.openDialog({
-          type:'alert',
-          message:res.message
-        },null);
-        this.isLoaded = false;
-        this.isDataloadFailed=true;
-      }
-      
      
-    })
-    .catch((err: any) => {
-      this.spinner.setSpinnerState(false);
-      //console.log('error occurred ', err);
-      this.isLoaded = false;
-    });
-    
-    this.loggedUser = auth.getUser();
-    
-    
-    
-   
   }
   parseObjectRecords(data:any):any[]{
     var temp:any[]=[];
@@ -276,44 +320,6 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
 
-    /*Checking for List type attributes*/
-    for(var item in this.attributeList){
-    if(this.attributeList[item].type.value.toString().includes('list')){
-      var listArr=this.attributeList[item].type.value.toString().split(":");
-      var listName=listArr[listArr.length-1];
-      this.commonService.getListItems(listName,item).then((res:any)=>{
-        if(res.res!=null && res.res.length!=0){
-          this.listsScope[this.attributeList[res.item].name.value]=res.res;
-        }
-          else{
-            if(this.attributeList[res.item].required){
-              this.openDialog({
-                type:'alert',
-                message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-              },null);
-            }else{
-              this.openDialog({
-                type:'warn',
-                message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
-              },null);
-            }
-          }
-      }).catch((err:any)=>{
-        console.log(err);
-        if(this.attributeList[err.item].required){
-          this.openDialog({
-            type:'alert',
-            message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-          },null);
-        }else{
-          this.openDialog({
-            type:'warn',
-            message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
-          },null);
-        }
-      })
-    }
-  }
 
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
@@ -362,8 +368,13 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var getDataFromList:any=(attrName:any,value:any) =>{
       var res="";
       for(var item in this.listsScope[attrName]){
-        if(this.listsScope[attrName][item].value==value){
-          res=this.listsScope[attrName][item].text;
+        var list_item=this.listsScope[attrName][item];
+        if(list_item.value.toString()==value.toString()){
+          if(typeof list_item.template=='undefined')
+              res=list_item.text;
+          else
+              res=list_item.template;
+          break;
         }
       }
       return res;
@@ -374,12 +385,11 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       value,
       colDef,
     ) => {
-      value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
-      if (typeof value == 'undefined') {
+      if (typeof value == 'undefined' || value==null) {
         value = '';
       }
+      value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
       
-
       return {
         text: `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value}</span></div>`,
         toolTip: value,
@@ -392,6 +402,40 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       if(this.attributeList[item].type.value.toString().includes('list')){
         formatter=listAttributeCellFormaterValue;
       }
+      if(this.attributeList[item].type.value=='richtext'){
+        this.columnDef.push({
+          id:this.attributeList[item].name.value,
+          name:this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          filterable: true,
+          formatter: formatter,
+          filter: { model: Filters.compoundInputText },
+          headerCssClass: 'gridRow',
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter,
+            formatter: this.tooltipFormatter.bind(this) as Formatter
+          }
+        });
+      }
+      else if(this.attributeList[item].type.value=='autokey'){
+        this.columnDef.push({
+          id:this.attributeList[item].name.value,
+          name:this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          //filterable: true,
+          formatter: formatter,
+          //filter: { model: Filters.compoundInputNumber },
+          headerCssClass: 'gridRow',
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter
+          }
+        });
+      }
+      else{
       this.columnDef.push({
         id:this.attributeList[item].name.value,
         name:this.attributeList[item].alias.value,
@@ -401,8 +445,102 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         formatter: formatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
-      })
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
+      });
     }
+    }
+    var commandItemsForGrid:any=[
+      {
+        command: 'view',
+        title: 'Open ',
+        iconCssClass: 'fa fa-hand-pointer-o',
+        positionOrder: 66,
+        action: (_event:any, args:any) =>
+          /* this.openDialog(
+            {
+              type: 'message',
+              message: args.dataContext.dynamicobjectapp,
+            },
+            null
+          ),*/ this.router.navigate([
+            'view'
+          ],{relativeTo:this.route,state:{recordData:args.dataContext}})
+      },
+
+      {
+        command: 'edit',
+        title: 'Edit ',
+        iconCssClass: 'fa fa-pencil',
+        positionOrder: 66,
+        action: (_event:any, args:any) =>
+          this.router.navigate([
+            'edit'
+          ],{relativeTo:this.route,state:{recordData:args.dataContext}}),
+      },
+      {
+        command: 'deleteRecord',
+        title: 'Remove',
+        iconCssClass: 'fa fa-times color-danger',
+        cssClass: 'red',
+        textCssClass: 'text-italic color-danger-light',
+        // only show command to 'Delete Row' when the task is not completed
+        itemVisibilityOverride: (args: any) => {
+          return (
+            this.loggedUser.permissions.is_admin ||
+            this.loggedUser.permissions.is_teamLead ||
+            this.loggedUser.permissions.delete_vm
+          );
+        },
+        action: (_event: any, args: any) => {
+          const dataContext = args.dataContext;
+    const row = args?.row ?? 0;
+    if (
+      confirm(`Do you really want to remove this record  "${JSON.stringify(dataContext)}"?`)
+    ) {
+      this.spinner.setSpinnerState(true);
+      this.dynamicobjectappServie
+        .deleteDynamicObjectAppRecord(this.app,dataContext)
+        .then((res: any) => {
+          res = JSON.parse(res);
+          this.spinner.setSpinnerState(false);
+          if (res.status == 'Success') {
+            this.angularGrid.gridService.deleteItemById(dataContext.id);
+            this.openDialog(
+              {
+                type: 'message',
+                message: 'Record removed successfully',
+              },
+              null
+            );
+          } else {
+            this.openDialog(
+              {
+                type: 'alert',
+                message: res.message,
+              },
+              null
+            );
+          }
+        })
+        .catch((err: any) => {
+          this.spinner.setSpinnerState(false);
+          this.openDialog(
+            {
+              type: 'alert',
+              message: err.message,
+            },
+            null
+          );
+        });
+    }
+
+        }
+          
+      },
+    ];
      //console.log(this.columnDef);
     this.columnDef.push({
       id: 'action',
@@ -419,95 +557,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         hideCloseButton: false,
         width: 175,
 
-        commandItems: [
-          {
-            command: 'view',
-            title: 'Open ',
-            iconCssClass: 'fa fa-hand-pointer-o',
-            positionOrder: 66,
-            action: (_event, args) =>
-              /* this.openDialog(
-                {
-                  type: 'message',
-                  message: args.dataContext.dynamicobjectapp,
-                },
-                null
-              ),*/ this.router.navigate([
-                'view'
-              ],{relativeTo:this.route,state:{recordData:args.dataContext}})
-          },
-
-          {
-            command: 'edit',
-            title: 'Edit ',
-            iconCssClass: 'fa fa-pencil',
-            positionOrder: 66,
-            action: (_event, args) =>
-              this.router.navigate([
-                'edit'
-              ],{relativeTo:this.route,state:{recordData:args.dataContext}}),
-          },
-          {
-            command: 'deleteRecord',
-            title: 'Remove',
-            iconCssClass: 'fa fa-times color-danger',
-            cssClass: 'red',
-            textCssClass: 'text-italic color-danger-light',
-            // only show command to 'Delete Row' when the task is not completed
-            itemVisibilityOverride: (args: any) => {
-              return (
-                this.loggedUser.permissions.is_admin ||
-                this.loggedUser.permissions.is_teamLead ||
-                this.loggedUser.permissions.delete_vm
-              );
-            },
-            action: (_event: any, args: any) => {
-              const dataContext = args.dataContext;
-        const row = args?.row ?? 0;
-        if (
-          confirm(`Do you really want to remove this record  "${JSON.stringify(dataContext)}"?`)
-        ) {
-          this.spinner.setSpinnerState(true);
-          this.dynamicobjectappServie
-            .deleteDynamicObjectAppRecord(this.app,dataContext)
-            .then((res: any) => {
-              res = JSON.parse(res);
-              this.spinner.setSpinnerState(false);
-              if (res.status == 'Success') {
-                this.angularGrid.gridService.deleteItemById(dataContext.id);
-                this.openDialog(
-                  {
-                    type: 'message',
-                    message: 'Record removed successfully',
-                  },
-                  null
-                );
-              } else {
-                this.openDialog(
-                  {
-                    type: 'alert',
-                    message: res.message,
-                  },
-                  null
-                );
-              }
-            })
-            .catch((err: any) => {
-              this.spinner.setSpinnerState(false);
-              this.openDialog(
-                {
-                  type: 'alert',
-                  message: err.message,
-                },
-                null
-              );
-            });
-        }
-
-            }
-              
-          },
-        ],
+        commandItems: commandItemsForGrid
       },
     });
 
@@ -518,6 +568,11 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         container: '#grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
+      },
+      //forceFitColumns:true,
+      contextMenu:{
+        hideClearAllGrouping:true,
+        commandItems:commandItemsForGrid
       },
       enableSorting: true,
       enableAutoResize: true,
@@ -536,9 +591,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [this.excelExportService],
-
-
+      registerExternalResources: [new SlickCustomTooltip(),this.excelExportService],
+      customTooltip:{
+        hideArrow:true,
+        headerFormatter:this.headerFormatter.bind(this) as Formatter,
+      },
+      autoTooltipOptions:{
+        enableForHeaderCells:true
+      },
       enableCheckboxSelector: false,
       enableRowSelection: false,
       multiSelect: false,
@@ -556,14 +616,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         // basically which offset do we want to use for reposition the grid menu,
         // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
+        
         iconCssClass: 'fa fa-bars',
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
+        hideForceFitButton: false,
+        hideSyncResizeButton: false,
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -657,4 +717,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
   }
+  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    console.log("Inside ToolTipFormatter :: ");
+    if(typeof  dataContext[column.id]!='undefined')
+         return `<div style='max-height:500px;max-width:500px;height:auto;width:auto;overflow:auto;'><p>${dataContext[column.id]}</p></div>
+        `;
+    else return '';
+  }
+  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    return ``;
+ }
 }

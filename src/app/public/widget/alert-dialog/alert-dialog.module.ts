@@ -22,6 +22,7 @@ import { PassChangeDialogComponent } from './change-pass-dialog';
 import { AdditionalDataDialogComponent } from './additional-data-dialog';
 import { RelatedvmsDataDialogComponent } from './relatedvms-data-dialog';
 import { FileChooseDialogComponent } from './file-choose-dialog.component';
+import { CommentDialogComponent } from './comment-dialog.component';
 @NgModule({
   declarations: [
     AlertDialogComponent,
@@ -30,7 +31,8 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
-    RelatedvmsDataDialogComponent
+    RelatedvmsDataDialogComponent,
+    CommentDialogComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
-    RelatedvmsDataDialogComponent
+    RelatedvmsDataDialogComponent,
+    CommentDialogComponent
   ],
 })
 export class AlertModule {}

@@ -43,6 +43,8 @@ export class PassChangeDialogComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   public dataCtrl = new FormControl();
+  showPass:boolean=false;
+  showPassword:boolean=false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialogRef: MatDialogRef<PassChangeDialogComponent>,

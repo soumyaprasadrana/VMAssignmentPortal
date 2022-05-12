@@ -72,15 +72,18 @@ export class EditDynamicObjectComponent implements OnInit {
     private dynamicObjectService:DynamicObjectsService,
     private commonServices:CommonService
   ) {
+    this._spinner.setSpinnerState(true);
     this.loggedUser=_auth.getUser();
     if(typeof history.state.recordData != 'undefined'){
       this.recordData=history.state.recordData;
       var name=this.recordData["name"];
       dynamicObjectService.getDynamicObject(name).then((res:any)=>{
+        this._spinner.setSpinnerState(false);
         this.recordData=JSON.parse(res)["object"];
         this.origionalAttrList=this.recordData["attributes"];
         this.createForm();
       }).catch((err:any)=>{
+        this._spinner.setSpinnerState(false);
         console.log("Error occurred!",err);
         if(this.loggedUser.useToast){
           toastService.showDanger("No record selected!",5000);
@@ -96,6 +99,7 @@ export class EditDynamicObjectComponent implements OnInit {
       });
       
     }else{
+      this._spinner.setSpinnerState(false);
       if(this.loggedUser.useToast){
         toastService.showDanger("No record selected!",5000);
         this.router.navigate(['..'],{relativeTo:this.route});
@@ -160,7 +164,7 @@ export class EditDynamicObjectComponent implements OnInit {
   }
   addAutoKey(){
     var temp = this.parseFormValues(this.objectAttributeForm.getRawValue());
-    temp.push({ name:  this.formGroupObjectProperties.controls['name'].value+'_id', type: 'autokey',size:20,isPrimaryKey:true,isNullable:false,defaultValue:'',validators:'required',alias: (this.formGroupObjectProperties.controls['name'].value+'id').toUpperCase()});
+    temp.push({ name:  this.formGroupObjectProperties.controls['name'].value+'_id', type: 'autokey',size:20,isPrimaryKey:true,isNullable:false,defaultValue:'',validators:['required'],alias: (this.formGroupObjectProperties.controls['name'].value+'id').toUpperCase()});
     this.objectAttributeForm = this.formBuilder.group(
       this.parseFormControlsAddAutoKey(temp)
     );  

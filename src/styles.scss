@@ -26,22 +26,22 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~quill/dist/quill.snow.css';
 @import "node_modules/font-awesome/scss/font-awesome.scss";
-//$primary-color: #007bff  0070ad 00ad9e;
-//$primary-color: #5101ac;
+//$slick-primary-color: #007bff  0070ad 00ad9e;
+//$slick-primary-color: #5101ac;
 //$primary-btn-hover-color: #612aa0;
-$primary-color:#280071;
+$slick-primary-color:#280071;
 $primary-btn-hover-color: #5803f5;
-$side-nav-color: $primary-color;
+$side-nav-color: $slick-primary-color;
 $blue-gray: #8972b4;
 $blue-gray-darken: #604a8a;
-$blue: $primary-color;
+$blue: $slick-primary-color;
 $blue-darken: #1b014b;
 $green: #7400b8;
 $green-darken: #31014d;
 $custom-alert-background:#d3d1f1;
 $custom-alert-border:#bed8eb;
-$row-mouse-hover-color: #e1dcfc;
-$row-selected-color: #d2c9fd;
+$slick-row-mouse-hover-color: #e1dcfc;
+$slick-row-selected-color: #d2c9fd;
 $form-control-focus-box-shadow:$custom-alert-background;
 @import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
 @import "~compass-mixins/lib/compass/css3";
@@ -163,11 +163,11 @@ $form-control-focus-box-shadow:$custom-alert-background;
 /*End breadcrumb*/
 
 .text-primary {
-    color: $primary-color !important;
+    color: $slick-primary-color !important;
 }
 
 .mat-toolbar {
-    background-color: $primary-color !important;
+    background-color: $slick-primary-color !important;
     height: 50px;
     position: relative;
     //box-shadow: 0px 0px 15px #656363;
@@ -186,7 +186,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
         margin-left: 3px;
         text-indent: -999px;
         cursor: pointer;
-        background-color: $primary-color !important;
+        background-color: $slick-primary-color !important;
         background-clip: padding-box;
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
@@ -196,7 +196,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
 }
 
 .btn-portal {
-    background-color: $primary-color !important;
+    background-color: $slick-primary-color !important;
 }
 
 .btn-portal:hover {
@@ -204,8 +204,8 @@ $form-control-focus-box-shadow:$custom-alert-background;
 }
 
 .btn-primary {
-    background-color: $primary-color !important;
-    border-color: $primary-color !important;
+    background-color: $slick-primary-color !important;
+    border-color: $slick-primary-color !important;
 }
 
 .btn-primary:hover {
@@ -242,7 +242,7 @@ html,body{
 .login-navbar {
     padding: 0;
     padding-left: 20px;
-    background-color: $primary-color;
+    background-color: $slick-primary-color;
 }
 
 #notfound .notfound {
@@ -293,7 +293,7 @@ html,body{
         color: #fff;
         text-transform: uppercase;
         padding: 13px 23px;
-        background-color: $primary-color;
+        background-color: $slick-primary-color;
         font-size: 18px;
         -webkit-transition: 0.2s all;
         transition: 0.2s all;
@@ -322,7 +322,7 @@ div:has(input[data-columnid="global"]) {
 
 .chart-header {
     text-decoration: underline;
-    text-decoration-color: $primary-color;
+    text-decoration-color: $slick-primary-color;
 }
 
 .app-side-nav {
@@ -330,7 +330,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .bg-portal-primary {
-    background-color: $primary-color;
+    background-color: $slick-primary-color;
 }
 
 .portal-box-shadow {
@@ -338,7 +338,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .card-top {
-    border-top: 2px solid $primary-color !important;
+    border-top: 2px solid $slick-primary-color !important;
 }
 
 .is-ngx-invalid div {
@@ -370,7 +370,7 @@ div:has(input[data-columnid="global"]) {
 
 .mat-progress-spinner circle,
 .mat-spinner circle {
-    stroke: $primary-color;
+    stroke: $slick-primary-color;
 }
 
 .modal-backdrop {
@@ -391,7 +391,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .card-icon-color {
-    color: $primary-color
+    color: $slick-primary-color
 }
 
 .ellipsis {
@@ -408,7 +408,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .app-scroller::-webkit-scrollbar-thumb {
-    background: $primary-color;
+    background: $slick-primary-color;
     border-radius: 10px;
 }
 
@@ -417,26 +417,26 @@ div:has(input[data-columnid="global"]) {
     margin: 0;
     margin-top: 5px;
     vertical-align: middle;
-    border-bottom: 2px $primary-color solid;
+    border-bottom: 2px $slick-primary-color solid;
     width: 100%;
     font-size: 18px;
     color: black;
 }
 
 mat-nav-list a {
-    color: $primary-color !important;
+    color: $slick-primary-color !important;
 }
 
 .form-control:focus {
     color: #495057 !important;
     background-color: #fff !important;
-    border-color: $primary-color !important;
+    border-color: $slick-primary-color !important;
     outline: 0 !important;
     box-shadow: 0 0 0 0.2rem $form-control-focus-box-shadow !important;
 }
 
 .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-    border-color: $primary-color!important;
+    border-color: $slick-primary-color!important;
     box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 0 3px $form-control-focus-box-shadow !important;
 }
 
@@ -444,7 +444,7 @@ mat-nav-list a {
     width: auto;
     .keyword {
         color: white;
-        background-color: $primary-color;
+        background-color: $slick-primary-color;
         border-radius: 5px;
         font-size: small;
     }

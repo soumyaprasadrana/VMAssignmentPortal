@@ -30,6 +30,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContactPageComponent } from '../public/home/contact-page/contact-page.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TreeModule } from '../public/widget/tree-diagram/tree.module';
+import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-view.module';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { TreeModule } from '../public/widget/tree-diagram/tree.module';
     PathModule,
     TreeModule,
     NgxChartsModule,
+    RowDetailModule,
     AngularSlickgridModule.forRoot({
       // add any Global Grid Options/Config you might want
       // to avoid passing the same options over and over in each grids of your App

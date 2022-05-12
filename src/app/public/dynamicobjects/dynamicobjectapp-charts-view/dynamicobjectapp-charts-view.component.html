@@ -36,8 +36,8 @@
 <div class="container-fluid mt-3  no-scroller" *ngIf="isLoadedData && isLoadedAttributes">
     <ngb-alert type="warning" [dismissible]="false">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="row w-50">
-                <div class="col">
+            <div class="row w-100">
+                <div class="col-sm-2">
                     <div class="form-group required">
                         <label for="field">Field:</label>
                         <mat-select id="field" class="form-control" formControlName="field" [ngClass]="{ 'is-invalid': submitted && f.field.errors }">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 
-                <div class="col">
+                <div class="col-sm-2">
                     <div class="form-group required">
                         <label for="height">Chart Height:</label>
                         <input id="height" type="text" class="form-control" formControlName="height" [ngClass]="{ 'is-invalid': submitted && f.height.errors }">
@@ -58,11 +58,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <div class="form-group required ">
                         <label for="field">Chart Type:</label>        
                         <mat-button-toggle-group id="chartType"  height="20" formControlName="chartType" [ngClass]="{ 'is-invalid': submitted && f.chartType.errors }">
-                            <mat-button-toggle value="{{item}}" *ngFor="let item of chartTypeList"><i [matTooltip]="item" [ngClass]="{'activated':f.chartType.value==item}" class="fa fa-pie-chart" *ngIf="item=='PIE GRID'"></i>
+                            <mat-button-toggle value="{{item}}" *ngFor="let item of chartTypeList"><i [matTooltip]="item" [ngClass]="{'activated':f.chartType.value==item}" class="fa fa-pie-chart" *ngIf="item=='PIE CHART'"></i>
                                 <i class="fa fa-bar-chart-o" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='BAR VERTICAL'"></i>
                                 <i class="fa fa-bar-chart rotate90" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='BAR HORIZONTAL'"></i>
                                 <i class="fa fa-area-chart" [ngClass]="{'activated':f.chartType.value==item}" [matTooltip]="item" *ngIf="item=='ADVANCED'"></i>
@@ -70,7 +70,7 @@
                         </mat-button-toggle-group>
                         </div>
                 </div>
-                <div class="col ml-5">
+                <div class="col-sm-2  ml-5">
                     <div class="form-group ">
                         <label for="button"> &nbsp; </label>
                         <button mat-stroked-button name="button" type="submit" (click)="onSubmit" class="btn form-control float-sm-right text-capitalize" style="background-color: white;">Submit</button>
@@ -83,7 +83,7 @@
   
     <div class="p-4">
     <div id="pie-chart-parent" *ngIf="showPie" [ngStyle]="{'height.px': cardHeight}">
-        <ngx-charts-pie-grid [view]="" [scheme]="colorScheme" [results]="resultSet">
+        <ngx-charts-pie-grid [view]=""  [results]="resultSet">
         </ngx-charts-pie-grid>
     </div>
     <div class="chart" *ngIf="showBar" [ngStyle]="{'height.px': cardHeight}">
@@ -95,8 +95,12 @@
         </ngx-charts-bar-vertical>
     </div>
     <div class="chart" *ngIf="showAdv" [ngStyle]="{'height.px': cardHeight}">
-        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        <ngx-charts-advanced-pie-chart  [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
         </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="chart" *ngIf="showPieC" [ngStyle]="{'height.px': cardHeight}">
+        <ngx-charts-pie-chart labels="true" maxLabelLength="100" legends="true" trimLabels="false"  [results]="resultSet" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        </ngx-charts-pie-chart>
     </div>
 </div>
  

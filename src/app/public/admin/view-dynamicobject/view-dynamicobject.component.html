@@ -17,6 +17,8 @@
         <li>Adding user defined functions.</li>
         <li>Modifying primary keys once created.</li>
         <li>TEAM, TEAM TYPE2 scopes are not available.</li>
+        <li>No check for autokey/primary key ; You must add a primary key/autokey manually.</li>
+        <li>No validation check for MySQL keywords, avoid using mysql keywords on attribute name.</li>
     </ul>
 </ngb-alert>
 
@@ -127,122 +129,130 @@
                
                 <div class="row  ml-4">
                     <div class="col">
-                        <div class="row p-3 " *ngFor="let item of list;let i = index">
+                        <div class="row card p-3 mb-3" *ngFor="let item of list;let i = index">
                             
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}"> Name:</label> 
-                                <span [ngbPopover]="namePopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
-                                    <input id="attr_{{i}}" required="required" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i) }" disabled>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i)" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i)">Attribute Name is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i)">White Space is not allowed.</div>
-                                        <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i)">Attribute Name length exceeded allowed charecter length i.e 30.</div>
+                            <div class="row w-100">
+                                
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}"> Name:</label> 
+                                    <span [ngbPopover]="namePopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
+                                        <input id="attr_{{i}}" required="required" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i) }">
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i)" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i)">Attribute Name is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i)">White Space is not allowed.</div>
+                                            <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i)">Attribute Name length exceeded allowed charecter length i.e 30.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}_alias"> Alias:</label> 
+                                    <span [ngbPopover]="aliasPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
+                                        <input id="attr_{{i}}_alias" required="required" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_alias" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_alias') }">
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_alias')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_alias')">Attribute Alias is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_alias')">White Space is not allowed.</div>
+                                            <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_alias')">Attribute Default Value length exceeded allowed charecter length i.e 30.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}_type"> Type:</label> 
+                                        <select (change)="checkForList(objectAttributeForm,'attr_'+i+'_type')" id="attr_{{i}}_type" required="required" type="text" class="form-control " formControlName="attr_{{i}}_type" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type') }">
+                                            <option value="string">String</option>
+                                            <option value="number">Number</option>
+                                            <option value="user">User</option>
+                                            <option value="team">Team</option>
+                                            <option value="richtext">Rich Text</option>
+                                            <option value="list">List</option>
+                                            <option *ngFor="let item of listSelectedOptions" value="{{item}}">{{item | uppercase}}</option>
+                                            <option [disabled]="true" value="autokey">Auto Key</option>
+                                        </select>
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_type')">Attribute Type is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_type')">White Space is not allowed.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}_size"> Size:</label> 
+                                        <input id="attr_{{i}}_size" required="required" type="number" class="form-control " formControlName="attr_{{i}}_size" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_size') }">
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_size')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_size')">Attribute Size is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_size')">White Space is not allowed.</div>
+                                            <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_size')">Attribute Size length exceeded allowed charecter length i.e 30.</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}_alias"> Alias:</label> 
-                                <span [ngbPopover]="aliasPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" ></span>
-                                    <input id="attr_{{i}}_alias" required="required" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_alias" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_alias') }" disabled>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_alias')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_alias')">Attribute Alias is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_alias')">White Space is not allowed.</div>
-                                        <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_alias')">Attribute Default Value length exceeded allowed charecter length i.e 30.</div>
+                            <div class="row w-100">
+                                
+                                <div class="col-sm-2">
+                                    <div class="form-group ">
+                                    <label for="attr_{{i}}_defaultValue"> Default Value:</label> 
+                                        <input id="attr_{{i}}_defaultValue"  type="text" class="form-control " formControlName="attr_{{i}}_defaultValue" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_defaultValue') }">
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_defaultValue')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_defaultValue')">Attribute Default Value is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_defaultValue')">White Space is not allowed.</div>
+                                            <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_defaultValue')">Attribute Default Value length exceeded allowed charecter length i.e 30.</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}_type"> Type:</label> 
-                                    <select (change)="checkForList(objectAttributeForm,'attr_'+i+'_type')" id="attr_{{i}}_type" required="required" type="text" class="form-control " formControlName="attr_{{i}}_type" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type') }" disabled>
-                                        <option value="string">String</option>
-                                        <option value="number">Number</option>
-                                        <option value="user">User</option>
-                                        <option value="team">Team</option>
-                                        <option value="richtext">Rich Text</option>
-                                        <option value="list">List</option>
-                                        <option [disabled]="true" value="autokey">Auto Key</option>
-                                    </select>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_type')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_type')">Attribute Type is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_type')">White Space is not allowed.</div>
+                                
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                    <label for="attr_{{i}}_validators"> Validators:</label> 
+                                    <span [ngbPopover]="validatorsPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" >
+                                      </span> 
+                                      <mat-select id="attr_{{i}}_validators" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_validators" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators') }" multiple >
+                                        <mat-option value="required"> Required</mat-option>
+                                        <mat-option value="whitespace">Whitespace Not Allowed</mat-option>
+                                        <mat-option value="email"> Email</mat-option>
+                                     </mat-select>
+                                       <!--<select id="attr_{{i}}_validators" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_validators" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators') }">
+                                            <option value="required">Required</option>
+                                            <option value="whitspace">Whitespace</option>
+                                            <option value="required,whitespace">Required and Whitespace</option>
+    
+                                        </select>--> 
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_validators')">Attribute Validators is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_validators')">White Space is not allowed.</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}_size"> Size:</label> 
-                                    <input id="attr_{{i}}_size" required="required" type="number" class="form-control " formControlName="attr_{{i}}_size" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_size') }" disabled>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_size')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_size')">Attribute Size is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_size')">White Space is not allowed.</div>
-                                        <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_size')">Attribute Size length exceeded allowed charecter length i.e 30.</div>
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}_isPrimaryKey">Primary Key?:</label> 
+                                        <select id="attr_{{i}}_isPrimaryKey" required="required"  class="form-control " formControlName="attr_{{i}}_isPrimaryKey" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isPrimaryKey') }">
+                                            <option [ngValue]="true">True</option>
+                                            <option [ngValue]="false">False</option>
+                                        </select>
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isPrimaryKey')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_isPrimaryKey')">Attribute isPrimaryKey is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_isPrimaryKey')">White Space is not allowed.</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group ">
-                                <label for="attr_{{i}}_defaultValue"> Default Value:</label> 
-                                    <input id="attr_{{i}}_defaultValue"  type="text" class="form-control " formControlName="attr_{{i}}_defaultValue" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_defaultValue') }" disabled>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_defaultValue')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_defaultValue')">Attribute Default Value is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_defaultValue')">White Space is not allowed.</div>
-                                        <div *ngIf="checkIsInvalidLength(objectAttributeForm,'attr_'+i+'_defaultValue')">Attribute Default Value length exceeded allowed charecter length i.e 30.</div>
+                                <div class="col-sm-2">
+                                    <div class="form-group required">
+                                    <label for="attr_{{i}}_isNullable">Nullable?:</label> 
+                                        <select id="attr_{{i}}_isNullable" required="required"  class="form-control " formControlName="attr_{{i}}_isNullable" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isNullable') }">
+                                            <option [ngValue]="true">True</option>
+                                            <option [ngValue]="false">False</option>
+                                        </select>
+                                        <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isNullable')" class="invalid-feedback">
+                                            <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_isNullable')">Attribute isNullable is required</div>
+                                            <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_isNullable')">White Space is not allowed.</div>
+                                        </div>
                                     </div>
                                 </div>
+    
                             </div>
-                            
-                            <div class="col">
-                                <div class="form-group">
-                                <label for="attr_{{i}}_validators"> Validators:</label> 
-                                <span [ngbPopover]="validatorsPopOver" [autoClose]="'outside'"   placement="bottom"  class=" fa fa-info-circle form-control-prefix-icon-with-event text-muted" >
-                                  </span> 
-                                  <mat-select id="attr_{{i}}_validators" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_validators" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators') }" multiple disabled>
-                                    <mat-option value="required"> Required</mat-option>
-                                    <mat-option value="whitespace">Whitespace Not Allowed</mat-option>
-                                    <mat-option value="email"> Email</mat-option>
-                                 </mat-select>
-                                   <!--<select id="attr_{{i}}_validators" type="text" class="form-control form-control-include-icon " formControlName="attr_{{i}}_validators" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators') }">
-                                        <option value="required">Required</option>
-                                        <option value="whitspace">Whitespace</option>
-                                        <option value="required,whitespace">Required and Whitespace</option>
-
-                                    </select>--> 
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_validators')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_validators')">Attribute Validators is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_validators')">White Space is not allowed.</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}_isPrimaryKey">IS Primary Key?:</label> 
-                                    <select id="attr_{{i}}_isPrimaryKey" required="required"  class="form-control " formControlName="attr_{{i}}_isPrimaryKey" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isPrimaryKey') }" disabled>
-                                        <option [ngValue]="true">True</option>
-                                        <option [ngValue]="false">False</option>
-                                    </select>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isPrimaryKey')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_isPrimaryKey')">Attribute isPrimaryKey is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_isPrimaryKey')">White Space is not allowed.</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group required">
-                                <label for="attr_{{i}}_isNullable">IS Nullable?:</label> 
-                                    <select id="attr_{{i}}_isNullable" required="required"  class="form-control " formControlName="attr_{{i}}_isNullable" [ngClass]="{ 'is-invalid': objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isNullable') }" disabled>
-                                        <option [ngValue]="true">True</option>
-                                        <option [ngValue]="false">False</option>
-                                    </select>
-                                    <div *ngIf="objectAttributeFormSubmitted && checkIsInvalid(objectAttributeForm,'attr_'+i+'_isNullable')" class="invalid-feedback">
-                                        <div class="ml-1" *ngIf="checkIsInvalidRequired(objectAttributeForm,'attr_'+i+'_isNullable')">Attribute isNullable is required</div>
-                                        <div *ngIf="checkIsInvalidWhiteSpace(objectAttributeForm,'attr_'+i+'_isNullable')">White Space is not allowed.</div>
-                                    </div>
-                                </div>
-                            </div>
-
+                    
                         </div> 
                     </div>
                 </div>

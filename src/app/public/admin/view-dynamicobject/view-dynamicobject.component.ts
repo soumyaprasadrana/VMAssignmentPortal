@@ -71,16 +71,19 @@ export class ViewDynamicObjectComponent implements OnInit {
     private dynamicObjectService:DynamicObjectsService,
     private commonServices:CommonService
   ) {
+    this._spinner.setSpinnerState(true);
     this.loggedUser=_auth.getUser();
     if(typeof history.state.recordData != 'undefined'){
       this.recordData=history.state.recordData;
       var name=this.recordData["name"];
       dynamicObjectService.getDynamicObject(name).then((res:any)=>{
+        this._spinner.setSpinnerState(false);
         this.recordData=JSON.parse(res)["object"];
         this.origionalAttrList=this.recordData["attributes"];
         this.createForm();
       }).catch((err:any)=>{
         console.log("Error occurred!",err);
+        this._spinner.setSpinnerState(false);
         if(this.loggedUser.useToast){
           toastService.showDanger("No record selected!",5000);
           this.router.navigate(['..'],{relativeTo:this.route});
@@ -95,6 +98,7 @@ export class ViewDynamicObjectComponent implements OnInit {
       });
       
     }else{
+      this._spinner.setSpinnerState(false);
       if(this.loggedUser.useToast){
         toastService.showDanger("No record selected!",5000);
         this.router.navigate(['..'],{relativeTo:this.route});

@@ -53,6 +53,7 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
   showBar: boolean = false;
   showAdv: boolean = false;
   showBarVer: boolean = false;
+  showPieC: boolean = false;
   registerForm!: FormGroup;
   submitted = false;
   title: string = 'View Record';
@@ -70,7 +71,7 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
   isLoadedAttributes:boolean =false;
   view: any[] = [600, 400];
 
-  chartTypeList = ['PIE GRID', 'BAR VERTICAL', 'BAR HORIZONTAL', 'ADVANCED'];
+  chartTypeList = ['PIE CHART', 'BAR VERTICAL', 'BAR HORIZONTAL', 'ADVANCED'];
 
   showChart: boolean = false;
 
@@ -146,8 +147,8 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
   
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      field: ['OS', Validators.required],
-      chartType: ['PIE GRID', Validators.required],
+      field: [null, Validators.required],
+      chartType: ['PIE CHART', Validators.required],
       height: [300, Validators.required],
     });
     this.app = this.route.snapshot.params.app;
@@ -351,26 +352,38 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
     this.showChart = true;
   }
   toggleChart(type: string) {
+    console.log("toggleChart :: ",type)
     if (type == 'BAR HORIZONTAL') {
       this.showBar = true;
       this.showAdv = false;
       this.showPie = false;
       this.showBarVer = false;
-    } else if (type == 'PIE GRID') {
+      this.showPieC = false;
+    } else if (type == 'PIE CHART') {
+      this.showBar = false;
+      this.showAdv = false;
+      this.showPie = false;
+      this.showPieC = true;  
+      this.showBarVer = false;
+    }  
+    else if (type == 'PIE GRID') {
       this.showBar = false;
       this.showAdv = false;
       this.showPie = true;
       this.showBarVer = false;
+      this.showPieC = false;
     } else if (type == 'ADVANCED') {
       this.showBar = false;
       this.showAdv = true;
       this.showPie = false;
       this.showBarVer = false;
+      this.showPieC = false;
     } else if ((type = 'BAR VERTICAL')) {
       this.showBar = false;
       this.showAdv = false;
       this.showPie = false;
       this.showBarVer = true;
+      this.showPieC = false;
     }
   }
   getParseData(field: string) {
