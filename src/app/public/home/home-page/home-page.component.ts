@@ -1842,7 +1842,7 @@ export class HomePageComponent implements OnInit {
             this.clearGridGrouping();
           } else if (args.command === 'exportExcel') {
             //console.log('excelExport :: ', this.excelExportService);
-            this.excelExportService;
+            
             this.excelExportService.exportToExcel({
               filename: 'VM_List'+'_'+new Date().toTimeString().replace(' ','_'),
               format: FileType.xlsx,

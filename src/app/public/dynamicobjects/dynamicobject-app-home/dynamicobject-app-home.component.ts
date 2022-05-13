@@ -565,7 +565,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     this.dynamicobjectappGridOptions = {
       gridHeight:'95%',
       autoResize: {
-        container: '#grid-container',
+        container: '#dynamicobject-app-grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
       },

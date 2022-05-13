@@ -1,6 +1,6 @@
-<div id="grid-container">
+<div id="dynamicobject-grid-container">
 
-    <angular-slickgrid *ngIf="isLoaded" gridId="grid2" [columnDefinitions]="columnDef" [gridOptions]="dynamicObjectsGridOptions" [dataset]="dynamicObjectsDataSet" (onAngularGridCreated)="angularGridReady($event.detail)" (onGridStateChanged)="gridStateChanged($event.detail)"
+    <angular-slickgrid *ngIf="isLoaded" gridId="dynamicobjectgrid" [columnDefinitions]="columnDef" [gridOptions]="dynamicObjectsGridOptions" [dataset]="dynamicObjectsDataSet" (onAngularGridCreated)="angularGridReady($event.detail)" (onGridStateChanged)="gridStateChanged($event.detail)"
         (onBeforeGridDestroy)="saveCurrentGridState()">
     </angular-slickgrid>
     <div *ngIf="!isLoaded && !isDataloadFailed" class="h-100 w-100 d-table">

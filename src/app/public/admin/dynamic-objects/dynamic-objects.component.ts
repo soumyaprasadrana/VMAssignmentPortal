@@ -441,7 +441,7 @@ export class ToolsDynamicObjectsComponent implements OnInit {
       gridHeight:'95%',
       rowHeight: 50,
       autoResize: {
-        container: '#grid-container',
+        container: '#dynamicobject-grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
       },

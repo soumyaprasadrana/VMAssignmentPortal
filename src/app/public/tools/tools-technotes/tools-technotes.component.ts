@@ -454,7 +454,7 @@ export class ToolsTechnotesComponent implements OnInit {
       gridHeight:'95%',
       rowHeight: 50,
       autoResize: {
-        container: '#grid-container',
+        container: '#tools-grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
       },

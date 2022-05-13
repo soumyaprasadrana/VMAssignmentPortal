@@ -18,7 +18,7 @@
                         <span (click)="showPassword=!showPassword" [ngClass]="{'fa-eye':showPassword,'fa-eye-slash':!showPassword}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
                         <input id="password" [type]="showPassword?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
                         <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.user_pass.errors.required">Passwod is required</div>
+                            <div class="ml-1" *ngIf="f.user_pass.errors.required">Password is required</div>
                             <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                         <span (click)="showPass=!showPass" [ngClass]="{'fa-eye':showPass,'fa-eye-slash':!showPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
                         <input id="conf_password" [type]="showPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
                         <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Passwod is required</div>
+                            <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Password is required</div>
                             <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
                         </div>
                     </div>
