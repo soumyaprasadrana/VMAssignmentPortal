@@ -55,6 +55,10 @@ import { PathComponent } from '../../widget/path/path.component';
 import { CommentDialogComponent } from '../../widget/alert-dialog/comment-dialog.component';
 import { RowDetailComponent } from '../../widget/row-detail-view/row-detail-view.component';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { LinkComponent } from '../../widget/path/link.component';
+import { SnapshotsDialogComponent } from '../../widget/alert-dialog/snapshots-dialog.component';
+import { TakeSnapInputDialogComponent } from '../../widget/alert-dialog/takesnap-dialog.component';
+import { TaskOutputDialogComponent } from '../../widget/alert-dialog/vsphere-task-output-dialog.component';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -942,6 +946,22 @@ export class HomePageComponent implements OnInit {
         );
       });
   }
+  openSnapshotDialog(data: any, callback: any) {
+    this.dialog
+      .open(SnapshotsDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+        width:'700px'
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback(res);
+        }
+      });
+  }
+  
   openDialog(data: any, callback: any) {
     this.dialog
       .open(AlertDialogComponent, {
@@ -1065,12 +1085,12 @@ export class HomePageComponent implements OnInit {
       if (vm.status == 'Available') {
         //console.log('statusCellFormatter: Available true', vm.status);
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='alert show alert-success'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.status == 'Occupied') {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='alert show alert-dark'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-secondary'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1087,7 +1107,7 @@ export class HomePageComponent implements OnInit {
       }
       
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='badge'>${value}</span></div>`,
           toolTip: value,
         };
       
@@ -1109,6 +1129,21 @@ export class HomePageComponent implements OnInit {
     };
     
     /* Custom Formatter for cells to check snapshot count */
+    const snapshotFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      
+        return {
+          text: `<div style='text-align:center;width:auto;'>
+          <span style='text-align:center' ><a (click)="alert(1)">${value}</a></span>
+          </div>`,
+          toolTip: value,
+        };
+      
+    };
+
+    /* Custom Formatter for cells to check snapshot count */
     const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
@@ -1118,17 +1153,17 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' > <span  class='warnSnapshot badge'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class='alertSnapshot badge'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class='badge'>${value}</span></div>`,
           toolTip: value,
         };
       }
@@ -1143,17 +1178,17 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot' class="badge">${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot badge' >${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
           toolTip: value,
         };
       }
@@ -1507,18 +1542,26 @@ export class HomePageComponent implements OnInit {
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter
         }
-      },
-      /* {
-        id: 'snap_count',
-        name: 'SS #',
-        field: 'snap_count',
-        sortable: true,
-        filterable: true,
-        type: FieldType.number,
-        formatter: cellFormatter,
-        filter: { model: Filters.compoundInputNumber },
-      },*/
-      {
+      }];
+
+      if(this.loggedUser.enableSnapshotManagements){
+        this.columnDef.push({
+          id: 'snap_count',
+          name: 'SS #',
+          field: 'snap_count',
+          sortable: true,
+          filterable: true,
+          type: FieldType.number,
+          formatter:snapshotFormatter,
+          asyncPostRender: this.renderAngularComponentForSnapshotCell.bind(this),
+          params: {
+            component: LinkComponent,
+            angularUtilService: this.angularUtilService,
+          },
+          filter: { model: Filters.compoundInputNumber },
+        });
+      } 
+      var tempColDef:Column[]=[{
         id: 'ram',
         name: 'RAM',
         field: 'ram',
@@ -1622,6 +1665,11 @@ export class HomePageComponent implements OnInit {
         width: 0,
       },*/
     ];
+
+    for(var item in tempColDef){
+      this.columnDef.push(tempColDef[item]);
+    }
+    
     if(!this.loggedUser.hideOwner){
       this.columnDef.push(
         {
@@ -2062,12 +2110,49 @@ export class HomePageComponent implements OnInit {
   renderAngularComponent(cellNode: HTMLElement, row: number, dataContext: any, colDef: Column) {
     if (colDef.params.component) {
       const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
-      Object.assign(componentOutput.componentRef.instance, { item: dataContext });
+      Object.assign(componentOutput.componentRef.instance, { data: dataContext,parentObject:this });
 
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
     }
   }
+  renderAngularComponentForSnapshotCell(cellNode: HTMLElement, row: number, dataContext: any, colDef: Column) {
+    if (colDef.params.component) {
+      const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
+      Object.assign(componentOutput.componentRef.instance, { data: dataContext,parentObject:this,functionName:'openSnapshots',template:dataContext.snap_count,functionParameter1:dataContext.hostname });
+
+      // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
+      setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
+    }
+  }
+  openSnapshots(hostname:any){
+    this.vms.getVMSnapshots(hostname).then((res:any)=>{
+      try{
+        res=JSON.parse(res);
+      }catch(e){}
+      console.log("GET snapshots:",res);
+      if(res.status=="Failed" || res.status==false){
+        if(this.loggedUser.useToast){
+          this.toastService.showDanger(res.message.toString(),5000);
+        }
+        else{
+          this.openDialog({
+            type:'alert',
+            message:res.message
+          },null);
+        }
+      }
+      else{
+        this.openSnapshotDialog({snapshots:res,parentObject:this,hostname:hostname},null);
+      }
+
+    }).catch((err:any)=>{
+      console.log(err);
+      this.toastService.showDanger(err.toString(),5000);
+    })
+  }
+
+  
   get rowDetailInstance(): SlickRowDetailView {
     // you can get the SlickGrid RowDetail plugin (addon) instance via 2 ways
 

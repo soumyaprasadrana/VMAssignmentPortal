@@ -64,6 +64,7 @@ module.exports = {
                     tempUser.permissions = permissions;
                     tempUser.useToast=config.useToast;
                     tempUser.hideOwner=config.hideOwner;
+                    tempUser.enableSnapshotManagements=config.enableSnapshotManagements;
                     user.activeUser = tempUser; 
                     callback(null, user)
                 } else {

@@ -17,7 +17,6 @@ import { DynamicObjectsViewComponent } from '../public/dynamicobjects/dynamicobj
 import { DynamicobjectsHomeComponent } from '../public/dynamicobjects/dynamicobjects-home/dynamicobjects-home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AngularSlickgridModule } from 'angular-slickgrid';
@@ -53,7 +52,6 @@ import { DynamicObjectChartsViewRecordComponent } from '../public/dynamicobjects
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    NgbModule,
     NavModule,
     FooterModule,
     PathModule,

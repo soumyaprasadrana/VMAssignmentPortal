@@ -1,0 +1,27 @@
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+        <i  class="titleicon fa fa-terminal fa-2 " style="color:#337ab7;"></i>
+       
+         Task Status 
+
+    <button type="button" class="close" style="background: white;
+    padding-right: 10px;" aria-label="Close" mat-dialog-close>
+        <span style="font-size:30px;" aria-hidden="true">&times;</span>
+    </button>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg">
+    <br >
+    
+    <div class="row">
+        <div class="col">
+            <ngb-progressbar type="success" textType="white" [striped]="true" [animated]="true" [value]="output" [showValue]="true"></ngb-progressbar>
+        </div>
+    </div>
+    
+<p class="p" *ngIf="taskCompleted" ><b style="color:green;">VSphere Task Completed.</b></p>
+<p class="p" *ngIf="taskFailed" ><b style="color:red;">VSphere Task Failed with error {{initResponse?.error?.LocalizedMessage}}.</b></p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

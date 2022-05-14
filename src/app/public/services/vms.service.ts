@@ -106,6 +106,34 @@ export class VmsService {
     };
     return this._client.post('api/vm/assignVM', params, httpOptions);
   }
+  takeSnap(hostname:any,snapName:any,snapDesc:any){
+    //console.log('takesnap);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var params: any = { hostname: hostname, snapName: snapName,snapDesc:snapDesc };
+
+    
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/vm/takeSnap', params, httpOptions);
+  }
+  revertSnap(hostname:any,snapName:any,snapID:any){
+    //console.log('takesnap);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var params: any = { hostname: hostname, snapName: snapName,snapID:snapID };
+
+    
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/vm/revertSnap', params, httpOptions);
+  }
   addComment(ip: string, Comment: string): any {
     //console.log('assignVM:ip>', ip, 'assignVM:user>', user);
     var headers = new HttpHeaders({
@@ -170,6 +198,16 @@ export class VmsService {
     };
     var observable = this._client.getObservable('api/vm/getAll', httpOptions);
     return observable;
+  }
+  getVMSnapshots(hostname: string) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.get('api/vm/snapshots/' + hostname , httpOptions);
   }
   getVMAdditionalData(ip: string) {
     var headers = new HttpHeaders({

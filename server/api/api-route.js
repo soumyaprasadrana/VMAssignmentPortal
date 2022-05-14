@@ -14,8 +14,9 @@ const vmCtrl = require('./vm-module');
 const technotesCtrl = require('./technotes-module');
 const admnCtrl = require('./admin-module')
 const commonCtrl = require('./common-module');
-const userCtrl = require('./user-module')
-const dynamicObjectCtrl= require('./dynamic-object.module')
+const userCtrl = require('./user-module');
+const dynamicObjectCtrl= require('./dynamic-object.module');
+const snapCtrl = require("./snapshot-module"); 
 module.exports = function(app) {
     app.get('/api/vm/*', portalAuth.ensureAuthenticated);
     app.post('/api/vm/*', portalAuth.ensureAuthenticated);
@@ -93,4 +94,8 @@ module.exports = function(app) {
     app.get("/api/public/spaMetadata", commonCtrl.getSPAMetadata);
     app.get("/api/public/lists", commonCtrl.getListsNames);
     app.get("/api/public/lists/:id", commonCtrl.getListItems);
+    app.get("/api/vm/snapshots/:host",snapCtrl.getSnapshots);
+    app.post("/api/vm/takeSnap",snapCtrl.takeSnapshot);
+    app.post("/api/vm/revertSnap",snapCtrl.revertSnapshot);
+    app.get("/api/stream/getTaskStatus/:taskID", snapCtrl.getTaskStatus);
 }

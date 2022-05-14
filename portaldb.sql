@@ -354,3 +354,6 @@ INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('osL
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('paginationPageSize', '25');
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('paginationPageSizesList', '25:50:75:100:125');
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('warnSnapshot', '5');
+/* Please update $SERVER, $USERNAME, $PASSWORD */
+INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('powerCLIConnectionString','Connect-VIServer –server $SERVER –Username $USERNAME -Password $PASSWORD');
+

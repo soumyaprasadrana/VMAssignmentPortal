@@ -26,13 +26,15 @@ module.exports = {
     /* Enable gzip on server */
     useGzip: process.env.USEGZIP || true,
     /* Disable Cache */
-    disableCahe: process.env.DISABLECAHE || true,
+    disableCahe: process.env.DISABLECAHE || false,
     /* Enable CORS */
     useCORS: process.env.USECORS || true,
     /* Enable Toast Notification Service; If disabled success result will show in dialog */
     useToast: process.env.USETOAST || true,
     /*Hide LAB OWNER field ffrom dashboard grid*/
     hideOwner: process.env.HIDEOWNER || false,
+    /*Enable Snapshot Module*/
+    enableSnapshotManagements: process.env.SNAPSHOTMANAGEMENT || false,
 
     vm_rest_path: '/vmDetails/getAll',
     dynamicobjects_rest_path: '/dynamicobjects/getAll',
@@ -86,5 +88,9 @@ module.exports = {
     get_next_activitylogs: '/activitylog/getActivityLogs',
     get_prev_activitylogs: '/activitylog/getActivityLogsPrev',
     stream_exec: '/stream/exec',
-    stream_output: '/stream/getOut'
+    stream_output: '/stream/getOut',
+    stream_task_status_output: '/stream/getPercentage',
+    vm_snapshots_rest_path: '/vmActions/getAllSnapshots',
+    vm_take_snapshot_rest_path: '/vmActions/takeSnapshot',
+    vm_revert_snapshot_rest_path:'/vmActions/revertSnapshot'
 }
