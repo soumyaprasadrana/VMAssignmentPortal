@@ -23,10 +23,8 @@ import { MaterialModule } from '../material.module';
 import { NavModule } from '../public/widget/nav/nav.module';
 import { FooterModule } from '../public/widget/footer/footer.module';
 import { PathModule } from '../public/widget/path/path.module';
-import { RealtedVMSGraphComponent } from '../public/home/related-vms-graph/related-vms-graph.component';
 import { ContactPageComponent } from '../public/home/contact-page/contact-page.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { TreeModule } from '../public/widget/tree-diagram/tree.module';
 import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-view.module';
 
 @NgModule({
@@ -34,7 +32,6 @@ import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-vie
     HomeViewComponent,
     HomePageComponent,
     PageNotFoundHomeComponent,
-    RealtedVMSGraphComponent,
     ContactPageComponent,
   ],
   imports: [
@@ -47,7 +44,6 @@ import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-vie
     NavModule,
     FooterModule,
     PathModule,
-    TreeModule,
     RowDetailModule,
     AngularSlickgridModule.forRoot({
       // add any Global Grid Options/Config you might want

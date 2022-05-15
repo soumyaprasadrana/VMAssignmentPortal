@@ -65,6 +65,8 @@ module.exports = {
                     tempUser.useToast=config.useToast;
                     tempUser.hideOwner=config.hideOwner;
                     tempUser.enableSnapshotManagements=config.enableSnapshotManagements;
+                    tempUser.enableRichTextForVMComment=config.enableRichTextForVMComment;
+                    tempUser.enableBadgeForSnapWarning=config.enableBadgeForSnapWarning;
                     user.activeUser = tempUser; 
                     callback(null, user)
                 } else {

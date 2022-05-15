@@ -36,6 +36,7 @@
 
             <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
             <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
+            <a *ngIf="this.loggedUser.enableSnapshotManagements" [routerLink]="['/portal/home/vmm/snapshots']" mat-button>Snapshots</a>
             <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
             <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
             <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>

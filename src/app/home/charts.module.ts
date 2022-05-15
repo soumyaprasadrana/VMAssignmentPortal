@@ -19,11 +19,13 @@ import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsViewComponent } from '../public/home/charts-view/charts-view.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { RealtedVMSGraphComponent } from '../public/home/related-vms-graph/related-vms-graph.component';
+import { TreeModule } from '../public/widget/tree-diagram/tree.module';
 @NgModule({
   declarations: [
     ChartsViewComponent,
     VmChartComponent,
+    RealtedVMSGraphComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ChartsRoutingModule,
     PathModule,
     NgxChartsModule,
-
+    TreeModule
     
   ]
 })

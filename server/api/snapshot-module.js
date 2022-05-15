@@ -52,6 +52,50 @@ module.exports = {
         }
         _client.get(httpOptions, req, res, next);
         
+    },
+    getAllSnapshots:function(req,res,next){
+        console.log("snapshot-module.js :: getAllSnapshots ::");
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.vm_get_all_snapshots_rest_path,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);       
+    },
+    getAllSnapshotsCount:function(req,res,next){
+        console.log("snapshot-module.js :: getAllSnapshotsCount ::");
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.vm_get_all_snapshots_count_rest_path,
+            headers: _client.getStaticHeaders(req),
+            qs: _client.getStaticQueryParam(req),
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);       
+    },
+    searchSnapshots:function(req,res,next){
+        console.log("snapshot-module.js :: searchSnapshots ::");
+        var keyword=req.params['keyword'];
+        logger.debug( "keyword=",keyword);
+        var httpOptions = {
+            uri: config.apiBase + '/' + config.apiContextRoot + config.vm_search_all_snapshots_rest_path,
+            headers: _client.getStaticHeaders(req),
+            qs: {
+                AUTH: req.user.auth,
+                JSESSIONID: req.user.jsession,
+                keyword:keyword
+            },
+            jar: _client.getStaticCookieJar(req)
+        }
+        _client.get(httpOptions, req, res, next);
+    },
+    runUpdateSnapCount: function(req,res,next){
+        logger.info("runUpdateSnapCount: ");
+        _client.post(_client.getHttpPostOptions(req, config.update_snap_count_rest_path), req, res, next);       
+    },
+    runUpdateVMData: function(req,res,next){
+        logger.info("runUpdateSnapCount: ");
+        _client.post(_client.getHttpPostOptions(req, config.update_vm_extra_data_rest_path), req, res, next);       
     }
 
 }

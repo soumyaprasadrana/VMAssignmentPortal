@@ -999,7 +999,7 @@ export class HomePageComponent implements OnInit {
         data: data,
         panelClass: 'app-dialog-class',
 
-        width: '1000px',
+        width: this.loggedUser.enableRichTextForVMComment?'1000px':'300px',
       })
       .afterClosed()
       .toPromise()
@@ -1153,12 +1153,12 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;' > <span  class='warnSnapshot badge'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' > <span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':'warnSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class='alertSnapshot badge'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':'alertSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1178,12 +1178,12 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;'> <span  class='warnSnapshot' class="badge">${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'> <span   class="badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':'warnSnapshot'}">${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='alertSnapshot badge' >${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':'alertSnapshot'}' >${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1483,7 +1483,7 @@ export class HomePageComponent implements OnInit {
         field: 'ip',
         sortable: true,
         filterable: true,
-        formatter: ipcellFormatter,
+        formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
         customTooltip:{
@@ -1543,7 +1543,19 @@ export class HomePageComponent implements OnInit {
           headerFormatter:this.headerFormatter.bind(this) as Formatter
         }
       }];
-
+      var customToolTipForCommentColumn:any={
+        hideArrow:true,
+        headerFormatter:this.headerFormatter.bind(this) as Formatter
+      };
+      if(this.loggedUser.enableRichTextForVMComment){
+        customToolTipForCommentColumn={
+          // 1- loading formatter
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter,
+          formatter: this.tooltipFormatter.bind(this) as Formatter,
+          position:'auto',
+        };
+      }
       if(this.loggedUser.enableSnapshotManagements){
         this.columnDef.push({
           id: 'snap_count',
@@ -1558,7 +1570,7 @@ export class HomePageComponent implements OnInit {
             component: LinkComponent,
             angularUtilService: this.angularUtilService,
           },
-          filter: { model: Filters.compoundInputNumber },
+          filter: { model: Filters.compoundInputNumber,operator:'>' },
         });
       } 
       var tempColDef:Column[]=[{
@@ -1630,13 +1642,7 @@ export class HomePageComponent implements OnInit {
         filter: { model: Filters.compoundInputText },
         formatter: cellFormatter,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
-        customTooltip: {
-          // 1- loading formatter
-          hideArrow:true,
-          headerFormatter:this.headerFormatter.bind(this) as Formatter,
-          formatter: this.tooltipFormatter.bind(this) as Formatter,
-          position:'auto',
-        }
+        customTooltip: customToolTipForCommentColumn,
         //formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="${value}">${value}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         
@@ -2126,11 +2132,13 @@ export class HomePageComponent implements OnInit {
     }
   }
   openSnapshots(hostname:any){
+    this.spinner.setSpinnerState(true);
     this.vms.getVMSnapshots(hostname).then((res:any)=>{
       try{
         res=JSON.parse(res);
       }catch(e){}
       console.log("GET snapshots:",res);
+      this.spinner.setSpinnerState(false);
       if(res.status=="Failed" || res.status==false){
         if(this.loggedUser.useToast){
           this.toastService.showDanger(res.message.toString(),5000);
@@ -2147,6 +2155,7 @@ export class HomePageComponent implements OnInit {
       }
 
     }).catch((err:any)=>{
+      this.spinner.setSpinnerState(false);
       console.log(err);
       this.toastService.showDanger(err.toString(),5000);
     })

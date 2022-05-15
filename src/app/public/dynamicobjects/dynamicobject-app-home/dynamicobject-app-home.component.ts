@@ -69,7 +69,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   selectedRows: any;
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
-  defaultPageSizeList: any;
+  defaultPageSizeList: any=[];
   app:any;
   LOCAL_STORAGE_KEY = 'dynamicobjectappGridState';
   DEFAULT_PAGE_SIZE = 25;
@@ -167,7 +167,21 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     this.loggedUser = auth.getUser();
   }
   initDataLoad(promiseR:any,presets:any){
-       promiseR
+    this._props
+          .getProps()
+          .then((res) => {
+            //console.log('Props=>', res);
+            this.properties = JSON.parse('' + res);
+            var PageSizeList =
+              this.properties.paginationPageSizesList.split(':');
+            try{
+              for(var item in PageSizeList){
+                this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
+              }
+            }catch(e){
+              console.log(e);
+            }
+            promiseR
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
         //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
@@ -194,6 +208,9 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         //console.log('error occurred ', err);
         this.isLoaded = false;
       });
+           
+          })
+       
      
   }
   parseObjectRecords(data:any):any[]{

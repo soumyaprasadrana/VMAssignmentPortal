@@ -37,7 +37,10 @@ import { ToastModule } from './public/widget/toast/toast.module';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonToggleModule} from '@angular/material/button-toggle'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -68,7 +71,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle'
     MatStepperModule,
     MatSelectModule,
     MatButtonToggleModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
+    NgbPopoverModule,
+    NgbTooltipModule
   ],
   exports: [
     AngularFileUploaderModule,
@@ -97,7 +102,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle'
     MatStepperModule,
     MatSelectModule,
     MatButtonToggleModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
+    NgbPopoverModule,
+    NgbTooltipModule
   ],
 })
 export class MaterialModule {}

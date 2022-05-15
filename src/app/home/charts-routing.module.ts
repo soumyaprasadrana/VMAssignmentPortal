@@ -12,6 +12,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChartsViewComponent } from '../public/home/charts-view/charts-view.component';
+import { RealtedVMSGraphComponent } from '../public/home/related-vms-graph/related-vms-graph.component';
 import { VmChartComponent } from '../public/home/vm-chart/vm-chart.component';
 import { PageNotFoundHomeComponent } from '../public/widget/page-not-found-home/page-not-found-home.component';
 
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: 'dash',
         component: VmChartComponent,
         data: { animation: 'admin',title:'Charts' },
+      },
+      {
+        path: 'relationships',
+        component: RealtedVMSGraphComponent,
+        data: { animation: 'chart',title:'Relationships' },
       },
       {
         path: '',

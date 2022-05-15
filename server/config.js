@@ -35,6 +35,10 @@ module.exports = {
     hideOwner: process.env.HIDEOWNER || false,
     /*Enable Snapshot Module*/
     enableSnapshotManagements: process.env.SNAPSHOTMANAGEMENT || false,
+    /*Enable RichText for VM comment*/
+    enableRichTextForVMComment: process.env.RICHTEXTFORVMCOMMENT || false,
+    /*Enable badge for snapshot warning*/
+    enableBadgeForSnapWarning: process.env.ENABLEBADGE || true,
 
     vm_rest_path: '/vmDetails/getAll',
     dynamicobjects_rest_path: '/dynamicobjects/getAll',
@@ -91,6 +95,11 @@ module.exports = {
     stream_output: '/stream/getOut',
     stream_task_status_output: '/stream/getPercentage',
     vm_snapshots_rest_path: '/vmActions/getAllSnapshots',
+    vm_get_all_snapshots_rest_path: '/vmActions/getSnapshotList',
+    vm_get_all_snapshots_count_rest_path: '/vmActions/getSnapshotCount',
+    vm_search_all_snapshots_rest_path: '/vmActions/searchSnapshot',
     vm_take_snapshot_rest_path: '/vmActions/takeSnapshot',
-    vm_revert_snapshot_rest_path:'/vmActions/revertSnapshot'
+    vm_revert_snapshot_rest_path:'/vmActions/revertSnapshot',
+    update_snap_count_rest_path: '/admin/updateSnapCount',
+    update_vm_extra_data_rest_path: '/admin/updateVMData'
 }

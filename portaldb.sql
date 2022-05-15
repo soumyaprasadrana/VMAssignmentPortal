@@ -263,7 +263,7 @@ CREATE  TABLE IF NOT EXISTS `vmportal02`.`vm` (
   `vm_os` VARCHAR(255) NOT NULL ,
   `vm_os_ver` VARCHAR(255) NOT NULL ,
   `vm_owner` VARCHAR(255) NOT NULL DEFAULT '' ,
-  `vm_comment` MEDIUMTEXT NULL DEFAULT NULL,
+  `vm_comment` VARCHAR(255) NOT NULL DEFAULT '' ,
   `vm_group` VARCHAR(255) NOT NULL DEFAULT '' ,
   `is_available` TINYINT(1) NOT NULL DEFAULT '1' ,
   `snapshot_count` INT(11) NOT NULL DEFAULT '0' ,
@@ -355,5 +355,4 @@ INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('pag
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('paginationPageSizesList', '25:50:75:100:125');
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('warnSnapshot', '5');
 /* Please update $SERVER, $USERNAME, $PASSWORD */
-INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('powerCLIConnectionString','Connect-VIServer –server $SERVER –Username $USERNAME -Password $PASSWORD');
-
+INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('powerCLIConnectionString','Connect-VIServer -server $SERVER -Username $USERNAME -Password $PASSWORD');

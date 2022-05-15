@@ -88,6 +88,11 @@ export class TeamActivityLogsComponent implements OnInit {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-danger'>${value}</span></div>`,
           toolTip: value,
         };
+      }else if (vm.activity_status == 'PENDING' || vm.activity_status == 'RUNNING') {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-warning'>${value}</span></div>`,
+          toolTip: value,
+        };
       } else {
         return {
           text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,

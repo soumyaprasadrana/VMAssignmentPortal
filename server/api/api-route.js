@@ -29,6 +29,10 @@ module.exports = function(app) {
     app.post('/api/user/*', portalAuth.ensureAuthenticated);
     app.get('/api/stream/*', portalAuth.ensureAuthenticated);
     app.post('/api/stream/*', portalAuth.ensureAuthenticated);
+    app.get('/api/dynamicobjects/*', portalAuth.ensureAuthenticated);
+    app.post('/api/dynamicobjects/*', portalAuth.ensureAuthenticated);
+    app.get('/api/technotes/*', portalAuth.ensureAuthenticated);
+    app.post('/api/technotes/*', portalAuth.ensureAuthenticated);
     app.get("/api/login", portalAuth.authenticate);
     app.post('/api/login', portalAuth.authenticate);
     app.post('/api/logout', portalAuth.logOut);
@@ -95,7 +99,12 @@ module.exports = function(app) {
     app.get("/api/public/lists", commonCtrl.getListsNames);
     app.get("/api/public/lists/:id", commonCtrl.getListItems);
     app.get("/api/vm/snapshots/:host",snapCtrl.getSnapshots);
+    app.get("/api/vm/get/snapshots",snapCtrl.getAllSnapshots);
+    app.get("/api/vm/get/snapshotscount",snapCtrl.getAllSnapshotsCount);
+    app.get("/api/vm/get/snapshots/:keyword",snapCtrl.searchSnapshots);
     app.post("/api/vm/takeSnap",snapCtrl.takeSnapshot);
     app.post("/api/vm/revertSnap",snapCtrl.revertSnapshot);
     app.get("/api/stream/getTaskStatus/:taskID", snapCtrl.getTaskStatus);
+    app.post("/api/admin/run/snapcount",snapCtrl.runUpdateSnapCount);
+    app.post("/api/admin/run/extradata",snapCtrl.runUpdateVMData);
 }
