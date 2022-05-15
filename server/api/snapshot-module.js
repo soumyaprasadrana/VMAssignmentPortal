@@ -18,7 +18,7 @@ module.exports = {
         const fn = "snapshot-module.js :-: getSnapshots -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-        var hostname=req.params.hostname;
+        var hostname=req.params['host'];
         logger.debug(fn+ "hostname=",hostname);
         var httpOptions = {
             uri: config.apiBase + '/' + config.apiContextRoot + config.vm_snapshots_rest_path,
