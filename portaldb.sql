@@ -356,3 +356,7 @@ INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('pag
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('warnSnapshot', '5');
 /* Please update $SERVER, $USERNAME, $PASSWORD */
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('powerCLIConnectionString','Connect-VIServer -server $SERVER -Username $USERNAME -Password $PASSWORD');
+INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('vmExtraDataPowerShellCommand',"get-vm ## -ErrorAction SilentlyContinue | Select-Object Name,GuestId,MemoryGB,NumCpu|ConvertTo-JSON");
+/* 
+get-vm ## -ErrorAction SilentlyContinue | Select-Object Name,GuestId,MemoryGB,NumCpu,@{N='HostName';E={$_.ExtensionData.Guest.HostName}},@{N='IPAddress';E={$_.ExtensionData.Guest.IpAddress}},@{N='GuestFullName';E={$_.ExtensionData.Guest.GuestFullName}},@{N='GuestFamily';E={$_.ExtensionData.Guest.GuestFamily}},@{N='Disk Space(GB)';E={(($_.ExtensionData.config.hardware.Device|where-object 'StorageIOAllocation'|select-object @{N='CapacityInKB';E={[math]::Round($_.CapacityInKB/1MB)}})|Measure-Object -property "CapacityInKB" -sum).Sum}}|ConvertTo-JSON
+*/

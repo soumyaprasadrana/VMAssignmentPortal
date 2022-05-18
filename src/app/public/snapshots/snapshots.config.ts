@@ -84,7 +84,7 @@ export class SnapshotsConfig {
         cardHeight: '200',
         cardIconClass: 'fa fa-list',
         badgeIcon: 'fa fa-refresh',
-        cardTextClamp: 0,
+        cardTextClamp: 2,
         cardPermissions: function (loggedUser: any) {
           return loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead;;
         },

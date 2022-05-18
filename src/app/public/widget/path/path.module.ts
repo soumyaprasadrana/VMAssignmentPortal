@@ -15,9 +15,10 @@ import { PathComponent } from './path.component';
 import { RouterModule } from '@angular/router';
 import { LinkComponent } from './link.component';
 import { MaterialModule } from 'src/app/material.module';
+import { IPComponent } from './ip.component';
 @NgModule({
-  declarations: [PathComponent,LinkComponent],
+  declarations: [PathComponent,LinkComponent,IPComponent],
   imports: [CommonModule, RouterModule,MaterialModule],
-  exports: [PathComponent,LinkComponent],
+  exports: [PathComponent,LinkComponent,IPComponent],
 })
 export class PathModule {}

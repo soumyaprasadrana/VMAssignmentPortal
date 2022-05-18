@@ -26,9 +26,9 @@ $MaterialIcons_FontPath: "~material-icons-font/fonts";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '~quill/dist/quill.snow.css';
 @import "node_modules/font-awesome/scss/font-awesome.scss";
-//$slick-primary-color: #007bff  0070ad 00ad9e;
-//$slick-primary-color: #5101ac;
-//$primary-btn-hover-color: #612aa0;
+//var(--slick-primary-color): #007bff  0070ad 00ad9e;
+//var(--slick-primary-color): #5101ac;
+//var(--primary-btn-hover-color): #612aa0;
 $slick-primary-color:#280071;
 $primary-btn-hover-color: #5803f5;
 $side-nav-color: $slick-primary-color;
@@ -46,11 +46,26 @@ $form-control-focus-box-shadow:$custom-alert-background;
 @import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
 @import "~compass-mixins/lib/compass/css3";
 
-/* Breadcrumb css*/
+:root{
+    --slick-primary-color:#280071;
+    --primary-btn-hover-color: #5803f5;
+    --side-nav-color: #280071;
+    --blue-gray: #8972b4;
+    --blue-gray-darken: #604a8a;
+    --blue: #280071;
+    --blue-darken: #1b014b;
+    --green: #7400b8;
+    --green-darken: #31014d;
+    --custom-alert-background:#d3d1f1;
+    --custom-alert-border:#bed8eb;
+    --slick-row-mouse-hover-color: #e1dcfc;
+    --slick-row-selected-color: #d2c9fd;
+    --form-control-focus-box-shadow: #d3d1f1;
+}
 
 .alert-custom {
-    background-color: $custom-alert-background;
-    border-color: $custom-alert-border;
+    background-color: var(--custom-alert-background);
+    border-color: var(--custom-alert-border);
 }
 
 #breadcrumb {
@@ -65,7 +80,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
         a {
             color: #fff;
             display: block;
-            background: $blue;
+            background: var(--blue);
             text-decoration: none;
             position: relative;
             height: 40px;
@@ -76,13 +91,13 @@ $form-control-focus-box-shadow:$custom-alert-background;
         }
         &:nth-child(even) {
             a {
-                background-color: $blue-darken;
+                background-color: var(--blue-darken);
                 &:before {
-                    border-color: $blue-darken;
+                    border-color: var(--blue-darken);
                     border-left-color: transparent;
                 }
                 &:after {
-                    border-left-color: $blue-darken;
+                    border-left-color: var(--blue-darken);
                 }
             }
         }
@@ -110,7 +125,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
                 content: "";
                 position: absolute;
                 top: 0;
-                border: 0 solid $blue;
+                border: 0 solid var(--blue);
                 border-width: 20px 10px;
                 width: 0;
                 height: 0;
@@ -122,26 +137,26 @@ $form-control-focus-box-shadow:$custom-alert-background;
             &:after {
                 left: 100%;
                 border-color: transparent;
-                border-left-color: $blue;
+                border-left-color: var(--blue);
             }
             &:hover {
-                background-color: $green;
+                background-color: var(--green);
                 &:before {
-                    border-color: $green;
+                    border-color: var(--green);
                     border-left-color: transparent;
                 }
                 &:after {
-                    border-left-color: $green;
+                    border-left-color: var(--green);
                 }
             }
             &:active {
-                background-color: $green-darken;
+                background-color: var(--green-darken);
                 &:before {
-                    border-color: $green-darken;
+                    border-color: var(--green-darken);
                     border-left-color: transparent;
                 }
                 &:after {
-                    border-left-color: $green-darken;
+                    border-left-color: var(--green-darken);
                 }
             }
         }
@@ -163,11 +178,11 @@ $form-control-focus-box-shadow:$custom-alert-background;
 /*End breadcrumb*/
 
 .text-primary {
-    color: $slick-primary-color !important;
+    color: var(--slick-primary-color) !important;
 }
 
 .mat-toolbar {
-    background-color: $slick-primary-color !important;
+    background-color: var(--slick-primary-color) !important;
     height: 50px;
     position: relative;
     //box-shadow: 0px 0px 15px #656363;
@@ -186,7 +201,7 @@ $form-control-focus-box-shadow:$custom-alert-background;
         margin-left: 3px;
         text-indent: -999px;
         cursor: pointer;
-        background-color: $slick-primary-color !important;
+        background-color: var(--slick-primary-color) !important;
         background-clip: padding-box;
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
@@ -196,21 +211,21 @@ $form-control-focus-box-shadow:$custom-alert-background;
 }
 
 .btn-portal {
-    background-color: $slick-primary-color !important;
+    background-color: var(--slick-primary-color) !important;
 }
 
 .btn-portal:hover {
-    background-color: $primary-btn-hover-color !important;
+    background-color: var(--primary-btn-hover-color) !important;
 }
 
 .btn-primary {
-    background-color: $slick-primary-color !important;
-    border-color: $slick-primary-color !important;
+    background-color: var(--slick-primary-color) !important;
+    border-color: var(--slick-primary-color) !important;
 }
 
 .btn-primary:hover {
-    background-color: $primary-btn-hover-color !important;
-    border-color: $primary-btn-hover-color !important;
+    background-color: var(--primary-btn-hover-color) !important;
+    border-color: var(--primary-btn-hover-color) !important;
 }
 html,body{
     min-height: 100vh;
@@ -242,7 +257,7 @@ html,body{
 .login-navbar {
     padding: 0;
     padding-left: 20px;
-    background-color: $slick-primary-color;
+    background-color: var(--slick-primary-color);
 }
 
 #notfound .notfound {
@@ -293,7 +308,7 @@ html,body{
         color: #fff;
         text-transform: uppercase;
         padding: 13px 23px;
-        background-color: $slick-primary-color;
+        background-color: var(--slick-primary-color);
         font-size: 18px;
         -webkit-transition: 0.2s all;
         transition: 0.2s all;
@@ -322,7 +337,7 @@ div:has(input[data-columnid="global"]) {
 
 .chart-header {
     text-decoration: underline;
-    text-decoration-color: $slick-primary-color;
+    text-decoration-color: var(--slick-primary-color);
 }
 
 .app-side-nav {
@@ -330,7 +345,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .bg-portal-primary {
-    background-color: $slick-primary-color;
+    background-color: var(--slick-primary-color);
 }
 
 .portal-box-shadow {
@@ -338,7 +353,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .card-top {
-    border-top: 2px solid $slick-primary-color !important;
+    border-top: 2px solid var(--slick-primary-color) !important;
 }
 
 .is-ngx-invalid div {
@@ -370,7 +385,7 @@ div:has(input[data-columnid="global"]) {
 
 .mat-progress-spinner circle,
 .mat-spinner circle {
-    stroke: $slick-primary-color;
+    stroke: var(--slick-primary-color);
 }
 
 .modal-backdrop {
@@ -391,7 +406,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .card-icon-color {
-    color: $slick-primary-color
+    color: var(--slick-primary-color)
 }
 
 .ellipsis {
@@ -408,7 +423,7 @@ div:has(input[data-columnid="global"]) {
 }
 
 .app-scroller::-webkit-scrollbar-thumb {
-    background: $slick-primary-color;
+    background: var(--slick-primary-color);
     border-radius: 10px;
 }
 
@@ -417,34 +432,34 @@ div:has(input[data-columnid="global"]) {
     margin: 0;
     margin-top: 5px;
     vertical-align: middle;
-    border-bottom: 2px $slick-primary-color solid;
+    border-bottom: 2px var(--slick-primary-color) solid;
     width: 100%;
     font-size: 18px;
     color: black;
 }
 
 mat-nav-list a {
-    color: $slick-primary-color !important;
+    color: var(--slick-primary-color) !important;
 }
 
 .form-control:focus {
     color: #495057 !important;
     background-color: #fff !important;
-    border-color: $slick-primary-color !important;
+    border-color: var(--slick-primary-color) !important;
     outline: 0 !important;
-    box-shadow: 0 0 0 0.2rem $form-control-focus-box-shadow !important;
+    box-shadow: 0 0 0 0.2rem var(--form-control-focus-box-shadow) !important;
 }
 
 .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-    border-color: $slick-primary-color!important;
-    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 0 3px $form-control-focus-box-shadow !important;
+    border-color: var(--slick-primary-color)!important;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 0 3px var(--form-control-focus-box-shadow) !important;
 }
 
 .keyword-container {
     width: auto;
     .keyword {
         color: white;
-        background-color: $slick-primary-color;
+        background-color: var(--slick-primary-color);
         border-radius: 5px;
         font-size: small;
     }

@@ -448,7 +448,8 @@ export class VmsService {
           os: parseRes[key].os,
           status: parseRes[key].status,
           description: parseRes[key].desc,
-          name: parseRes[key].snap
+          name: parseRes[key].snap,
+          owner: parseRes[key].owner
         };
         
         if (snapshotsDataset[index].status == 'true' || snapshotsDataset[index].status == true) {
@@ -472,6 +473,8 @@ export class VmsService {
           hostname: parseRes[key].host,
           os: parseRes[key].os,
           count: parseRes[key].count,
+          owner: parseRes[key].owner,
+          status: parseRes[key].status
         };
         
         if (snapshotsDataset[index].status == 'true' || snapshotsDataset[index].status == true) {

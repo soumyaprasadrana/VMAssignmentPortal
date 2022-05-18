@@ -38,7 +38,9 @@ module.exports = {
     /*Enable RichText for VM comment*/
     enableRichTextForVMComment: process.env.RICHTEXTFORVMCOMMENT || false,
     /*Enable badge for snapshot warning*/
-    enableBadgeForSnapWarning: process.env.ENABLEBADGE || true,
+    enableBadgeForSnapWarning: process.env.ENABLEBADGE || false,
+    /*Enable badge for snapshot warning*/
+    disableColorForSnapWarning: process.env.DISABLESNAPHIGHLIGHT || true,
 
     vm_rest_path: '/vmDetails/getAll',
     dynamicobjects_rest_path: '/dynamicobjects/getAll',

@@ -28,12 +28,10 @@ import {
   CurrentColumn,
   FileType,
   MenuCommandItem,
-  Formatters,
   AngularUtilService,  
   SlickRowDetailView,
   SlickGrid
 } from 'angular-slickgrid';
-import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
 import { VmsService } from '../../services/vms.service';
@@ -49,16 +47,12 @@ import { NodeclientService } from '../../services/nodeclient.service';
 import { FileChooseDialogComponent } from '../../widget/alert-dialog/file-choose-dialog.component';
 import { RelatedvmsDataDialogComponent } from '../../widget/alert-dialog/relatedvms-data-dialog';
 import { ToastService } from '../../widget/toast/toast-service';
-import { ViewChild } from '@angular/core';
-import { TemplateRef } from '@angular/core';
-import { PathComponent } from '../../widget/path/path.component';
 import { CommentDialogComponent } from '../../widget/alert-dialog/comment-dialog.component';
 import { RowDetailComponent } from '../../widget/row-detail-view/row-detail-view.component';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { LinkComponent } from '../../widget/path/link.component';
 import { SnapshotsDialogComponent } from '../../widget/alert-dialog/snapshots-dialog.component';
-import { TakeSnapInputDialogComponent } from '../../widget/alert-dialog/takesnap-dialog.component';
-import { TaskOutputDialogComponent } from '../../widget/alert-dialog/vsphere-task-output-dialog.component';
+import { IPComponent } from '../../widget/path/ip.component';
 const LOCAL_STORAGE_KEY = 'gridState';
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -1107,7 +1101,7 @@ export class HomePageComponent implements OnInit {
       }
       
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class='badge'>${value}</span></div>`,
+          text: `<div style='text-align:left;width:auto;'><span style='text-align:left' class='badge'>${value}</span></div>`,
           toolTip: value,
         };
       
@@ -1153,12 +1147,12 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;' > <span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':'warnSnapshot'}'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' > <span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':'alertSnapshot'}'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1178,12 +1172,12 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'> <span   class="badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':'warnSnapshot'}">${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'> <span   class="badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}">${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':'alertSnapshot'}' >${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}' >${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1476,8 +1470,29 @@ export class HomePageComponent implements OnInit {
     } else {
       osVersionTypeModel == { model: Filters.compoundInputText };
     }
-    this.columnDef = [
-      {
+    var ipColDeftemp!:Column;
+    if(this.loggedUser.enableSnapshotManagements){
+      ipColDeftemp={
+        id: 'ip',
+        name: 'IP Address',
+        field: 'ip',
+        sortable: true,
+        filterable: true,
+        formatter: ipcellFormatter,
+        filter: { model: Filters.compoundInputText },
+        headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        },
+        asyncPostRender: this.renderAngularComponentForIPCell.bind(this),
+          params: {
+            component: IPComponent,
+            angularUtilService: this.angularUtilService,
+          }
+      };
+    }else{
+      ipColDeftemp={
         id: 'ip',
         name: 'IP Address',
         field: 'ip',
@@ -1489,8 +1504,11 @@ export class HomePageComponent implements OnInit {
         customTooltip:{
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter
+        },
         }
-      },
+    }
+    this.columnDef = [
+      ipColDeftemp,
       {
         id: 'hostname',
         name: 'Hostname',
@@ -1571,6 +1589,10 @@ export class HomePageComponent implements OnInit {
             angularUtilService: this.angularUtilService,
           },
           filter: { model: Filters.compoundInputNumber,operator:'>' },
+          customTooltip:{
+            hideArrow:true,
+            headerFormatter:this.headerFormatter.bind(this) as Formatter
+          }
         });
       } 
       var tempColDef:Column[]=[{
@@ -2126,6 +2148,25 @@ export class HomePageComponent implements OnInit {
     if (colDef.params.component) {
       const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
       Object.assign(componentOutput.componentRef.instance, { data: dataContext,parentObject:this,functionName:'openSnapshots',template:dataContext.snap_count,functionParameter1:dataContext.hostname });
+
+      // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
+      setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
+    }
+  }
+  renderAngularComponentForIPCell(cellNode: HTMLElement, row: number, dataContext: any, colDef: Column) {
+    if (colDef.params.component) {
+      const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
+      if (
+        dataContext.snap_count >= this.properties.warnSnapshot &&
+        dataContext.snap_count <= this.properties.alertSnapshot
+      ) {
+        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}'>${dataContext.ip}</span>`,type:'warn',uiprop:this.properties });
+      } else if (dataContext.snap_count > this.properties.alertSnapshot) {
+        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}'>${dataContext.ip}</span>`,type:'alert',uiprop:this.properties });
+      } else {
+        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:dataContext.ip,uiprop:this.properties });  
+      }
+      
 
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));

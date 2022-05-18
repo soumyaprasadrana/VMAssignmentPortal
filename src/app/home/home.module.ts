@@ -26,6 +26,10 @@ import { PathModule } from '../public/widget/path/path.module';
 import { ContactPageComponent } from '../public/home/contact-page/contact-page.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-view.module';
+import { AdminHomeComponent } from '../public/admin/admin-home/admin-home.component';
+import { UserHomeComponent } from '../public/user/user-home/user-home.component';
+import { VmmHomeComponent } from '../public/vmm/vmm-home/vmm-home.component';
+import { SnapshotsHomeComponent } from '../public/snapshots/snapshots-home/snapshots-home.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,7 @@ import { RowDetailModule } from '../public/widget/row-detail-view/row-detail-vie
 
     NgSelectModule,
   ],
-  providers: [],
+  providers: [AdminHomeComponent,UserHomeComponent,VmmHomeComponent,SnapshotsHomeComponent],
   bootstrap: [HomeViewComponent],
 })
 export class HomeModule {}

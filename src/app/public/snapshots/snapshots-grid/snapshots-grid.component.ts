@@ -19,25 +19,22 @@ import {
   Filters,
   AngularGridInstance,
   GridStateChange,
-  GridState,
   GridService,
   Formatter,
+  FileType,
+  SlickGrid,
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
 import { SpinnerService } from '../../services/spinner-service';
-import { UIPropService } from '../../services/properties.services';
-import { UserService } from '../../services/users.service';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { NodeclientService } from '../../services/nodeclient.service';
-import { TechnotesService } from '../../services/technotes.service';
 import { VmsService } from '../../services/vms.service';
 import { ToastService } from '../../widget/toast/toast-service';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 
-const LOCAL_STORAGE_KEY = 'snapshotsGridState';
-const DEFAULT_PAGE_SIZE = 25;
 @Component({
   selector: 'app-snapshots-grid',
   templateUrl: './snapshots-grid.html',
@@ -62,6 +59,7 @@ export class SnapshotsGridComponent implements OnInit {
   properties: any = {};
   userList: any = [];
   excelExportService: any = new ExcelExportService();
+  customTooltipService:any = new SlickCustomTooltip();
   /* rxjs Subscription */
   private subscription!: Subscription;
   selectedRows: any;
@@ -82,9 +80,6 @@ export class SnapshotsGridComponent implements OnInit {
     this.loggedUser=auth.getUser();
     //Load All Snapshots Data
     this.spinner.setSpinnerState(true);
-    
-
-    const presets = JSON.parse(localStorage[LOCAL_STORAGE_KEY] || null);
     if(typeof history.state.action != 'undefined'){
       if(history.state.action=='search'){
         this.spinner.setSpinnerState(false);
@@ -105,7 +100,7 @@ export class SnapshotsGridComponent implements OnInit {
         console.log('inside promise.then -< setting gridDataSet', res);
         this.gridDataset = res;
         console.log(res);
-        this.defineGrid(presets);
+        this.defineGrid();
         this.isLoaded = true;
       })
       .catch((err: any) => {
@@ -140,7 +135,7 @@ export class SnapshotsGridComponent implements OnInit {
         console.log('inside promise.then -< setting gridDataSet', res);
         this.gridDataset = res;
         console.log(res);
-        this.defineGrid(presets);
+        this.defineGrid();
         this.isLoaded = true;
       })
       .catch((err: any) => {
@@ -173,7 +168,7 @@ export class SnapshotsGridComponent implements OnInit {
         this.gridDataset = res;
         console.log(res);
         this.isSnapshotCount=true;
-        this.defineGrid(presets);
+        this.defineGrid();
         this.isLoaded = true;
       })
       .catch((err: any) => {
@@ -306,23 +301,14 @@ export class SnapshotsGridComponent implements OnInit {
 
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
-    localStorage[LOCAL_STORAGE_KEY] = null;
-    this.angularGrid.gridService.resetGrid(this.columnDef);
-    window.location.reload();
-
-    this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
-    const gridState: GridState =
-      this.angularGrid.gridStateService.getCurrentGridState();
-    //console.log('Grid State before destroy :: ', gridState);
-    localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
   }
 
   /* Define grid Options and Columns */
-  defineGrid(gridStatePresets?: GridState) {
+  defineGrid() {
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
     const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
@@ -380,6 +366,10 @@ export class SnapshotsGridComponent implements OnInit {
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'description',
@@ -390,6 +380,10 @@ export class SnapshotsGridComponent implements OnInit {
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'ip',
@@ -400,6 +394,10 @@ export class SnapshotsGridComponent implements OnInit {
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       
       {
@@ -410,6 +408,10 @@ export class SnapshotsGridComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'os',
@@ -418,6 +420,10 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'status',
@@ -426,6 +432,10 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: statusCellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       
       {
@@ -435,6 +445,10 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       
     ];
@@ -450,6 +464,10 @@ export class SnapshotsGridComponent implements OnInit {
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       
       {
@@ -460,6 +478,10 @@ export class SnapshotsGridComponent implements OnInit {
         filterable: true,
         formatter: cellFormatter,
         filter: { model: Filters.compoundInputText },
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'os',
@@ -468,6 +490,10 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       {
         id: 'count',
@@ -476,8 +502,23 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
-      
+      {
+        id: 'status',
+        name: 'Status',
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        formatter: statusCellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
+      },
       {
         id: 'owner',
         name: 'Assignee',
@@ -485,6 +526,10 @@ export class SnapshotsGridComponent implements OnInit {
         sortable: true,
         filterable: true,
         formatter: cellFormatter,
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        }
       },
       
     ];
@@ -507,11 +552,12 @@ export class SnapshotsGridComponent implements OnInit {
           : [50,100,200,400,1000,10000],
         pageSize: 25,
       },
-      enableExcelCopyBuffer: false,
-      enableExcelExport: false,
+      enableExcelCopyBuffer: true,
+      enableExcelExport: true,
       enableCheckboxSelector: false,
       enableRowSelection: false,
       multiSelect: false,
+      registerExternalResources: [this.customTooltipService,this.excelExportService],
 
       // when using the cellMenu, you can change some of the default options and all use some of the callback methods
       enableCellMenu: true,
@@ -539,13 +585,13 @@ export class SnapshotsGridComponent implements OnInit {
           // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
         
           {
-            iconCssClass: 'fa fa-times text-danger',
-            title: 'Reset Grid',
+            iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
+            title: 'Export to Excel',
             disabled: false,
-            command: 'resetGrid',
+            command: 'exportExcel',
 
             textCssClass: 'title',
-            positionOrder: 90,
+            positionOrder: 1,
           },
         ],
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
@@ -553,6 +599,14 @@ export class SnapshotsGridComponent implements OnInit {
           if (args.command === 'resetGrid') {
             this.clearGridStateFromLocalStorage();
           } 
+          else if (args.command === 'exportExcel') {
+            //console.log('excelExport :: ', this.excelExportService);
+            
+            this.excelExportService.exportToExcel({
+              filename: 'Snapshot_List'+'_'+new Date().toTimeString().replace(' ','_'),
+              format: FileType.xlsx,
+            });
+          }
         },
         onColumnsChanged: (_e: any, _args: any) => {
           // //console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
@@ -567,24 +621,14 @@ export class SnapshotsGridComponent implements OnInit {
         
       }*/
     };
-
-    // reload the Grid State with the grid options presets
-    if (gridStatePresets) {
-      this.gridOptions.presets = gridStatePresets;
-    }
-
     this.spinner.setSpinnerState(false);
   }
 
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridStateChanges: GridStateChange) {
-    ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
-    //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
-    if (!this.isDeviceMobilReset) {
-      const gridState: GridState =
-        this.angularGrid.gridStateService.getCurrentGridState();
-      //console.log('Grid State before destroy :: ', gridState);
-      localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
-    }
+   
   }
+  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+    return '';
+ }
 }

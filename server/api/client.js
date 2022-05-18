@@ -67,6 +67,7 @@ module.exports = {
                     tempUser.enableSnapshotManagements=config.enableSnapshotManagements;
                     tempUser.enableRichTextForVMComment=config.enableRichTextForVMComment;
                     tempUser.enableBadgeForSnapWarning=config.enableBadgeForSnapWarning;
+                    tempUser.disableColorForSnapWarning=config.disableColorForSnapWarning;
                     user.activeUser = tempUser; 
                     callback(null, user)
                 } else {
