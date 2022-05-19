@@ -26,9 +26,6 @@ $slick-row-mouse-hover-color: #a8d5f35d;
 $slick-row-selected-color: #a8d5f3;
 $form-control-focus-box-shadow:$custom-alert-background;
 @import "@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-material.scss";
-@import "~compass-mixins/lib/compass/css3";
-
-/* Breadcrumb css*/
 :root{
     --slick-primary-color:#3498db;
     --primary-btn-hover-color: #73c9ff;

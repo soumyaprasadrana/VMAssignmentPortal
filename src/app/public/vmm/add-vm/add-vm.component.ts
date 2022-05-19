@@ -83,7 +83,7 @@ export class AddVmComponent implements OnInit {
       teamValidation = null;
     }
     this.registerForm = this.formBuilder.group({
-      ip: ['', [Validators.required,Validators.pattern('\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')]],
+      ip: ['', [Validators.required,Validators.pattern(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/)]],
       host: ['', Validators.required],
       ngxos: [null, Validators.required],
       ram: [null, [Validators.min(0), Validators.max(200)]],

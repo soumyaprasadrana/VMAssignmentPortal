@@ -13,7 +13,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
 import { PathModule } from '../public/widget/path/path.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { PieChartModule,BarChartModule } from '@swimlane/ngx-charts';
 import { VmChartComponent } from '../public/home/vm-chart/vm-chart.component';
 import { ChartsRoutingModule } from './charts-routing.module';
 import { ChartsViewComponent } from '../public/home/charts-view/charts-view.component';
@@ -35,7 +35,8 @@ import { TreeModule } from '../public/widget/tree-diagram/tree.module';
     MaterialModule,
     ChartsRoutingModule,
     PathModule,
-    NgxChartsModule,
+    PieChartModule,
+    BarChartModule,
     TreeModule
     
   ]

@@ -22,8 +22,8 @@ import { Router } from '@angular/router';
   <span [ngbPopover]="alertPopOver" [autoClose]="'outside'"  container="body" placement="right" *ngIf="type=='alert'" class="btn card badge badge-danger customA"><i class="fa fa-warning" aria-label="hidden"></i></span>
   </td>
   <td>
-  <span class="badge" (click)="callParentFunction()" [innerHtml]="template">
-  </span>
+  <!--<span class="badge" (click)="callParentFunction()" [innerHtml]="template">
+  </span>-->
   </td>
   </tr>
   </table>

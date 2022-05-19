@@ -90,7 +90,7 @@ export class HomePageComponent implements OnInit {
   osList: any;
   osTypes: any = [];
   osVersiontypes: any = [];
-
+  isGoingToReset:boolean=false;
 
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -1038,10 +1038,15 @@ export class HomePageComponent implements OnInit {
       this.isDeviceMobilReset = true;
       window.location.reload();
     } else {
+      //console.log("Reset Grid :: ");    
+      this.isGoingToReset=true;
       this.angularGrid.gridService.resetGrid(this.columnDef);
       this.angularGrid.gridStateService.resetColumns();
-      localStorage[LOCAL_STORAGE_KEY] = null;
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      //console.log(localStorage[LOCAL_STORAGE_KEY]);
       window.location.reload();
+      
+      
     }
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
@@ -1050,10 +1055,12 @@ export class HomePageComponent implements OnInit {
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
+    if(!this.isGoingToReset){
     const gridState: GridState =
       this.angularGrid.gridStateService.getCurrentGridState();
     //console.log('Grid State before destroy :: ', gridState);
     localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    }
   }
 
   /* Define grid Options and Columns */
@@ -1471,27 +1478,7 @@ export class HomePageComponent implements OnInit {
       osVersionTypeModel == { model: Filters.compoundInputText };
     }
     var ipColDeftemp!:Column;
-    if(this.loggedUser.enableSnapshotManagements){
-      ipColDeftemp={
-        id: 'ip',
-        name: 'IP Address',
-        field: 'ip',
-        sortable: true,
-        filterable: true,
-        formatter: ipcellFormatter,
-        filter: { model: Filters.compoundInputText },
-        headerCssClass: 'gridRow',
-        customTooltip:{
-          hideArrow:true,
-          headerFormatter:this.headerFormatter.bind(this) as Formatter
-        },
-        asyncPostRender: this.renderAngularComponentForIPCell.bind(this),
-          params: {
-            component: IPComponent,
-            angularUtilService: this.angularUtilService,
-          }
-      };
-    }else{
+   
       ipColDeftemp={
         id: 'ip',
         name: 'IP Address',
@@ -1506,8 +1493,34 @@ export class HomePageComponent implements OnInit {
           headerFormatter:this.headerFormatter.bind(this) as Formatter
         },
         }
+    
+    this.columnDef = [];
+    if(this.loggedUser.enableSnapshotManagements){
+     this.columnDef.push({
+        id: 'snapWarnCol',
+        name: '',
+        field: '',
+        sortable: false,
+        filterable: false,
+        excludeFromHeaderMenu:true,
+        excludeFromColumnPicker:true,
+        resizable:false,
+        formatter: ipcellFormatter,
+        width:30,
+        headerCssClass:'',
+        cssClass:'slick-cell-checkboxse',
+        customTooltip:{
+          hideArrow:true,
+          headerFormatter:this.headerFormatter.bind(this) as Formatter
+        },
+        asyncPostRender: this.renderAngularComponentForIPCell.bind(this),
+          params: {
+            component: IPComponent,
+            angularUtilService: this.angularUtilService,
+          }
+      });
     }
-    this.columnDef = [
+    this.columnDef.push(
       ipColDeftemp,
       {
         id: 'hostname',
@@ -1560,7 +1573,7 @@ export class HomePageComponent implements OnInit {
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter
         }
-      }];
+      });
       var customToolTipForCommentColumn:any={
         hideArrow:true,
         headerFormatter:this.headerFormatter.bind(this) as Formatter
@@ -1757,7 +1770,7 @@ export class HomePageComponent implements OnInit {
     mappedColumnDefinitions.pop();
 
     this.columnDef.forEach((columnDef) => {
-      if (columnDef.id !== 'action') {
+      if (columnDef.id !== 'action' && columnDef.id !== 'snapWarnCol') {
         columnDef.header = {
           menu: {
             items: [
@@ -1853,7 +1866,7 @@ export class HomePageComponent implements OnInit {
 
       // when using the cellMenu, you can change some of the default options and all use some of the callback methods
       enableCellMenu: true,
-
+      
       //Grid custom menu
       gridMenu: {
         
@@ -2017,7 +2030,7 @@ export class HomePageComponent implements OnInit {
   gridStateChanged(gridStateChanges: GridStateChange) {
     ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
     //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
-    if (!this.isDeviceMobilReset) {
+    if (!this.isDeviceMobilReset && !this.isGoingToReset) {
       const gridState: GridState =
         this.angularGrid.gridStateService.getCurrentGridState();
       //console.log('Grid State before destroy :: ', gridState);
