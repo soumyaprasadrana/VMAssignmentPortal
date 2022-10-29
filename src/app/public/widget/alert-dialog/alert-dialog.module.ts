@@ -23,10 +23,6 @@ import { AdditionalDataDialogComponent } from './additional-data-dialog';
 import { RelatedvmsDataDialogComponent } from './relatedvms-data-dialog';
 import { FileChooseDialogComponent } from './file-choose-dialog.component';
 import { CommentDialogComponent } from './comment-dialog.component';
-import { SnapshotsDialogComponent } from './snapshots-dialog.component';
-import { TreeModule } from '../tree-diagram/tree.module';
-import { TakeSnapInputDialogComponent } from './takesnap-dialog.component';
-import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.component';
 @NgModule({
   declarations: [
     AlertDialogComponent,
@@ -36,10 +32,7 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
     RelatedvmsDataDialogComponent,
-    CommentDialogComponent,
-    SnapshotsDialogComponent,
-    TakeSnapInputDialogComponent,
-    TaskOutputDialogComponent
+    CommentDialogComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +41,6 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    TreeModule,
   ],
   exports: [
     AlertDialogComponent,
@@ -58,10 +50,7 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
     RelatedvmsDataDialogComponent,
-    CommentDialogComponent,
-    SnapshotsDialogComponent,
-    TakeSnapInputDialogComponent,
-    TaskOutputDialogComponent
+    CommentDialogComponent
   ],
 })
 export class AlertModule {}

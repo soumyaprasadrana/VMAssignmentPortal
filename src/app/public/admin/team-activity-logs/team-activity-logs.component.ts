@@ -64,7 +64,7 @@ export class TeamActivityLogsComponent implements OnInit {
       }
 
       return {
-        text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
+        text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
         toolTip: value,
       };
     };
@@ -80,22 +80,17 @@ export class TeamActivityLogsComponent implements OnInit {
       }
       if (vm.activity_status == 'SUCCESS') {
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='alert show alert-success'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.activity_status == 'FAILED') {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-danger'>${value}</span></div>`,
-          toolTip: value,
-        };
-      }else if (vm.activity_status == 'PENDING' || vm.activity_status == 'RUNNING') {
-        return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-warning'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='alert show alert-danger'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
           toolTip: value,
         };
       }

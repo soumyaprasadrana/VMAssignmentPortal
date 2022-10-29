@@ -27,7 +27,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row  ml-4">
             <div class="col-lg-12">
-                <div class="row p-1 ">
+                <div class="row p-3 ">
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="ip">IP Address:</label>
@@ -35,7 +35,6 @@
                             <input [readonly]="editMode" id="ip" type="text" class="form-control form-control-include-icon" formControlName="ip" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }">
                             <div *ngIf="submitted && f.ip.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.ip.errors.required">IP is required</div>
-                                <div class="ml-1" *ngIf="f.ip.errors.pattern">Invalid IP Address!</div>
                             </div>
                         </div>
                     </div>
@@ -50,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-1 ">
+                <div class="row p-3 ">
                     <div class="col-sm-6 ">
                         <div class="form-group required">
                             <label for="os">OS:</label>
@@ -80,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-1 ">
+                <div class="row p-3 ">
 
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -104,7 +103,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-1 ">
+                <div class="row p-3 ">
 
                     <div *ngIf="loggedUser.permissions.is_admin" class="col-sm-6">
 
@@ -132,7 +131,7 @@
         </div>
 
 
-        <div class="row p-1">
+        <div class="row p-3">
             <div class="col-lg-12 ">
                 <button type="submit" class="btn float-sm-right text-capitalize btn-primary">Submit</button>
             </div>

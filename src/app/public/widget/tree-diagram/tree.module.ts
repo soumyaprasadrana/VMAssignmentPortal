@@ -12,12 +12,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeViewComponent } from './tree-diagram.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-import { SnapViewComponent } from './snap-diagram.component';
 
 @NgModule({
-  declarations: [TreeViewComponent,SnapViewComponent],
-  imports: [CommonModule, RouterModule],
-  exports: [TreeViewComponent,SnapViewComponent],
+  declarations: [TreeViewComponent],
+  imports: [CommonModule, RouterModule, NgbModule],
+  exports: [TreeViewComponent],
 })
 export class TreeModule {}

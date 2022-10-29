@@ -19,10 +19,6 @@ import { PassChangeDialogComponent } from '../../alert-dialog/change-pass-dialog
 import { AlertDialogComponent } from '../../alert-dialog/alert-dialog.component';
 import { SpinnerService } from 'src/app/public/services/spinner-service';
 import { PortalThemesService } from 'src/app/public/services/portal.thems.service';
-import { AdminHomeComponent } from 'src/app/public/admin/admin-home/admin-home.component';
-import { VmmHomeComponent } from 'src/app/public/vmm/vmm-home/vmm-home.component';
-import { UserHomeComponent } from 'src/app/public/user/user-home/user-home.component';
-import { SnapshotsHomeComponent } from 'src/app/public/snapshots/snapshots-home/snapshots-home.component';
 @Component({
   selector: 'app-top-nav',
   templateUrl: './top-nav.component.html',
@@ -35,18 +31,13 @@ export class TopNavComponent implements OnInit {
   loggedUser!: any;
   THEME_LOCAL = 'theme';
   quicklinks: [] = [];
-  red="red";
   constructor(
     private searchService: GlobalSearchService,
     private auth: AuthserviceService,
     private router: Router,
     private dialog: MatDialog,
     private _spinner: SpinnerService,
-    private themeService: PortalThemesService,
-    private adminModule:AdminHomeComponent,
-    private vmmModule:VmmHomeComponent,
-    private usersModule:UserHomeComponent,
-    private snapshotModule:SnapshotsHomeComponent
+    private themeService: PortalThemesService
   ) {
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -170,32 +161,4 @@ export class TopNavComponent implements OnInit {
       theme: theme,
     });
   }
-  deleteTeam(){
-    this.adminModule.deleteTeam();
-  }
-  promoteUser(){
-    this.adminModule.promoteUser();
-  }
-  deleteUser(){
-    this.usersModule.deleteUser();
-  }
-  syncSnapshotCount(){
-    this.snapshotModule.runUpdateCount();
-  }
-  syncVMExtraData(){
-    this.snapshotModule.runUpdateExtradata();
-  }
-  deleteVM(){
-    this.vmmModule.deleteVM();
-  }
-  goToAllSnapView(){
-    this.router.navigate(['/portal/home/vmm/snapshots/grid'],{state:{action:'all'}});
-  }
-  goToSnapCount(){
-    this.router.navigate(['/portal/home/vmm/snapshots/grid'],{state:{action:'count'}});
-  }
-  goToSearchSnapshot(){
-    this.router.navigate(['/portal/home/vmm/snapshots/grid'],{state:{action:'search'}});
-  }
-
 }

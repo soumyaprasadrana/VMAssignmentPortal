@@ -1,18 +1,20 @@
 <app-path></app-path>
 
-<div class="container-fluid-lg p-3 my-3  ">
+<div class="container-fluid-lg p-3 my-3 text-muted  ">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
-                <i class="fa fa-sticky-note-o" area-label="false"></i> {{title}}
+
+            <h1 class="ml-3">
+
+                <i class="fa fa-desktop" area-label="false"></i>{{title}}
                 <hr>
-            </h3>
+            </h1>
         </div>
     </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row  ml-4">
             <div class="col-lg-12">
-                <div class="row p-1 ">
+                <div class="row p-3 ">
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="description">Description:</label>
@@ -33,7 +35,9 @@
                     </div>
                 </div>
 
-                <div class="row p-1 ">
+                <div class="row p-3 ">
+
+
                     <div class="col-sm-6">
                         <div class="form-group ">
                             <label for="is_global">Is a global technote?</label>
@@ -46,6 +50,7 @@
                         </div>
                     </div>
                     <div *ngIf="loggedUser.permissions.is_admin" class="col-sm-6">
+
                         <div class="form-group required">
                             <label for="team">Team:</label>
                             <!-- <ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="ngxteam" formControlName="ngxteam" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.ngxteam.errors }"
@@ -57,20 +62,29 @@
 
                                 <div class="ml-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
                             </div>
+
+
+
                         </div>
                     </div>
 
                 </div>
-                <div class="row p-1 ">
+                <div class="row p-3 ">
+
                     <div class="form-group required">
                         <label for="technote">Technote:</label>
                         <div *ngIf="submitted && f.technote.errors">
                             <div class="ml-1" *ngIf="f.technote.errors.required" [ngClass]="{ 'is-richtext-invalid is-invalid': submitted && f.technote.errors.required }">Technote is required</div>
                         </div>
                         <quill-editor [styles]="{height: '200px'}" name="technote" id="technote" formControlName="technote" [ngClass]="{ 'is-richtext-invalid is-invalid': submitted && f.technote.errors }" ngDefaultControl></quill-editor>
+
                     </div>
+
+
                 </div>
             </div>
+
+
         </div>
 
 

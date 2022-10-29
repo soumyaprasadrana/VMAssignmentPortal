@@ -36,11 +36,6 @@ const routes: Routes = [
         component: EditMultipleVmComponent,
         data: { animation: 'add',title:'Edit VM' },
       },
-      {
-        path: 'snapshots',
-        loadChildren: () =>
-          import(`../snapshots/snapshots.module`).then((m) => m.SnapshotsModule),
-      },
 
       {
         path: '',

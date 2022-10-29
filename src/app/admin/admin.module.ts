@@ -12,6 +12,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PathModule } from '../public/widget/path/path.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminViewComponent } from '../public/admin/admin-view/admin-view.component';
 import { AdminHomeComponent } from '../public/admin/admin-home/admin-home.component';
@@ -54,6 +55,7 @@ import { ViewDynamicObjectComponent } from '../public/admin/view-dynamicobject/v
     CommonModule,
     PathModule,
     AlertModule,
+    NgbModule,
     NgxTextOverflowClampModule,
     FormsModule,
     ReactiveFormsModule,

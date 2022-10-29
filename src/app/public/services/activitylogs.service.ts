@@ -24,7 +24,6 @@ export class ActivitylogsService {
     this.promiseX = this.getDataFromNode();
   }
   getActiviyLogs() {
-    this.promiseX = this.getDataFromNode();
     return this.promiseX;
   }
   getDataFromNode(): any {
