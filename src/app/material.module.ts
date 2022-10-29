@@ -29,12 +29,18 @@ import { MatTableModule } from '@angular/material/table';
 import {MatSliderModule} from '@angular/material/slider';
 import { AngularFileUploaderModule } from 'angular-file-uploader';
 import { QuillModule } from 'ngx-quill';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from './public/widget/toast/toast.module';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonToggleModule} from '@angular/material/button-toggle'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -57,12 +63,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle'
     MatTableModule,
     QuillModule,
     MatSliderModule,
-    NgbModule,
+    NgbAlertModule,
+    NgbCarouselModule,
+    NgbToastModule,
     ToastModule,
     ClipboardModule,
     MatStepperModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    NgbProgressbarModule,
+    NgbPopoverModule,
+    NgbTooltipModule
   ],
   exports: [
     AngularFileUploaderModule,
@@ -83,12 +94,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle'
     MatTableModule,
     QuillModule,
     MatSliderModule,
-    NgbModule,
+    NgbAlertModule,
+    NgbCarouselModule,
+    NgbToastModule,
     ToastModule,
     ClipboardModule,
     MatStepperModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    NgbProgressbarModule,
+    NgbPopoverModule,
+    NgbTooltipModule
   ],
 })
 export class MaterialModule {}

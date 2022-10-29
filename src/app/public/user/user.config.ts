@@ -24,6 +24,7 @@ export class UserConfig {
         cardTextClamp: 3,
         cardPermissions: function (loggedUser: any) {
           return (
+            loggedUser.permissions.is_admin ||
             loggedUser.permissions.create_user ||
             loggedUser.permissions.is_teamLead
           );
@@ -40,6 +41,7 @@ export class UserConfig {
         cardTextClamp: 0,
         cardPermissions: function (loggedUser: any) {
           return (
+            loggedUser.permissions.is_admin ||
             loggedUser.permissions.update_user ||
             loggedUser.permissions.is_teamLead
           );
@@ -63,6 +65,7 @@ export class UserConfig {
         },
         cardPermissions: function (loggedUser: any) {
           return (
+            loggedUser.permissions.is_admin ||
             loggedUser.permissions.delete_user ||
             loggedUser.permissions.is_teamLead
           );
