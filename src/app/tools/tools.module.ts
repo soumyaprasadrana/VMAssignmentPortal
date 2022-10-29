@@ -29,6 +29,7 @@ import { EditTechnotesComponent } from '../public/tools/edit-technotes/edit-tech
 import { AddTechnotesComponent } from '../public/tools/add-technotes/add-technotes.component';
 import { AngularSlickgridModule } from 'angular-slickgrid';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModule } from '../material.module';
 import { ViewTechnoteComponent } from '../public/tools/view-technote/view-technote.component';
@@ -57,6 +58,7 @@ import { FAIconsComponent } from '../public/tools/tools-spa-internal-faicons/too
     DBButtonModule,
     LTBButtonModule,
     LTBDialogModule,
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,

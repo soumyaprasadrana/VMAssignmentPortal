@@ -99,14 +99,8 @@ export class LoginViewComponent implements OnInit {
           //console.log('Authentication Sucessfull');
           this.alert.type = 'success';
           this.alert.message = 'Login Success';
+          this.router.navigate(['/portal/home/dash']);
           this.showAlert = true;
-          this.spinner.setSpinnerState(true);
-          this.router.navigate(['/portal/home/dash']).then((res:any)=>{
-            this.spinner.setSpinnerState(false);
-          }).catch((err:any)=>{
-            this.spinner.setSpinnerState(false);
-          });
-          
         }
       })
       .catch((result) => {
@@ -136,13 +130,10 @@ export class LoginViewComponent implements OnInit {
           //console.log('Login Success true');
           this.alert.type = 'success';
           this.alert.message = 'Login Success';
+          this.router.navigate(['/portal/home']);
           this.showAlert = true;
-          this.spinner.setSpinnerState(true);
-          this.router.navigate(['/portal/home/dash']).then((res:any)=>{
-            this.spinner.setSpinnerState(false);
-          }).catch((err:any)=>{
-            this.spinner.setSpinnerState(false);
-          });
+
+          this.spinner.setSpinnerState(false);
         } else {
           this.alert.type = 'danger';
           this.alert.message = result.message;

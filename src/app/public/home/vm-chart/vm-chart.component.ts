@@ -65,8 +65,7 @@ export class VmChartComponent implements OnInit {
     'RAM',
     'GROUP',
     'STATUS',
-    'ASSIGNEE',
-    'OWNER'
+    'OWNER',
   ];
   chartTypeList = ['PIE CHART', 'BAR VERTICAL', 'BAR HORIZONTAL', 'ADVANCED'];
 
@@ -137,13 +136,9 @@ export class VmChartComponent implements OnInit {
       grouped = this.groupBy(this.vmList, (vm: VM) => vm.status);
       unique = [...new Set(this.vmList.map((item: VM) => item.status))];
     }
-    if (field == 'ASSIGNEE') {
+    if (field == 'OWNER') {
       grouped = this.groupBy(this.vmList, (vm: VM) => vm.owner);
       unique = [...new Set(this.vmList.map((item: VM) => item.owner))];
-    }
-    if (field == 'OWNER') {
-      grouped = this.groupBy(this.vmList, (vm: VM) => vm.vm_owner_lab);
-      unique = [...new Set(this.vmList.map((item: VM) => item.vm_owner_lab))];
     }
     if (field == 'RAM') {
       grouped = this.groupBy(this.vmList, (vm: VM) => vm.ram);

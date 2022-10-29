@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './public/login/login-form/login-form.component';
 import { NavbarComponent } from './public/widget/navbar/navbar.component';
 import { LoginViewComponent } from './public/login/login-view/login-view.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './public/widget/page-not-found/page-not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterModule } from './public/widget/footer/footer.module';
@@ -45,6 +46,7 @@ import { ToastModule } from './public/widget/toast/toast.module';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgbModule,
     BrowserAnimationsModule,
     FooterModule,
     MaterialModule,

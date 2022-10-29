@@ -67,7 +67,6 @@ export class ToolsTechnotesComponent implements OnInit {
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
   defaultPageSizeList: any;
-  isGoingToReset:boolean=false;
 
   /*technotesServie-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -194,20 +193,18 @@ export class ToolsTechnotesComponent implements OnInit {
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
     localStorage[LOCAL_STORAGE_KEY] = null;
-    this.isGoingToReset=true;
     this.angularGrid.gridService.resetGrid(this.columnDef);
     window.location.reload();
+
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
-    if(this.isGoingToReset){
     const gridState: GridState =
       this.angularGrid.gridStateService.getCurrentGridState();
     //console.log('Grid State before destroy :: ', gridState);
     localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
-    }
   }
 
   /* Define grid Options and Columns */
@@ -557,7 +554,7 @@ export class ToolsTechnotesComponent implements OnInit {
   gridStateChanged(gridStateChanges: GridStateChange) {
     ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
     //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
-    if (!this.isDeviceMobilReset && !this.isGoingToReset) {
+    if (!this.isDeviceMobilReset) {
       const gridState: GridState =
         this.angularGrid.gridStateService.getCurrentGridState();
       //console.log('Grid State before destroy :: ', gridState);

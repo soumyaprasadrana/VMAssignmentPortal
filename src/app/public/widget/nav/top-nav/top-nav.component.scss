@@ -64,12 +64,3 @@ $primary-text-color-hover: #fff;
     font-size: 12px;
     width: 200px;
 }
-::ng-deep .mat-menu-content {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-  }
-  
-  .mat-menu-item{
-    line-height:35px;
-    height:35px;
-  }

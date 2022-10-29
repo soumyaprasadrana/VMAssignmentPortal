@@ -16,7 +16,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MustMatch } from '../../widget/utils/must-match.validator';
+import { Team } from '../../DataModel/team';
 import { TeamService } from '../../services/teams.service';
+import { OS } from '../../DataModel/os';
 import { OSService } from '../../services/vm.os.service';
 import { HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
@@ -83,10 +86,10 @@ export class AddVmComponent implements OnInit {
       teamValidation = null;
     }
     this.registerForm = this.formBuilder.group({
-      ip: ['', [Validators.required,Validators.pattern(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/)]],
+      ip: ['', Validators.required],
       host: ['', Validators.required],
       ngxos: [null, Validators.required],
-      ram: [null, [Validators.min(0), Validators.max(200)]],
+      ram: [0, [Validators.min(0), Validators.max(200)]],
       group: [''],
       owner: [''],
       ngxteam: [null, teamValidation],

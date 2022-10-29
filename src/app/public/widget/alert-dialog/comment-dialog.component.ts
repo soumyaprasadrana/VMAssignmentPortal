@@ -22,7 +22,6 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { AuthserviceService } from '../../services/authservice.service';
 
 export interface DialogData {
   type?: string;
@@ -48,19 +47,13 @@ export class CommentDialogComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   public dataCtrl = new FormControl();
-  loggedUser:any;
-  formGroupheight:any='50px'
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialogRef: MatDialogRef<CommentDialogComponent>,
     private formBuilder: FormBuilder,
-    private config: NgSelectConfig,
-    private auth:AuthserviceService
+    private config: NgSelectConfig
   ) {
     this.config.appendTo = 'body';
-    this.loggedUser=auth.getUser();
-    if(this.loggedUser.enableRichTextForVMComment)
-      this.formGroupheight='200px';
   }
 
   ngOnInit(): void {
