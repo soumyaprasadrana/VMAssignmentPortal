@@ -12,11 +12,9 @@
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { HttpHeaders } from '@angular/common/http';
@@ -35,7 +33,7 @@ import { ToastService } from '../../widget/toast/toast-service';
 export class AddTeamComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
-  title: string = 'Add Team';
+  title: string = 'Create Team';
   loggedUser:any;
   constructor(
     private formBuilder: FormBuilder,

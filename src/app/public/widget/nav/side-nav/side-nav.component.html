@@ -8,6 +8,9 @@
     <a mat-list-item [routerLink]="['/portal/home/chart']" (click)="onSidenavClose()">
         <mat-icon>pie_chart</mat-icon> <span class="ml-1">Charts</span>
     </a>
+    <a *ngIf="this.loggedUser.enableSnapshotManagements" mat-list-item [routerLink]="['/portal/home/vmm/snapshots']" (click)="onSidenavClose()">
+        <mat-icon>memory</mat-icon> <span class="ml-1">Snapshots</span>
+    </a>
     <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" mat-list-item [routerLink]="['/portal/home/user/dash']" (click)="onSidenavClose()">
         <mat-icon>people</mat-icon> <span class="ml-1">Users</span>
     </a>

@@ -69,11 +69,12 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   selectedRows: any;
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
-  defaultPageSizeList: any;
+  defaultPageSizeList: any=[];
   app:any;
   LOCAL_STORAGE_KEY = 'dynamicobjectappGridState';
   DEFAULT_PAGE_SIZE = 25;
   listsScope:any={};
+  isGoingToReset:boolean=false;
 
   /*dynamicobjectappServie-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -167,7 +168,21 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     this.loggedUser = auth.getUser();
   }
   initDataLoad(promiseR:any,presets:any){
-       promiseR
+    this._props
+          .getProps()
+          .then((res) => {
+            //console.log('Props=>', res);
+            this.properties = JSON.parse('' + res);
+            var PageSizeList =
+              this.properties.paginationPageSizesList.split(':');
+            try{
+              for(var item in PageSizeList){
+                this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
+              }
+            }catch(e){
+              console.log(e);
+            }
+            promiseR
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
         //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
@@ -194,6 +209,9 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         //console.log('error occurred ', err);
         this.isLoaded = false;
       });
+           
+          })
+       
      
   }
   parseObjectRecords(data:any):any[]{
@@ -303,6 +321,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
     localStorage[this.LOCAL_STORAGE_KEY] = null;
+    this.isGoingToReset=true;
     this.angularGrid.gridService.resetGrid(this.columnDef);
     window.location.reload();
 
@@ -311,10 +330,12 @@ export class DynamicObjectAppHomeComponent implements OnInit {
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
+    if(!this.isGoingToReset){
     const gridState: GridState =
       this.angularGrid.gridStateService.getCurrentGridState();
     //console.log('Grid State before destroy :: ', gridState);
     localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    }
   }
 
   /* Define grid Options and Columns */
@@ -710,7 +731,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   gridStateChanged(gridStateChanges: GridStateChange) {
     ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
     //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
-    if (!this.isDeviceMobilReset) {
+    if (!this.isDeviceMobilReset && !this.isGoingToReset) {
       const gridState: GridState =
         this.angularGrid.gridStateService.getCurrentGridState();
       //console.log('Grid State before destroy :: ', gridState);s

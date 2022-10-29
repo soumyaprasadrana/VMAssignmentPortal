@@ -12,12 +12,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastsContainer } from './portal-toast.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ToastsContainer],
-  imports: [CommonModule,NgbModule,RouterModule],
+  imports: [CommonModule,RouterModule,NgbToastModule],
   exports: [ToastsContainer],
 })
 export class ToastModule {}

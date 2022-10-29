@@ -13,8 +13,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from '../public/home/home-page/home-page.component';
 import { HomeViewComponent } from '../public/home/home-view/home-view.component';
-import { RealtedVMSGraphComponent } from '../public/home/related-vms-graph/related-vms-graph.component';
-import { VmChartComponent } from '../public/home/vm-chart/vm-chart.component';
 import { PageNotFoundHomeComponent } from '../public/widget/page-not-found-home/page-not-found-home.component';
 
 const routes: Routes = [
@@ -39,14 +37,10 @@ const routes: Routes = [
       },
       {
         path: 'chart',
-        component: VmChartComponent,
-        data: { animation: 'chart',title:'Charts' },
+        loadChildren: () =>
+          import(`./charts.module`).then((m) => m.ChartsModule),
       },
-      {
-        path: 'chart/relationships',
-        component: RealtedVMSGraphComponent,
-        data: { animation: 'chart',title:'Relationships' },
-      },
+      
 
       {
         path: 'user',
@@ -63,6 +57,7 @@ const routes: Routes = [
         loadChildren: () =>
           import(`../tools/tools.module`).then((m) => m.ToolsModule),
       },
+     
 
       {
         path: '',

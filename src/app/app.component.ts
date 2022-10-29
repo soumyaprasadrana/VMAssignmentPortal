@@ -10,7 +10,7 @@
  * @desc App Component
  */
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SpinnerService } from './public/services/spinner-service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
@@ -132,6 +132,23 @@ export class AppComponent {
           data.title='VMPORTAL';
         this.titleService.setTitle(data.title)});  
     });  
+    router.events.subscribe(event => {
+      if(event instanceof NavigationStart) {
+        this.spinner.setSpinnerState(true);
+      }else if(event instanceof NavigationEnd) {
+        this.spinner.setSpinnerState(false);
+      }
+      else if(event instanceof NavigationCancel) {
+        this.spinner.setSpinnerState(false);
+      }
+      else if(event instanceof NavigationError) {
+        this.spinner.setSpinnerState(false);
+      }
+      // NavigationEnd
+      // NavigationCancel
+      // NavigationError
+      // RoutesRecognized
+    });
   }
   getChild (activatedRoute: ActivatedRoute):any {  
     if (activatedRoute.firstChild) {  

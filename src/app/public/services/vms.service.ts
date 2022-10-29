@@ -106,6 +106,34 @@ export class VmsService {
     };
     return this._client.post('api/vm/assignVM', params, httpOptions);
   }
+  takeSnap(hostname:any,snapName:any,snapDesc:any){
+    //console.log('takesnap);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var params: any = { hostname: hostname, snapName: snapName,snapDesc:snapDesc };
+
+    
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/vm/takeSnap', params, httpOptions);
+  }
+  revertSnap(hostname:any,snapName:any,snapID:any){
+    //console.log('takesnap);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var params: any = { hostname: hostname, snapName: snapName,snapID:snapID };
+
+    
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/vm/revertSnap', params, httpOptions);
+  }
   addComment(ip: string, Comment: string): any {
     //console.log('assignVM:ip>', ip, 'assignVM:user>', user);
     var headers = new HttpHeaders({
@@ -159,7 +187,34 @@ export class VmsService {
     };
     return this._client.post('api/vm/releaseVM', params, httpOptions);
   }
+  runUpdateSnapshotCount(): any {
+    //console.log('releaseVM:ip>', ip);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
 
+    var params: any = {  };
+
+    //console.log('releaseVM:', params);
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/admin/run/snapcount', params, httpOptions);
+  }
+  runUpdateExtradata(): any {
+    //console.log('releaseVM:ip>', ip);
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var params: any = {  };
+
+    //console.log('releaseVM:', params);
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.post('api/admin/run/extradata', params, httpOptions);
+  }
   getVMSObservable(): any {
     var headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -170,6 +225,94 @@ export class VmsService {
     };
     var observable = this._client.getObservable('api/vm/getAll', httpOptions);
     return observable;
+  }
+  getVMSnapshots(hostname: string) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.get('api/vm/snapshots/' + hostname , httpOptions);
+  }
+  getAllSnapshots() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    var promisex=this._client.get('api/vm/get/snapshots'  , httpOptions);
+    var resPromise=new Promise((resolve,reject)=>{
+      promisex.then((res:any)=>{
+        try{
+          
+          res=JSON.parse(res);
+        }catch(e){}
+        if(typeof res.status=='undefined')
+            resolve(this.parseSnapshotsData(res));
+        else
+          reject(res);
+      }).catch((err)=>{
+        reject(err);
+      }
+      );
+    })
+    return resPromise;
+  }
+  getAllSnapshotsCount() {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    var promisex=this._client.get('api/vm/get/snapshotscount'  , httpOptions);
+    var resPromise=new Promise((resolve,reject)=>{
+      promisex.then((res:any)=>{
+        try{
+          
+          res=JSON.parse(res);
+        }catch(e){}
+        if(typeof res.status=='undefined')
+            resolve(this.parseSnapshotsCountData(res));
+        else
+          reject(res);
+      }).catch((err)=>{
+        reject(err);
+      }
+      );
+    })
+    return resPromise;
+  }
+  searchSnapshots(keyword:any) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    var promisex=this._client.get('api/vm/get/snapshots/'+keyword  , httpOptions);
+    var resPromise=new Promise((resolve,reject)=>{
+      promisex.then((res:any)=>{
+        try{
+          
+          res=JSON.parse(res);
+        }catch(e){}
+        if(typeof res.status=='undefined')
+            resolve(this.parseSnapshotsData(res));
+        else
+          reject(res);
+      }).catch((err)=>{
+        reject(err);
+      }
+      );
+    })
+    return resPromise;
   }
   getVMAdditionalData(ip: string) {
     var headers = new HttpHeaders({
@@ -292,5 +435,56 @@ export class VmsService {
       }
     }
     return vmDataset;
+  }
+  parseSnapshotsData(parseRes: any) {
+    const snapshotsDataset: any[] = [];
+    
+    var index = 0;
+    for (var key in parseRes) {
+        snapshotsDataset[index] = {
+          id: index,
+          ip: parseRes[key].ip,
+          hostname: parseRes[key].host,
+          os: parseRes[key].os,
+          status: parseRes[key].status,
+          description: parseRes[key].desc,
+          name: parseRes[key].snap,
+          owner: parseRes[key].owner
+        };
+        
+        if (snapshotsDataset[index].status == 'true' || snapshotsDataset[index].status == true) {
+          snapshotsDataset[index].status = 'Available';
+        } else {
+          snapshotsDataset[index].status = 'Occupied';
+        }
+        index++;
+      
+    }
+    return snapshotsDataset;
+  }
+  parseSnapshotsCountData(parseRes: any) {
+    const snapshotsDataset: any[] = [];
+    
+    var index = 0;
+    for (var key in parseRes) {
+        snapshotsDataset[index] = {
+          id: index,
+          ip: parseRes[key].ip,
+          hostname: parseRes[key].host,
+          os: parseRes[key].os,
+          count: parseRes[key].count,
+          owner: parseRes[key].owner,
+          status: parseRes[key].status
+        };
+        
+        if (snapshotsDataset[index].status == 'true' || snapshotsDataset[index].status == true) {
+          snapshotsDataset[index].status = 'Available';
+        } else {
+          snapshotsDataset[index].status = 'Occupied';
+        }
+        index++;
+      
+    }
+    return snapshotsDataset;
   }
 }
