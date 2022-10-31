@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-04-19 18:26:41
- * @modify date 2022-04-19 18:26:41
+ * @modify date 2022-10-30 18:30:37
  * @desc Dynamic Object App Add Record Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -41,10 +41,10 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
   title: string = 'Add Record';
-  loggedUser:any;
-  attributeList:any;
-  app:any;
-  listsScope:any={};
+  loggedUser: any;
+  attributeList: any;
+  app: any;
+  listsScope: any = {};
   usersList: any = [];
   teamList: any = [];
   constructor(
@@ -56,145 +56,183 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
     private _spinner: SpinnerService,
     private router: Router,
     private tms: TeamService,
-    private _auth:AuthserviceService,
-    private toastService:ToastService,
+    private _auth: AuthserviceService,
+    private toastService: ToastService,
     private commonService: CommonService,
-    private userService:UserService
-    
+    private userService: UserService
   ) {
-    this.loggedUser=_auth.getUser();
+    this.loggedUser = _auth.getUser();
     tms
-    .getTeams()
-    .then((res) => {
-      this.teamList = res;
-    })
-    .catch((error) => {
-      //console.log(error);
-    });
-    userService.getUsers().then((res) => {
-      this.usersList = res;
-    })
-    .catch((error) => {
-      //console.log(error);
-    });
+      .getTeams()
+      .then((res) => {
+        this.teamList = res;
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+    userService
+      .getUsers()
+      .then((res) => {
+        this.usersList = res;
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
   }
-  filterAttributes(list:any):any{
-    var newList=[];
-    for(var item in list){
-      if(list[item].type.value!='autokey')
-          newList.push(list[item]);
+  filterAttributes(list: any): any {
+    var newList = [];
+    for (var item in list) {
+      if (list[item].type.value != 'autokey') newList.push(list[item]);
     }
     return newList;
   }
-  
+
   ngOnInit(): void {
     this.app = this.route.snapshot.params.app;
-    if(typeof history.state.attributes != 'undefined'){
-      this.attributeList=this.filterAttributes(history.state.attributes);
-      this.registerForm = this.formBuilder.group(this.parseAttributesToFormItems());
-    }
-    else{
-      var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(this.app);
+    if (typeof history.state.attributes != 'undefined') {
+      this.attributeList = this.filterAttributes(history.state.attributes);
+      this.registerForm = this.formBuilder.group(
+        this.parseAttributesToFormItems()
+      );
+    } else {
+      var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(
+        this.app
+      );
       promise
-    .then((res: any) => {
-      this._spinner.setSpinnerState(false);
-      //console.log('inside promise.then -< setting attributes', res);
-      res=JSON.parse(res);
-      //console.log(res);
-      if(res.status){
-        this.attributeList=this.filterAttributes(res.data);
-        this.registerForm = this.formBuilder.group(this.parseAttributesToFormItems());    
-      }
-      else{
-        this.openDialog({
-          type:'alert',
-          message:res.message
-        },()=>{
-          this.router.navigate(['..'],{relativeTo:this.route});
-        });
-        
-      }
-      
-     
-    })
-    .catch((err: any) => {
-      this._spinner.setSpinnerState(false);
-      console.log('error occurred ', err);
-      this.openDialog({
-        type:'alert',
-        message:err.message
-      },()=>{
-        this.router.navigate(['..'],{relativeTo:this.route});
-      });
-    });
-    }
-    
-    
-    
-  }
-  parseAttributesToFormItems(){
-    var formItems:any={};
-    for(var item in this.attributeList){
-      var formItemParams=[];
-      var defaultValue=(this.attributeList[item].defaultValue!=null && this.attributeList[item].defaultValue.length>0)?this.attributeList[item].defaultValue.value:(this.attributeList[item].type.value=='number'?null:'');
-      var formItemValidators: ((control: AbstractControl) => ValidationErrors | null)[]=[];
-      for(var validator in this.attributeList[item].validators.value){
-      switch(this.attributeList[item].validators.value[validator].element.type.value){
-        case "required":
-          formItemValidators.push(Validators.required);
-          this.attributeList[item].required=true;
-          break;
-        case "whitespace":
-        case "whitspace":
-          formItemValidators.push(CustomValidator.restrictWhiteSpace);
-          break;
-        case "email":
-          formItemValidators.push(Validators.email);
-          break;
-      }
-    }
-      if(this.attributeList[item].type.value.toString().includes('list')){
-        var listArr=this.attributeList[item].type.value.toString().split(":");
-        var listName=listArr[listArr.length-1];
-        this.commonService.getListItems(listName,item).then((res:any)=>{
-          if(res.res!=null && res.res.length!=0){
-            this.listsScope[this.attributeList[res.item].name.value]=res.res;
-          }
-            else{
-              if(this.attributeList[res.item].required){
-                this.openDialog({
-                  type:'alert',
-                  message:'List load failed for a mandatory field. Please contact system administrator.'
-                },()=>{
-                  this.router.navigate([".."],{relativeTo:this.route})
-                });
-              }else{
-                this.openDialog({
-                  type:'warn',
-                  message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
-                },null);
+        .then((res: any) => {
+          this._spinner.setSpinnerState(false);
+          //console.log('inside promise.then -< setting attributes', res);
+          res = JSON.parse(res);
+          //console.log(res);
+          if (res.status) {
+            this.attributeList = this.filterAttributes(res.data);
+            this.registerForm = this.formBuilder.group(
+              this.parseAttributesToFormItems()
+            );
+          } else {
+            this.openDialog(
+              {
+                type: 'alert',
+                message: res.message,
+              },
+              () => {
+                this.router.navigate(['..'], { relativeTo: this.route });
               }
-            }
-        }).catch((err:any)=>{
-          console.log(err);
-          if(this.attributeList[err.item].required){
-            this.openDialog({
-              type:'alert',
-              message:'List load failed for a mandatory field. Please contact system administrator.'
-            },()=>{
-              this.router.navigate([".."],{relativeTo:this.route})
-            });
-          }else{
-            this.openDialog({
-              type:'warn',
-              message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
-            },null);
+            );
           }
         })
+        .catch((err: any) => {
+          this._spinner.setSpinnerState(false);
+          console.log('error occurred ', err);
+          this.openDialog(
+            {
+              type: 'alert',
+              message: err.message,
+            },
+            () => {
+              this.router.navigate(['..'], { relativeTo: this.route });
+            }
+          );
+        });
+    }
+  }
+  parseAttributesToFormItems() {
+    var formItems: any = {};
+    for (var item in this.attributeList) {
+      var formItemParams = [];
+      var defaultValue =
+        this.attributeList[item].defaultValue != null &&
+        this.attributeList[item].defaultValue.toString().length > 0
+          ? this.attributeList[item].defaultValue.value
+          : this.attributeList[item].type.value == 'number'
+          ? null
+          : '';
+      var formItemValidators: ((
+        control: AbstractControl
+      ) => ValidationErrors | null)[] = [];
+      for (var validator in this.attributeList[item].validators.value) {
+        switch (
+          this.attributeList[item].validators.value[validator].element.type
+            .value
+        ) {
+          case 'required':
+            formItemValidators.push(Validators.required);
+            this.attributeList[item].required = true;
+            break;
+          case 'whitespace':
+          case 'whitspace':
+            formItemValidators.push(CustomValidator.restrictWhiteSpace);
+            break;
+          case 'email':
+            formItemValidators.push(Validators.email);
+            break;
+        }
+      }
+      if (this.attributeList[item].type.value.toString().includes('list')) {
+        var listArr = this.attributeList[item].type.value.toString().split(':');
+        var listName = listArr[listArr.length - 1];
+        this.commonService
+          .getListItems(listName, item)
+          .then((res: any) => {
+            if (res.res != null && res.res.length != 0) {
+              this.listsScope[this.attributeList[res.item].name.value] =
+                res.res;
+            } else {
+              if (this.attributeList[res.item].required) {
+                this.openDialog(
+                  {
+                    type: 'alert',
+                    message:
+                      'List load failed for a mandatory field. Please contact system administrator.',
+                  },
+                  () => {
+                    this.router.navigate(['..'], { relativeTo: this.route });
+                  }
+                );
+              } else {
+                this.openDialog(
+                  {
+                    type: 'warn',
+                    message:
+                      'List load failed for field: ' +
+                      this.attributeList[res.item].alias.value +
+                      '.',
+                  },
+                  null
+                );
+              }
+            }
+          })
+          .catch((err: any) => {
+            console.log(err);
+            if (this.attributeList[err.item].required) {
+              this.openDialog(
+                {
+                  type: 'alert',
+                  message:
+                    'List load failed for a mandatory field. Please contact system administrator.',
+                },
+                () => {
+                  this.router.navigate(['..'], { relativeTo: this.route });
+                }
+              );
+            } else {
+              this.openDialog(
+                {
+                  type: 'warn',
+                  message:
+                    'List load failed for field: ' +
+                    this.attributeList[err.item].alias.value +
+                    '.',
+                },
+                null
+              );
+            }
+          });
       }
       formItemParams.push(defaultValue);
       formItemParams.push(formItemValidators);
-      formItems[this.attributeList[item].name.value]=formItemParams;
+      formItems[this.attributeList[item].name.value] = formItemParams;
     }
     //console.log(formItems);
     return formItems;
@@ -202,8 +240,10 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
-  checkIfAttributeRequired(index:any){
-    return this.attributeList[index].required?this.attributeList[index].required:false;
+  checkIfAttributeRequired(index: any) {
+    return this.attributeList[index].required
+      ? this.attributeList[index].required
+      : false;
   }
   checkIsInvalid(ctrlName: string | number) {
     return this.registerForm.controls[ctrlName].errors ? true : false;
@@ -239,7 +279,7 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
   getFormCotrolData(ctrlName: string | number) {
     return this.registerForm.controls[ctrlName].value;
   }
-  
+
   onSubmit() {
     this.submitted = true;
     this._spinner.setSpinnerState(true);
@@ -258,7 +298,7 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
       headers: headers,
     };
     var _promise = this._client.post(
-      'api/dynamicobjects/'+this.app+'/add',
+      'api/dynamicobjects/' + this.app + '/add',
       this.registerForm.value,
       httpOptions
     );
@@ -268,19 +308,19 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
         //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS' || res.status) {
-          if(this.loggedUser.useToast){
-            this.toastService.showSuccess(res.message,5000);
-            this.router.navigate(['../'],{relativeTo:this.route});
-          }else{
-          this.openDialog(
-            {
-              type: 'message',
-              message: res.message,
-            },
-            () => {
-              this.router.navigate(['../'],{relativeTo:this.route});
-            }
-          );
+          if (this.loggedUser.useToast) {
+            this.toastService.showSuccess(res.message, 5000);
+            this.router.navigate(['../'], { relativeTo: this.route });
+          } else {
+            this.openDialog(
+              {
+                type: 'message',
+                message: res.message,
+              },
+              () => {
+                this.router.navigate(['../'], { relativeTo: this.route });
+              }
+            );
           }
         } else {
           this._spinner.setSpinnerState(false);

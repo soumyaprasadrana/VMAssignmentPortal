@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-04-19 18:26:41
- * @modify date 2022-04-19 18:26:41
+ * @modify date 2022-10-30 18:30:37
  * @desc Dynamic Object App Record Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -38,7 +38,6 @@ import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service
 import { CommonService } from '../../services/common.service';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 
- 
 @Component({
   selector: 'app-dynamicobject-app-home',
   templateUrl: './dynamicobject-app-home.component.html',
@@ -48,7 +47,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   columnDef: Column[] = [];
   dynamicobjectappGridOptions!: GridOption;
   dynamicobjectappDataSet!: any[];
-  attributeList!:any[];
+  attributeList!: any[];
   isLoaded: boolean = false;
   isDataloadFailed: boolean = false;
   angularGrid!: AngularGridInstance;
@@ -69,12 +68,12 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   selectedRows: any;
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
-  defaultPageSizeList: any=[];
-  app:any;
+  defaultPageSizeList: any = [];
+  app: any;
   LOCAL_STORAGE_KEY = 'dynamicobjectappGridState';
   DEFAULT_PAGE_SIZE = 25;
-  listsScope:any={};
-  isGoingToReset:boolean=false;
+  listsScope: any = {};
+  isGoingToReset: boolean = false;
 
   /*dynamicobjectappServie-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -87,139 +86,178 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private _client: NodeclientService,
-    private commonService:CommonService
+    private commonService: CommonService
   ) {
     //Load Technote Data
     this.spinner.setSpinnerState(true);
     this.app = this.route.snapshot.params.app;
-    this.LOCAL_STORAGE_KEY+='_'+this.app;
-    var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(this.app);
-    var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(this.app);
+    this.LOCAL_STORAGE_KEY += '_' + this.app;
+    var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(
+      this.app
+    );
+    var promise = this.dynamicobjectappServie.getDynamicObjectAppAttributes(
+      this.app
+    );
     const presets = JSON.parse(localStorage[this.LOCAL_STORAGE_KEY] || null);
-    var attributeListPromise: any[]=[];
+    var attributeListPromise: any[] = [];
     promise
-    .then((res: any) => {
-      this.spinner.setSpinnerState(false);
-      //console.log('inside promise.then -< setting attributes', res);
-      res=JSON.parse(res);
-      //console.log(res);
-      if(res.status){
-        this.attributeList=res.data;
-        /*Checking for List type attributes*/
-        for(var item in this.attributeList){
-          if(this.attributeList[item].type.value.toString().includes('list')){
-            var listArr=this.attributeList[item].type.value.toString().split(":");
-            var listName=listArr[listArr.length-1];
-            attributeListPromise.push(this.commonService.getListItems(listName,item).then((res:any)=>{
-              if(res.res!=null && res.res.length!=0){
-                this.listsScope[this.attributeList[res.item].name.value]=res.res;
-                console.log("Lists loaded for application : ",this.listsScope);
-              }
-                else{
-                  if(this.attributeList[res.item].required){
-                    this.openDialog({
-                      type:'alert',
-                      message:'List load failed for a mandatory field: '+this.attributeList[res.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-                    },null);
-                  }else{
-                    this.openDialog({
-                      type:'warn',
-                      message:'List load failed for field: '+this.attributeList[res.item].alias.value+'.'
-                    },null);
-                  }
-                }
-            }).catch((err:any)=>{
-              console.log(err);
-              if(this.attributeList[err.item].required){
-                this.openDialog({
-                  type:'alert',
-                  message:'List load failed for a mandatory field: '+this.attributeList[err.item].alias.value+'.You may face issue while adding new record,please contact system administrator.'
-                },null);
-              }else{
-                this.openDialog({
-                  type:'warn',
-                  message:'List load failed for field: '+this.attributeList[err.item].alias.value+'.'
-                },null);
-              }
-            }));
-          }
-        }
-        Promise.all(attributeListPromise).then((res:any)=>{
-          console.log("Promise all ",res)
-          this.initDataLoad(promiseR,presets);
-        }).catch((err:any)=>{
-          console.log(err);
-        });
-      }
-      else{
-        this.openDialog({
-          type:'alert',
-          message:res.message
-        },null);
-        this.isLoaded = false;
-        this.isDataloadFailed=true;
-      }
-    })
-    .catch((err: any) => {
-      this.spinner.setSpinnerState(false);
-      //console.log('error occurred ', err);
-      this.isLoaded = false;
-    });
-    this.loggedUser = auth.getUser();
-  }
-  initDataLoad(promiseR:any,presets:any){
-    this._props
-          .getProps()
-          .then((res) => {
-            //console.log('Props=>', res);
-            this.properties = JSON.parse('' + res);
-            var PageSizeList =
-              this.properties.paginationPageSizesList.split(':');
-            try{
-              for(var item in PageSizeList){
-                this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
-              }
-            }catch(e){
-              console.log(e);
-            }
-            promiseR
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
-        //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
-        res=JSON.parse(res);
+        //console.log('inside promise.then -< setting attributes', res);
+        res = JSON.parse(res);
         //console.log(res);
-        if(res.status){
-          this.dynamicobjectappDataSet = this.parseObjectRecords(res.data);
-          //console.log(this.dynamicobjectappDataSet);
-          this.isLoaded = true;
-          this.defineGrid(presets);
-        }
-        else{
-          this.openDialog({
-            type:'alert',
-            message:res.message
-          },null);
+        if (res.status) {
+          this.attributeList = res.data;
+          /*Checking for List type attributes*/
+          for (var item in this.attributeList) {
+            if (
+              this.attributeList[item].type.value.toString().includes('list')
+            ) {
+              var listArr = this.attributeList[item].type.value
+                .toString()
+                .split(':');
+              var listName = listArr[listArr.length - 1];
+              attributeListPromise.push(
+                this.commonService
+                  .getListItems(listName, item)
+                  .then((res: any) => {
+                    if (res.res != null && res.res.length != 0) {
+                      this.listsScope[this.attributeList[res.item].name.value] =
+                        res.res;
+                      console.log(
+                        'Lists loaded for application : ',
+                        this.listsScope
+                      );
+                    } else {
+                      if (this.attributeList[res.item].required) {
+                        this.openDialog(
+                          {
+                            type: 'alert',
+                            message:
+                              'List load failed for a mandatory field: ' +
+                              this.attributeList[res.item].alias.value +
+                              '.You may face issue while adding new record,please contact system administrator.',
+                          },
+                          null
+                        );
+                      } else {
+                        this.openDialog(
+                          {
+                            type: 'warn',
+                            message:
+                              'List load failed for field: ' +
+                              this.attributeList[res.item].alias.value +
+                              '.',
+                          },
+                          null
+                        );
+                      }
+                    }
+                  })
+                  .catch((err: any) => {
+                    console.log(err);
+                    if (this.attributeList[err.item].required) {
+                      this.openDialog(
+                        {
+                          type: 'alert',
+                          message:
+                            'List load failed for a mandatory field: ' +
+                            this.attributeList[err.item].alias.value +
+                            '.You may face issue while adding new record,please contact system administrator.',
+                        },
+                        null
+                      );
+                    } else {
+                      this.openDialog(
+                        {
+                          type: 'warn',
+                          message:
+                            'List load failed for field: ' +
+                            this.attributeList[err.item].alias.value +
+                            '.',
+                        },
+                        null
+                      );
+                    }
+                  })
+              );
+            }
+          }
+          Promise.all(attributeListPromise)
+            .then((res: any) => {
+              console.log('Promise all ', res);
+              this.initDataLoad(promiseR, presets);
+            })
+            .catch((err: any) => {
+              console.log(err);
+            });
+        } else {
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
           this.isLoaded = false;
-          this.isDataloadFailed=true;
+          this.isDataloadFailed = true;
         }
-        
       })
       .catch((err: any) => {
         this.spinner.setSpinnerState(false);
         //console.log('error occurred ', err);
         this.isLoaded = false;
       });
-           
-          })
-       
-     
+    this.loggedUser = auth.getUser();
   }
-  parseObjectRecords(data:any):any[]{
-    var temp:any[]=[];
-    var uniqueid=1;
-    for(var item in data){
-      var tempitem=data[item];
-      tempitem.id=uniqueid;
+  initDataLoad(promiseR: any, presets: any) {
+    this._props.getProps().then((res) => {
+      //console.log('Props=>', res);
+      this.properties = JSON.parse('' + res);
+      var PageSizeList = this.properties.paginationPageSizesList.split(':');
+      try {
+        for (var item in PageSizeList) {
+          this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      promiseR
+        .then((res: any) => {
+          this.spinner.setSpinnerState(false);
+          //console.log('inside promise.then -< setting dynamicobjectappDataSet', res);
+          res = JSON.parse(res);
+          //console.log(res);
+          if (res.status) {
+            this.dynamicobjectappDataSet = this.parseObjectRecords(res.data);
+            //console.log(this.dynamicobjectappDataSet);
+            this.isLoaded = true;
+            this.defineGrid(presets);
+          } else {
+            this.openDialog(
+              {
+                type: 'alert',
+                message: res.message,
+              },
+              null
+            );
+            this.isLoaded = false;
+            this.isDataloadFailed = true;
+          }
+        })
+        .catch((err: any) => {
+          this.spinner.setSpinnerState(false);
+          //console.log('error occurred ', err);
+          this.isLoaded = false;
+        });
+    });
+  }
+  parseObjectRecords(data: any): any[] {
+    var temp: any[] = [];
+    var uniqueid = 1;
+    for (var item in data) {
+      var tempitem = data[item];
+      tempitem.id = uniqueid;
       temp.push(tempitem);
       uniqueid++;
     }
@@ -279,12 +317,15 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   }
 
   addRecord() {
-    var state={attributes:this.attributeList};
-    this.router.navigate(['add'],{ relativeTo: this.route,state:state });
+    var state = { attributes: this.attributeList };
+    this.router.navigate(['add'], { relativeTo: this.route, state: state });
   }
-  viewCharts(){
-    var state={attributes:this.attributeList,recordData:this.dynamicobjectappDataSet};
-    this.router.navigate(['charts'],{ relativeTo: this.route,state:state });
+  viewCharts() {
+    var state = {
+      attributes: this.attributeList,
+      recordData: this.dynamicobjectappDataSet,
+    };
+    this.router.navigate(['charts'], { relativeTo: this.route, state: state });
   }
   openDialog(data: any, callback: any) {
     this.dialog
@@ -321,27 +362,27 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
     localStorage[this.LOCAL_STORAGE_KEY] = null;
-    this.isGoingToReset=true;
+    this.isGoingToReset = true;
     this.angularGrid.gridService.resetGrid(this.columnDef);
     window.location.reload();
 
-    this.angularGrid.paginationService!.changeItemPerPage(this.DEFAULT_PAGE_SIZE);
+    this.angularGrid.paginationService!.changeItemPerPage(
+      this.DEFAULT_PAGE_SIZE
+    );
   }
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
-    if(!this.isGoingToReset){
-    const gridState: GridState =
-      this.angularGrid.gridStateService.getCurrentGridState();
-    //console.log('Grid State before destroy :: ', gridState);
-    localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    if (!this.isGoingToReset) {
+      const gridState: GridState =
+        this.angularGrid.gridStateService.getCurrentGridState();
+      //console.log('Grid State before destroy :: ', gridState);
+      localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
   }
 
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
-
-
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
     const cellFormatterDefault: Formatter = (_row, _cell, value, colDef) => {
@@ -354,7 +395,12 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         toolTip: value,
       };
     };
-    const richTextCellFormatterDefault: Formatter = (_row, _cell, value, colDef) => {
+    const richTextCellFormatterDefault: Formatter = (
+      _row,
+      _cell,
+      value,
+      colDef
+    ) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -365,12 +411,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         toolTip: value,
       };
     };
-    const cellFormaterValueIcon: Formatter = (
-      _row,
-      _cell,
-      value,
-      colDef,
-    ) => {
+    const cellFormaterValueIcon: Formatter = (_row, _cell, value, colDef) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -386,109 +427,109 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         toolTip: value,
       };
     };
-    var getDataFromList:any=(attrName:any,value:any) =>{
-      var res="";
-      for(var item in this.listsScope[attrName]){
-        var list_item=this.listsScope[attrName][item];
-        if(list_item.value.toString()==value.toString()){
-          if(typeof list_item.template=='undefined')
-              res=list_item.text;
-          else
-              res=list_item.template;
+    var getDataFromList: any = (attrName: any, value: any) => {
+      var res = '';
+      for (var item in this.listsScope[attrName]) {
+        var list_item = this.listsScope[attrName][item];
+        if (list_item.value.toString() == value.toString()) {
+          if (typeof list_item.template == 'undefined') res = list_item.text;
+          else res = list_item.template;
           break;
         }
       }
       return res;
-    }
+    };
     const listAttributeCellFormaterValue: Formatter = (
       _row,
       _cell,
       value,
-      colDef,
+      colDef
     ) => {
-      if (typeof value == 'undefined' || value==null) {
+      if (typeof value == 'undefined' || value == null) {
         value = '';
       }
-      value=getDataFromList(colDef.field,value)!=""?getDataFromList(colDef.field,value):value;
-      
+      value =
+        getDataFromList(colDef.field, value) != ''
+          ? getDataFromList(colDef.field, value)
+          : value;
+
       return {
         text: `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value}</span></div>`,
         toolTip: value,
       };
     };
-    
+
     this.columnDef = [];
-    for(var item in this.attributeList){
-      var formatter=cellFormatterDefault;
-      if(this.attributeList[item].type.value.toString().includes('list')){
-        formatter=listAttributeCellFormaterValue;
+    for (var item in this.attributeList) {
+      var formatter = cellFormatterDefault;
+      if (this.attributeList[item].type.value.toString().includes('list')) {
+        formatter = listAttributeCellFormaterValue;
       }
-      if(this.attributeList[item].type.value=='richtext'){
+      if (this.attributeList[item].type.value == 'richtext') {
         this.columnDef.push({
-          id:this.attributeList[item].name.value,
-          name:this.attributeList[item].alias.value,
+          id: this.attributeList[item].name.value,
+          name: this.attributeList[item].alias.value,
           field: this.attributeList[item].name.value,
           sortable: true,
           filterable: true,
           formatter: formatter,
           filter: { model: Filters.compoundInputText },
           headerCssClass: 'gridRow',
-          customTooltip:{
-            hideArrow:true,
-            headerFormatter:this.headerFormatter.bind(this) as Formatter,
-            formatter: this.tooltipFormatter.bind(this) as Formatter
-          }
+          customTooltip: {
+            hideArrow: true,
+            headerFormatter: this.headerFormatter.bind(this) as Formatter,
+            formatter: this.tooltipFormatter.bind(this) as Formatter,
+          },
         });
-      }
-      else if(this.attributeList[item].type.value=='autokey'){
+      } else if (this.attributeList[item].type.value == 'autokey') {
         this.columnDef.push({
-          id:this.attributeList[item].name.value,
-          name:this.attributeList[item].alias.value,
+          id: this.attributeList[item].name.value,
+          name: this.attributeList[item].alias.value,
           field: this.attributeList[item].name.value,
           sortable: true,
           //filterable: true,
           formatter: formatter,
           //filter: { model: Filters.compoundInputNumber },
           headerCssClass: 'gridRow',
-          customTooltip:{
-            hideArrow:true,
-            headerFormatter:this.headerFormatter.bind(this) as Formatter
-          }
+          customTooltip: {
+            hideArrow: true,
+            headerFormatter: this.headerFormatter.bind(this) as Formatter,
+          },
+        });
+      } else {
+        this.columnDef.push({
+          id: this.attributeList[item].name.value,
+          name: this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          filterable: true,
+          formatter: formatter,
+          filter: { model: Filters.compoundInputText },
+          headerCssClass: 'gridRow',
+          customTooltip: {
+            hideArrow: true,
+            headerFormatter: this.headerFormatter.bind(this) as Formatter,
+          },
         });
       }
-      else{
-      this.columnDef.push({
-        id:this.attributeList[item].name.value,
-        name:this.attributeList[item].alias.value,
-        field: this.attributeList[item].name.value,
-        sortable: true,
-        filterable: true,
-        formatter: formatter,
-        filter: { model: Filters.compoundInputText },
-        headerCssClass: 'gridRow',
-        customTooltip:{
-          hideArrow:true,
-          headerFormatter:this.headerFormatter.bind(this) as Formatter
-        }
-      });
     }
-    }
-    var commandItemsForGrid:any=[
+    var commandItemsForGrid: any = [
       {
         command: 'view',
         title: 'Open ',
         iconCssClass: 'fa fa-hand-pointer-o',
         positionOrder: 66,
-        action: (_event:any, args:any) =>
+        action: (_event: any, args: any) =>
           /* this.openDialog(
             {
               type: 'message',
               message: args.dataContext.dynamicobjectapp,
             },
             null
-          ),*/ this.router.navigate([
-            'view'
-          ],{relativeTo:this.route,state:{recordData:args.dataContext}})
+          ),*/ this.router.navigate(['view'], {
+            relativeTo: this.route,
+            state: { recordData: args.dataContext },
+          }),
       },
 
       {
@@ -496,10 +537,11 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         title: 'Edit ',
         iconCssClass: 'fa fa-pencil',
         positionOrder: 66,
-        action: (_event:any, args:any) =>
-          this.router.navigate([
-            'edit'
-          ],{relativeTo:this.route,state:{recordData:args.dataContext}}),
+        action: (_event: any, args: any) =>
+          this.router.navigate(['edit'], {
+            relativeTo: this.route,
+            state: { recordData: args.dataContext },
+          }),
       },
       {
         command: 'deleteRecord',
@@ -509,60 +551,62 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         textCssClass: 'text-italic color-danger-light',
         // only show command to 'Delete Row' when the task is not completed
         itemVisibilityOverride: (args: any) => {
-          return (
+          return true; /*(
             this.loggedUser.permissions.is_admin ||
             this.loggedUser.permissions.is_teamLead ||
             this.loggedUser.permissions.delete_vm
-          );
+          );*/
         },
         action: (_event: any, args: any) => {
           const dataContext = args.dataContext;
-    const row = args?.row ?? 0;
-    if (
-      confirm(`Do you really want to remove this record  "${JSON.stringify(dataContext)}"?`)
-    ) {
-      this.spinner.setSpinnerState(true);
-      this.dynamicobjectappServie
-        .deleteDynamicObjectAppRecord(this.app,dataContext)
-        .then((res: any) => {
-          res = JSON.parse(res);
-          this.spinner.setSpinnerState(false);
-          if (res.status == 'Success') {
-            this.angularGrid.gridService.deleteItemById(dataContext.id);
-            this.openDialog(
-              {
-                type: 'message',
-                message: 'Record removed successfully',
-              },
-              null
-            );
-          } else {
-            this.openDialog(
-              {
-                type: 'alert',
-                message: res.message,
-              },
-              null
-            );
+          const row = args?.row ?? 0;
+          if (
+            confirm(
+              `Do you really want to remove this record  "${JSON.stringify(
+                dataContext
+              )}"?`
+            )
+          ) {
+            this.spinner.setSpinnerState(true);
+            this.dynamicobjectappServie
+              .deleteDynamicObjectAppRecord(this.app, dataContext)
+              .then((res: any) => {
+                res = JSON.parse(res);
+                this.spinner.setSpinnerState(false);
+                if (res.status == 'Success') {
+                  this.angularGrid.gridService.deleteItemById(dataContext.id);
+                  this.openDialog(
+                    {
+                      type: 'message',
+                      message: 'Record removed successfully',
+                    },
+                    null
+                  );
+                } else {
+                  this.openDialog(
+                    {
+                      type: 'alert',
+                      message: res.message,
+                    },
+                    null
+                  );
+                }
+              })
+              .catch((err: any) => {
+                this.spinner.setSpinnerState(false);
+                this.openDialog(
+                  {
+                    type: 'alert',
+                    message: err.message,
+                  },
+                  null
+                );
+              });
           }
-        })
-        .catch((err: any) => {
-          this.spinner.setSpinnerState(false);
-          this.openDialog(
-            {
-              type: 'alert',
-              message: err.message,
-            },
-            null
-          );
-        });
-    }
-
-        }
-          
+        },
       },
     ];
-     //console.log(this.columnDef);
+    //console.log(this.columnDef);
     this.columnDef.push({
       id: 'action',
       name: 'Action',
@@ -578,22 +622,22 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         hideCloseButton: false,
         width: 175,
 
-        commandItems: commandItemsForGrid
+        commandItems: commandItemsForGrid,
       },
     });
 
     //console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.dynamicobjectappGridOptions = {
-      gridHeight:'95%',
+      gridHeight: '95%',
       autoResize: {
         container: '#dynamicobject-app-grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
       },
       //forceFitColumns:true,
-      contextMenu:{
-        hideClearAllGrouping:true,
-        commandItems:commandItemsForGrid
+      contextMenu: {
+        hideClearAllGrouping: true,
+        commandItems: commandItemsForGrid,
       },
       enableSorting: true,
       enableAutoResize: true,
@@ -612,13 +656,16 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      registerExternalResources: [new SlickCustomTooltip(),this.excelExportService],
-      customTooltip:{
-        hideArrow:true,
-        headerFormatter:this.headerFormatter.bind(this) as Formatter,
+      registerExternalResources: [
+        new SlickCustomTooltip(),
+        this.excelExportService,
+      ],
+      customTooltip: {
+        hideArrow: true,
+        headerFormatter: this.headerFormatter.bind(this) as Formatter,
       },
-      autoTooltipOptions:{
-        enableForHeaderCells:true
+      autoTooltipOptions: {
+        enableForHeaderCells: true,
       },
       enableCheckboxSelector: false,
       enableRowSelection: false,
@@ -637,7 +684,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         // basically which offset do we want to use for reposition the grid menu,
         // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        
+
         iconCssClass: 'fa fa-bars',
         hideForceFitButton: false,
         hideSyncResizeButton: false,
@@ -690,17 +737,16 @@ export class DynamicObjectAppHomeComponent implements OnInit {
             this.clearGridStateFromLocalStorage();
           } else if (args.command === 'addRecord') {
             this.addRecord();
-          }else if (args.command === 'viewCharts') {
+          } else if (args.command === 'viewCharts') {
             this.viewCharts();
-          }
-          else if (args.command === 'exportExcel') {
+          } else if (args.command === 'exportExcel') {
             //console.log('excelExport :: ', this.excelExportService);
-            
-                this.excelExportService.exportToExcel({
-                  filename: this.app+'_'+new Date().toTimeString().replace(' ','_'),
-                  format: FileType.xlsx,
-                });
-             
+
+            this.excelExportService.exportToExcel({
+              filename:
+                this.app + '_' + new Date().toTimeString().replace(' ', '_'),
+              format: FileType.xlsx,
+            });
           }
         },
         onColumnsChanged: (_e: any, _args: any) => {
@@ -738,14 +784,30 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       localStorage[this.LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
   }
-  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
-    console.log("Inside ToolTipFormatter :: ");
-    if(typeof  dataContext[column.id]!='undefined')
-         return `<div style='max-height:500px;max-width:500px;height:auto;width:auto;overflow:auto;'><p>${dataContext[column.id]}</p></div>
+  tooltipFormatter(
+    row: number,
+    cell: number,
+    value: any,
+    column: Column,
+    dataContext: any,
+    grid: SlickGrid
+  ) {
+    console.log('Inside ToolTipFormatter :: ');
+    if (typeof dataContext[column.id] != 'undefined')
+      return `<div style='max-height:500px;max-width:500px;height:auto;width:auto;overflow:auto;'><p>${
+        dataContext[column.id]
+      }</p></div>
         `;
     else return '';
   }
-  headerFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+  headerFormatter(
+    row: number,
+    cell: number,
+    value: any,
+    column: Column,
+    dataContext: any,
+    grid: SlickGrid
+  ) {
     return ``;
- }
+  }
 }

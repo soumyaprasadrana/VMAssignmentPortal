@@ -37,8 +37,7 @@ export class SnapshotsConfig {
       },
       {
         cardTitle: 'Search Snapshots',
-        cardText:
-          'Will help to search available snapshots with keyword.',
+        cardText: 'Will help to search available snapshots with keyword.',
         cardWidth: '200',
         cardHeight: '200',
         cardIconClass: 'fa fa-hdd-o',
@@ -71,7 +70,10 @@ export class SnapshotsConfig {
         badgeIcon: 'fa fa-refresh',
         cardTextClamp: 0,
         cardPermissions: function (loggedUser: any) {
-          return loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead;;
+          return (
+            loggedUser.permissions.is_admin ||
+            loggedUser.permissions.is_teamLead
+          );
         },
         callback: function (parentObject: any) {
           parentObject.runUpdateCount();
@@ -86,10 +88,29 @@ export class SnapshotsConfig {
         badgeIcon: 'fa fa-refresh',
         cardTextClamp: 2,
         cardPermissions: function (loggedUser: any) {
-          return loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead;;
+          return (
+            loggedUser.permissions.is_admin ||
+            loggedUser.permissions.is_teamLead
+          );
         },
         callback: function (parentObject: any) {
           parentObject.runUpdateExtradata();
+        },
+      },
+      {
+        cardTitle: 'Restart Snapshot Service',
+        cardText:
+          'Must be used when snapshot service is down due to connection break from VSphere.',
+        cardWidth: '300',
+        cardHeight: '250',
+        cardIconClass: 'fa fa-list',
+        badgeIcon: 'fa fa-refresh',
+        cardTextClamp: 3,
+        cardPermissions: function (loggedUser: any) {
+          return loggedUser.permissions.is_admin;
+        },
+        callback: function (parentObject: any) {
+          parentObject.restartSnapshotService();
         },
       },
     ],

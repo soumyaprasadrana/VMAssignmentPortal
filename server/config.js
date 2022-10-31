@@ -60,8 +60,8 @@ module.exports = {
     technotes_remove_rest_path: '/technotes/removeTechnote',
     vm_additional_data: '/vmDetails/getAdditionalData',
     update_vm_additional_data: '/vmActions/updateVMAdditionalData',
-    related_vms_data:'/relatedvms/getAll',
-    update_related_vms:'/relatedvms/updateRelatedVMS',
+    related_vms_data: '/relatedvms/getAll',
+    update_related_vms: '/relatedvms/updateRelatedVMS',
     add_team_rest_path: '/admin/addTeam',
     props_path: '/prop/getProp',
     add_team_lead_rest_path: '/user/addTeamLead',
@@ -101,7 +101,8 @@ module.exports = {
     vm_get_all_snapshots_count_rest_path: '/vmActions/getSnapshotCount',
     vm_search_all_snapshots_rest_path: '/vmActions/searchSnapshot',
     vm_take_snapshot_rest_path: '/vmActions/takeSnapshot',
-    vm_revert_snapshot_rest_path:'/vmActions/revertSnapshot',
+    vm_revert_snapshot_rest_path: '/vmActions/revertSnapshot',
     update_snap_count_rest_path: '/admin/updateSnapCount',
-    update_vm_extra_data_rest_path: '/admin/updateVMData'
+    update_vm_extra_data_rest_path: '/admin/updateVMData',
+    restart_snap_service_rest_path: '/admin/restartSnapshotService',
 }
