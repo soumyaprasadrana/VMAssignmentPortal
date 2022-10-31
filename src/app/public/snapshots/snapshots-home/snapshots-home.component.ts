@@ -24,71 +24,151 @@ import { SnapshotsConfig } from '../snapshots.config';
 })
 export class SnapshotsHomeComponent implements OnInit {
   cardsMetaData: any;
-  constructor( private route: ActivatedRoute,
-    private router: Router,private vms:VmsService, private dialog: MatDialog,
-    private _client: NodeclientService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private vms: VmsService,
+    private dialog: MatDialog,
+    private _client: NodeclientService
+  ) {
     this.cardsMetaData = SnapshotsConfig.cardsMetaData;
   }
 
   ngOnInit(): void {}
-  goToViewAllSnapshots(){
-    this.router.navigate(['../grid'],{relativeTo:this.route,state:{action:'all'}});
-  }
-  goToSearchSnapshots(){
-    this.router.navigate(['../grid'],{relativeTo:this.route,state:{action:'search'}});
-  }
-  goToSnapshotsCount(){
-    this.router.navigate(['../grid'],{relativeTo:this.route,state:{action:'count'}});
-  }
-  runUpdateCount(){
-    this.vms.runUpdateSnapshotCount().then((res:any)=>{
-      try{
-        res=JSON.parse(res);
-      }catch(e){};
-      if(res.status.toString().toLowerCase()=='success' || res.status.toString().toLowerCase()=='true'){
-        this.openDialog({
-          type:'message',
-          message: res.message
-        },null);
-
-      }else{
-        this.openDialog({
-          type:'alert',
-          message: res.message
-        },null);
-      }
-    }).catch((err:any)=>{
-      console.log(err);
-      this.openDialog({
-        type:'alert',
-        message: err.message
-      },null);
+  goToViewAllSnapshots() {
+    this.router.navigate(['../grid'], {
+      relativeTo: this.route,
+      state: { action: 'all' },
     });
   }
-  runUpdateExtradata(){
-    this.vms.runUpdateExtradata().then((res:any)=>{
-      try{
-        res=JSON.parse(res);
-      }catch(e){};
-      if(res.status.toString().toLowerCase()=='success' || res.status.toString().toLowerCase()=='true'){
-        this.openDialog({
-          type:'message',
-          message: res.message
-        },null);
-
-      }else{
-        this.openDialog({
-          type:'alert',
-          message: res.message
-        },null);
-      }
-    }).catch((err:any)=>{
-      console.log(err);
-      this.openDialog({
-        type:'alert',
-        message: err.message
-      },null);
+  goToSearchSnapshots() {
+    this.router.navigate(['../grid'], {
+      relativeTo: this.route,
+      state: { action: 'search' },
     });
+  }
+  goToSnapshotsCount() {
+    this.router.navigate(['../grid'], {
+      relativeTo: this.route,
+      state: { action: 'count' },
+    });
+  }
+  runUpdateCount() {
+    this.vms
+      .runUpdateSnapshotCount()
+      .then((res: any) => {
+        try {
+          res = JSON.parse(res);
+        } catch (e) {}
+        if (
+          res.status.toString().toLowerCase() == 'success' ||
+          res.status.toString().toLowerCase() == 'true'
+        ) {
+          this.openDialog(
+            {
+              type: 'message',
+              message: res.message,
+            },
+            null
+          );
+        } else {
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
+      });
+  }
+  runUpdateExtradata() {
+    this.vms
+      .runUpdateExtradata()
+      .then((res: any) => {
+        try {
+          res = JSON.parse(res);
+        } catch (e) {}
+        if (
+          res.status.toString().toLowerCase() == 'success' ||
+          res.status.toString().toLowerCase() == 'true'
+        ) {
+          this.openDialog(
+            {
+              type: 'message',
+              message: res.message,
+            },
+            null
+          );
+        } else {
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
+      });
+  }
+  restartSnapshotService() {
+    this.vms
+      .restartSnapshotService()
+      .then((res: any) => {
+        try {
+          res = JSON.parse(res);
+        } catch (e) {}
+        if (
+          res.status.toString().toLowerCase() == 'success' ||
+          res.status.toString().toLowerCase() == 'true'
+        ) {
+          this.openDialog(
+            {
+              type: 'message',
+              message: res.message,
+            },
+            null
+          );
+        } else {
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.openDialog(
+          {
+            type: 'alert',
+            message: err.message,
+          },
+          null
+        );
+      });
   }
   openDialog(data: any, callback: any) {
     this.dialog

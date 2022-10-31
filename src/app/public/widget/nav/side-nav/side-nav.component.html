@@ -31,7 +31,7 @@
         </mat-icon><span class="ml-1">Quick Links</span>
     </a>
     <mat-menu #LinkMenu="matMenu" yPosition="below">
-        <a *ngFor="let item of quicklinks" class="btn-primary m-2" mat-flat-button href="{{item.linkUrl}}" target="_blank"><span> <i *ngIf="item.iconClass" class="{{item.iconClass}}"></i><img *ngIf="iconSrc" src="item.iconSrc"></span><span>  {{item.linkTitle}}</span> </a>
+        <app-quick-link *ngFor="let item of quicklinks" [iconClass]="item.iconClass" [iconSrc]="item.iconSrc" [linkUrl]="item.linkUrl" [linkTitle]="item.linkTitle"> </app-quick-link>
     </mat-menu>
 
     <a mat-list-item [matMenuTriggerFor]="sideMenu">

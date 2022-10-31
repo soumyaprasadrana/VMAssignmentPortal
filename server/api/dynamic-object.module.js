@@ -26,12 +26,12 @@ module.exports = {
         _client.get(httpOptions, req, res, next);
     },
     getObject: function(req, res, next) {
-        var id= req.params.id;
+        var id = req.params.id;
         const fn = "dynamicobjectsmodule.js :-: getObject -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
         var httpOptions = {
-            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_single_object_rest_path+'/'+id,
+            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_single_object_rest_path + '/' + id,
             headers: _client.getStaticHeaders(req),
             qs: _client.getStaticQueryParam(req),
             jar: _client.getStaticCookieJar(req)
@@ -39,12 +39,12 @@ module.exports = {
         _client.get(httpOptions, req, res, next);
     },
     getObjectRecords: function(req, res, next) {
-        var id= req.params.app;
+        var id = req.params.app;
         const fn = "dynamicobjectsmodule.js :-: getObjectRecords -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
         var httpOptions = {
-            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_object_records_rest_path+'/'+id,
+            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_object_records_rest_path + '/' + id,
             headers: _client.getStaticHeaders(req),
             qs: _client.getStaticQueryParam(req),
             jar: _client.getStaticCookieJar(req)
@@ -52,12 +52,12 @@ module.exports = {
         _client.get(httpOptions, req, res, next);
     },
     getObjectAttributes: function(req, res, next) {
-        var id= req.params.app;
+        var id = req.params.app;
         const fn = "dynamicobjectsmodule.js :-: getObjectAttributes -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
         var httpOptions = {
-            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_object_attributes_rest_path+'/'+id,
+            uri: config.apiBase + '/' + config.apiContextRoot + config.dynamicobjects_get_object_attributes_rest_path + '/' + id,
             headers: _client.getStaticHeaders(req),
             qs: _client.getStaticQueryParam(req),
             jar: _client.getStaticCookieJar(req)
@@ -65,61 +65,64 @@ module.exports = {
         _client.get(httpOptions, req, res, next);
     },
     addObjectRecord: function(req, res, next) {
-        var id= req.params.app;
+        var id = req.params.app;
         const fn = "dynamicobjectsmodule.js :-: addObjectRecord -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_add_object_record_rest_path+'/'+id), req, res, next);
+        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_add_object_record_rest_path + '/' + id), req, res, next);
     },
     updateObjectRecord: function(req, res, next) {
-        var id= req.params.app;
+        var id = req.params.app;
         const fn = "dynamicobjectsmodule.js :-: updateObjectRecord -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_update_object_record_rest_path+'/'+id), req, res, next);
+        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_update_object_record_rest_path + '/' + id), req, res, next);
     },
     deleteObjectRecord: function(req, res, next) {
-        var id= req.params.app;
+        var id = req.params.app;
         const fn = "dynamicobjectsmodule.js :-: deleteObjectRecord -"
             //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
             //logger.debug(fn + "AUTH:" + req.user.auth);
-        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_delete_object_record_rest_path+'/'+id), req, res, next);
+        _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_delete_object_record_rest_path + '/' + id), req, res, next);
     },
-    
+
     addObject: function(req, res, next) {
-        function validateRequest(req){
-            var params=req.body.params;
-            if(params.length<=0){
-                return {status:false,message:'Params Missing!'}
+        function validateRequest(req) {
+            var params = req.body.params;
+            if (params.length <= 0) {
+                return { status: false, message: 'Params Missing!' }
             }
-            if(params['properties']==null || params['attributes']==null || params['functions']==null || typeof params['properties']=='undefined' || typeof params['attributes']=='undefined' || typeof params['functions']=='undefined')
-                return {status:false,message:'Params Missing!'}
-            var attributes=params['attributes'];
-            if(attributes.length===0){
-                return {status:false,message:'Minimum one attribute required to create an object.'};
+            if (params['properties'] == null || params['attributes'] == null || params['functions'] == null || typeof params['properties'] == 'undefined' || typeof params['attributes'] == 'undefined' || typeof params['functions'] == 'undefined')
+                return { status: false, message: 'Params Missing!' }
+            var attributes = params['attributes'];
+            if (attributes.length === 0) {
+                return { status: false, message: 'Minimum one attribute required to create an object.' };
             }
-            for(var i=0; i<attributes.length; i++){
-                if(attributes[i].type=='number' && isNaN(attributes[i].defaultValue) ){
-                    return {status:false,message:'Type and Default Value Type Missmatch for attribute : '+attributes[i].name+"! Default value should be a number."}
+            for (var i = 0; i < attributes.length; i++) {
+                if (attributes[i].type == 'number' && isNaN(attributes[i].defaultValue)) {
+                    return { status: false, message: 'Type and Default Value Type Missmatch for attribute : ' + attributes[i].name + "! Default value should be a number." }
                 }
-                if((attributes[i].isPrimaryKey=='true' || attributes[i].isPrimaryKey==true)&&  (attributes[i].isNullable=='true' || attributes[i].isNullable==true)){
-                    return {status:false,message:'Primary Key can not be declared null please check isNullable field for : '+attributes[i].name}
+                if ((attributes[i].isPrimaryKey == 'true' || attributes[i].isPrimaryKey == true) && (attributes[i].isNullable == 'true' || attributes[i].isNullable == true)) {
+                    return { status: false, message: 'Primary Key can not be declared null please check isNullable field for : ' + attributes[i].name }
+                }
+                if (attributes[i].isNullable == false && (!attributes[i].defaultValue || attributes[i].defaultValue == null || attributes[i].defaultValue == '') && (attributes[i].validators == null || (attributes[i].validators != null && !attributes[i].validators.includes("required")))) {
+                    return { status: false, message: 'An attribute which is not nullable must have a default value or a required validator please check configuration for attribute : ' + attributes[i].name }
                 }
             }
-            return {status:true};
+            return { status: true };
         };
         console.log(req.body.params);
-        var result=validateRequest(req);
-        if(!result.status){
+        var result = validateRequest(req);
+        if (!result.status) {
             return res.status(200).json(result);
         }
-        req.body.params.object={};
-        req.body.params.object.name=req.body.params.properties.name;
-        req.body.params.object.description=req.body.params.properties.desc;
-        req.body.params.object.scope=req.body.params.properties.scope;
-        req.body.params.object.status=req.body.params.properties.status;
-        req.body.params.object.attributes=req.body.params.attributes;
-        req.body.params.object.functions=req.body.params.functions;
+        req.body.params.object = {};
+        req.body.params.object.name = req.body.params.properties.name;
+        req.body.params.object.description = req.body.params.properties.desc;
+        req.body.params.object.scope = req.body.params.properties.scope;
+        req.body.params.object.status = req.body.params.properties.status;
+        req.body.params.object.attributes = req.body.params.attributes;
+        req.body.params.object.functions = req.body.params.functions;
         delete req.body.params.attributes;
         delete req.body.params.functions;
         delete req.body.params.properties;
@@ -127,39 +130,39 @@ module.exports = {
         _client.post(_client.getHttpPostOptions(req, config.dynamicobjects_add_rest_path), req, res, next);
     },
     updateObject: function(req, res, next) {
-        function validateRequest(req){
-            var params=req.body.params;
-            if(params.length<=0){
-                return {status:false,message:'Params Missing!'}
+        function validateRequest(req) {
+            var params = req.body.params;
+            if (params.length <= 0) {
+                return { status: false, message: 'Params Missing!' }
             }
-            if(params['properties']==null || params['attributes']==null || params['functions']==null || typeof params['properties']=='undefined' || typeof params['attributes']=='undefined' || typeof params['functions']=='undefined')
-                return {status:false,message:'Params Missing!'}
-            var attributes=params['attributes'];
-            if(attributes.length===0){
-                return {status:false,message:'Minimum one attribute required to create an object.'};
+            if (params['properties'] == null || params['attributes'] == null || params['functions'] == null || typeof params['properties'] == 'undefined' || typeof params['attributes'] == 'undefined' || typeof params['functions'] == 'undefined')
+                return { status: false, message: 'Params Missing!' }
+            var attributes = params['attributes'];
+            if (attributes.length === 0) {
+                return { status: false, message: 'Minimum one attribute required to create an object.' };
             }
-            for(var i=0; i<attributes.length; i++){
-                if(attributes[i].type=='number' && isNaN(attributes[i].defaultValue) ){
-                    return {status:false,message:'Type and Default Value Type Missmatch for attribute : '+attributes[i].name+"! Default value should be a number."}
+            for (var i = 0; i < attributes.length; i++) {
+                if (attributes[i].type == 'number' && isNaN(attributes[i].defaultValue)) {
+                    return { status: false, message: 'Type and Default Value Type Missmatch for attribute : ' + attributes[i].name + "! Default value should be a number." }
                 }
-                if((attributes[i].isPrimaryKey=='true' || attributes[i].isPrimaryKey==true)&&  (attributes[i].isNullable=='true' || attributes[i].isNullable==true)){
-                    return {status:false,message:'Primary Key can not be declared null please check isNullable field for : '+attributes[i].name}
+                if ((attributes[i].isPrimaryKey == 'true' || attributes[i].isPrimaryKey == true) && (attributes[i].isNullable == 'true' || attributes[i].isNullable == true)) {
+                    return { status: false, message: 'Primary Key can not be declared null please check isNullable field for : ' + attributes[i].name }
                 }
             }
-            return {status:true};
+            return { status: true };
         };
         console.log(req.body.params);
-        var result=validateRequest(req);
-        if(!result.status){
+        var result = validateRequest(req);
+        if (!result.status) {
             return res.status(200).json(result);
         }
-        req.body.params.object={};
-        req.body.params.object.name=req.body.params.properties.name;
-        req.body.params.object.description=req.body.params.properties.desc;
-        req.body.params.object.scope=req.body.params.properties.scope;
-        req.body.params.object.status=req.body.params.properties.status;
-        req.body.params.object.attributes=req.body.params.attributes;
-        req.body.params.object.functions=req.body.params.functions;
+        req.body.params.object = {};
+        req.body.params.object.name = req.body.params.properties.name;
+        req.body.params.object.description = req.body.params.properties.desc;
+        req.body.params.object.scope = req.body.params.properties.scope;
+        req.body.params.object.status = req.body.params.properties.status;
+        req.body.params.object.attributes = req.body.params.attributes;
+        req.body.params.object.functions = req.body.params.functions;
         delete req.body.params.attributes;
         delete req.body.params.functions;
         delete req.body.params.properties;

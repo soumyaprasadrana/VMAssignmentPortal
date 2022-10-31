@@ -26,6 +26,6 @@ export class QuickLinkComponent implements OnInit {
 
   ngOnInit(): void {}
   openLink(link: any) {
-    window.open(link, '_target');
+    window.open(link, '_blank');
   }
 }
