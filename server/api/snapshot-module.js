@@ -99,7 +99,7 @@ module.exports = {
     },
     restartsnapshotservice: function(req, res, next) {
         logger.info("restartsnapshotservice: ");
-        _client.post(_client.getHttpPostOptions(req, config.update_vm_extra_data_rest_path), req, res, next);
+        _client.post(_client.getHttpPostOptions(req, config.restart_snap_service_rest_path), req, res, next);
     }
 
 }
