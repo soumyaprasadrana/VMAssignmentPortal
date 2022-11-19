@@ -169,7 +169,7 @@ export class EditDynamicObjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addFunctions();
+    //this.addFunctions();
   }
   get f() {
     return this.registerForm.controls;
@@ -708,5 +708,92 @@ export class EditDynamicObjectComponent implements OnInit {
           callback(res);
         }
       });
+  }
+  importApplicationMetadata($event: any) {
+    // this.recordData = JSON.parse(res)['object'];
+    //     this.origionalAttrList = this.recordData['attributes'];
+    //   this.createForm();
+    this._spinner.setSpinnerState(true);
+    var file = $event.originalTarget.files[0];
+    console.log(file);
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      try {
+        console.log(fileReader.result);
+        var result: any = fileReader.result?.toString();
+        var metaData = JSON.parse(result);
+        if (
+          metaData.name == null ||
+          metaData.scope == null ||
+          metaData.status == null ||
+          metaData.attributes == null ||
+          metaData.functions == null
+        ) {
+          alert(
+            'Schema validation failed, please check if applicatio json is properly configured'
+          );
+          this._spinner.setSpinnerState(false);
+        } else if (
+          metaData.name != this.formGroupObjectProperties.controls.name.value
+        ) {
+          alert(
+            'Seems you are trying to import metadata for a different application, please check metadata configuration.'
+          );
+          this._spinner.setSpinnerState(false);
+        } else {
+          try {
+            this.recordData = metaData;
+            this.origionalAttrList = this.recordData['attributes'];
+            this.createForm();
+            this._spinner.setSpinnerState(false);
+            alert('Application metadata loaded successfully.');
+          } catch (e: any) {
+            console.log(e);
+            alert(
+              'Loading application metadata failed with ' +
+                e.toString() +
+                ' error'
+            );
+            this._spinner.setSpinnerState(false);
+          }
+        }
+      } catch (e: any) {
+        console.log(e);
+        alert(
+          'Loading application metadata failed with ' + e.toString() + ' error'
+        );
+        this._spinner.setSpinnerState(false);
+      }
+    };
+    fileReader.readAsText(file);
+  }
+  exportApplicationMetadata() {
+    console.log('exportApplicationMetadata');
+    var object: any = {};
+    var properties = this.formGroupObjectProperties.value;
+    var attributes = this.parseFormValues(
+      this.objectAttributeForm.getRawValue()
+    );
+    var functions = this.parseFunctionsFormValues(
+      this.objectFunctionsGroup.getRawValue()
+    );
+    object.name = properties.name;
+    object.scope = properties.scope;
+    object.status = properties.status;
+    object.description = properties.desc;
+    object.attributes = attributes;
+    object.functions = functions;
+    //alert(object.toString());
+    var element = document.createElement('a');
+    element.setAttribute(
+      'href',
+      'data:text/json;charset=UTF-8,' +
+        encodeURIComponent(JSON.stringify(object, null, 3))
+    );
+    element.setAttribute('download', properties.name + '.json');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
   }
 }

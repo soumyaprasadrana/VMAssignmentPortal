@@ -17,8 +17,6 @@
         <li>Adding user defined functions.</li>
         <li>Modifying primary keys once created.</li>
         <li>TEAM TYPE2 scope is not available.</li>
-        <li>No check for autokey/primary key ; You must add a primary key/autokey manually.</li>
-        <li>No validation check for MySQL keywords, avoid using mysql keywords on attribute name.</li>
     </ul>
 </ngb-alert>
 
@@ -29,6 +27,12 @@
                 <i class="fa fa-first-order" area-label="false"></i> {{title}}
                 <hr>
             </h3>
+        </div>
+        <div class="col text-right">
+            <button mat-button (click)="fileInput.click()">Import
+                <input #fileInput type="file" accept="application/json" hidden (change)="importApplicationMetadata($event)">
+            </button>
+            <button mat-button (click)="exportApplicationMetadata()">Export</button>
         </div>
     </div>
     <mat-stepper orientation="vertical" linear="true" #stepper labelPosition="bottom" *ngIf="dataLoaded">
