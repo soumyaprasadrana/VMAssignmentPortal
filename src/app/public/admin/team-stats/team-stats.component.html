@@ -29,6 +29,7 @@
                         <th>Full Name</th>
                         <th>Team Leader?</th>
                         <th>Permissions<br>[Create User, Edit User,<br>Delete User, Remove VM]</th>
+                        <th>Action</th>
                         <tr *ngFor="let user of users | orderBy: 'user_name' ">
                             <td style="text-align:left; ">
 
@@ -56,6 +57,9 @@
                                     <span [matTooltip]="'Remove VM?'" *ngIf="user.delete_vm=='0' "><i class="fa fa-times-circle "></i></span>
                                 </div>
 
+                            </td>
+                            <td>
+                                <span [matTooltip]="'Reset Password'" (click)="resetPassword(user.user_id)" ><i class="fa fa-key"></i></span>
                             </td>
                         </tr>
                         <tr>

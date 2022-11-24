@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:06:39
- * @modify date 2022-04-19 18:06:39
+ * @modify date 2022-11-24 18:06:39
  * @desc Configuration file for node api server
  */
 var pino = require('pino');
@@ -81,6 +81,7 @@ module.exports = {
     user_path: '/user/getUser',
     normal_users: '/user/getNormalUsers',
     delete_uesr_path: '/user/removeUser',
+    reset_uesr_pass_path: '/user/resetPassword',
     user_pass_change: '/user/changePassword',
     teamLeads_path: '/user/getTeamLeads',
     get_team_path: '/admin/getTeam',

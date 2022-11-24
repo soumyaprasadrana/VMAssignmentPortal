@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-04-19 18:26:41
+ * @modify date 2022-11-24 18:06:39
  * @desc User Services
  */
 import { Injectable } from '@angular/core';
@@ -270,6 +270,28 @@ export class UserService {
       };
       this._client
         .post('api/user/delete/' + user, null, httpOptions)
+        .then((res: any) => {
+          //console.log('Users Service:delete=>', res);
+          resolve(res);
+        })
+        .catch((error: any) => {
+          //console.log(error);
+          reject(error);
+        });
+    });
+    return promisey;
+  }
+  resetUserPassword(user: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      this._client
+        .post('api/user/resetpass/' + user, null, httpOptions)
         .then((res: any) => {
           //console.log('Users Service:delete=>', res);
           resolve(res);

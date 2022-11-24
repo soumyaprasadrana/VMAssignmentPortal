@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:53:04
- * @modify date 2022-04-19 17:53:04
+ * @modify date 2022-11-24 18:06:39
  * @desc Node API Routing
  */
 const portalAuth = require('./portal-auth');
@@ -90,6 +90,7 @@ module.exports = function(app) {
     app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
     app.get('/api/user/getUser/:id', userCtrl.getUser);
     app.post('/api/user/delete/:id', userCtrl.deleteUser);
+    app.post('/api/user/resetpass/:id', userCtrl.resetPassword);
     app.get('/api/admin/activityLog/:type/:activityId', admnCtrl.getActivityLog);
     app.post('/api/stream/exec', commonCtrl.streamExec);
     app.get("/api/stream/getOut/:file/:threadID", commonCtrl.getStreamOutput);
