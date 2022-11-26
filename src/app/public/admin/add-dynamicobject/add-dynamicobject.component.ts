@@ -32,6 +32,7 @@ import { DynamicObjectsService } from '../../services/dynamicobjects.service';
 import { ɵNullViewportScroller } from '@angular/common';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { CommonService } from '../../services/common.service';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-add-dynamicobject',
   templateUrl: './add-dynamicobject.component.html',
@@ -47,6 +48,9 @@ export class AddDynamicObjectComponent implements OnInit {
   formGroupObjectPropertiesSubmitted: boolean = false;
   list: any;
   funlist: any;
+  metaData: any;
+  dataLoaded: any;
+  origionalAttrList: any;
   formNameGroup!: FormGroup;
   objectAttributeForm!: FormGroup;
   objectAttributeFormSubmitted: boolean = false;
@@ -67,7 +71,8 @@ export class AddDynamicObjectComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder,
     private dynamicObjectService: DynamicObjectsService,
-    private commonServices: CommonService
+    private commonServices: CommonService,
+    private sanitizer: DomSanitizer
   ) {
     this.loggedUser = _auth.getUser();
     this.createForm();
@@ -601,6 +606,158 @@ export class AddDynamicObjectComponent implements OnInit {
           );
         });
     }
+  }
+  createFormFromMetadata() {
+    //Need to
+    this.dataLoaded = false;
+    if (
+      this.metaData['scope'] != null &&
+      /team:*/.test(this.metaData['scope'].toString())
+    ) {
+      if (
+        this.listSelectedTeams.indexOf(this.metaData['scope'].toString()) === -1
+      )
+        this.listSelectedTeams.push(this.metaData['scope'].toString());
+    }
+    this.formGroupObjectProperties = this.fb.group({
+      name: [
+        this.metaData['name'],
+        [
+          Validators.required,
+          CustomValidator.restrictWhiteSpace,
+          Validators.maxLength(30),
+        ],
+      ],
+      desc: [
+        this.metaData['description'],
+        [Validators.required, Validators.maxLength(150)],
+      ],
+      scope: [this.metaData['scope'], Validators.required],
+      status: [this.metaData['status'], Validators.required],
+    });
+
+    this.list = this.metaData['attributes'];
+    this.objectAttributeForm = this.fb.group(
+      this.parseFormControlsAddAutoKey(this.metaData['attributes'])
+    );
+    this.funlist = this.metaData['functions'];
+    this.objectFunctionsGroup = this.fb.group(
+      this.parseFormControlsFunctionsGroup(this.metaData['functions'])
+    );
+    this.dataLoaded = true;
+  }
+
+  importApplicationMetadata($event: any) {
+    // this.metaData = JSON.parse(res)['object'];
+    //     this.origionalAttrList = this.metaData['attributes'];
+    //   this.createForm();
+    var file = $event.originalTarget.files[0];
+    console.log(file);
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      try {
+        this._spinner.setSpinnerState(true);
+        console.log(fileReader.result);
+        var result: any = fileReader.result?.toString();
+        var metaData = JSON.parse(result);
+        if (
+          metaData.name == null ||
+          metaData.scope == null ||
+          metaData.status == null ||
+          metaData.attributes == null ||
+          metaData.functions == null
+        ) {
+          alert(
+            'Schema validation failed, please check if applicatio json is properly configured'
+          );
+          this._spinner.setSpinnerState(false);
+        } else {
+          try {
+            this.metaData = metaData;
+            this.origionalAttrList = this.metaData['attributes'];
+            for (var i = 0; i < this.origionalAttrList.length; i++) {
+              if (
+                this.origionalAttrList[i].type != null &&
+                /list:*/.test(this.origionalAttrList[i].type.toString())
+              ) {
+                if (
+                  this.listSelectedOptions.indexOf(
+                    this.origionalAttrList[i].type.toString()
+                  ) === -1
+                )
+                  this.listSelectedOptions.push(
+                    this.origionalAttrList[i].type.toString()
+                  );
+              }
+            }
+            this.createFormFromMetadata();
+            this._spinner.setSpinnerState(false);
+            alert('Application metadata loaded successfully.');
+          } catch (e: any) {
+            console.log(e);
+            alert(
+              'Loading application metadata failed with ' +
+                e.toString() +
+                ' error'
+            );
+            this._spinner.setSpinnerState(false);
+          }
+        }
+      } catch (e: any) {
+        console.log(e);
+        alert(
+          'Loading application metadata failed with ' + e.toString() + ' error'
+        );
+        this._spinner.setSpinnerState(false);
+      }
+    };
+    fileReader.readAsText(file);
+  }
+  exportApplicationMetadata() {
+    console.log('exportApplicationMetadata');
+    var object: any = {};
+    var properties = this.formGroupObjectProperties.value;
+    var attributes = this.parseFormValues(
+      this.objectAttributeForm.getRawValue()
+    );
+    var functions = this.parseFunctionsFormValues(
+      this.objectFunctionsGroup.getRawValue()
+    );
+    if (attributes.length == 0) {
+      var tempAttr = {
+        name: 'ATTRIBUTESAMPLE | string',
+        type: 'string | number | richtext | user | team | list:listname | autokey',
+        size: 20,
+        isPrimaryKey: false,
+        isNullable: true,
+        defaultValue: null,
+        validators: null,
+        alias: 'ATTRIBUTENAME | string',
+      };
+      attributes.push(tempAttr);
+    }
+    object.name = properties.name;
+    object.scope = properties.scope;
+    object.status = properties.status;
+    object.description = properties.desc;
+    object.attributes = attributes;
+    object.functions = functions;
+    var element = document.createElement('a');
+    element.setAttribute(
+      'href',
+      'data:text/json;charset=UTF-8,' +
+        encodeURIComponent(JSON.stringify(object, null, 3))
+    );
+    element.setAttribute(
+      'download',
+      (properties.name
+        ? properties.name
+        : 'APP' + Math.floor(Math.random() * (100 - 10 + 1) + 10)) + '.json'
+    );
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
   }
   submitDynamicObject() {
     this.submitted = true;

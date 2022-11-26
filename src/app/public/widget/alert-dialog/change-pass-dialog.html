@@ -10,9 +10,21 @@
 <mat-dialog-content class="alertMssg ml-2">
     <br> {{data.label}}
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="row p-3 ">
-            <div class="row p-3 ">
-                <div class="col-sm-6">
+        <div class="row pt-3 pl-3 pr-3 pb-0">
+            <div class="col">
+                <div class="form-group required">
+                    <label for="currPassword">Current Password:</label>
+                    <span (click)="showCurrPass=!showCurrPass" [ngClass]="{'fa-eye':showCurrPass,'fa-eye-slash':!showCurrPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
+                    <input id="currPassword" [type]="showCurrPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="user_curr_pass" [ngClass]="{ 'is-invalid': submitted && f.user_curr_pass.errors }">
+                    <div *ngIf="submitted && f.user_curr_pass.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.user_curr_pass.errors.required">Current Password is required</div>
+                        <div class="ml-1" *ngIf="f.user_curr_pass.errors.minlength">Current Password must be at least 6 characters</div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <div class="row pt-3 pl-3 pr-3 pb-0">
+                <div class="col">
                     <div class="form-group required">
                         <label for="password">New Password:</label>
                         <span (click)="showPassword=!showPassword" [ngClass]="{'fa-eye':showPassword,'fa-eye-slash':!showPassword}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
@@ -22,21 +34,20 @@
                             <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group required">
-                        <label for="conf_password">Confirm Password:</label>
-                        <span (click)="showPass=!showPass" [ngClass]="{'fa-eye':showPass,'fa-eye-slash':!showPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
-                        <input id="conf_password" [type]="showPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
-                        <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Password is required</div>
-                            <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
-                        </div>
+                </div>    
+        </div>
+        <div class="row pt-3 pl-3 pr-3 pb-0">
+            <div class="col">
+                <div class="form-group required">
+                    <label for="conf_password">Confirm Password:</label>
+                    <span (click)="showPass=!showPass" [ngClass]="{'fa-eye':showPass,'fa-eye-slash':!showPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
+                    <input id="conf_password" [type]="showPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
+                    <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
+                        <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Password is required</div>
+                        <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
                     </div>
                 </div>
-
             </div>
-            
         </div>
         <div class="row ">
             <div class="col float-end">

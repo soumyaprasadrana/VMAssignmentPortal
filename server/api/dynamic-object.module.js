@@ -98,7 +98,18 @@ module.exports = {
             if (attributes.length === 0) {
                 return { status: false, message: 'Minimum one attribute required to create an object.' };
             }
+            var tempAtrr = [];
+            var duplicateAttr = [];
+            var isContainsPrimaryKeyOrAutokey = false;
             for (var i = 0; i < attributes.length; i++) {
+                if (tempAtrr.indexOf(attributes[i].name) === -1) {
+                    tempAtrr.push(attributes[i].name);
+                } else {
+                    duplicateAttr.push({ index: i + 1, value: attributes[i].name });
+                }
+                if ((attributes[i].isPrimaryKey == 'true' || attributes[i].isPrimaryKey == true) || (attributes[i].type == 'autokey')) {
+                    isContainsPrimaryKeyOrAutokey = true;
+                }
                 if (attributes[i].type == 'number' && isNaN(attributes[i].defaultValue)) {
                     return { status: false, message: 'Type and Default Value Type Missmatch for attribute : ' + attributes[i].name + "! Default value should be a number." }
                 }
@@ -108,6 +119,16 @@ module.exports = {
                 if (attributes[i].isNullable == false && (!attributes[i].defaultValue || attributes[i].defaultValue == null || attributes[i].defaultValue == '') && (attributes[i].validators == null || (attributes[i].validators != null && !attributes[i].validators.includes("required")))) {
                     return { status: false, message: 'An attribute which is not nullable must have a default value or a required validator please check configuration for attribute : ' + attributes[i].name }
                 }
+            }
+            if (duplicateAttr.length != 0) {
+                var message = "Schema validation failed, duplicate attribute entry found at below indexes: ";
+                for (var i = 0; i < duplicateAttr.length; i++) {
+                    message += "<br> Index: " + duplicateAttr[i].index + " Attribute Name=" + duplicateAttr[i].value;
+                }
+                return { status: false, message: message }
+            }
+            if (!isContainsPrimaryKeyOrAutokey) {
+                return { status: false, message: "Failed! An object can not be created without a primary/auto key." }
             }
             return { status: true };
         };

@@ -1435,6 +1435,34 @@ export class HomePageComponent implements OnInit {
         }
       },
     }];
+    const snapshotWarnFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+      var template =`<div class="text-center">
+      <div>
+      <table>
+      <tr>
+      <td class="left-align">${(vm.snap_count >= this.properties.warnSnapshot &&
+        vm.snap_count <= this.properties.alertSnapshot)?'<span placement="right"  class="btn  card badge badge-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+      ${(vm.snap_count > this.properties.alertSnapshot)?'<span placement="right"  class="btn card badge badge-danger customA"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+      
+      </td>
+      <td>
+      <!--<span class="badge" (click)="callParentFunction()" [innerHtml]="template">
+      </span>-->
+      </td>
+      </tr>
+      </table>
+      </div>
+      </div>`;
+      
+        return {
+          text: template,
+          toolTip: value,
+        };
+      
+    };
     var tempOsFiler = {
       // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
       // enableRenderHtml: true,
@@ -1505,7 +1533,7 @@ export class HomePageComponent implements OnInit {
         excludeFromHeaderMenu:true,
         excludeFromColumnPicker:true,
         resizable:false,
-        formatter: ipcellFormatter,
+        formatter: snapshotWarnFormatter,
         width:30,
         headerCssClass:'',
         cssClass:'slick-cell-checkboxse',
@@ -2066,7 +2094,7 @@ export class HomePageComponent implements OnInit {
   addGroupChildByColumnToTheColumnDef(column: string) {
     // let columns=this.gridObj.getColumns();
     this.columnDef.forEach((columnDef: any) => {
-      if (columnDef.id !== column && columnDef.id !== 'action') {
+      if (columnDef.id !== column && columnDef.id !== 'action' && columnDef.id!=='snapWarnCol') {
         /*PUSH CHILD GROUPING MENU TO THE COLUMN HEADER MENU */
         //console.log(columnDef);
 

@@ -26,13 +26,35 @@ export class LtbButtonComponent implements OnInit {
   @Input() cardWidth: number = 100;
   @Input() commandQuerryParser: boolean = false;
   @Input() queryFields: [] = [];
+  enableSSH2:boolean=false;
   submitted = false;
   constructor(
     private dialog: MatDialog,
     private _client: NodeclientService,
     private _spinner: SpinnerService,
-    private router: Router
-  ) {}
+    private router: Router,
+  ) {
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    var httpOptions = {
+      headers: headers,
+    };
+    var useNodeSSH2;
+    this._client
+      .get('api/config/enableSSH2', httpOptions)
+      .then((res: any) => {
+        useNodeSSH2 = res.enableSSH2;
+        console.log(
+          'Config enableSSH2 loded from server :',
+          useNodeSSH2
+        );
+        this.enableSSH2 = useNodeSSH2;
+      })
+      .catch((err) => {
+        console.log('Error Occurred! Using default value!');
+      });
+  }
 
   ngOnInit(): void {}
   submit(): void {
@@ -57,6 +79,7 @@ export class LtbButtonComponent implements OnInit {
           this.callback(res);
         } else {
           //console.log('usual path to show result');
+      if(!this.enableSSH2){
           this.submitted = true;
           this._spinner.setSpinnerState(true);
 
@@ -99,8 +122,28 @@ export class LtbButtonComponent implements OnInit {
               );
             });
         }
+        else{
+          this.submitted=true;
+          this._spinner.setSpinnerState(true);
+          console.log(res);
+          this.openWebSSH(res.ssh_username,res.ssh_password,res.ssh_port,res.machine_ip,res.command);
+          this._spinner.setSpinnerState(false);
+        }
+      }
       }
     );
+  }
+  openWebSSH(username:any,password:any,port:any,hostname:any,command:any){
+    console.log("clicked openWebSSH");
+    const routerLink = ['/portal/spa/', 'sshclient'];
+    var appUrl = this.router.serializeUrl(
+      this.router.createUrlTree(routerLink,{ queryParams: { hostname: hostname, username: username,port:port,password:password,type:'exec',command:command } })
+    );
+    
+    //appUrl+="?hostname="+hostname+"&username="+username+"&port="+port+"&password="+password+"&type=exec&command="+command;
+    console.log(appUrl);
+    window.open(appUrl, '_blank');
+   
   }
   openDialogInput(data: any, callback: any) {
     this.dialog
