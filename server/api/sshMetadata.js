@@ -53,11 +53,13 @@ module.exports = {
                 cardFields: [
                     [
                         { label: 'Machine IP', field_name: 'machine_ip' },
+                        { label: 'SSH Port', field_name: 'ssh_port' },
                         { label: 'SSH Username', field_name: 'ssh_username' },
                         { label: 'SSH Password', field_name: 'ssh_password' },
                     ],
                     {
                         machine_ip: [null, "required"],
+                        ssh_port: [22,"required"],
                         ssh_username: [null, "required"],
                         ssh_password: [null, "required"],
                         command: ['hostname', "required"],
@@ -76,11 +78,13 @@ module.exports = {
                     cardFields: [
                         [
                             { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Port', field_name: 'ssh_port' },
                             { label: 'SSH Username', field_name: 'ssh_username' },
                             { label: 'SSH Password', field_name: 'ssh_password' },
                         ],
                         {
                             machine_ip: [null, "required"],
+                            ssh_port: [22,"required"],
                             ssh_username: [null, "required"],
                             ssh_password: [null, "required"],
                             command: ['ifconfig', "required"],
@@ -95,11 +99,13 @@ module.exports = {
                     cardFields: [
                         [
                             { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Port', field_name: 'ssh_port' },
                             { label: 'SSH Username', field_name: 'ssh_username' },
                             { label: 'SSH Password', field_name: 'ssh_password' },
                         ],
                         {
                             machine_ip: [null, "required"],
+                            ssh_port: [22,"required"],
                             ssh_username: [null, "required"],
                             ssh_password: [null, "required"],
                             command: ['dir && sleep 40 && dir', "required"],
@@ -114,12 +120,14 @@ module.exports = {
                     cardFields: [
                         [
                             { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Port', field_name: 'ssh_port' },
                             { label: 'SSH Username', field_name: 'ssh_username' },
                             { label: 'SSH Password', field_name: 'ssh_password' },
                             { label: 'Hostname to ping', field_name: 'hostname' },
                         ],
                         {
                             machine_ip: [null, "required"],
+                            ssh_port: [22,"required"],
                             ssh_username: [null, "required"],
                             ssh_password: [null, "required"],
                             command: ['ping {hostname}', "required"],
@@ -137,12 +145,14 @@ module.exports = {
                     cardFields: [
                         [
                             { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Port', field_name: 'ssh_port' },
                             { label: 'SSH Username', field_name: 'ssh_username' },
                             { label: 'SSH Password', field_name: 'ssh_password' },
 
                         ],
                         {
                             machine_ip: [null, "required"],
+                            ssh_port: [22,"required"],
                             ssh_username: [null, "required"],
                             ssh_password: [null, "required"],
                             command: [
@@ -163,6 +173,7 @@ module.exports = {
                     cardFields: [
                         [
                             { label: 'Machine IP', field_name: 'machine_ip' },
+                            { label: 'SSH Port', field_name: 'ssh_port' },
                             { label: 'SSH Username', field_name: 'ssh_username' },
                             { label: 'SSH Password', field_name: 'ssh_password' },
                             { label: 'Folder1', field_name: 'folder1' },
@@ -171,6 +182,7 @@ module.exports = {
                         ],
                         {
                             machine_ip: [null, "required"],
+                            ssh_port: [22,"required"],
                             ssh_username: [null, "required"],
                             ssh_password: [null, "required"],
                             command: [

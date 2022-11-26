@@ -60,6 +60,11 @@ module.exports = {
         res.status(200).json({ useToast: useToast });
         next();
     },
+    getEnableSSH: function(req, res, next) {
+        const enableSSH2 = config.enableSSH2 ? config.enableSSH2 : false;
+        res.status(200).json({ enableSSH2: enableSSH2 });
+        next();
+    },
     getLoginFooter: function(req, res, next) {
         const hideloginfooter = config.hideloginfooter ? config.hideloginfooter : false;
         res.status(200).json({ hideloginfooter: hideloginfooter });

@@ -23,6 +23,9 @@ const bodyParser = require('body-parser');
 var compression = require('compression');
 const gzipAll = require('gzip-all')
 const fs = require("fs");
+var http = require('http');
+var SSHClient = require("ssh2").Client;
+var utf8 = require("utf8");
 
 logger.info("Initializing node server");
 logger.info("Checking node version ..." + global.process.version);
@@ -108,7 +111,7 @@ function loadSPA(req, res) {
     const app = req.params.app;
     if (!config.includedSPA.includes(app)) {
         logger.info(fun + app + "not found in included list.");
-        res.status(200).send(app + " is not available please contact your system administrtor!");
+        res.status(400).send(app + " is not available please contact your system administrtor!");
     } else {
         const app_path = './spa/' + app + '/index.html';
         logger.debug("Resolved path :" + path.resolve(app_path));
@@ -120,7 +123,7 @@ function loadSPA(req, res) {
                 //res.status(200).send(path.resolve(app_path));
             } else {
                 logger.info(fun + app + " found in single page application list but unable to find application resotce inside spa .");
-                res.status(200).send("Unable to find resource for " + app + " , please contact your system administrtor!");
+                res.status(401).send("Unable to find resource for " + app + " , please contact your system administrtor!");
             }
         } catch (e) {
             logger.debug(e);
@@ -141,7 +144,7 @@ function loadSPAAsset(req, res) {
     logger.info("Asset requested :" + requestPath);
     if (!config.includedSPA.includes(app)) {
         logger.info(fun + app + "not found in included list.");
-        res.status(200).send(app + " is not available please contact your system administrtor!");
+        res.status(400).send(app + " is not available please contact your system administrtor!");
     } else {
         const app_path = './spa/' + app + '/' + requestPath;
         logger.debug("Resolved path :" + path.resolve(app_path));
@@ -153,7 +156,7 @@ function loadSPAAsset(req, res) {
                 //res.status(200).send(path.resolve(app_path));
             } else {
                 logger.info(fun + app + " found in single page application list but unable to find application resotce inside spa .");
-                res.status(200).send("Unable to find resource for " + app + " , please contact your system administrtor!");
+                res.status(401).send("Unable to find resource for " + app + " , please contact your system administrtor!");
             }
         } catch (e) {
             logger.debug(e);
@@ -168,4 +171,128 @@ app.get('/portal/spa/:app/*', loadSPAAsset);
 app.get('/portal/login', getRoot);
 app.get('/portal/home/*', portalAuth.ensureAuthenticated, getUndefined);
 const port = config.PORT;
-app.listen(port, () => logger.info('App listening on port ' + port));
+//app.listen(port, () => logger.info('App listening on port ' + port));
+
+logger.info("Creating http server for socket.io");
+var server = http.createServer(app);
+logger.info("Registering Socket.io");
+//socket.io instantiation
+const io = require("socket.io")(server, { origins: '*:*'});
+
+server.listen(port,() => logger.info('App listening on port ' + port));
+
+//Socket Connection
+io.on("connection", function(socket) {
+try{
+  logger.info("SERVER SOCKET CONNECTION CREATED :",socket.id);
+  var data = socket.handshake.query;
+  logger.info(data);
+  if(data.type=="webshell"){
+    console.log("Connection type : webshell")
+  var ssh = new SSHClient();
+  ssh
+    .on("ready", function() {
+      socket.emit("data", "\r\n*** SSH CONNECTION ESTABLISHED ***\r\n\n");
+      connected = true;
+      ssh.shell(function(err, stream) {
+        if (err)
+          return socket.emit(
+            "data",
+            "\r\n*** SSH SHELL ERROR: " + err.message + " ***\r\n"
+          );
+        socket.on("data", function(data) {
+          stream.write(data);
+        });
+        stream
+          .on("data", function(d) {
+            socket.emit("data", utf8.decode(d.toString("binary")));
+          })
+          .on("close", function() {
+            ssh.end();
+          });
+      });
+    })
+    .on("close", function() {
+      socket.emit("data", "\r\n*** SSH CONNECTION CLOSED ***\r\n");
+    })
+    .on("error", function(err) {
+      console.log(err);
+      socket.emit(
+        "data",
+        "\r\n*** SSH CONNECTION ERROR: " + err.message + " ***\r\n"
+      );
+    })
+    .connect({
+      host: data.hostname,
+      port: data.port, // Generally 22 but some server have diffrent port for security Reson
+      username: data.username, // user name
+      password: data.password // Set password or use PrivateKey
+      // privateKey: require("fs").readFileSync("PATH OF KEY ") // <---- Uncomment this if you want to use privateKey ( Example : AWS )
+    });}
+    else if(data.type=="exec"){
+        console.log("Connection type: exec");
+        if(typeof data.command=='undefined' || data.command == null || data.command=="null"){
+            console.log("Command not found");
+            return socket.emit(
+                "data",
+                "\r\n*** SSH CONNECTION ERROR: Command not found for connection type execute! ***\r\n"
+              );
+              
+        }
+        var ssh = new SSHClient();
+  ssh
+    .on("ready", function() {
+      socket.emit("data", "\r\n*** SSH CONNECTION ESTABLISHED ***\r\n");
+      connected = true;
+      ssh.exec(data.command,function(err, stream) {
+        if (err)
+          return socket.emit(
+            "data",
+            "\r\n*** SSH SHELL ERROR: " + err.message + " ***\r\n"
+          );
+        socket.on("data", function(data) {
+          stream.write(data);
+        });
+        stream
+          .on("data", function(d) {
+            socket.emit("data", utf8.decode(d.toString("binary")));
+          }).stderr.on('data', (d) => {
+            socket.emit("data", utf8.decode(d.toString("binary")));
+          })
+          .on("error", function(d) {
+            socket.emit("data", utf8.decode(d.toString("binary")));
+          })
+          .on("close", function() {
+            ssh.end();
+          });
+      });
+    })
+    .on("close", function() {
+      socket.emit("data", "\r\n*** COMMAND EXECUTED CONNECTION CLOSED ***\r\n");
+    })
+    .on("error", function(err) {
+      console.log(err);
+      if(err.message.includes("read ECONNRESET")){
+        socket.emit(
+            "data",
+            "\r\n*** Stream closed  ***\r\n"
+          );
+      }else{
+      socket.emit(
+        "data",
+        "\r\n*** SSH CONNECTION ERROR: " + err.message + " ***\r\n"
+      );
+      }
+    })
+    .connect({
+      host: data.hostname,
+      port: data.port, // Generally 22 but some server have diffrent port for security Reson
+      username: data.username, // user name
+      password: data.password // Set password or use PrivateKey
+      // privateKey: require("fs").readFileSync("PATH OF KEY ") // <---- Uncomment this if you want to use privateKey ( Example : AWS )
+    });
+
+    }
+}catch(e){logger.info(e);}
+}
+);

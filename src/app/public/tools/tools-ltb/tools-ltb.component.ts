@@ -12,6 +12,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NodeclientService } from '../../services/nodeclient.service';
 @Component({
   selector: 'app-tools-ltb',
@@ -23,7 +24,7 @@ export class ToolsLtbComponent implements OnInit {
   selectedDataContext: any;
   defaultSSHUsername: any;
   defaultSSHPassword: any;
-  constructor(private _client: NodeclientService) {
+  constructor(private _client: NodeclientService,private actRoute: ActivatedRoute, private router: Router) {
     //  this.cardsMetaData = ToolsLTBConfig.cardsMetaData;
     if (typeof history.state.ip != 'undefined') {
       this.selectedDataContext = history.state;
@@ -87,6 +88,42 @@ export class ToolsLtbComponent implements OnInit {
       }
     }
     return metadata;
+  }
+  openWebSSH(){
+    console.log("clicked openWebSSH");
+   
+    var username=null;
+    var password=null;
+    var hostname=null;
+    var port=22;
+    if (typeof this.defaultSSHUsername != 'undefined') {
+      username = this.defaultSSHUsername;
+    }
+    if (typeof this.defaultSSHPassword != 'undefined') {
+      password = this.defaultSSHPassword;
+    }
+    if (this.selectedDataContext) {
+      hostname = this.selectedDataContext.ip;
+    }
+      if (
+        this.selectedDataContext.extradata &&
+        typeof this.selectedDataContext.extradata.sshUsername != 'undefined'
+      ) {
+        username =
+          this.selectedDataContext.extradata.sshUsername;
+      }
+      if (typeof this.selectedDataContext.extradata != 'undefined') {
+        password =
+          this.selectedDataContext.extradata.sshPassword;
+      }
+      const routerLink = ['/portal/spa/', 'sshclient'];
+      var appUrl = this.router.serializeUrl(
+        this.router.createUrlTree(routerLink,{ queryParams: { hostname: hostname, username: username,port:port,password:password } })
+      );
+   
+    console.log(appUrl);
+    window.open(appUrl, '_blank');
+   
   }
   ngOnInit(): void {}
 }

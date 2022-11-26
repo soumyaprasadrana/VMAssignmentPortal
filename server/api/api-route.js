@@ -85,6 +85,7 @@ module.exports = function(app) {
     app.get('/api/config/theme', commonCtrl.getThemeName);
     app.get('/api/config/hideloginfooter', commonCtrl.getLoginFooter);
     app.get('/api/config/useToast', commonCtrl.getUseToast);
+    app.get('/api/config/enableSSH2', commonCtrl.getEnableSSH);
     app.get('/api/public/getNormalUsers', userCtrl.getNormalUsers);
     app.get('/api/admin/getTeamLeads', userCtrl.getTL);
     app.get('/api/admin/teamStats', userCtrl.getUsersWithProtocols);
