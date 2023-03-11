@@ -21,7 +21,7 @@ module.exports = {
   /* Choose the theme for angular UI 
     Available Themes : default,dark,pink,blue
     */
-  theme: process.env.THEME || "default",
+  theme: process.env.THEME || "mui",
   /* To hide the footer in login page */
   hideloginfooter: process.env.HIDELOGINFOOTER || false,
   /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/

@@ -21,7 +21,7 @@
     }
 </style>
 <div class="container-fluid mt-3  no-scroller" *ngIf="!vmDataLoading">
-    <ngb-alert type="warning" [dismissible]="false">
+    <ngb-alert id="chart-option-sections" type="warning" [dismissible]="false">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="row w-100">
                 <div class="col-sm-2">

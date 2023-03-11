@@ -255,13 +255,30 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   parseObjectRecords(data: any): any[] {
     var temp: any[] = [];
     var uniqueid = 1;
-    for (var item in data) {
+
+ for (var item in data) {
       var tempitem = data[item];
       tempitem.id = uniqueid;
+      //tempitem = this.encodeRow(tempitem);
       temp.push(tempitem);
       uniqueid++;
     }
     return temp;
+  }
+  encodeRow(row:any){
+    console.log("encodeRow :: ",row)
+    for(var key in row){
+      console.log("encodeRow :: row :: key :: before",key,row[key]);
+      row[key] = this.encodeHTML(row[key]);
+      console.log("encodeRow :: row :: key ::",key,row[key]);
+    }
+    return row;
+  }
+  encodeHTML(s:string) {
+    if(typeof s == 'string')
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    else
+      return s;
   }
   angularGridReady(angularGrid: AngularGridInstance) {
     this.angularGrid = angularGrid;

@@ -1,8 +1,8 @@
 <mat-toolbar>
-    <button mat-icon-button (click)="onToggleSidenav()">
+    <button id="mat-menu-button" mat-icon-button (click)="onToggleSidenav()">
         <mat-icon class="white-icon">menu</mat-icon>
     </button>
-    <a mat-button [routerLink]="['/portal/home/dash']">
+    <a id="portal-nav-icon" mat-button [routerLink]="['/portal/home/dash']">
         <h1 style="color:white"><b>VM Assignment Portal</b></h1>
     </a>
 
@@ -64,7 +64,7 @@
                 <button mat-menu-item *ngIf="loggedUser.permissions.is_admin" [routerLink]="['/portal/home/admin/properties']"><i area-hideen="true" class="fa fa-cogs"></i> Application Properties</button>
             </mat-menu>
 
-            <button title="Quicklinks" *ngIf="quicklinks.length>0" mat-button [matMenuTriggerFor]="LinkMenu" id="linkDropdown">
+            <button   title="Quicklinks" *ngIf="quicklinks.length>0" mat-button [matMenuTriggerFor]="LinkMenu" id="linkDropdownt">
             <mat-icon>
                 link
             </mat-icon>
@@ -72,10 +72,12 @@
             <mat-menu #LinkMenu="matMenu" yPosition="below">
                 <app-quick-link *ngFor="let item of quicklinks" [iconClass]="item.iconClass" [iconSrc]="item.iconSrc" [linkUrl]="item.linkUrl" [linkTitle]="item.linkTitle"> </app-quick-link>
             </mat-menu>
-            <button title="Themes" mat-button [matMenuTriggerFor]="themeMenu" id="themeDropdown"><mat-icon>
+            <button title="Themes" mat-button [matMenuTriggerFor]="themeMenu" id="themeDropdownt"><mat-icon>
                 format_color_fill
             </mat-icon> </button>
             <mat-menu #themeMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="setTheme('mui')"><span><i
+                    style="color:#6d2072" class="fa fa-circle"></i> <b>Material</b> </span></button>
                 <button mat-menu-item (click)="setTheme('default')"><span><i
                     style="color:#280071" class="fa fa-circle"></i> <b>Default</b> </span></button>
                 <button mat-menu-item (click)="setTheme('blue')"><span><i
@@ -86,15 +88,15 @@
                       style="color:#37474f"  class="fa fa-circle"></i> <b>Grey</b> </span></button>
             </mat-menu>
 
-            <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
-            <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
-            <a *ngIf="loggedUser.enableSnapshotManagements" [routerLink]="['/portal/home/vmm/snapshots']" mat-button>Snapshots</a>
-            <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
-            <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
-            <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
-            <button mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
+            <a id="nav-button-vmm" [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
+            <a id="nav-button-chart" [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
+            <a id="nav-button-snapshots" *ngIf="loggedUser.enableSnapshotManagements" [routerLink]="['/portal/home/vmm/snapshots']" mat-button>Snapshots</a>
+            <a id="nav-button-users"  *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
+            <a id="nav-button-tools" [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
+            <a id="nav-button-administration" *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
+            <button  mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
                 class="fa fa-user"></i> {{loggedUser.name | uppercase }}  </button>
-            <button title="Quick Menu" mat-icon-button [matMenuTriggerFor]="quickMenu" aria-label="hidden">
+            <button id="nav-button-quick" title="Quick Menu" mat-icon-button [matMenuTriggerFor]="quickMenu" aria-label="hidden">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">

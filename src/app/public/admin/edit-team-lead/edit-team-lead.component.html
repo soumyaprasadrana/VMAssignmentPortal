@@ -3,7 +3,7 @@
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
+            <h3 class="page-title ml-3">
                 <i class="fa fa-user" area-label="false"></i> {{title}}
                 <hr>
             </h3>
@@ -68,11 +68,9 @@
                 </div>
 
                 <div class="row p-3">
-                    <div class="col-sm-6 mr-0 pr-0">
-
-                    </div>
-                    <div class="col-sm-6 mr-0 ">
-                        <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary">Submit</button>
+                    
+                    <div class="col mr-0 ">
+                        <button type="submit" mat-button (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
                     </div>
                 </div>
 
