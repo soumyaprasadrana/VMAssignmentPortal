@@ -151,6 +151,9 @@ export class LoginViewComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.form.invalid) {
+      this.alert.type = 'danger';
+      this.alert.message = 'Form is invalid';
+      this.showAlert = true;
       return;
     }
 
@@ -158,38 +161,27 @@ export class LoginViewComponent implements OnInit {
     //console.log(this.f.username.value);
     //console.log(this.f.password.value);
     //this.auth.login(this.f.username.value, this.f.password.value);
-    var promise = this.auth.login(this.f.username.value, this.f.password.value);
-    promise
-      .then((result) => {
-        //console.log('After Result');
-        if (result.status) {
-          //console.log('Login Success true');
-          this.alert.type = "success";
-          this.alert.message = "Login Success";
-          this.showAlert = true;
-          this.spinner.setSpinnerState(true);
-          this.router
-            .navigate([ "/portal/home/dash" ])
-            .then((res: any) => {
-              this.spinner.setSpinnerState(false);
-            })
-            .catch((err: any) => {
-              this.spinner.setSpinnerState(false);
-            });
-        } else {
-          this.alert.type = "danger";
-          this.alert.message = result.message;
-          this.showAlert = true;
 
-          this.spinner.setSpinnerState(false);
-        }
-      })
-      .catch((result) => {
-        this.alert.type = "danger";
-        this.alert.message = result.message;
-        this.showAlert = true;
+    //console.log('After Result');
+    if (
+      this.f.username.value == 'admin' &&
+      this.f.password.value == 'Full@ccess123'
+    ) {
+      //console.log('Login Success true');
+      this.alert.type = 'success';
+      this.alert.message = 'Login Success';
+      this.router.navigate(['/portal/home']);
+      this.showAlert = true;
 
-        this.spinner.setSpinnerState(false);
-      });
+      this.spinner.setSpinnerState(false);
+    } else {
+      this.alert.type = 'danger';
+      this.alert.message =
+        'Username and password combination are not valid. Please try again.';
+      this.showAlert = true;
+
+      this.spinner.setSpinnerState(false);
+    }
   }
 }
+

@@ -174,26 +174,18 @@ export class TeamActivityLogsComponent implements OnInit {
   ) {
     this.isLoadingActivityList = true;
     this._spinner.setSpinnerState(true);
-    als
-      .getActiviyLogs()
-      .then((res: any) => {
-        this.isLoadingActivityList = false;
-        this._spinner.setSpinnerState(false);
-        this.alDataSet = als.parseData(res);
-        this.firstPage = [...this.alDataSet];
-        if (this.alDataSet.length == 0) {
-          this.endOfData = true;
-        }
-        if (this.alDataSet.length > 0 && this.alDataSet.length < 10) {
-          this.lastPage = true;
-        }
-        //console.log(this.alDataSet);
-      })
-      .catch((err: any) => {
-        //console.log(err);
-        this.isLoadingActivityList = false;
-        this._spinner.setSpinnerState(false);
-      });
+    this.isLoadingActivityList = false;
+    this._spinner.setSpinnerState(false);
+    this.alDataSet = als.parseData(
+      '[{"activity_owner":"admin","activity_type":"ADDTECHNOTE","activity_desc":"Successfully added How to stop/start firewall on RHEL 8 / CentOS 8 to Technote list by admin.","activity_id":"52","activity_timestamp":"Sun Feb 27 19:51:15 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ASSIGNVM","activity_desc":"192.168.0.12 has been assigned to admin by admin.","activity_id":"51","activity_timestamp":"Sun Feb 27 19:33:36 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  support_user2,requested by admin.","activity_id":"50","activity_timestamp":"Sun Feb 27 18:44:08 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  support_user1,requested by admin.","activity_id":"49","activity_timestamp":"Sun Feb 27 18:43:38 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  devops_user2,requested by admin.","activity_id":"48","activity_timestamp":"Sun Feb 27 18:43:10 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  devops_user1,requested by admin.","activity_id":"47","activity_timestamp":"Sun Feb 27 18:41:12 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  qa_user2,requested by admin.","activity_id":"46","activity_timestamp":"Sun Feb 27 18:40:32 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  qa_user1,requested by admin.","activity_id":"45","activity_timestamp":"Sun Feb 27 18:40:07 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  dev_user2,requested by admin.","activity_id":"44","activity_timestamp":"Sun Feb 27 18:39:39 UTC 2022","activity_status":"SUCCESS"},{"activity_owner":"admin","activity_type":"ADDUSER","activity_desc":"Successfully added user,  dev_user1,requested by admin.","activity_id":"43","activity_timestamp":"Sun Feb 27 18:39:00 UTC 2022","activity_status":"SUCCESS"}]'
+    );
+    this.firstPage = [...this.alDataSet];
+    if (this.alDataSet.length == 0) {
+      this.endOfData = true;
+    }
+    if (this.alDataSet.length > 0 && this.alDataSet.length < 10) {
+      this.lastPage = true;
+    }
   }
   next() {
     //console.log('next');

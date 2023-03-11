@@ -9,48 +9,55 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Tools LTB Component
  */
-import { HttpHeaders } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
-import { Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NodeclientService } from "../../services/nodeclient.service";
+import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { NodeclientService } from '../../services/nodeclient.service';
 @Component({
-  selector: "app-tools-ltb",
-  templateUrl: "./tools-ltb.component.html",
-  styleUrls: [ "./tools-ltb.component.scss" ],
+  selector: 'app-tools-ltb',
+  templateUrl: './tools-ltb.component.html',
+  styleUrls: ['./tools-ltb.component.scss'],
 })
 export class ToolsLtbComponent implements OnInit {
   cardsMetaData: any;
   selectedDataContext: any;
   defaultSSHUsername: any;
   defaultSSHPassword: any;
-  constructor(
-    private _client: NodeclientService,
-    private actRoute: ActivatedRoute,
-    private router: Router
-  ) {
+  constructor(private _client: NodeclientService) {
     //  this.cardsMetaData = ToolsLTBConfig.cardsMetaData;
-    if (typeof history.state.ip != "undefined") {
+    if (typeof history.state.ip != 'undefined') {
       this.selectedDataContext = history.state;
     }
-    var headers = new HttpHeaders({
-      "Content-Type": "application/json",
-    });
-
-    var httpOptions = {
-      headers: headers,
+    var res = {
+      cardsMetaData: [
+        [
+          {
+            cardTitle: 'Hostname',
+            cardCommand: 'hostname',
+            cardWidth: 150,
+            cardHeight: 150,
+            cardFields: [
+              [
+                { label: 'Machine IP', field_name: 'machine_ip' },
+                { label: 'SSH Username', field_name: 'ssh_username' },
+                { label: 'SSH Password', field_name: 'ssh_password' },
+              ],
+              {
+                machine_ip: [null, 'required'],
+                ssh_username: [null, 'required'],
+                ssh_password: [null, 'required'],
+                command: ['hostname', 'required'],
+              },
+            ],
+          },
+        ],
+      ],
+      defaultSSHUsername: 'default',
+      defaultSSHPassword: 'passwod',
     };
-    this._client.get("api/public/sshMetadata", httpOptions).then(
-      (res: any) => {
-        this.defaultSSHUsername = res.defaultSSHUsername;
-        this.defaultSSHPassword = res.defaultSSHPassword;
-        this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
-        //console.log('api/public/sshMetadata res:', res);
-      },
-      (error) => {
-        //console.log('error', error);
-      }
-    );
+    this.defaultSSHUsername = res.defaultSSHUsername;
+    this.defaultSSHPassword = res.defaultSSHPassword;
+    this.cardsMetaData = this.parseMetadata(res.cardsMetaData);
   }
   parseMetadata(metadata: any) {
     for (var i = 0; i < metadata.length; i++) {
@@ -59,44 +66,30 @@ export class ToolsLtbComponent implements OnInit {
         //item
         var formItems = metadata[i][j].cardFields[1];
         //console.log(formItems);
-        if (typeof this.defaultSSHUsername != "undefined") {
-          formItems["ssh_username"][0] = this.defaultSSHUsername;
+        if (typeof this.defaultSSHUsername != 'undefined') {
+          formItems['ssh_username'][0] = this.defaultSSHUsername;
         }
-        if (typeof this.defaultSSHPassword != "undefined") {
-          formItems["ssh_password"][0] = this.defaultSSHPassword;
+        if (typeof this.defaultSSHPassword != 'undefined') {
+          formItems['ssh_password'][0] = this.defaultSSHPassword;
         }
         if (this.selectedDataContext) {
-          formItems["machine_ip"][0] = this.selectedDataContext.ip;
+          formItems['machine_ip'][0] = this.selectedDataContext.ip;
 
           if (
             this.selectedDataContext.extradata &&
-            typeof this.selectedDataContext.extradata.sshUsername != "undefined"
+            typeof this.selectedDataContext.extradata.sshUsername != 'undefined'
           ) {
-            formItems[
-              "ssh_username"
-            ][0] = this.selectedDataContext.extradata.sshUsername;
+            formItems['ssh_username'][0] =
+              this.selectedDataContext.extradata.sshUsername;
           }
-          if (
-            typeof this.selectedDataContext.extradata != "undefined" &&
-            typeof this.selectedDataContext.extradata.sshPassword != "undefined"
-          ) {
-            formItems[
-              "ssh_password"
-            ][0] = this.selectedDataContext.extradata.sshPassword;
+          if (typeof this.selectedDataContext.extradata != 'undefined') {
+            formItems['ssh_password'][0] =
+              this.selectedDataContext.extradata.sshPassword;
           }
         }
         for (var k in formItems) {
           //console.log('formItems[k][1]', formItems[k][1]);
-          if (
-            formItems[k][0] != null &&
-            typeof formItems[k][0] == "string" &&
-            formItems[k][0].includes("{{") &&
-            formItems[k][0].includes("}}")
-          ) {
-            formItems[k][0] =
-              formItems[formItems[k][0].replace("{{", "").replace("}}", "")][0];
-          }
-          if (formItems[k][1] == "required") {
+          if (formItems[k][1] == 'required') {
             formItems[k][1] = Validators.required;
             //console.log('formItems[k][1]: true', formItems[k][1]);
           }
@@ -107,6 +100,7 @@ export class ToolsLtbComponent implements OnInit {
     }
     return metadata;
   }
+  ngOnInit(): void {}
   openWebSSH() {
     console.log("clicked openWebSSH");
 
@@ -150,5 +144,5 @@ export class ToolsLtbComponent implements OnInit {
     console.log(appUrl);
     window.open(appUrl, "_blank");
   }
-  ngOnInit(): void {}
 }
+

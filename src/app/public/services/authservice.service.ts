@@ -59,36 +59,8 @@ export class AuthserviceService {
   checkSession() {
     const promise = new Promise<{ status: boolean; message: string }>(
       (resolve, reject) => {
-        var result = { status: false, message: '' };
-        var headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-        });
-
-        var httpOptions = {
-          headers: headers,
-        };
-        var promise = this._client.post('api/checkSession', null, httpOptions);
-        promise
-          .then(function (res: any) {
-            //console.log(
-            //  'authservice- checkSession - then(resolve) ' + JSON.stringify(res)
-            //  );
-            if (res.status) {
-              result.status = true;
-            } else {
-              result.status = false;
-              result.message = res.message;
-            }
-            resolve(result);
-          })
-          .catch((res: any) => {
-            console.log(
-              'authservice- checkSession - catch(reject) ' + JSON.stringify(res)
-            );
-            result.status = false;
-            //result.message = res.error.message ? res.error.message : '';
-            reject(result);
-          });
+        var result = { status: true, message: '' };
+        resolve(result);
       }
     );
     return promise;
@@ -96,36 +68,8 @@ export class AuthserviceService {
   checkAuth() {
     const promise = new Promise<{ status: boolean; message: string }>(
       (resolve, reject) => {
-        var result = { status: false, message: '' };
-        var headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-        });
-
-        var httpOptions = {
-          headers: headers,
-        };
-        var promise = this._client.post('api/checkAuth', null, httpOptions);
-        promise
-          .then(function (res: any) {
-            //console.log(
-            //   'authservice- checkAuth - then(resolve) ' + JSON.stringify(res)
-            // );
-            if (res.status) {
-              result.status = true;
-            } else {
-              result.status = false;
-              result.message = res.message;
-            }
-            resolve(result);
-          })
-          .catch(function (res) {
-            //console.log(
-            //  'authservice- checkAuth - catch(reject) ' + JSON.stringify(res)
-            // );
-            result.status = false;
-            result.message = res.error.message || '';
-            reject(result);
-          });
+        var result = { status: true, message: '' };
+        resolve(result);
       }
     );
     return promise;
@@ -152,49 +96,42 @@ export class AuthserviceService {
   signOut() {
     const promise = new Promise<{ status: boolean; message: string }>(
       (resolve, reject) => {
-        var result = { status: false, message: '' };
-        var headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-        });
 
-        var httpOptions = {
-          headers: headers,
-        };
-        var promise = this._client.post('api/logout', null, httpOptions);
-        promise
-          .then(function (res: any) {
-            //console.log(
-            //    'authservice- logout - then(resolve) ' + JSON.stringify(res)
-            // );
-            if (res.status) {
-              result.status = true;
-              window.location.reload();
-            } else {
-              result.status = false;
-            }
-            resolve(result);
-          })
-          .catch(function (res) {
-            //console.log(
-            // 'authservice- logout - catch(reject) ' + JSON.stringify(res)
-            // );
-            result.status = false;
-            result.message = res.error.message || '';
-            reject(result);
-          });
+        var result = { status: true, message: '' };
+        resolve(result);
+
       }
     );
     return promise;
   }
   getUser() {
-    //console.log('Get User Called');
+    console.log('Get User Called');
     var data;
-    try {
-      data = this.parsePermission(JSON.parse(this.getCookie('activeUser')));
-    } catch (e) {
-      data = {};
-    }
-    return data;
+    var temp = {
+      activeUser: {
+        name: 'admin',
+        permissions: {
+          linux_toolbox: '1',
+          add_vm: '1',
+          db2_toolbox: '1',
+          assign_vm: '1',
+          user_team: 'ADMIN',
+          is_admin: '1',
+          update_user: '1',
+          user_id: 'admin',
+          delete_vm: '1',
+          delete_snapshot: '1',
+          is_teamLead: '0',
+          add_snapshot: '1',
+          create_user: '1',
+          update_vm: '1',
+          delete_user: '1',
+          release_vm: '1',
+        },
+      },
+    };
+
+    return this.parsePermission(temp.activeUser);
   }
   parsePermission(user: any) {
     //console.log('Inside parsePermission');
@@ -213,14 +150,9 @@ export class AuthserviceService {
     return user;
   }
   changePassword(data: any) {
-    var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    return new Promise((resolve, reject) => {
+      resolve('{"status":"Success"}');
     });
-
-    var httpOptions = {
-      headers: headers,
-    };
-    return this._client.post('api/user/changePassword', data, httpOptions);
   }
 
   /**

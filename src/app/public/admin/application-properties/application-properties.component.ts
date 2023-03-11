@@ -106,19 +106,12 @@ export class ApplicationPropertiesComponent implements OnInit {
   ) {
     this.isLoading = true;
     this._spinner.setSpinnerState(true);
-    propservice
-      .getgetProps()
-      .then((res: any) => {
-        this.isLoading = false;
-        this._spinner.setSpinnerState(false);
-        this.propDataSet = propservice.parseData(res);
-        this.dataSource = new MatTableDataSource(this.propDataSet);
-      })
-      .catch((err: any) => {
-        //console.log(err);
-        this.isLoading = false;
-        this._spinner.setSpinnerState(false);
-      });
+    this.isLoading = false;
+    this._spinner.setSpinnerState(false);
+    this.propDataSet = propservice.parseData(
+      '{"osList":"Windows:Server 2016#Windows:Server 2008 R2#Windows:Server 2012#Windows:Server 2012R2#Windows:Server 2019#Windows:10#Linux:RHEL 6#Linux:RHEL 7#Linux:RHEL 7.2#Linux:RHEL 7.4#Linux:RHEL 7.6#Linux:RHEL 7.7#Linux:RHEL 7.8#Linux:RHEL 8#Linux:Ubuntu 14#Linux:Ubuntu 16#Linux:Ubuntu 18#AIX:7.2#AIX:7.1#NA:NA","warnSnapshot":"5","paginationPageSize":"25","teamList":"DEV:DevOps:FreePool:QA:Support","alertSnapshot":"9","paginationPageSizesList":"25:50:75:100:125"}'
+    );
+    this.dataSource = new MatTableDataSource(this.propDataSet);
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
