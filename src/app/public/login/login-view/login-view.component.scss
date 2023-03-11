@@ -23,16 +23,18 @@ a.carousel-control-next {
 }
 :host {
   /* border: solid 3px red;  for debugging purposes */
+  overflow: hidden !important;
 }
+
 .row {
   /*  border: solid 3px blue;  for debugging purposes */
   padding: 20px;
   padding-bottom: 0px;
 }
-.app-login-content{
-  top:50px;
- bottom: 50px;
- margin: 0;
- overflow: hidden;
- position: absolute;
+.app-login-content {
+  top: 50px;
+  bottom: 50px;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
 }

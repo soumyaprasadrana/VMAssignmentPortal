@@ -109,7 +109,7 @@ export class EditVmComponent implements OnInit {
         ],
         ram: [history.state.ram, [Validators.min(0), Validators.max(200)]],
         group: [history.state.group],
-        owner: [history.state.group],
+        owner: [history.state.vm_owner_lab],
         ngxteam: [history.state.team, Validators.required],
       });
     } else {
@@ -156,7 +156,7 @@ export class EditVmComponent implements OnInit {
           ngxos: [res.os + ' ' + res.ver, Validators.required],
           ram: [res.ram, [Validators.min(0), Validators.max(200)]],
           group: [res.group],
-          owner: [res.owner],
+          owner: [res.vm_owner_lab],
           ngxteam: [res.team, Validators.required],
         });
       }

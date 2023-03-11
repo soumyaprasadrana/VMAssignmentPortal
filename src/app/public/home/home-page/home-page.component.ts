@@ -1086,7 +1086,7 @@ export class HomePageComponent implements OnInit {
       if (vm.status == 'Available') {
         //console.log('statusCellFormatter: Available true', vm.status);
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success mui-success'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.status == 'Occupied') {

@@ -39,7 +39,7 @@
     "bootstrap": "^4.6.1",
     "compass-mixins": "^0.12.10",
     "custom-event-polyfill": "^1.0.7",
-    "del": "^6.0.0",
+    "del": "^6.1.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
     "material-design-icons": "^3.0.1",
