@@ -9,16 +9,16 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Technote Services
  */
-import { Injectable } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { NodeclientService } from './nodeclient.service';
-import { Technote } from '../DataModel/technote';
+import { Injectable } from "@angular/core";
+import { Observable, Subject, Subscription } from "rxjs";
+import { HttpHeaders, HttpParams } from "@angular/common/http";
+import { NodeclientService } from "./nodeclient.service";
+import { Technote } from "../DataModel/technote";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-/* VM Management System Services it will include all vm related services */
-export class TechnotesService {
+export /* VM Management System Services it will include all vm related services */
+class TechnotesService {
   vms: Array<any> = [];
   promiseX: any;
   observable: any;
@@ -52,8 +52,9 @@ export class TechnotesService {
   getTechnotesObservable2(): Observable<any> {
     return this.observable;
   }
+  getTechnote(ip: any): any {}
   getTechnotes(): any {
-    console.log('getTecnotes() :: this.needReload ::', this.needReload);
+    console.log("getTecnotes() :: this.needReload ::", this.needReload);
 
     const promise = new Promise((resolve, reject) => {
       resolve(
@@ -76,14 +77,14 @@ export class TechnotesService {
 
   getTechnotesObservable(): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
     var observable = this._client.getObservable(
-      'api/technotes/getAll',
+      "api/technotes/getAll",
       httpOptions
     );
     return observable;
@@ -100,7 +101,7 @@ export class TechnotesService {
     var parseRes = JSON.parse(res);
     var index = 0;
     for (var key in parseRes) {
-      if (key != 'user' && key != 'protocols') {
+      if (key != "user" && key != "protocols") {
         technotesDataset[index] = {
           id: parseRes[key].id,
           description: parseRes[key].description,
@@ -115,4 +116,3 @@ export class TechnotesService {
     return technotesDataset;
   }
 }
-

@@ -9,16 +9,16 @@
  * @modify date 2022-02-26 18:26:41
  * @desc VM Services
  */
-import { Injectable } from '@angular/core';
-import { VM } from '../DataModel/vm';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { NodeclientService } from './nodeclient.service';
+import { Injectable } from "@angular/core";
+import { VM } from "../DataModel/vm";
+import { Observable, Subject, Subscription } from "rxjs";
+import { HttpHeaders, HttpParams } from "@angular/common/http";
+import { NodeclientService } from "./nodeclient.service";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-/* VM Management System Services it will include all vm related services */
-export class VmsService {
+export /* VM Management System Services it will include all vm related services */
+class VmsService {
   vms: Array<any> = [];
   promiseX: any;
   observable: any;
@@ -53,7 +53,7 @@ export class VmsService {
     return this.observable;
   }
   getVms(): any {
-    console.log('getVMs() :: this.needReload ::', this.needReload);
+    console.log("getVMs() :: this.needReload ::", this.needReload);
 
     const promise = new Promise((resolve, reject) => {
       resolve(
@@ -65,8 +65,8 @@ export class VmsService {
     return promise;
   }
   getDataFromNode(): any {
-    var promise = new Promise(function (resolve, reject) {
-      resolve('OK');
+    var promise = new Promise(function(resolve, reject) {
+      resolve("OK");
     });
     return promise;
   }
@@ -82,23 +82,23 @@ export class VmsService {
   }
   assignMultipleVMS(ipList: any, user: string): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
     var httpOptions = {
       headers: headers,
     };
     var data: any = { ipList: ipList, vm_user: user };
-    return this._client.post('api/vm/assignMultipleVMS', data, httpOptions);
+    return this._client.post("api/vm/assignMultipleVMS", data, httpOptions);
   }
   releaseMultipleVMS(ipList: any): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
     var httpOptions = {
       headers: headers,
     };
     var data: any = { ipList: ipList };
-    return this._client.post('api/vm/releaseMultipleVMS', data, httpOptions);
+    return this._client.post("api/vm/releaseMultipleVMS", data, httpOptions);
   }
 
   releaseVM(ip: string): any {
@@ -109,24 +109,24 @@ export class VmsService {
 
   getVMSObservable(): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    var observable = this._client.getObservable('api/vm/getAll', httpOptions);
+    var observable = this._client.getObservable("api/vm/getAll", httpOptions);
     return observable;
   }
   getVMAdditionalData(ip: string) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    return this._client.get('api/vm/' + ip + '/additionalData', httpOptions);
+    return this._client.get("api/vm/" + ip + "/additionalData", httpOptions);
   }
   deleteVM(ip: string) {
     return new Promise((resolve, reject) => {
@@ -135,14 +135,14 @@ export class VmsService {
   }
   updateVMAdditionaalData(ip: string, data: any) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
     return this._client.post(
-      'api/vm/' + ip + '/additionalData',
+      "api/vm/" + ip + "/additionalData",
       data,
       httpOptions
     );
@@ -153,7 +153,7 @@ export class VmsService {
     var parseRes = JSON.parse(res);
     var index = 0;
     for (var key in parseRes) {
-      if (key != 'user' && key != 'protocols') {
+      if (key != "user" && key != "protocols") {
         vmDataset[index] = {
           id: index,
           ip: parseRes[key].ip,
@@ -168,21 +168,21 @@ export class VmsService {
           comment: parseRes[key].comment,
           vm_owner_lab: parseRes[key].vm_owner_lab,
           team: parseRes[key].team,
-          cssClass: '',
-          global: '',
+          cssClass: "",
+          global: "",
         };
         if (
           vmDataset[index].snap_count >= 5 &&
           vmDataset[index].snap_count <= 8
         ) {
-          vmDataset[index].cssClass = 'warnSnap';
+          vmDataset[index].cssClass = "warnSnap";
         } else if (vmDataset[index].snap_count > 8) {
-          vmDataset[index].cssClass = 'alertSnap';
+          vmDataset[index].cssClass = "alertSnap";
         }
-        if (vmDataset[index].status == 'true') {
-          vmDataset[index].status = 'Available';
+        if (vmDataset[index].status == "true") {
+          vmDataset[index].status = "Available";
         } else {
-          vmDataset[index].status = 'Occupied';
+          vmDataset[index].status = "Occupied";
         }
         /*vmDataset[index].global =
           vmDataset[index].ip +
@@ -208,5 +208,38 @@ export class VmsService {
       }
     }
     return vmDataset;
+  }
+  restartSnapshotService(): any {
+    return new Promise(() => {});
+  }
+  runUpdateExtradata(): any {
+    return new Promise(() => {});
+  }
+  runUpdateSnapshotCount(): any {
+    return new Promise(() => {});
+  }
+  getRelatedVMSData(ip: any): any {
+    return new Promise(() => {});
+  }
+  searchSnapshots(ip: any): any {
+    return new Promise(() => {});
+  }
+  getVMSnapshots(hostname: any): any {
+    return new Promise(() => {});
+  }
+  getAllSnapshots(): any {
+    return new Promise(() => {});
+  }
+  getAllSnapshotsCount(): any {
+    return new Promise(() => {});
+  }
+  revertSnap(hostname: any, name: any, snapid: any): any {
+    return new Promise(() => {});
+  }
+  takeSnap(hostname: any, snapname: any, desc: any): any {
+    return new Promise(() => {});
+  }
+  updateRelatedVMSData(ip: any, data: any): any {
+    return new Promise(() => {});
   }
 }
