@@ -1,0 +1,79 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-04-19 18:30:37
+@desc Tools SPA FA Icons Html
+-->
+<app-path></app-path>
+
+<style>
+    .center-block {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
+    .link {
+        cursor: pointer;
+    }
+    
+    .only-verical-scroller {
+        overflow-x: hidden !important;
+    }
+</style>
+<div class="container-fluid mt-3 w-100% ">
+    <div class="row p-3">
+        <div class="col">
+
+            <h1 class="page-title h3"><i class="fa fa-font-awesome" area-label="false"></i> Font Awsome v4.7 Icons
+                <hr>
+            </h1>
+        </div>
+        <div class="col">
+            <label id="sliderlabel" for="sliderzoom" >Graph Zoom</label>
+            <mat-slider
+              id="sliderzoom"
+              max="5"
+              min="0"
+              step="0.01"
+              thumbLabel="'Zoom(%)'"
+              [(ngModel)]="graphZoom"
+              aria-labelledby="sliderlabel"
+              >
+          </mat-slider>
+        </div>
+        
+    </div>
+    
+    <div class="ml-2 h-100 w-100" style="overflow:auto;">
+        <div class="row ml-5" [ngStyle]="{'transform':'scale('+graphZoom+')'}" style="transform-origin:top;"   >
+           <div  class="col m-2 p-2" *ngFor='let item of iconList'>
+               <table >
+                   <tr>
+                       <td  class="text-center" (click)="copyToClipboard(item.item)">
+                        <i class="{{item.item}}" aria-label="hidden" [ngbTooltip]="item.item">
+                        </i>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td class="text-center">
+                        
+                       </td>
+                   </tr>
+               </table>
+            
+           </div>
+            
+           
+        </div>
+    </div>
+
+
+</div>

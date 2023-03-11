@@ -235,6 +235,24 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `vmportal02`.`relatedvms`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `vmportal02`.`relatedvms` ;
+
+CREATE  TABLE IF NOT EXISTS `vmportal02`.`relatedvms` (
+  `relationship_source` VARCHAR(200) NOT NULL ,
+  `relationship_destination` VARCHAR(200) NOT NULL ,
+  `relationship_name` VARCHAR(200) NOT NULL ,
+  `relationship_description` VARCHAR(600) NULL DEFAULT NULL,
+  `relationship_group` VARCHAR(600) NULL DEFAULT NULL ,
+  `relationship_icon` VARCHAR(600) NULL DEFAULT 'fa fa-desktop' ,
+  PRIMARY KEY (`relationship_name`,`relationship_source`,`relationship_destination`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 100
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `vmportal02`.`vm`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `vmportal02`.`vm` ;
@@ -263,6 +281,17 @@ DEFAULT CHARACTER SET = utf8;
 
 CREATE INDEX `vm_team_idx` ON `vmportal02`.`vm` (`vm_team` ASC) ;
 
+-- -----------------------------------------------------
+-- Table `vmportal02`.`dynamicobject`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `vmportal02`.`dynamicobject` ;
+
+CREATE  TABLE IF NOT EXISTS `vmportal02`.`dynamicobject` (
+  `object_name` VARCHAR(255) NOT NULL ,
+  `object_design` MEDIUMTEXT NOT NULL ,
+  PRIMARY KEY (`object_name`)) 
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `vmportal02`.`vmextradata`
@@ -325,3 +354,9 @@ INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('osL
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('paginationPageSize', '25');
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('paginationPageSizesList', '25:50:75:100:125');
 INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('warnSnapshot', '5');
+/* Please update $SERVER, $USERNAME, $PASSWORD */
+INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('powerCLIConnectionString','Connect-VIServer -server $SERVER -Username $USERNAME -Password $PASSWORD');
+INSERT INTO `vmportal02`.`uiproperties` (`prop_name`, `prop_value`) VALUES ('vmExtraDataPowerShellCommand',"get-vm ## -ErrorAction SilentlyContinue | Select-Object Name,GuestId,MemoryGB,NumCpu|ConvertTo-JSON");
+/* 
+get-vm ## -ErrorAction SilentlyContinue | Select-Object Name,GuestId,MemoryGB,NumCpu,@{N='HostName';E={$_.ExtensionData.Guest.HostName}},@{N='IPAddress';E={$_.ExtensionData.Guest.IpAddress}},@{N='GuestFullName';E={$_.ExtensionData.Guest.GuestFullName}},@{N='GuestFamily';E={$_.ExtensionData.Guest.GuestFamily}},@{N='Disk Space(GB)';E={(($_.ExtensionData.config.hardware.Device|where-object 'StorageIOAllocation'|select-object @{N='CapacityInKB';E={[math]::Round($_.CapacityInKB/1MB)}})|Measure-Object -property "CapacityInKB" -sum).Sum}}|ConvertTo-JSON
+*/

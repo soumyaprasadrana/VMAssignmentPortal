@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 17:55:02
- * @modify date 2022-02-26 17:55:02
+ * @modify date 2022-04-19 17:55:02
  * @desc File Responsible for VM related API calls
  */
 const { logger } = require('../config');
@@ -14,7 +14,8 @@ var config = require('../config');
 const _client = require('./client');
 var sshMetadata = require('./sshMetadata');
 var spaMetadata = require('../spa/spaMetadata');
-var quickLinks = require('./quickLinks')
+var quickLinks = require('./quickLinks');
+var lists = require('./lists');
 module.exports = {
     getSSHMetadata: function(req, res, next) {
         res.status(200).json(sshMetadata);
@@ -26,6 +27,15 @@ module.exports = {
     },
     getSPAMetadata: function(req, res, next) {
         res.status(200).json(spaMetadata);
+        next();
+    },
+    getListsNames: function(req, res, next) {
+        res.status(200).json(Object.keys(lists.Lists));
+        next();
+    },
+    getListItems: function(req, res, next) {
+        var listName=req.params.id;
+        res.status(200).json(lists.Lists[listName]);
         next();
     },
 
@@ -43,6 +53,16 @@ module.exports = {
     getThemeName: function(req, res, next) {
         const theme = config.theme ? config.theme : 'default';
         res.status(200).json({ theme: theme });
+        next();
+    },
+    getUseToast: function(req, res, next) {
+        const useToast = config.useToast ? config.useToast : false;
+        res.status(200).json({ useToast: useToast });
+        next();
+    },
+    getEnableSSH: function(req, res, next) {
+        const enableSSH2 = config.enableSSH2 ? config.enableSSH2 : false;
+        res.status(200).json({ enableSSH2: enableSSH2 });
         next();
     },
     getLoginFooter: function(req, res, next) {

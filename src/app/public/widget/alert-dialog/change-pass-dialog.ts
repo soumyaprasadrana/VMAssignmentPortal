@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-11-24 18:06:39
  * @desc Change Password Dialog
  */
 import { Component, Inject, OnInit } from '@angular/core';
@@ -43,6 +43,9 @@ export class PassChangeDialogComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   public dataCtrl = new FormControl();
+  showPass:boolean=false;
+  showPassword:boolean=false;
+  showCurrPass:boolean=false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialogRef: MatDialogRef<PassChangeDialogComponent>,
@@ -55,6 +58,7 @@ export class PassChangeDialogComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
       {
+        user_curr_pass:['',[Validators.required]],
         user_pass: ['', [Validators.required, Validators.minLength(6)]],
         conf_pass: ['', Validators.required],
       },

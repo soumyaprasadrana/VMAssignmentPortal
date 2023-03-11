@@ -6,12 +6,12 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Team Activity Logs Component
  */
 import { Component, OnInit } from '@angular/core';
-import { Column, GridOption } from '@slickgrid-universal/common';
-import { Filters, Formatter, Formatters } from 'angular-slickgrid';
+import { Column,Formatter, GridOption } from '@slickgrid-universal/common';
+import { Filters, Formatters } from 'angular-slickgrid';
 import { ActivityLog } from '../../DataModel/activitylog';
 import { VM } from '../../DataModel/vm';
 import { ActivitylogsService } from '../../services/activitylogs.service';
@@ -34,19 +34,25 @@ export class TeamActivityLogsComponent implements OnInit {
 
   columnDef: Column[] = [];
   alGridOptions: GridOption = {
+    gridHeight:380,
+    autoResize: {
+      container: '#grid-container2',
+      applyResizeToContainer: true,
+      rightPadding: 0,
+    },
     enableSorting: false,
     enableFiltering: false,
     enableExcelExport: false,
     //Auto tooltip
     enableAutoTooltip: true,
-    gridHeight: 350,
+    //gridHeight: ,
     // gridWidth: 900,
     enableAutoSizeColumns: true,
     //autoHeight: true,
   };
 
   ngOnInit(): void {
-    const cellFormatter: Formatter<ActivityLog> = (
+    const cellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -58,11 +64,11 @@ export class TeamActivityLogsComponent implements OnInit {
       }
 
       return {
-        text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+        text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
         toolTip: value,
       };
     };
-    const statuscellFormatter: Formatter<ActivityLog> = (
+    const statuscellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -74,17 +80,22 @@ export class TeamActivityLogsComponent implements OnInit {
       }
       if (vm.activity_status == 'SUCCESS') {
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='alert show alert-success'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.activity_status == 'FAILED') {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='alert show alert-danger'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-danger'>${value}</span></div>`,
+          toolTip: value,
+        };
+      }else if (vm.activity_status == 'PENDING' || vm.activity_status == 'RUNNING') {
+        return {
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-warning'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
           toolTip: value,
         };
       }

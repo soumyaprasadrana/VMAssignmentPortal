@@ -1,4 +1,4 @@
-<div id="grid-container">
+<div id="tools-grid-container">
 
     <angular-slickgrid *ngIf="isLoaded" gridId="grid2" [columnDefinitions]="columnDef" [gridOptions]="technotesGridOptions" [dataset]="technotesDataSet" (onAngularGridCreated)="angularGridReady($event.detail)" (onGridStateChanged)="gridStateChanged($event.detail)"
         (onBeforeGridDestroy)="saveCurrentGridState()">

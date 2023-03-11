@@ -213,4 +213,17 @@ export class UserService {
 
     return mockDataset;
   }
+  resetUserPassword(user: any) {
+    const promisey = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      resolve({status:true,newPassword:"eHV3c3dTMlxGZA=="});
+    });
+    return promisey;
+  }
 }

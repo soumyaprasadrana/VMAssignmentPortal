@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Edit VM Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -30,6 +30,7 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { VmsService } from '../../services/vms.service';
 import { AuthserviceService } from '../../services/authservice.service';
+import { ToastService } from '../../widget/toast/toast-service';
 @Component({
   selector: 'app-edit-vm',
   templateUrl: '../add-vm/add-vm.component.html',
@@ -56,7 +57,8 @@ export class EditVmComponent implements OnInit {
     private router: Router,
     private vms: VmsService,
     private activateRoute: ActivatedRoute,
-    private _auth: AuthserviceService
+    private _auth: AuthserviceService,
+    private toastService:ToastService
   ) {
     tms
       .getTeams()
@@ -107,7 +109,7 @@ export class EditVmComponent implements OnInit {
         ],
         ram: [history.state.ram, [Validators.min(0), Validators.max(200)]],
         group: [history.state.group],
-        owner: [history.state.group],
+        owner: [history.state.vm_owner_lab],
         ngxteam: [history.state.team, Validators.required],
       });
     } else {
@@ -140,6 +142,7 @@ export class EditVmComponent implements OnInit {
         placeholder: 'Select VM',
         list: list,
         bindLabel: 'ip',
+        bindValue: 'ip',
         closeCallback: () => {
           this.router.navigate(['/portal/home/vmm/dash']);
         },
@@ -153,7 +156,7 @@ export class EditVmComponent implements OnInit {
           ngxos: [res.os + ' ' + res.ver, Validators.required],
           ram: [res.ram, [Validators.min(0), Validators.max(200)]],
           group: [res.group],
-          owner: [res.group],
+          owner: [res.vm_owner_lab],
           ngxteam: [res.team, Validators.required],
         });
       }
@@ -188,6 +191,10 @@ export class EditVmComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.vms.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+          this.toastService.showSuccess('VM updated successfully!',5000);
+          this.router.navigate(['/portal/home/vmm/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -197,6 +204,8 @@ export class EditVmComponent implements OnInit {
               this.router.navigate(['/portal/home/vmm/dash']);
             }
           );
+          }
+
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

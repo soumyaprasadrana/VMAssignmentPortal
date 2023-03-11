@@ -1,9 +1,22 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Add Team Lead Component Html
+-->
 <app-path></app-path>
 
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
+            <h3 class="page-title ml-3">
                 <i class="fa fa-user" area-label="false"></i> Create Team Leader
                 <hr>
             </h3>
@@ -16,7 +29,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="name">Full Name:</label>
-                            <input id="name" type="text" class="form-control" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
+                            <span class="fa fa-vcard form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="name" type="text" class="form-control form-control-include-icon" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
                             <div *ngIf="submitted && f.user_name.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.user_name.errors.required">Full name is required</div>
                             </div>
@@ -26,7 +40,8 @@
                         <div class="form-group required">
                             <div class="form-group">
                                 <label for="userid">Username:</label>
-                                <input id="userid" type="text" class="form-control" formControlName="user_id" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }">
+                                <span class="fa fa-user form-control-prefix-icon text-muted" area-label="false"></span>
+                                <input id="userid" type="text" class="form-control form-control-include-icon" formControlName="user_id" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }">
                                 <div *ngIf="submitted && f.user_id.errors" class="invalid-feedback">
                                     <div class="ml-1" *ngIf="f.user_id.errors.required">Username is required</div>
                                     <div *ngIf="f.user_id.errors.restrictWhiteSpace">White Space is not allowed.</div>
@@ -44,7 +59,8 @@
                             <!--<ngx-select [allowClear]="true" [items]="teams" [optionValueField]="'team_name'" [optionTextField]="'team_desc'" placeholder="Select Team" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }"
                                 ngDefaultControl>
                             </ngx-select>-->
-                            <ng-select [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }" ngDefaultControl>
+                            <span class="fa fa-users form-control-prefix-icon text-muted form-control" style="padding:0 !important;" area-label="false"></span>
+                            <ng-select class="form-control-include-icon" [items]="teams" bindLabel="team_desc" placeholder="Select Team" bindValue="team_name" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }" ngDefaultControl>
                             </ng-select>
                             <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
 
@@ -55,7 +71,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="email">E-Mail:</label>
-                            <input id="email" class="form-control" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
+                            <span class="fa fa-envelope form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="email" class="form-control form-control-include-icon" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
                             <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
                                 <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
@@ -68,7 +85,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="password">Password:</label>
-                            <input id="password" type="password" autocomplete="new-password" class="form-control" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
+                            <span class="fa fa-lock form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="password" type="password" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
                             <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.user_pass.errors.required">Passwod is required</div>
                                 <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
@@ -78,7 +96,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="conf_password">Confirm Password:</label>
-                            <input id="conf_password" type="password" autocomplete="new-password" class="form-control" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
+                            <span class="fa fa-lock form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="conf_password" type="password" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
                             <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Passwod is required</div>
                                 <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
@@ -92,11 +111,9 @@
 
         </div>
         <div class="row p-3">
-            <div class="col-sm-6 mr-0 pr-0">
+        <div class="col  ">
+                <button type="submit" mat-button (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
 
-            </div>
-            <div class="col-sm-6  ">
-                <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary" disabled>Submit</button>
             </div>
         </div>
     </form>

@@ -96,8 +96,10 @@ export class AuthserviceService {
   signOut() {
     const promise = new Promise<{ status: boolean; message: string }>(
       (resolve, reject) => {
+
         var result = { status: true, message: '' };
         resolve(result);
+
       }
     );
     return promise;

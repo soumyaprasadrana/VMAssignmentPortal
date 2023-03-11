@@ -33,7 +33,18 @@ export class LtbButtonComponent implements OnInit {
     private _spinner: SpinnerService,
     private router: Router
   ) {}
-
+openWebSSH(username:any,password:any,port:any,hostname:any,command:any){
+    console.log("clicked openWebSSH");
+    const routerLink = ['/portal/spa/', 'sshclient'];
+    var appUrl = this.router.serializeUrl(
+      this.router.createUrlTree(routerLink,{ queryParams: { hostname: hostname, username: username,port:port,password:password,type:'exec',command:command } })
+    );
+    
+    //appUrl+="?hostname="+hostname+"&username="+username+"&port="+port+"&password="+password+"&type=exec&command="+command;
+    console.log(appUrl);
+    window.open(appUrl, '_blank');
+   
+  }
   ngOnInit(): void {}
   submit(): void {
     //console.log('submit called');

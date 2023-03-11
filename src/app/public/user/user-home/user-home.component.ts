@@ -6,17 +6,19 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc User Home Component
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { UserConfig } from '../user.config';
 
 @Component({
@@ -27,12 +29,15 @@ import { UserConfig } from '../user.config';
 export class UserHomeComponent implements OnInit {
   cardsMetaData: any;
   userList: any;
+  loggedUser:any;
   constructor(
     private _spinner: SpinnerService,
     private _client: NodeclientService,
     private dialog: MatDialog,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private _auth:AuthserviceService,
+    private toastService:ToastService
   ) {
     this.cardsMetaData = UserConfig.cardsMetaData;
     if (_client.deviceIsMobile()) {
@@ -44,6 +49,7 @@ export class UserHomeComponent implements OnInit {
         }
       }
     }
+    this.loggedUser=_auth.getUser();
   }
   deleteUser() {
     //console.log('Delete User Called');
@@ -69,7 +75,8 @@ export class UserHomeComponent implements OnInit {
         label: 'Username',
         placeholder: 'Select user',
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: 'user_name',
+        bindValue: 'user_id',
       },
       (res: any) => {
         //console.log('data from close:', res);
@@ -85,6 +92,10 @@ export class UserHomeComponent implements OnInit {
               .then((res2: any) => {
                 res2 = JSON.parse(res2);
                 if (res2.status == 'Success') {
+                  this.userService.setNeedRefresh(true);
+                  if(this.loggedUser.useToast){
+                    this.toastService.showDanger('User deleted successfully!',5000);
+                  }else{
                   this.openDialog(
                     {
                       type: 'message',
@@ -94,6 +105,7 @@ export class UserHomeComponent implements OnInit {
                       window.location.reload();
                     }
                   );
+                  }
                 } else {
                   this._spinner.setSpinnerState(false);
                   this.openDialog(

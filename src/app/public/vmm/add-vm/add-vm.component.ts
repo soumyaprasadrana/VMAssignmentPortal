@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Add VM Component
  */
 import { Component, OnInit } from '@angular/core';
@@ -16,10 +16,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MustMatch } from '../../widget/utils/must-match.validator';
-import { Team } from '../../DataModel/team';
 import { TeamService } from '../../services/teams.service';
-import { OS } from '../../DataModel/os';
 import { OSService } from '../../services/vm.os.service';
 import { HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,6 +26,7 @@ import { SpinnerService } from '../../services/spinner-service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { AuthserviceService } from '../../services/authservice.service';
 import { VmsService } from '../../services/vms.service';
+import { ToastService } from '../../widget/toast/toast-service';
 @Component({
   selector: 'app-add-vm',
   templateUrl: './add-vm.component.html',
@@ -53,7 +51,8 @@ export class AddVmComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private _auth: AuthserviceService,
-    private vms: VmsService
+    private vms: VmsService,
+    private toastService:ToastService
   ) {
     tms
       .getTeams()
@@ -84,10 +83,10 @@ export class AddVmComponent implements OnInit {
       teamValidation = null;
     }
     this.registerForm = this.formBuilder.group({
-      ip: ['', Validators.required],
+      ip: ['', [Validators.required,Validators.pattern(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/)]],
       host: ['', Validators.required],
       ngxos: [null, Validators.required],
-      ram: [0, [Validators.min(0), Validators.max(200)]],
+      ram: [null, [Validators.min(0), Validators.max(200)]],
       group: [''],
       owner: [''],
       ngxteam: [null, teamValidation],
@@ -128,6 +127,10 @@ export class AddVmComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.vms.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+             this.toastService.showSuccess('VM added successfully!',5000);
+             this.router.navigate(['/portal/home/vmm/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -137,6 +140,7 @@ export class AddVmComponent implements OnInit {
               this.router.navigate(['/portal/home/vmm/dash']);
             }
           );
+          }
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

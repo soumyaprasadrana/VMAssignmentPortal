@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:02:04
- * @modify date 2022-02-26 18:02:04
+ * @modify date 2022-11-24 18:06:39
  * @desc File Responsible for User related API calls
  */
 const { logger } = require('../config');
@@ -74,6 +74,15 @@ module.exports = {
         req.body.params.user_id = user_id;
         logger.debug(req.body);
         _client.post(_client.getHttpPostOptions(req, config.delete_uesr_path), req, res, next);
+    },
+    resetPassword: function(req, res, next) {
+        //req.body.params.user_id = req.body.params.user;
+        // delete req.body.params.user;
+        var username = req.params['id']
+        req.body.params = {}
+        req.body.params.username = username;
+        logger.debug(req.body);
+        _client.post(_client.getHttpPostOptions(req, config.reset_uesr_pass_path), req, res, next);
     },
     getUsersWithProtocols: function(req, res, next) {
         logger.debug(req.body);

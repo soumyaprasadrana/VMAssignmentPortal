@@ -1,6 +1,19 @@
 <div class="root-container">
     <app-top-nav (sidenavToggle)="sidenav.toggle()"></app-top-nav>
-    <mat-sidenav-container class="sidenav-container" [ngStyle]="{'height': sideNavContainerHeght +'% !important'}" fxFlexFill>
+    <mat-sidenav-container class="sidenav-container" [ngStyle]="{'height': sideNavContainerHeght +'% !important'}">
+  <mat-sidenav [disableClose]="true" autosize class="sidenav" mode="side" #sidenav>
+    <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="nav-content">
+    <div fxFlex style="height:90vh;width:auto;">
+                <main [@routeAnimations]="getRouterOutletState(o)" class="app-scroller" style="height:90vh !important;width:auto;overflow-x:hidden !important;overflow-y:auto;">
+                    <router-outlet #o="outlet"></router-outlet>
+                </main>
+            </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+    <!--<mat-sidenav-container class="sidenav-container" [ngStyle]="{'height': sideNavContainerHeght +'% !important'}" fxFlexFill>
         <mat-sidenav #sidenav fxHide.gt-sm>
             <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
         </mat-sidenav>
@@ -11,6 +24,6 @@
                 </main>
             </div>
         </mat-sidenav-content>
-    </mat-sidenav-container>
+    </mat-sidenav-container>-->
 
 </div>

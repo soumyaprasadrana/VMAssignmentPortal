@@ -1,0 +1,18 @@
+<div id="dynamicobject-app-grid-container">
+
+    <angular-slickgrid *ngIf="isLoaded" gridId="grid2" [columnDefinitions]="columnDef" [gridOptions]="dynamicobjectappGridOptions" [dataset]="dynamicobjectappDataSet" (onAngularGridCreated)="angularGridReady($event.detail)" (onGridStateChanged)="gridStateChanged($event.detail)"
+        (onBeforeGridDestroy)="saveCurrentGridState()">
+    </angular-slickgrid>
+    <div *ngIf="!isLoaded && !isDataloadFailed" class="h-100 w-100 d-table">
+
+        <div class="h-100 w-100 align-middle d-table-cell display-4 text-primary
+       text-center ">
+
+            Loading...
+
+
+        </div>
+
+    </div>
+    <div *ngIf="!isLoaded && isDataloadFailed">Data load failed please contact system administrator.</div>
+</div>

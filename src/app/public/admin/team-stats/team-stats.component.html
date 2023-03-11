@@ -3,7 +3,7 @@
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
+            <h3 class="page-title  ml-3">
                 <i class="fa fa-group" area-label="false"></i> Team Stats
                 <hr>
             </h3>
@@ -14,7 +14,7 @@
         <tr *ngFor="let users of list|groupBy:'user_team' |toArray">
             <td>
 
-                <label style="margin-top:5px;">Team: {{ users[0].user_team }}</label>
+                <label style="margin-top:5px;"><span class="badge app-badge">Team: </span> {{ users[0].user_team }}</label>
                 <div style="float: right; margin-right: 10px;cursor:pointer;">
                     <div style="float:right;padding:5px;" *ngIf="!temp[users[0].user_team]" (click)="temp[users[0].user_team]=!temp[users[0].user_team]">
                         <i class="arrowX downX"></i>
@@ -29,6 +29,7 @@
                         <th>Full Name</th>
                         <th>Team Leader?</th>
                         <th>Permissions<br>[Create User, Edit User,<br>Delete User, Remove VM]</th>
+                        <th>Action</th>
                         <tr *ngFor="let user of users | orderBy: 'user_name' ">
                             <td style="text-align:left; ">
 
@@ -56,6 +57,9 @@
                                     <span [matTooltip]="'Remove VM?'" *ngIf="user.delete_vm=='0' "><i class="fa fa-times-circle "></i></span>
                                 </div>
 
+                            </td>
+                            <td>
+                                <span [matTooltip]="'Reset Password'" (click)="resetPassword(user.user_id)" ><i class="fa fa-key"></i></span>
                             </td>
                         </tr>
                         <tr>

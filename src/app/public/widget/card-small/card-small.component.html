@@ -1,3 +1,16 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Card Small Component Html
+-->
 <div *ngIf="visible" class="card" [ngStyle]="{'width.px':cardWidth ,'height.px': cardHeight}">
     <div [routerLink]="cardRouterLink" [state]="cardRouterState" class="card-body text-center" (click)="clickHandle()">
         <span class="card-notify-badge" [ngClass]="{'card-notify-badge-danger' : cardDanger}"><i class="{{badgeIcon}}"></i></span>
@@ -9,7 +22,8 @@
             <br>
             <span class="ml-2 mt-2 align-middle">{{cardTitle}}</span>
         </h1>
-        <p [clamp]="cardTextClamp" [matTooltip]="cardTextClamp ? cardText : null" class="card-text">{{cardText}}</p>
+        <ng-template #tipContent>{{cardText}}</ng-template>
+        <p [clamp]="cardTextClamp" [ngbTooltip]="cardTextClamp?tipContent:null" [placement]="cardTitle.includes('Dynamic Objects')?'top':'bottom'" class="card-text" container="body" >{{cardText}}</p>
 
     </div>
 </div>

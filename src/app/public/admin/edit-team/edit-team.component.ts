@@ -26,6 +26,8 @@ import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
 import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
 import { Router } from '@angular/router';
+import { AuthserviceService } from '../../services/authservice.service';
+import { ToastService } from '../../widget/toast/toast-service';
 @Component({
   selector: 'app-add-team',
   templateUrl: '../add-team/add-team.component.html',
@@ -36,14 +38,19 @@ export class EditTeamComponent implements OnInit {
   submitted = false;
   title: string = 'Edit Team';
   selectedTeam: string = '';
+  loggedUser:any;
   constructor(
     private formBuilder: FormBuilder,
     private _client: NodeclientService,
     private dialog: MatDialog,
     private _spinner: SpinnerService,
     private tms: TeamService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private _auth:AuthserviceService,
+    private toastservice:ToastService
+  ) {
+    this.loggedUser=_auth.getUser();
+  }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -97,6 +104,10 @@ export class EditTeamComponent implements OnInit {
         //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
         if (res.status == 'SUCCESS') {
+          if(this.loggedUser.useToast){
+            this.toastservice.showSuccess(res.message,5000);
+            this.router.navigate(['/portal/home/admin/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -107,6 +118,7 @@ export class EditTeamComponent implements OnInit {
               this.router.navigate(['/portal/home/admin/dash']);
             }
           );
+          }
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

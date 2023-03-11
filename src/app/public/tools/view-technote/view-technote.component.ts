@@ -10,9 +10,13 @@
  * @desc View Technote Component
  */
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from '../../services/authservice.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TechnotesService } from '../../services/technotes.service';
+import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 
 @Component({
   selector: 'app-view-technote',
@@ -25,23 +29,41 @@ export class ViewTechnoteComponent implements OnInit {
   isLoaded!: boolean;
   technote: any;
   isDataloadFailed: any;
-
+  loggedUser :any;
   constructor(
     private actRoute: ActivatedRoute,
     private spinner: SpinnerService,
-    private technotesServie: TechnotesService
+    private technotesServie: TechnotesService,
+    private _auth:AuthserviceService,
+    private toastService:ToastService,
+    private router: Router,
+    private dialog: MatDialog,
   ) {
     this.technoteID = this.actRoute.snapshot.params.technoteID;
-    var promise = this.technotesServie.getTechnotes();
+    var promise = this.technotesServie.getTechnote(this.technoteID);
+    this.loggedUser=_auth.getUser();
     promise
-      .then((res: any[]) => {
+      .then((res:any) => {
         this.spinner.setSpinnerState(false);
-        console.log('inside promise.then -< setting technotesDataSet', res);
-        this.technotesDataSet = res;
-        console.log(res);
-        this.technote = this.technotesDataSet.filter(
-          (data) => data.id == this.technoteID
-        )[0];
+        console.log('inside promise.then -< setting technote');
+        this.technote=JSON.parse(res);
+        if (this.technote.failed) {
+          console.log('No technotefound with this id.');
+          if(this.loggedUser.useToast){
+            this.toastService.showDanger('Technote not found!!',5000);
+            this.router.navigate(['/portal/home/tools/technotes']);
+          }else{
+          this.openDialog(
+            {
+              type: 'message',
+              message: 'Technote not found!!',
+            },
+            () => {
+              this.router.navigate(['/portal/home/tools/technotes']);
+            }
+          );
+        } 
+      }
         console.log(this.technote);
         this.isLoaded = true;
       })
@@ -52,6 +74,21 @@ export class ViewTechnoteComponent implements OnInit {
         this.isDataloadFailed;
       });
   }
-
+  openDialog(data: any, callback: any) {
+    this.dialog
+      .open(AlertDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback();
+        }
+      });
+  }
   ngOnInit(): void {}
 }
+
+

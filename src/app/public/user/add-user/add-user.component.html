@@ -1,9 +1,10 @@
+
 <app-path></app-path>
 
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
+            <h3 class="page-title ml-3">
                 <i class="fa fa-user-plus" area-label="false"></i> {{title}}
                 <hr>
             </h3>
@@ -12,7 +13,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row  ml-4">
             <div class="col-lg-12">
-                <div class="row p-3 ">
+                <div class="row p-1 ">
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="name">Full Name:</label>
@@ -39,7 +40,7 @@
                     </div>
 
                 </div>
-                <div class="row p-3 ">
+                <div class="row p-1 ">
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="password">Password:</label>
@@ -64,7 +65,7 @@
                     </div>
 
                 </div>
-                <div class="row p-3 ">
+                <div class="row p-1 ">
 
                     <div class="col-sm-6">
                         <div class="form-group required">
@@ -110,7 +111,7 @@
                 </h4>
             </div>
         </div>
-        <div class="row p-3 ml-4">
+        <div class="row p-1 ml-4">
             <div class="col-sm-2 mr-0 pr-0">
                 <div class="form-group required">
                     <label for="remove_vm">Delete VM:</label>
@@ -160,13 +161,12 @@
                 </div>
             </div>
         </div>
-        <div class="row p-3">
-            <div class="col-sm-6 mr-0 pr-0">
-
-            </div>
-            <div class="col-sm-6 mr-0 ">
-                <button type="submit" (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary" disabled>Submit</button>
+        <div class="row p-1">
+            
+            <div class="col mr-0 ">
+                <button type="submit" mat-button (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
             </div>
         </div>
     </form>
+
 </div>

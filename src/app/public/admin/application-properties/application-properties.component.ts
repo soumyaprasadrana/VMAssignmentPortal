@@ -53,7 +53,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     enableAutoSizeColumns: true,
   };
   ngOnInit(): void {
-    const cellFormatter: Formatter<Property> = (
+    const cellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,

@@ -26,15 +26,20 @@ const routes: Routes = [
       {
         path: 'dash',
         component: VmmHomeComponent,
-        data: { animation: 'vmm' },
+        data: { animation: 'vmm',title:'VM Management' },
       },
 
-      { path: 'add', component: AddVmComponent, data: { animation: 'add' } },
-      { path: 'edit', component: EditVmComponent, data: { animation: 'add' } },
+      { path: 'add', component: AddVmComponent, data: { animation: 'add',title:'Add VM' } },
+      { path: 'edit', component: EditVmComponent, data: { animation: 'add',title:'Edit VM' } },
       {
         path: 'selectededit',
         component: EditMultipleVmComponent,
-        data: { animation: 'add' },
+        data: { animation: 'add',title:'Edit VM' },
+      },
+      {
+        path: 'snapshots',
+        loadChildren: () =>
+          import(`../snapshots/snapshots.module`).then((m) => m.SnapshotsModule),
       },
 
       {
@@ -45,7 +50,7 @@ const routes: Routes = [
       {
         path: '**',
         component: PageNotFoundHomeComponent,
-        data: { animation: 'notFound' },
+        data: { animation: 'notFound',title:'404-Page Not Found' },
       },
     ],
   },

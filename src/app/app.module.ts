@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Main application module
  */
 import { NgModule } from '@angular/core';
@@ -19,7 +19,6 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './public/login/login-form/login-form.component';
 import { NavbarComponent } from './public/widget/navbar/navbar.component';
 import { LoginViewComponent } from './public/login/login-view/login-view.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './public/widget/page-not-found/page-not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterModule } from './public/widget/footer/footer.module';
@@ -30,14 +29,15 @@ import { AuthInterceptor } from './public/services/customHttp';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from './public/services/spinner-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-
+import {MatDialog, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import { ToastModule } from './public/widget/toast/toast.module';
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     NavbarComponent,
     LoginViewComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -45,12 +45,11 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule,
     BrowserAnimationsModule,
     FooterModule,
     MaterialModule,
-
     HttpClientModule,
+    ToastModule,
     NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
   ],
   exports: [],
@@ -59,13 +58,14 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     Config,
     AdminConfig,
     {
-      provide: HTTP_INTERCEPTORS,
-      useFactory: function (router: Router, route: ActivatedRoute) {
-        return new AuthInterceptor(router, route);
+      provide: HTTP_INTERCEPTORS, 
+      useFactory: function (router: Router, route: ActivatedRoute,dialog: MatDialog) {
+        return new AuthInterceptor(router, route,dialog);
       },
       multi: true,
-      deps: [Router, ActivatedRoute],
+      deps: [Router, ActivatedRoute,MatDialog],
     },
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {disableClose: true,hasBackdrop:true}}
   ],
   bootstrap: [AppComponent],
 })

@@ -1,3 +1,16 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-03-25 18:30:37
+@modify date 2022-04-19 18:30:37
+@desc Path Component Html
+-->
 <div class="alert-container">
     <div class="alert-custom">
         <ul id="breadcrumb">
@@ -13,6 +26,9 @@
 
                     <!--Chart Icon-->
                     <i *ngIf="item.parent=='home' && item.title=='chart'" class="fa fa-pie-chart" area-hidden="true"></i>
+                    <!--Relationships Icon-->
+                    <i *ngIf="item.parent=='chart' && item.title=='relationships'" class="fa fa-random" area-hidden="true"></i>
+
                     <!-- Tools Icon-->
                     <i *ngIf="item.parent=='home' && item.title=='tools'" class="fa fa-wrench" area-hidden="true"></i>
                     <!-- Tools LTB Icon-->
@@ -45,8 +61,26 @@
 
                     <!-- Admin Team Stats Icon-->
                     <i *ngIf="item.parent=='admin' && item.title=='teamStats'" class="fa fa-users" area-hidden="true"></i>
+                    
+                    <!-- Admin Dynamic Objects Icon-->
+                    <i *ngIf="item.parent=='admin' && item.title=='dynamicobjects'" class="fa fa-first-order" area-hidden="true"></i>
 
+                    <!-- Admin Add Dynamic Object  -->
+                    <i *ngIf="item.parent=='dynamicobjects' && item.title=='add'" class="fa fa-first-order" area-hideen="true"></i>
+                    <i *ngIf="item.parent=='dynamicobjects' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>
 
+                    <!-- Admin View Dynamic Object  -->
+                    <i *ngIf="item.parent=='dynamicobjects' && item.title=='view'" class="fa fa-align-justify" area-hideen="true"></i>
+                    
+                    <!-- Home Dynamic Apps  -->
+                    <i *ngIf="item.parent=='home' && item.title=='dynamicapps'" class="fa fa-first-order" area-hideen="true"></i>
+                    
+                    <!-- Snapshots Home  -->
+                    <i *ngIf="item.parent=='vmm' && item.title=='snapshots'" class="fa fa-hdd-o" area-hideen="true"></i>
+                    
+                    <!-- Home Dynamic Apps  -->
+                    <i *ngIf="item.parent=='dynamicapps' " class="fa fa-bullseye" area-hideen="true"></i>
+                    
                     <!-- Add VM -->
                     <i *ngIf="item.parent=='vmm' && item.title=='add'" class="fa fa-desktop" area-hideen="true"></i>
                     <i *ngIf="item.parent=='vmm' && item.title=='add'" class="fa fa-plus-circle" area-hidden="true" style="font-size: 8px;"></i>

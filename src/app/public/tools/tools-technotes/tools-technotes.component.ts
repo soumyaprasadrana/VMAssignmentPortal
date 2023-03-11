@@ -67,6 +67,7 @@ export class ToolsTechnotesComponent implements OnInit {
   loggedUser: any;
   isDeviceMobilReset: boolean = false;
   defaultPageSizeList: any;
+  isGoingToReset:boolean=false;
 
   /*technotesServie-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -193,25 +194,27 @@ export class ToolsTechnotesComponent implements OnInit {
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
     localStorage[LOCAL_STORAGE_KEY] = null;
+    this.isGoingToReset=true;
     this.angularGrid.gridService.resetGrid(this.columnDef);
     window.location.reload();
-
     this.angularGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
   }
 
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
+    if(this.isGoingToReset){
     const gridState: GridState =
       this.angularGrid.gridStateService.getCurrentGridState();
     //console.log('Grid State before destroy :: ', gridState);
     localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
+    }
   }
 
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
     this.spinner.setSpinnerState(true);
     /* Custom Formatter for cells to check snapshot count */
-    const cellFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const cellFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -221,7 +224,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const isGlobalFormatter: Formatter<VM> = (
+    const isGlobalFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -243,7 +246,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const descFormatter: Formatter<VM> = (_row, _cell, value, colDef, vm) => {
+    const descFormatter: Formatter<any> = (_row, _cell, value, colDef, vm) => {
       if (typeof value == 'undefined') {
         value = '';
       }
@@ -253,7 +256,7 @@ export class ToolsTechnotesComponent implements OnInit {
         toolTip: value,
       };
     };
-    const keywordCellFormatter: Formatter<VM> = (
+    const keywordCellFormatter: Formatter<any> = (
       _row,
       _cell,
       value,
@@ -451,9 +454,10 @@ export class ToolsTechnotesComponent implements OnInit {
 
     console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.technotesGridOptions = {
+      gridHeight:'95%',
       rowHeight: 50,
       autoResize: {
-        container: '#grid-container',
+        container: '#tools-grid-container',
         applyResizeToContainer: true,
         rightPadding: 0,
       },
@@ -487,14 +491,14 @@ export class ToolsTechnotesComponent implements OnInit {
         // basically which offset do we want to use for reposition the grid menu,
         // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
         // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
+        
         iconCssClass: 'fa fa-bars',
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -553,7 +557,7 @@ export class ToolsTechnotesComponent implements OnInit {
   gridStateChanged(gridStateChanges: GridStateChange) {
     ////console.log('Client sample, Grid State changed:: ', gridStateChanges);
     //alert('onSTateChanged::' + JSON.stringify(gridStateChanges));
-    if (!this.isDeviceMobilReset) {
+    if (!this.isDeviceMobilReset && !this.isGoingToReset) {
       const gridState: GridState =
         this.angularGrid.gridStateService.getCurrentGridState();
       //console.log('Grid State before destroy :: ', gridState);

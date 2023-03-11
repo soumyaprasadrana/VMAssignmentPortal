@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-04-19 18:26:41
  * @desc Tools Config
  */
 export class ToolConfig {
@@ -50,6 +50,16 @@ export class ToolConfig {
         cardWidth: '300',
         cardHeight: '200',
         cardRouterLink: ['../spa'],
+        cardIconClass: 'fa fa-window-restore',
+        badgeIcon: 'fa fa-firefox',
+        cardTextClamp: 0,
+      },
+      {
+        cardTitle: 'More Applications',
+        cardText: 'Additional applications configured by your administrator for you.',
+        cardWidth: '300',
+        cardHeight: '200',
+        cardRouterLink: ['../../dynamicapps/dash'],
         cardIconClass: 'fa fa-window-restore',
         badgeIcon: 'fa fa-firefox',
         cardTextClamp: 0,

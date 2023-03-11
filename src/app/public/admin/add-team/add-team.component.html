@@ -1,9 +1,22 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc Add Team Component Html
+-->
 <app-path></app-path>
 
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3">
+            <h3 class="page-title ml-3">
                 <i class="fa fa-users" area-label="false"></i> {{title}}
                 <hr>
             </h3>
@@ -16,7 +29,8 @@
                     <div class="col-sm-6">
                         <div class="form-group required">
                             <label for="team_name">Team Name:</label>
-                            <input id="team_name" required="required" type="text" class="form-control" formControlName="team_name" [ngClass]="{ 'is-invalid': submitted && f.team_name.errors }">
+                            <span class="fa fa-users form-control-prefix-icon text-muted" area-label="false"></span>
+                            <input id="team_name" required="required" type="text" class="form-control form-control-include-icon" formControlName="team_name" [ngClass]="{ 'is-invalid': submitted && f.team_name.errors }">
                             <div *ngIf="submitted && f.team_name.errors" class="invalid-feedback">
                                 <div class="ml-1" *ngIf="f.team_name.errors.required">Team Name is required</div>
                                 <div *ngIf="f.team_name.errors.restrictWhiteSpace">White Space is not allowed.</div>
@@ -28,7 +42,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="team_desc">Team Description:</label>
-                            <input id="team_desc" type="text" class="form-control" formControlName="team_desc">
+                            <span class="fa fa-file-text-o form-control-prefix-icon text-muted " area-label="false"></span>
+                            <input id="team_desc" type="text" class="form-control form-control-include-icon" formControlName="team_desc">
                         </div>
                     </div>
                 </div>

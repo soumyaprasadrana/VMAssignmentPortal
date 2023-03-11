@@ -1,0 +1,33 @@
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+        <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
+         {{data.title}}
+       
+         <button  type="button" class="close" style="background: white;
+    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
+        <span style="font-size:30px;" aria-hidden="true">&times;</span>
+    </button>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg ml-2" >
+    <br> {{data.label}}
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row p-3 ">
+            <div class="col ">
+                <div class="form-group required" [style]="{height:  formGroupheight}">
+
+                    <input *ngIf="!loggedUser.enableRichTextForVMComment" id="dataCtrl"  formControlName="dataCtrl">
+                    <quill-editor *ngIf="loggedUser.enableRichTextForVMComment" id="dataCtrl" [styles]="{height: '150px'}"   formControlName="dataCtrl" ngDefaultControl></quill-editor>
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col float-end">
+
+                <button type="submit" mat-button class="float-end">Ok</button>
+                <button type="button" mat-button (click)="onClose()" class="float-end">Cancel</button>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

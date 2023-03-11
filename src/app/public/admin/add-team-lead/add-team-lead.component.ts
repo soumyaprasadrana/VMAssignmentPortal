@@ -20,11 +20,13 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Team } from '../../DataModel/team';
+import { AuthserviceService } from '../../services/authservice.service';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { TeamService } from '../../services/teams.service';
 import { UserService } from '../../services/users.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
+import { ToastService } from '../../widget/toast/toast-service';
 import { MustMatch } from '../../widget/utils/must-match.validator';
 import { CustomValidator } from '../../widget/utils/no-white-space-validator';
 
@@ -38,6 +40,7 @@ export class AddTeamLeadComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   teams: any = [];
+  loggedUser:any;
   constructor(
     private formBuilder: FormBuilder,
     private tms: TeamService,
@@ -45,8 +48,11 @@ export class AddTeamLeadComponent implements OnInit {
     private _client: NodeclientService,
     private dialog: MatDialog,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private _auth:AuthserviceService,
+    private toastService:ToastService
   ) {
+    this.loggedUser=_auth.getUser();
     tms
       .getTeams()
       .then((res) => {
@@ -110,6 +116,10 @@ export class AddTeamLeadComponent implements OnInit {
         if (res) res = JSON.parse(res);
         if (res.status == 'Success') {
           this.userService.setNeedRefresh(true);
+          if(this.loggedUser.useToast){
+            this.toastService.showSuccess('User created successfully!',5000);
+            this.router.navigate(['/portal/home/admin/dash']);
+          }else{
           this.openDialog(
             {
               type: 'message',
@@ -118,7 +128,7 @@ export class AddTeamLeadComponent implements OnInit {
             () => {
               this.router.navigate(['/portal/home/admin/dash']);
             }
-          );
+          );}
         } else {
           this._spinner.setSpinnerState(false);
           this.openDialog(

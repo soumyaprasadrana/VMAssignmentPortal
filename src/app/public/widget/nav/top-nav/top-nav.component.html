@@ -1,9 +1,9 @@
 <mat-toolbar>
-    <button mat-icon-button (click)="onToggleSidenav()">
+    <button id="mat-menu-button" mat-icon-button (click)="onToggleSidenav()">
         <mat-icon class="white-icon">menu</mat-icon>
     </button>
-    <a mat-button [routerLink]="['/portal/home/dash']">
-        <h1 style="color:white">VM Assignment Portal</h1>
+    <a id="portal-nav-icon" mat-button [routerLink]="['/portal/home/dash']">
+        <h1 style="color:white"><b>VM Assignment Portal</b></h1>
     </a>
 
     <div fxFlex fxLayout fxLayoutAlign="end">
@@ -12,18 +12,72 @@
 
             <!--   <input *ngIf="showGlobalSearch" class="search-field" [(ngModel)]="globarSearchText" (ngModelChange)="setGlobalFilterText($event)" placeholder="What are you looking for ?">-->
 
-            <button *ngIf="quicklinks.length>0" mat-button [matMenuTriggerFor]="LinkMenu" id="linkDropdown">
+            <mat-menu #quickMenu="matMenu">
+                <button *ngIf="loggedUser.enableSnapshotManagements" mat-menu-item [matMenuTriggerFor]="snapshots"><i area-hideen="true" class="fa fa-hdd-o"></i> Snapshots</button>
+                <button mat-menu-item [matMenuTriggerFor]="vm"><i area-hideen="true" class="fa fa-desktop"></i> VM</button>
+                <button *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" mat-menu-item [matMenuTriggerFor]="user"><i area-hideen="true" class="fa fa-user"></i> User</button>
+                <button mat-menu-item [matMenuTriggerFor]="tools"><i area-hideen="true" class="fa fa-briefcase"></i> Tools</button>
+                <button *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" mat-menu-item [matMenuTriggerFor]="administration"><i area-hideen="true" class="fa fa-cog"></i> Administration</button>
+            </mat-menu>
+            <mat-menu #snapshots="matMenu">
+                <button mat-menu-item (click)="goToAllSnapView()"><i area-hideen="true" class="fa fa-list"></i> View All Snapshots</button>
+                <button mat-menu-item (click)="goToSearchSnapshot()"><i area-hideen="true" class="fa fa-search"></i> Search Snapshots</button>
+                <button mat-menu-item (click)="goToSnapCount()"><i area-hideen="true" class="fa fa-hashtag"></i> View Count of Snapshots</button>
+                <button *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" mat-menu-item [matMenuTriggerFor]="snaptools"><i area-hideen="true" class="fa fa-briefcase"></i> Tools</button>
+            </mat-menu>
+            <mat-menu #snaptools="matMenu">
+                <button mat-menu-item (click)="syncSnapshotCount()"><i area-hideen="true" class="fa fa-refresh"></i><i area-hideen="true" class="fa fa-hashtag" style="font-size:8px;"></i> Sync Snapshot Count</button>
+                <button mat-menu-item (click)="syncVMExtraData()"><i area-hideen="true" class="fa fa-refresh"></i><i area-hideen="true" class="fa fa-info-circle" style="font-size:8px;"></i> Sync VM Additional Data</button>
+            </mat-menu>
+            <mat-menu #vm="matMenu">
+                <button [routerLink]="['/portal/home/vmm/add']" mat-menu-item><i area-hideen="true" class="fa fa-desktop"></i><i area-hideen="true" class="fa fa-plus-circle" style="font-size:8px;"></i> Add VM</button>
+                <button [routerLink]="['/portal/home/vmm/edit']" mat-menu-item><i area-hideen="true" class="fa fa-desktop" ></i><i area-hideen="true" class="fa fa-edit" style="font-size:8px;"></i> Edit VM</button>
+                <button *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead || loggedUser.permissions.delete_vm" mat-menu-item (click)="deleteVM()"><i area-hideen="true" class="fa fa-trash" [style.color]="red"></i><i [style.color]="red" area-hideen="true" class="fa fa-desktop" style="font-size:8px;"></i> Remove VM</button>
+            </mat-menu>
+            <mat-menu #user="matMenu">
+                <button *ngIf="loggedUser.permissions.is_admin ||
+                loggedUser.permissions.create_user ||
+                loggedUser.permissions.is_teamLead" mat-menu-item [routerLink]="['/portal/home/user/add']"><i area-hideen="true" class="fa fa-user-plus"></i> Create User</button>
+                <button *ngIf="loggedUser.permissions.is_admin ||
+                loggedUser.permissions.update_user ||
+                loggedUser.permissions.is_teamLead" mat-menu-item [routerLink]="['/portal/home/user/edit']"><i area-hideen="true" class="fa fa-user"></i><i area-hideen="true" class="fa fa-edit" style="font-size:8px;"></i> Edit User</button>
+                <button *ngIf="loggedUser.permissions.is_admin ||
+                loggedUser.permissions.delete_user ||
+                loggedUser.permissions.is_teamLead" mat-menu-item (click)="deleteUser()"><i area-hideen="true" class="fa fa-trash" [style.color]="red"></i><i [style.color]="red" area-hideen="true" class="fa fa-user" style="font-size:8px;"></i> Delete User</button>
+                <button *ngIf="loggedUser.permissions.is_admin " mat-menu-item [routerLink]="['/portal/home/admin/addTeamLead']"><i area-hideen="true" class="fa fa-user-plus"></i> Create Team Leader</button>
+                <button *ngIf="loggedUser.permissions.is_admin " mat-menu-item [routerLink]="['/portal/home/admin/editTeamLead']"><i area-hideen="true" class="fa fa-user"></i><i area-hideen="true" class="fa fa-edit" style="font-size:8px;"></i> Edit Team Leader</button>
+                <button *ngIf="loggedUser.permissions.is_admin " mat-menu-item (click)="deleteUser()"><i area-hideen="true" class="fa fa-trash" [style.color]="red"></i><i [style.color]="red" area-hideen="true" class="fa fa-user" style="font-size:8px;"></i> Delete Team Leader</button>
+                <button *ngIf="loggedUser.permissions.is_admin " mat-menu-item (click)="promoteUser()"><i area-hideen="true" class="fa fa-user" ></i><i  area-hideen="true" class="fa fa-angle-double-up" style="font-size:8px;"></i> Promote User</button>
+            </mat-menu>
+            <mat-menu #tools="matMenu">
+                <button mat-menu-item [routerLink]="['/portal/home/tools/ltb']"><i area-hideen="true" class="fa fa-terminal"></i> SSH Tools</button>
+                <button mat-menu-item [routerLink]="['/portal/home/tools/technotes']"><i area-hideen="true" class="fa fa-sticky-note"></i> Technotes</button>
+                <button mat-menu-item [routerLink]="['/portal/home/tools/spa']"><i area-hideen="true" class="fa fa-window-restore"></i> Single Page Applications</button>
+                <button mat-menu-item [routerLink]="['/portal/home/dynamicapps']"><i area-hideen="true" class="fa fa-window-restore"></i> More Applications</button>
+            </mat-menu>
+            <mat-menu #administration="matMenu">
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin" [routerLink]="['/portal/home/admin/addTeam']"><i area-hideen="true" class="fa fa-users"></i><i area-hideen="true" class="fa fa-plus-circle" style="font-size:8px;"></i> Create Team</button>
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin" [routerLink]="['/portal/home/admin/editTeam']"><i area-hideen="true" class="fa fa-users"></i><i area-hideen="true" class="fa fa-edit" style="font-size:8px;"></i> Edit Team</button>
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin" (click)="deleteTeam()"><i area-hideen="true" class="fa fa-trash" [style.color]="red"></i><i [style.color]="red" area-hideen="true" class="fa fa-users" style="font-size:8px;"></i> Delete Team</button>
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/activityLogs']"><i area-hideen="true" class="fa fa-history"></i> Activity Logs</button>
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/teamStats']"><i area-hideen="true" class="fa fa-users"></i> Team Stats</button>
+                <button mat-menu-item *ngIf="loggedUser.permissions.is_admin" [routerLink]="['/portal/home/admin/properties']"><i area-hideen="true" class="fa fa-cogs"></i> Application Properties</button>
+            </mat-menu>
+
+            <button   title="Quicklinks" *ngIf="quicklinks.length>0" mat-button [matMenuTriggerFor]="LinkMenu" id="linkDropdownt">
             <mat-icon>
                 link
             </mat-icon>
             </button>
             <mat-menu #LinkMenu="matMenu" yPosition="below">
-                <a *ngFor="let item of quicklinks" class="btn-primary m-2" mat-flat-button href="{{item.linkUrl}}" target="_blank"><span> <i *ngIf="item.iconClass" class="{{item.iconClass}}"></i><img *ngIf="iconSrc" src="item.iconSrc"></span><span>  {{item.linkTitle}}</span> </a>
+                <app-quick-link *ngFor="let item of quicklinks" [iconClass]="item.iconClass" [iconSrc]="item.iconSrc" [linkUrl]="item.linkUrl" [linkTitle]="item.linkTitle"> </app-quick-link>
             </mat-menu>
-            <button mat-button [matMenuTriggerFor]="themeMenu" id="themeDropdown"><mat-icon>
+            <button title="Themes" mat-button [matMenuTriggerFor]="themeMenu" id="themeDropdownt"><mat-icon>
                 format_color_fill
             </mat-icon> </button>
             <mat-menu #themeMenu="matMenu" yPosition="below">
+                <button mat-menu-item (click)="setTheme('mui')"><span><i
+                    style="color:#6d2072" class="fa fa-circle"></i> <b>Material</b> </span></button>
                 <button mat-menu-item (click)="setTheme('default')"><span><i
                     style="color:#280071" class="fa fa-circle"></i> <b>Default</b> </span></button>
                 <button mat-menu-item (click)="setTheme('blue')"><span><i
@@ -34,13 +88,17 @@
                       style="color:#37474f"  class="fa fa-circle"></i> <b>Grey</b> </span></button>
             </mat-menu>
 
-            <a [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
-            <a [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
-            <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
-            <a [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
-            <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
-            <button mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
+            <a id="nav-button-vmm" [routerLink]="['/portal/home/vmm/dash']" mat-button>VMM</a>
+            <a id="nav-button-chart" [routerLink]="['/portal/home/chart']" mat-button>Charts</a>
+            <a id="nav-button-snapshots" *ngIf="loggedUser.enableSnapshotManagements" [routerLink]="['/portal/home/vmm/snapshots']" mat-button>Snapshots</a>
+            <a id="nav-button-users"  *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" [routerLink]="['/portal/home/user/dash']" mat-button>Users</a>
+            <a id="nav-button-tools" [routerLink]="['/portal/home/tools/dash']" mat-button>Tools</a>
+            <a id="nav-button-administration" *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" [routerLink]="['/portal/home/admin/dash']" mat-button>Administration</a>
+            <button  mat-button [matMenuTriggerFor]="belowMenu" id="userDropdown"><i
                 class="fa fa-user"></i> {{loggedUser.name | uppercase }}  </button>
+            <button id="nav-button-quick" title="Quick Menu" mat-icon-button [matMenuTriggerFor]="quickMenu" aria-label="hidden">
+                <mat-icon>more_vert</mat-icon>
+            </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">
                 <button mat-menu-item (click)="openDialog()"><span><i
                     class="fa fa-lock"></i> Change Password</span></button>

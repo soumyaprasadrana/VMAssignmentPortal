@@ -17,12 +17,12 @@ import { PageNotFoundComponent } from './public/widget/page-not-found/page-not-f
 const routes: Routes = [
   { path: '', redirectTo: 'portal/login', pathMatch: 'full' },
   { path: 'portal', redirectTo: 'portal/home', pathMatch: 'full' },
-  { path: 'portal/login', component: LoginViewComponent },
+  { path: 'portal/login', component: LoginViewComponent,data:{title:'Login'} },
   {
     path: 'portal/home',
-    loadChildren: () => import(`./home/home.module`).then((m) => m.HomeModule),
+    loadChildren: () => import(`./home/home.module`).then((m) => m.HomeModule),data:{title:'Home'}
   },
-  { path: '**', component: PageNotFoundComponent }, // Wildcard route for a 404 page
+  { path: '**', component: PageNotFoundComponent,data:{title:'404-Page Not Found'} }, // Wildcard route for a 404 page
 ];
 
 @NgModule({

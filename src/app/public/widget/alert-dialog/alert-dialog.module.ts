@@ -6,7 +6,7 @@
  * @author [soumya]
  * @email [soumyaprasad.rana@gmail.com]
  * @create date 2022-02-26 18:26:41
- * @modify date 2022-02-26 18:26:41
+ * @modify date 2022-03-25 18:26:41
  * @desc Alert Dialog Module
  */
 import { NgModule } from '@angular/core';
@@ -20,7 +20,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { LTBButtonInputDialogComponent } from './ltb-button-input-dialog.component';
 import { PassChangeDialogComponent } from './change-pass-dialog';
 import { AdditionalDataDialogComponent } from './additional-data-dialog';
+import { RelatedvmsDataDialogComponent } from './relatedvms-data-dialog';
 import { FileChooseDialogComponent } from './file-choose-dialog.component';
+import { CommentDialogComponent } from './comment-dialog.component';
+import { SnapshotsDialogComponent } from './snapshots-dialog.component';
+import { TreeModule } from '../tree-diagram/tree.module';
+import { TakeSnapInputDialogComponent } from './takesnap-dialog.component';
+import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.component';
 @NgModule({
   declarations: [
     AlertDialogComponent,
@@ -29,6 +35,11 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
+    RelatedvmsDataDialogComponent,
+    CommentDialogComponent,
+    SnapshotsDialogComponent,
+    TakeSnapInputDialogComponent,
+    TaskOutputDialogComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +48,7 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    TreeModule,
   ],
   exports: [
     AlertDialogComponent,
@@ -45,6 +57,11 @@ import { FileChooseDialogComponent } from './file-choose-dialog.component';
     PassChangeDialogComponent,
     AdditionalDataDialogComponent,
     FileChooseDialogComponent,
+    RelatedvmsDataDialogComponent,
+    CommentDialogComponent,
+    SnapshotsDialogComponent,
+    TakeSnapInputDialogComponent,
+    TaskOutputDialogComponent
   ],
 })
 export class AlertModule {}

@@ -16,11 +16,18 @@
     }
 </style>
 <div class="container-fluid mt-3 ">
-    <div class="row p-3">
-
-        <h1 class="h3"><i class="fa fa-desktop" area-label="false"></i> SSH Tool
-            <hr>
-        </h1>
+    <div class="row">
+        <div class="col-xs-6 ">
+            <h3 class="page-title ml-3">
+                <i class="fa fa-desktop" area-label="false"></i> SSH Tool
+                <hr>
+            </h3>
+        </div>
+        <div *ngIf="selectedDataContext" class="col text-right">
+            <button mat-button (click)="openWebSSH()">WebSSH
+               
+            </button>
+        </div>
     </div>
     <div class="ml-2 ">
         <div class="row ml-5" *ngFor='let row of cardsMetaData'>

@@ -8,6 +8,9 @@
     <a mat-list-item [routerLink]="['/portal/home/chart']" (click)="onSidenavClose()">
         <mat-icon>pie_chart</mat-icon> <span class="ml-1">Charts</span>
     </a>
+    <a *ngIf="this.loggedUser.enableSnapshotManagements" mat-list-item [routerLink]="['/portal/home/vmm/snapshots']" (click)="onSidenavClose()">
+        <mat-icon>memory</mat-icon> <span class="ml-1">Snapshots</span>
+    </a>
     <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" mat-list-item [routerLink]="['/portal/home/user/dash']" (click)="onSidenavClose()">
         <mat-icon>people</mat-icon> <span class="ml-1">Users</span>
     </a>
@@ -28,7 +31,7 @@
         </mat-icon><span class="ml-1">Quick Links</span>
     </a>
     <mat-menu #LinkMenu="matMenu" yPosition="below">
-        <a *ngFor="let item of quicklinks" class="btn-primary m-2" mat-flat-button href="{{item.linkUrl}}" target="_blank"><span> <i *ngIf="item.iconClass" class="{{item.iconClass}}"></i><img *ngIf="iconSrc" src="item.iconSrc"></span><span>  {{item.linkTitle}}</span> </a>
+        <app-quick-link *ngFor="let item of quicklinks" [iconClass]="item.iconClass" [iconSrc]="item.iconSrc" [linkUrl]="item.linkUrl" [linkTitle]="item.linkTitle"> </app-quick-link>
     </mat-menu>
 
     <a mat-list-item [matMenuTriggerFor]="sideMenu">

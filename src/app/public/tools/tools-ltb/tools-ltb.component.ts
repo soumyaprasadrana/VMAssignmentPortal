@@ -101,4 +101,48 @@ export class ToolsLtbComponent implements OnInit {
     return metadata;
   }
   ngOnInit(): void {}
+  openWebSSH() {
+    console.log("clicked openWebSSH");
+
+    var username = null;
+    var password = null;
+    var hostname = null;
+    var port = 22;
+    if (typeof this.defaultSSHUsername != "undefined") {
+      username = this.defaultSSHUsername;
+    }
+    if (typeof this.defaultSSHPassword != "undefined") {
+      password = this.defaultSSHPassword;
+    }
+    if (this.selectedDataContext) {
+      hostname = this.selectedDataContext.ip;
+    }
+    if (
+      this.selectedDataContext.extradata &&
+      typeof this.selectedDataContext.extradata.sshUsername != "undefined"
+    ) {
+      username = this.selectedDataContext.extradata.sshUsername;
+    }
+    if (
+      typeof this.selectedDataContext.extradata != "undefined" &&
+      typeof this.selectedDataContext.extradata.sshPassword != "undefined"
+    ) {
+      password = this.selectedDataContext.extradata.sshPassword;
+    }
+    const routerLink = [ "/portal/spa/", "sshclient" ];
+    var appUrl = this.router.serializeUrl(
+      this.router.createUrlTree(routerLink, {
+        queryParams: {
+          hostname: hostname,
+          username: username,
+          port: port,
+          password: password,
+        },
+      })
+    );
+
+    console.log(appUrl);
+    window.open(appUrl, "_blank");
+  }
 }
+
