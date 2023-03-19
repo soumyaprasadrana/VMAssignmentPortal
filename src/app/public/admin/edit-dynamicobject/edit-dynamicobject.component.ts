@@ -59,6 +59,19 @@ export class EditDynamicObjectComponent implements OnInit {
   origionalAttrList: any;
   listSelectedOptions: any = [];
   listSelectedTeams: any = [];
+  availableFunctionsList: any = [{
+    value :'insert',
+    text: 'Add Record'
+  },
+  {
+    value :'update',
+    text: 'Update Record'
+  },
+  {
+    value :'delete',
+    text: 'Delete Record'
+  }
+  ]
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -74,6 +87,24 @@ export class EditDynamicObjectComponent implements OnInit {
     private commonServices: CommonService
   ) {
     this._spinner.setSpinnerState(true);
+     var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    var httpOptions = {
+      headers: headers,
+    };
+    this._client
+      .get('api/config/userDefinedFunctions', httpOptions)
+      .then((res: any) => {
+        if(res.userDefinedFunctions){
+          for(var item in res.userDefinedFunctions){
+            this.availableFunctionsList.push({value:res.userDefinedFunctions[item],text:res.userDefinedFunctions[item].toUpperCase()})
+          }
+        }
+      })
+      .catch((err) => {
+        console.log('Error Occurred while fetching user defined functions!',err);
+      });
     this.loggedUser = _auth.getUser();
     if (typeof history.state.recordData != 'undefined') {
       this.recordData = history.state.recordData;
@@ -155,6 +186,7 @@ export class EditDynamicObjectComponent implements OnInit {
       ],
       scope: [this.recordData['scope'], Validators.required],
       status: [this.recordData['status'], Validators.required],
+      enableform: [this.recordData['enableform']?this.recordData['enableform']:false],
     });
 
     this.list = this.recordData['attributes'];
@@ -261,7 +293,7 @@ export class EditDynamicObjectComponent implements OnInit {
     var temp = this.parseFunctionsFormValues(
       this.objectFunctionsGroup.getRawValue()
     );
-    temp.push({ name: null, type: null, isDialog: null, isUserDefined: true });
+    temp.push({ name: null, type: null, isDialog: null, isUserDefined: true, context: 'grid' });
     this.objectFunctionsGroup = this.formBuilder.group(
       this.parseFormControlsFunctionsGroup(temp)
     );
@@ -365,6 +397,7 @@ export class EditDynamicObjectComponent implements OnInit {
       type: string;
       isDialog: boolean;
       isUserDefined: boolean;
+      context: string;
     }>
   ) {
     var formControls: any = {};
@@ -388,6 +421,7 @@ export class EditDynamicObjectComponent implements OnInit {
           { value: list[i].isUserDefined, disabled: true },
           Validators.required,
         ];
+        formControls['fun_' + i + '_context'] = [{value:list[i].context,disabled:true}];
       } else {
         formControls['fun_' + i] = [
           list[i].name,
@@ -401,6 +435,7 @@ export class EditDynamicObjectComponent implements OnInit {
           list[i].isDialog ? list[i].isDialog : false,
           Validators.required,
         ];
+        formControls['fun_' + i + '_context'] = [list[i].context];
         formControls['fun_' + i + '_isUserDefined'] = [list[i].isUserDefined];
       }
     }
@@ -434,12 +469,13 @@ export class EditDynamicObjectComponent implements OnInit {
     var keys = Object.keys(formValues);
     var length = keys.length;
     var temp: any = [];
-    for (var i = 0; i < length / 4; i++) {
+    for (var i = 0; i < length / 5; i++) {
       var attr = {
         name: formValues['fun_' + i],
         type: formValues['fun_' + i + '_type'],
         isDialog: formValues['fun_' + i + '_isDialog'],
         isUserDefined: formValues['fun_' + i + '_isUserDefined'],
+        context: formValues['fun_' + i + '_context']
       };
       temp.push(attr);
     }
@@ -463,7 +499,7 @@ export class EditDynamicObjectComponent implements OnInit {
     this.list = temp;
   }
   deleteFunction(index: number) {
-    var temp = this.parseFunctionsFormValues(this.objectFunctionsGroup.value);
+    var temp = this.parseFunctionsFormValues(this.objectFunctionsGroup.getRawValue());
     temp = this.RemoveElementFromArray(temp, index);
     //console.log('index', index);
     //console.log('temp', temp);

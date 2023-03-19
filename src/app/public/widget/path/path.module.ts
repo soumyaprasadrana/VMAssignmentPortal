@@ -9,16 +9,22 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Portal Path Module
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PathComponent } from './path.component';
-import { RouterModule } from '@angular/router';
-import { LinkComponent } from './link.component';
-import { MaterialModule } from 'src/app/material.module';
-import { IPComponent } from './ip.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { PathComponent } from "./path.component";
+import { RouterModule } from "@angular/router";
+import { LinkComponent } from "./link.component";
+import { MaterialModule } from "src/app/material.module";
+import { IPComponent } from "./ip.component";
+import { RichTextComponent } from "./richtext.component";
 @NgModule({
-  declarations: [PathComponent,LinkComponent,IPComponent],
-  imports: [CommonModule, RouterModule,MaterialModule],
-  exports: [PathComponent,LinkComponent,IPComponent],
+  declarations: [
+    PathComponent,
+    LinkComponent,
+    IPComponent,
+    RichTextComponent,
+  ],
+  imports: [ CommonModule, RouterModule, MaterialModule ],
+  exports: [ PathComponent, LinkComponent, IPComponent ],
 })
 export class PathModule {}

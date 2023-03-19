@@ -24,6 +24,8 @@ import {
   Formatter,
   FileType,
   SlickGrid,
+  Formatters,
+  AngularUtilService,
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
@@ -37,7 +39,13 @@ import { NodeclientService } from '../../services/nodeclient.service';
 import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service';
 import { CommonService } from '../../services/common.service';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import { RichTextComponent } from '../../widget/path/richtext.component';
+import { ToastService } from '../../widget/toast/toast-service';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { UserDefinedFunctionsService } from '../../services/userdefinedfunctions.service';
+import { HttpHeaders } from '@angular/common/http';
+import { UserDefinedFunctionDialogComponent } from '../../widget/alert-dialog/userdefinedfunction-dialog.component';
 @Component({
   selector: 'app-dynamicobject-app-home',
   templateUrl: './dynamicobject-app-home.component.html',
@@ -48,6 +56,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   dynamicobjectappGridOptions!: GridOption;
   dynamicobjectappDataSet!: any[];
   attributeList!: any[];
+  funList!:any[];
+  userDefinedFunList : any [] = [];
   isLoaded: boolean = false;
   isDataloadFailed: boolean = false;
   angularGrid!: AngularGridInstance;
@@ -74,7 +84,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
   DEFAULT_PAGE_SIZE = 25;
   listsScope: any = {};
   isGoingToReset: boolean = false;
-
+  enableform: boolean = false;
+  hasUserDefinedFunction:boolean =false;
   /*dynamicobjectappServie-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
     private route: ActivatedRoute,
@@ -86,11 +97,82 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private _client: NodeclientService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private sanitizer: DomSanitizer,
+    private angularUtilService: AngularUtilService,
+    private clipboard: Clipboard,
+    private toastService:ToastService,
+    private funService : UserDefinedFunctionsService
   ) {
-    //Load Technote Data
-    this.spinner.setSpinnerState(true);
     this.app = this.route.snapshot.params.app;
+    //Check if application has enable for form submission
+    console.log("from router state enable form :: ",history.state);
+    if (typeof history.state.enableform != "undefined") {
+      console.log("from router state enable form :: ",history.state.enableform);
+      this.enableform = history.state.enableform;
+    }else{
+       var pr=this.dynamicobjectappServie.checkFormEnabled(this.app);
+       pr.then((res:any)=>{
+        res = JSON.parse(res);
+        if(res.enableform){
+          this.enableform = res.enableform;
+        }
+       });
+    }
+    var headers = new HttpHeaders({
+      "Content-Type": "application/json",
+    });
+    var httpOptions = {
+      headers: headers,
+    };
+     this._client
+      .get("api/config/redirectToUserdefinedFunctions", httpOptions)
+      .then((res: any) => {
+        if (res.redirectToUserdefinedFunctions) {
+            if(res.redirectToUserdefinedFunctions.hasOwnProperty(this.app)){
+              this.router.navigate(['function/'+res.redirectToUserdefinedFunctions[this.app]],{relativeTo:this.route,state:{reload:true}});
+            }
+        }});
+    var attributeListPromise: any[] = [];
+    //Load Technote Data
+    this.spinner.setSpinnerState(true); 
+    //Load Functions Metadata
+    var funPromise =  this.dynamicobjectappServie.getDynamicObjectAppFunctions(
+      this.app
+    );
+    funPromise.then((res:any)=>{
+      res = JSON.parse(res);
+        //console.log(res);
+        if (res.status) {
+          this.funList = res.data; 
+           for (var item in this.funList) {
+            if (
+              this.funList[item].isUserDefined.value 
+            ) {
+              this.hasUserDefinedFunction = true;
+              this.userDefinedFunList.push(this.funList[item]);
+            }
+           }
+           this.funService.reset();
+           this.funService.setApp(this.app);
+           this.funService.setParent(this);
+           attributeListPromise.push(this.funService.init(this.userDefinedFunList,this));
+           
+           console.log("=============== FUNSERVICE AFTER INIT =============")
+        }
+        else {
+          this.openDialog(
+            {
+              type: 'alert',
+              message: res.message,
+            },
+            null
+          );
+          
+        }
+    }).catch((err: any) => {
+        console.log('error occurred ', err);  
+      });  
     this.LOCAL_STORAGE_KEY += '_' + this.app;
     var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(
       this.app
@@ -99,7 +181,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       this.app
     );
     const presets = JSON.parse(localStorage[this.LOCAL_STORAGE_KEY] || null);
-    var attributeListPromise: any[] = [];
+    
     promise
       .then((res: any) => {
         this.spinner.setSpinnerState(false);
@@ -204,8 +286,9 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         }
       })
       .catch((err: any) => {
+        //console.log(err);
         this.spinner.setSpinnerState(false);
-        //console.log('error occurred ', err);
+        console.log('error occurred ', err);
         this.isLoaded = false;
       });
     this.loggedUser = auth.getUser();
@@ -247,7 +330,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         })
         .catch((err: any) => {
           this.spinner.setSpinnerState(false);
-          //console.log('error occurred ', err);
+          console.log('error occurred ', err);
           this.isLoaded = false;
         });
     });
@@ -358,6 +441,20 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         }
       });
   }
+  openUserDefinedFunctionDialog(data: any, callback: any) {
+    this.dialog
+      .open(UserDefinedFunctionDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback(res);
+        }
+      });
+  }
   openDialogInput(data: any, callback: any) {
     this.dialog
       .open(InputDialogComponent, {
@@ -412,6 +509,16 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         toolTip: value,
       };
     };
+    const cellFormatterDefaultRichText: Formatter = (_row, _cell, value, colDef) => {
+      if (typeof value == 'undefined') {
+        value = '';
+      }
+
+      return {
+        text: `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value}</span></div>`,
+        toolTip: '',
+      };
+    };
     const richTextCellFormatterDefault: Formatter = (
       _row,
       _cell,
@@ -424,7 +531,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
 
       return {
         text: `<ng-template #richTextPopOver>
-        <p class="p">${value}</p></ng-template><div [ngbPopover]="richTextPopOver" [autoClose]="'outside'"   placement="bottom" style='text-align:center;width:auto;color:#000;' ><span style='text-align:center'>${value}</span></div>`,
+        <p class="p" >${this.sanitizer.bypassSecurityTrustHtml(value)} </p></ng-template><div [ngbPopover]="richTextPopOver"   placement="bottom" style='text-align:center;width:auto;color:#000;' ><span style='text-align:center' innerHtml="${this.sanitizer.bypassSecurityTrustHtml(value)}"></span></div>`,
         toolTip: value,
       };
     };
@@ -489,14 +596,19 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           field: this.attributeList[item].name.value,
           sortable: true,
           filterable: true,
-          formatter: formatter,
+          formatter: cellFormatterDefaultRichText,
           filter: { model: Filters.compoundInputText },
           headerCssClass: 'gridRow',
-          customTooltip: {
+         customTooltip: {
             hideArrow: true,
-            headerFormatter: this.headerFormatter.bind(this) as Formatter,
-            formatter: this.tooltipFormatter.bind(this) as Formatter,
+           headerFormatter: this.headerFormatter.bind(this) as Formatter,
+        //    formatter: this.tooltipFormatter.bind(this) as Formatter,
           },
+        asyncPostRender: this.renderAngularComponentForRichTextCell.bind(this),
+          params: {
+            component: RichTextComponent,
+            angularUtilService: this.angularUtilService,
+          }
         });
       } else if (this.attributeList[item].type.value == 'autokey') {
         this.columnDef.push({
@@ -504,23 +616,41 @@ export class DynamicObjectAppHomeComponent implements OnInit {
           name: this.attributeList[item].alias.value,
           field: this.attributeList[item].name.value,
           sortable: true,
-          //filterable: true,
-          formatter: formatter,
-          //filter: { model: Filters.compoundInputNumber },
+          filterable: true,
+          formatter: Formatters.alignCenter,
+          filter: { model: Filters.compoundInputNumber },
           headerCssClass: 'gridRow',
           customTooltip: {
             hideArrow: true,
             headerFormatter: this.headerFormatter.bind(this) as Formatter,
           },
         });
-      } else {
+      }
+      else if (this.attributeList[item].type.value.toString().includes('list')) {
         this.columnDef.push({
           id: this.attributeList[item].name.value,
           name: this.attributeList[item].alias.value,
           field: this.attributeList[item].name.value,
           sortable: true,
           filterable: true,
-          formatter: formatter,
+          formatter: listAttributeCellFormaterValue,
+          filter: { model: Filters.compoundInputText },
+          headerCssClass: 'gridRow',
+          customTooltip: {
+            hideArrow: true,
+            headerFormatter: this.headerFormatter.bind(this) as Formatter,
+          },
+        });
+      } 
+      
+      else {
+        this.columnDef.push({
+          id: this.attributeList[item].name.value,
+          name: this.attributeList[item].alias.value,
+          field: this.attributeList[item].name.value,
+          sortable: true,
+          filterable: true,
+          formatter: Formatters.alignCenter,
           filter: { model: Filters.compoundInputText },
           headerCssClass: 'gridRow',
           customTooltip: {
@@ -623,6 +753,97 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         },
       },
     ];
+    
+
+    //console.log('this.defaultPageSizeList', this.defaultPageSizeList);
+   var commandItems : any =  [
+          // add Custom Items Commands which will be appended to the existing internal custom items
+          // you cannot override an internal items but you can hide them and create your own
+          // also note that the internal custom commands are in the positionOrder range of 50-60,
+          // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
+          {
+            iconCssClass: 'fa fa-plus-circle activated',
+            title: 'Add Record',
+            disabled: false,
+            command: 'addRecord',
+            textCssClass: 'title',
+            positionOrder: 1,
+          },
+          {
+            iconCssClass: 'fa fa-pie-chart activated',
+            title: 'Charts',
+            disabled: false,
+            command: 'viewCharts',
+            textCssClass: 'title',
+            positionOrder: 1,
+          },
+          {
+            iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
+            title: 'Export to Excel',
+            disabled: false,
+            command: 'exportExcel',
+
+            textCssClass: 'title',
+            positionOrder: 1,
+          },
+          {
+            iconCssClass: 'fa fa-times text-danger',
+            title: 'Reset Grid',
+            disabled: false,
+            command: 'resetGrid',
+
+            textCssClass: 'title',
+            positionOrder: 90,
+          },
+        ];
+     
+    if(this.enableform){
+      commandItems.push({
+        iconCssClass: 'fa fa-copy primary-text-color',
+        title: 'Copy Form Submission Link',
+        disabled: false,
+        command: 'formSubmissionLink',
+        textCssClass: 'title',
+        positionOrder: 91,
+      });
+    }
+    if(this.hasUserDefinedFunction){
+      for(var fun of this.userDefinedFunList){
+        console.log(fun);
+        if(fun.context.value == 'grid'){
+          commandItems.push({
+            iconCssClass: 'fa fa-copy primary-text-color',
+            title: fun.name.value,
+            disabled: false,
+            command: 'userDefinedFunctionClick',
+            functionMetadata: fun,
+            textCssClass: 'title',
+            positionOrder: 91,
+          })
+        }else if(fun.context.value == 'row'){
+          commandItemsForGrid.push( {
+        command: 'userDefinedFunctionClick',
+        title: fun.name.value,
+        iconCssClass: 'fa fa-copy primary-text-color',
+        positionOrder: 99,
+        functionMetadata: fun,
+        action: (_event: any, args: any) =>{
+          if(args.item.functionMetadata.isDialog.value){
+            this.openUserDefinedFunctionDialog({
+              _funService: this.funService,
+              _fun: args.item.functionMetadata.type.value,
+              row: args.dataContext
+            },null)
+          }else{
+              this.router.navigate(['function/'+args.item.functionMetadata.type.value], { relativeTo: this.route,state:{row: args.dataContext}});
+          }
+          }     
+          });
+      
+        }
+      }
+    }
+
     //console.log(this.columnDef);
     this.columnDef.push({
       id: 'action',
@@ -642,8 +863,6 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         commandItems: commandItemsForGrid,
       },
     });
-
-    //console.log('this.defaultPageSizeList', this.defaultPageSizeList);
     this.dynamicobjectappGridOptions = {
       gridHeight: '95%',
       autoResize: {
@@ -660,6 +879,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       enableAutoResize: true,
       enableFiltering: true,
       enablePagination: true,
+      enableAsyncPostRender: true, // for the Angular PostRenderer, don't forget to enable it
+      asyncPostRenderDelay: 0,
       pagination: {
         pageSizes: this.defaultPageSizeList
           ? this.defaultPageSizeList
@@ -708,46 +929,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
         hideToggleFilterCommand: true, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        commandItems: [
-          // add Custom Items Commands which will be appended to the existing internal custom items
-          // you cannot override an internal items but you can hide them and create your own
-          // also note that the internal custom commands are in the positionOrder range of 50-60,
-          // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
-          {
-            iconCssClass: 'fa fa-plus-circle activated',
-            title: 'Add Record',
-            disabled: false,
-            command: 'addRecord',
-            textCssClass: 'title',
-            positionOrder: 1,
-          },
-          {
-            iconCssClass: 'fa fa-pie-chart activated',
-            title: 'Charts',
-            disabled: false,
-            command: 'viewCharts',
-            textCssClass: 'title',
-            positionOrder: 1,
-          },
-          {
-            iconCssClass: 'slick-gridmenu-icon fa fa-file-excel-o text-success',
-            title: 'Export to Excel',
-            disabled: false,
-            command: 'exportExcel',
-
-            textCssClass: 'title',
-            positionOrder: 1,
-          },
-          {
-            iconCssClass: 'fa fa-times text-danger',
-            title: 'Reset Grid',
-            disabled: false,
-            command: 'resetGrid',
-
-            textCssClass: 'title',
-            positionOrder: 90,
-          },
-        ],
+        commandItems: commandItems,
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
         onCommand: (_e: any, args: any) => {
           if (args.command === 'resetGrid') {
@@ -764,6 +946,31 @@ export class DynamicObjectAppHomeComponent implements OnInit {
                 this.app + '_' + new Date().toTimeString().replace(' ', '_'),
               format: FileType.xlsx,
             });
+          }
+          else if(args.command == 'formSubmissionLink'){
+            const routerLink = ['/portal/customappform/', this.app];
+            const appUrl = this.router.serializeUrl(
+                this.router.createUrlTree(routerLink)
+            );
+            var currentAbsoluteUrl = window.location.href;
+            var currentRelativeUrl = this.router.url;
+            var index = currentAbsoluteUrl.indexOf(currentRelativeUrl);
+            var baseUrl = currentAbsoluteUrl.substring(0, index);
+            var res=this.clipboard.copy(baseUrl+appUrl);
+            console.log(res);
+            if(res)
+              this.toastService.showSuccess(baseUrl+appUrl+' copied to clipboard.',10000);
+          }
+          else if(args.command == 'userDefinedFunctionClick'){
+            if(args.item.functionMetadata.isDialog.value){
+            this.openUserDefinedFunctionDialog({
+              _funService: this.funService,
+              _fun: args.item.functionMetadata.type.value,
+              row: null
+            },null)
+          }else{
+            this.router.navigate(['function/'+args.item.functionMetadata.type.value], { relativeTo: this.route });
+          }
           }
         },
         onColumnsChanged: (_e: any, _args: any) => {
@@ -786,7 +993,8 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     if (gridStatePresets) {
       this.dynamicobjectappGridOptions.presets = gridStatePresets;
     }
-
+    if(this.hasUserDefinedFunction)
+      this.funService.setGrid(this.dynamicobjectappDataSet)
     this.spinner.setSpinnerState(false);
   }
 
@@ -826,5 +1034,15 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     grid: SlickGrid
   ) {
     return ``;
+  }
+  renderAngularComponentForRichTextCell(cellNode: HTMLElement, row: number, dataContext: any, colDef: any) {
+    console.log("============ DEBUG0 render richtext component called",colDef)
+    if (colDef.params.component) {
+      const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
+       
+      Object.assign(componentOutput.componentRef.instance, { data: dataContext[colDef.name],uiprop:this.properties });  
+      // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
+      setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
+    }
   }
 }

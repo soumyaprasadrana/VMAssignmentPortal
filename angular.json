@@ -58,6 +58,21 @@
                 "input": "src/app/public/themes/mui.scss",
                 "bundleName": "mui",
                 "inject": false
+              },
+              {
+                "input": "src/app/public/themes/muiblue.scss",
+                "bundleName": "muiblue",
+                "inject": false
+              },
+              {
+                "input": "src/app/public/themes/muidark.scss",
+                "bundleName": "muidark",
+                "inject": false
+              },
+              {
+                "input": "src/app/public/themes/muipink.scss",
+                "bundleName": "muipink",
+                "inject": false
               }
             ],
             "scripts": [

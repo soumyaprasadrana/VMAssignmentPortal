@@ -9,7 +9,7 @@
  * @modify date 2022-10-30 18:30:37
  * @desc Dynamic Object App Add Record Component
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -17,30 +17,30 @@ import {
   FormGroup,
   ValidationErrors,
   Validators,
-} from '@angular/forms';
-import { MustMatch } from '../../widget/utils/must-match.validator';
-import { CustomValidator } from '../../widget/utils/no-white-space-validator';
-import { NodeclientService } from '../../services/nodeclient.service';
-import { HttpHeaders } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
-import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
-import { SpinnerService } from '../../services/spinner-service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TeamService } from '../../services/teams.service';
-import { AuthserviceService } from '../../services/authservice.service';
-import { ToastService } from '../../widget/toast/toast-service';
-import { DynamicObjectAppService } from '../../services/dynamicobjectapp.service';
-import { CommonService } from '../../services/common.service';
-import { UserService } from '../../services/users.service';
+} from "@angular/forms";
+import { MustMatch } from "../../widget/utils/must-match.validator";
+import { CustomValidator } from "../../widget/utils/no-white-space-validator";
+import { NodeclientService } from "../../services/nodeclient.service";
+import { HttpHeaders } from "@angular/common/http";
+import { MatDialog } from "@angular/material/dialog";
+import { AlertDialogComponent } from "../../widget/alert-dialog/alert-dialog.component";
+import { SpinnerService } from "../../services/spinner-service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TeamService } from "../../services/teams.service";
+import { AuthserviceService } from "../../services/authservice.service";
+import { ToastService } from "../../widget/toast/toast-service";
+import { DynamicObjectAppService } from "../../services/dynamicobjectapp.service";
+import { CommonService } from "../../services/common.service";
+import { UserService } from "../../services/users.service";
 @Component({
-  selector: 'app-dynamicobjectapp-add-record',
-  templateUrl: './dynamicobjectapp-add-record.component.html',
-  styleUrls: ['./dynamicobjectapp-add-record.component.scss'],
+  selector: "app-dynamicobjectapp-add-record",
+  templateUrl: "./dynamicobjectapp-add-record.component.html",
+  styleUrls: [ "./dynamicobjectapp-add-record.component.scss" ],
 })
 export class DynamicObjectAppAddRecordComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
-  title: string = 'Add Record';
+  title: string = "Add Record";
   loggedUser: any;
   attributeList: any;
   app: any;
@@ -82,14 +82,14 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
   filterAttributes(list: any): any {
     var newList = [];
     for (var item in list) {
-      if (list[item].type.value != 'autokey') newList.push(list[item]);
+      if (list[item].type.value != "autokey") newList.push(list[item]);
     }
     return newList;
   }
 
   ngOnInit(): void {
     this.app = this.route.snapshot.params.app;
-    if (typeof history.state.attributes != 'undefined') {
+    if (typeof history.state.attributes != "undefined") {
       this.attributeList = this.filterAttributes(history.state.attributes);
       this.registerForm = this.formBuilder.group(
         this.parseAttributesToFormItems()
@@ -112,25 +112,25 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
           } else {
             this.openDialog(
               {
-                type: 'alert',
+                type: "alert",
                 message: res.message,
               },
               () => {
-                this.router.navigate(['..'], { relativeTo: this.route });
+                this.router.navigate([ ".." ], { relativeTo: this.route });
               }
             );
           }
         })
         .catch((err: any) => {
           this._spinner.setSpinnerState(false);
-          console.log('error occurred ', err);
+          console.log("error occurred ", err);
           this.openDialog(
             {
-              type: 'alert',
+              type: "alert",
               message: err.message,
             },
             () => {
-              this.router.navigate(['..'], { relativeTo: this.route });
+              this.router.navigate([ ".." ], { relativeTo: this.route });
             }
           );
         });
@@ -144,32 +144,28 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
         this.attributeList[item].defaultValue != null &&
         this.attributeList[item].defaultValue.toString().length > 0
           ? this.attributeList[item].defaultValue.value
-          : this.attributeList[item].type.value == 'number'
-          ? null
-          : '';
+          : this.attributeList[item].type.value == "number" ? null : "";
       var formItemValidators: ((
         control: AbstractControl
       ) => ValidationErrors | null)[] = [];
       for (var validator in this.attributeList[item].validators.value) {
-        switch (
-          this.attributeList[item].validators.value[validator].element.type
-            .value
-        ) {
-          case 'required':
+        switch (this.attributeList[item].validators.value[validator].element
+          .type.value) {
+          case "required":
             formItemValidators.push(Validators.required);
             this.attributeList[item].required = true;
             break;
-          case 'whitespace':
-          case 'whitspace':
+          case "whitespace":
+          case "whitspace":
             formItemValidators.push(CustomValidator.restrictWhiteSpace);
             break;
-          case 'email':
+          case "email":
             formItemValidators.push(Validators.email);
             break;
         }
       }
-      if (this.attributeList[item].type.value.toString().includes('list')) {
-        var listArr = this.attributeList[item].type.value.toString().split(':');
+      if (this.attributeList[item].type.value.toString().includes("list")) {
+        var listArr = this.attributeList[item].type.value.toString().split(":");
         var listName = listArr[listArr.length - 1];
         this.commonService
           .getListItems(listName, item)
@@ -181,22 +177,22 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
               if (this.attributeList[res.item].required) {
                 this.openDialog(
                   {
-                    type: 'alert',
+                    type: "alert",
                     message:
-                      'List load failed for a mandatory field. Please contact system administrator.',
+                      "List load failed for a mandatory field. Please contact system administrator.",
                   },
                   () => {
-                    this.router.navigate(['..'], { relativeTo: this.route });
+                    this.router.navigate([ ".." ], { relativeTo: this.route });
                   }
                 );
               } else {
                 this.openDialog(
                   {
-                    type: 'warn',
+                    type: "warn",
                     message:
-                      'List load failed for field: ' +
+                      "List load failed for field: " +
                       this.attributeList[res.item].alias.value +
-                      '.',
+                      ".",
                   },
                   null
                 );
@@ -208,22 +204,22 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
             if (this.attributeList[err.item].required) {
               this.openDialog(
                 {
-                  type: 'alert',
+                  type: "alert",
                   message:
-                    'List load failed for a mandatory field. Please contact system administrator.',
+                    "List load failed for a mandatory field. Please contact system administrator.",
                 },
                 () => {
-                  this.router.navigate(['..'], { relativeTo: this.route });
+                  this.router.navigate([ ".." ], { relativeTo: this.route });
                 }
               );
             } else {
               this.openDialog(
                 {
-                  type: 'warn',
+                  type: "warn",
                   message:
-                    'List load failed for field: ' +
+                    "List load failed for field: " +
                     this.attributeList[err.item].alias.value +
-                    '.',
+                    ".",
                 },
                 null
               );
@@ -250,28 +246,28 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
   }
   checkIsInvalidRequired(ctrlName: string | number) {
     if (this.registerForm.controls[ctrlName].errors) {
-      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      var temp: any = this.registerForm.controls[ctrlName].errors || "";
       return temp.required ? true : false;
     }
     return false;
   }
   checkIsInvalidEmail(ctrlName: string | number) {
     if (this.registerForm.controls[ctrlName].errors) {
-      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      var temp: any = this.registerForm.controls[ctrlName].errors || "";
       return temp.email ? true : false;
     }
     return false;
   }
   checkIsInvalidWhiteSpace(ctrlName: string | number) {
     if (this.registerForm.controls[ctrlName].errors) {
-      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      var temp: any = this.registerForm.controls[ctrlName].errors || "";
       return temp.restrictWhiteSpace ? true : false;
     }
     return false;
   }
   checkIsInvalidLength(ctrlName: string | number) {
     if (this.registerForm.controls[ctrlName].errors) {
-      var temp: any = this.registerForm.controls[ctrlName].errors || '';
+      var temp: any = this.registerForm.controls[ctrlName].errors || "";
       return temp.maxlength ? true : false;
     }
     return false;
@@ -291,15 +287,23 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
 
     // display form values on success
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
+    var metaDataTobeSent: any = {};
+    this.attributeList.forEach((item: any) => {
+      metaDataTobeSent[item.name.value] = item.type.value;
+    });
+    var reqBodyToBeSent: any = {
+      form: this.registerForm.value,
+      metadata: metaDataTobeSent,
+    };
     var _promise = this._client.post(
-      'api/dynamicobjects/' + this.app + '/add',
-      this.registerForm.value,
+      "api/dynamicobjects/" + this.app + "/add",
+      reqBodyToBeSent,
       httpOptions
     );
     _promise
@@ -307,18 +311,18 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
         this._spinner.setSpinnerState(false);
         //console.log(JSON.parse(res));
         if (res) res = JSON.parse(res);
-        if (res.status == 'SUCCESS' || res.status) {
+        if (res.status == "SUCCESS" || res.status) {
           if (this.loggedUser.useToast) {
             this.toastService.showSuccess(res.message, 5000);
-            this.router.navigate(['../'], { relativeTo: this.route });
+            this.router.navigate([ "../" ], { relativeTo: this.route });
           } else {
             this.openDialog(
               {
-                type: 'message',
+                type: "message",
                 message: res.message,
               },
               () => {
-                this.router.navigate(['../'], { relativeTo: this.route });
+                this.router.navigate([ "../" ], { relativeTo: this.route });
               }
             );
           }
@@ -326,7 +330,7 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
           this._spinner.setSpinnerState(false);
           this.openDialog(
             {
-              type: 'alert',
+              type: "alert",
               message: res.message,
             },
             null
@@ -337,7 +341,7 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
         this._spinner.setSpinnerState(false);
         this.openDialog(
           {
-            type: 'alert',
+            type: "alert",
             message: err.message,
           },
           null
@@ -348,12 +352,12 @@ export class DynamicObjectAppAddRecordComponent implements OnInit {
     this.dialog
       .open(AlertDialogComponent, {
         data: data,
-        panelClass: 'app-dialog-class',
+        panelClass: "app-dialog-class",
       })
       .afterClosed()
       .toPromise()
       .then((res) => {
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
           callback();
         }
       });

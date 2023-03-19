@@ -92,8 +92,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group required">
                                         <label for="status"> Status:</label>
-                                        <span *ngIf="objectPropForm.status.value.toString()=='true'" class="fa fa-check-square label-success form-control-prefix-icon text-muted" area-label="false"></span>
-                                        <span *ngIf="objectPropForm.status.value.toString()=='false'" class="fa fa-times label-danger form-control-prefix-icon text-muted" area-label="false"></span>
+                                        <span *ngIf="objectPropForm.status.value.toString()=='true'" class="fa fa-check-square color-success label-success form-control-prefix-icon text-muted" area-label="false"></span>
+                                        <span *ngIf="objectPropForm.status.value.toString()=='false'" class="fa fa-times color-danger label-danger form-control-prefix-icon text-muted" area-label="false"></span>
                                         <select id="status" required="required" type="text" class="form-control form-control-include-icon" formControlName="status" [ngClass]="{ 'is-invalid': formGroupObjectPropertiesSubmitted && objectPropForm.status.errors }">
                                         <option [ngValue]="true">ACTIVE</option>
                                         <option [ngValue]="false">INACTIVE</option>
@@ -103,6 +103,20 @@
                                             <div *ngIf="objectPropForm.status.errors.restrictWhiteSpace">White Space is not allowed.</div>
                                             <div *ngIf="objectPropForm.status.errors.maxlength">Object Description length exceeded allowed charecter length i.e 150.</div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-3">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="enableform"> Enable Form ? </label>
+                                        <span *ngIf="objectPropForm.enableform.value.toString()=='true'" class="fa fa-check-square label-success color-success form-control-prefix-icon text-muted" area-label="false"></span>
+                                        <span *ngIf="objectPropForm.enableform.value.toString()=='false'" class="fa fa-times label-danger color-danger  form-control-prefix-icon text-muted" area-label="false"></span>
+                                        <select id="enableform" type="text" class="form-control form-control-include-icon" formControlName="enableform" >
+                                            <option [ngValue]="true">Yes</option>
+                                            <option [ngValue]="false">No</option>
+                                        </select>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -282,11 +296,11 @@
         <mat-step [stepControl]="objectFunctionsGroup" label="Configure Functions for this object">
             <div style="padding-top: 1%;">
                 <form [formGroup]="objectFunctionsGroup">
-                    <button mat-stroked-button (click)="addFunction()" class="btn text-capitalize " disabled>Add Function</button>
+                    <button mat-stroked-button (click)="addFunction()" class="btn text-capitalize " >Add Function</button>
                     <div class="row  ml-4">
                         <div class="col">
                             <div class="row p-3 " *ngFor="let item of funlist;let i = index">
-                                <!-- <label [matTooltip]="'Delete field!'" (click)="deleteFunction(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>-->
+                                 <label [matTooltip]="'Delete Function!'" (click)="deleteFunction(i)" class="label btn btn-danger " *ngIf="!(i==0 || i==1 || i==2)"><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
                                 <div class="col">
                                     <div class="form-group required">
                                         <label for="fun_{{i}}"> Name:</label>
@@ -302,11 +316,8 @@
                                     <div class="form-group required">
                                         <label for="fun_{{i}}_type"> Type:</label>
                                         <select id="fun_{{i}}_type" required="required" type="text" class="form-control " formControlName="fun_{{i}}_type" [ngClass]="{ 'is-invalid': objectFunctionsGroupSubmitted && checkIsInvalid(objectFunctionsGroup,'fun_'+i+'_type') }">
-                                        <option value="insert">Add Record</option>
-                                        <option value="delete">Delete Record</option>
-                                        <option value="update">Update Record</option>
-                                        <option value="view">View Record</option>
-                                        <option value="attributebased">Attribute Based</option>            
+                                        <option [disabled]="item.value == 'insert' || item.value == 'update' || item.value == 'delete'" *ngFor="let item of availableFunctionsList" value="{{item.value}}">{{item.text}}</option>
+                                                   
                                     </select>
                                         <div *ngIf="objectFunctionsGroupSubmitted && checkIsInvalid(objectFunctionsGroup,'fun_'+i+'_type')" class="invalid-feedback">
                                             <div class="ml-1" *ngIf="checkIsInvalidRequired(objectFunctionsGroup,'fun_'+i+'_type')">Attribute Type is required</div>
@@ -326,6 +337,17 @@
                                             <div class="ml-1" *ngIf="checkIsInvalidRequired(objectFunctionsGroup,'fun_'+i+'_isDialog')">Attribute isDialog is required</div>
                                             <div *ngIf="checkIsInvalidWhiteSpace(objectFunctionsGroup,'fun_'+i+'_isDialog')">White Space is not allowed.</div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="fun_{{i}}_context">Context:</label>
+                                        <select id="fun_{{i}}_context" class="form-control " formControlName="fun_{{i}}_context" >
+                                        <option value="grid">Grid</option>
+                                        <option value="row">Row</option>
+                                    </select>
+                                        
                                     </div>
                                 </div>
 

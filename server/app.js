@@ -211,7 +211,36 @@ app.get("/portal", getRoot);
 app.get("/portal/spa/:app", loadSPA);
 app.get("/portal/spa/:app/*", loadSPAAsset);
 app.get("/portal/login", getRoot);
+app.get("/portal/customappform/*", getRoot);
 app.get("/portal/home/*", portalAuth.ensureAuthenticated, getUndefined);
+
+if (config.userDefinedFunctions.length != 0) {
+  logger.info("Found user defined functions; Processing server scripts....");
+  try {
+    for (var item in config.userDefinedFunctions) {
+      try {
+        require("./api/functions/" +
+          config.userDefinedFunctions[item] +
+          "/server").server(app);
+        logger.info(
+          "Server script successfully loaded for " +
+            config.userDefinedFunctions[item]
+        );
+      } catch (e) {
+        logger.info(
+          "Unable to load server script for custom function :" +
+            config.userDefinedFunctions[item]
+        );
+        logger.info(e);
+      }
+    }
+  } catch (e) {
+    logger.info(
+      "Error occurred while loading server js for user defined functions."
+    );
+    logger.info(e);
+  }
+}
 const port = config.PORT;
 //app.listen(port, () => logger.info('App listening on port ' + port));
 

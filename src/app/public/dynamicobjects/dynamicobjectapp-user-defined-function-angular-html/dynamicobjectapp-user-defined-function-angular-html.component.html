@@ -1,0 +1,17 @@
+<!--
+ Copyright (c) 2022 soumy
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<!--
+@author [soumya]
+@email [soumyaprasad.rana@gmail.com]
+@create date 2022-02-26 18:30:37
+@modify date 2022-03-25 18:30:37
+@desc View Record Component Html
+-->
+
+<div *ngIf="elementType == 'div'">
+<div [attributes] = "attributes" [(ngModel)] = "model" (click) = "click" *ngIf="ngIf" [ngStyle]="ngStyle" [ngClass]="ngClass"></div>
+</div>
