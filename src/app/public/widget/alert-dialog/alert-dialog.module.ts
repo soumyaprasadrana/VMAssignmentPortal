@@ -9,24 +9,26 @@
  * @modify date 2022-03-25 18:26:41
  * @desc Alert Dialog Module
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AlertDialogComponent } from './alert-dialog.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from '../../../material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputDialogComponent } from './input-dialog.component';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { LTBButtonInputDialogComponent } from './ltb-button-input-dialog.component';
-import { PassChangeDialogComponent } from './change-pass-dialog';
-import { AdditionalDataDialogComponent } from './additional-data-dialog';
-import { RelatedvmsDataDialogComponent } from './relatedvms-data-dialog';
-import { FileChooseDialogComponent } from './file-choose-dialog.component';
-import { CommentDialogComponent } from './comment-dialog.component';
-import { SnapshotsDialogComponent } from './snapshots-dialog.component';
-import { TreeModule } from '../tree-diagram/tree.module';
-import { TakeSnapInputDialogComponent } from './takesnap-dialog.component';
-import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { AlertDialogComponent } from "./alert-dialog.component";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { MaterialModule } from "../../../material.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { InputDialogComponent } from "./input-dialog.component";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { LTBButtonInputDialogComponent } from "./ltb-button-input-dialog.component";
+import { PassChangeDialogComponent } from "./change-pass-dialog";
+import { AdditionalDataDialogComponent } from "./additional-data-dialog";
+import { RelatedvmsDataDialogComponent } from "./relatedvms-data-dialog";
+import { FileChooseDialogComponent } from "./file-choose-dialog.component";
+import { CommentDialogComponent } from "./comment-dialog.component";
+import { SnapshotsDialogComponent } from "./snapshots-dialog.component";
+import { TreeModule } from "../tree-diagram/tree.module";
+import { TakeSnapInputDialogComponent } from "./takesnap-dialog.component";
+import { TaskOutputDialogComponent } from "./vsphere-task-output-dialog.component";
+import { UserDefinedFunctionDialogComponent } from "./userdefinedfunction-dialog.component";
+import { AngularShellModule } from "../angular-shell/angular-shell.module";
 @NgModule({
   declarations: [
     AlertDialogComponent,
@@ -39,7 +41,8 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     CommentDialogComponent,
     SnapshotsDialogComponent,
     TakeSnapInputDialogComponent,
-    TaskOutputDialogComponent
+    TaskOutputDialogComponent,
+    UserDefinedFunctionDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +52,7 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     FormsModule,
     ReactiveFormsModule,
     TreeModule,
+    AngularShellModule,
   ],
   exports: [
     AlertDialogComponent,
@@ -61,7 +65,8 @@ import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.componen
     CommentDialogComponent,
     SnapshotsDialogComponent,
     TakeSnapInputDialogComponent,
-    TaskOutputDialogComponent
+    TaskOutputDialogComponent,
+    UserDefinedFunctionDialogComponent,
   ],
 })
 export class AlertModule {}

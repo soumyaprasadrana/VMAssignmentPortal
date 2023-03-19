@@ -22,6 +22,7 @@ import {
   GridState,
   GridService,
   Formatter,
+  Formatters,
 } from 'angular-slickgrid';
 import { VM } from '../../DataModel/vm';
 import { Subscription } from 'rxjs';
@@ -295,7 +296,7 @@ export class ToolsTechnotesComponent implements OnInit {
         sortable: true,
         filterable: true,
         width: 5,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
       },
@@ -306,7 +307,7 @@ export class ToolsTechnotesComponent implements OnInit {
         sortable: true,
         filterable: true,
         width: 60,
-        formatter: descFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
       },

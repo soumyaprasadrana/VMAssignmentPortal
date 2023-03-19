@@ -60,6 +60,19 @@ export class AddDynamicObjectComponent implements OnInit {
   autoKeyAdded: boolean = false;
   listSelectedOptions: any = [];
   listSelectedTeams: any = [];
+  availableFunctionsList: any = [{
+    value :'insert',
+    text: 'Add Record'
+  },
+  {
+    value :'update',
+    text: 'Update Record'
+  },
+  {
+    value :'delete',
+    text: 'Delete Record'
+  }
+  ]
   constructor(
     private formBuilder: FormBuilder,
     private _client: NodeclientService,
@@ -75,6 +88,24 @@ export class AddDynamicObjectComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {
     this.loggedUser = _auth.getUser();
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    var httpOptions = {
+      headers: headers,
+    };
+    this._client
+      .get('api/config/userDefinedFunctions', httpOptions)
+      .then((res: any) => {
+        if(res.userDefinedFunctions){
+          for(var item in res.userDefinedFunctions){
+            this.availableFunctionsList.push({value:res.userDefinedFunctions[item],text:res.userDefinedFunctions[item].toUpperCase()})
+          }
+        }
+      })
+      .catch((err) => {
+        console.log('Error Occurred while fetching user defined functions!',err);
+      });
     this.createForm();
   }
   createForm() {
@@ -90,6 +121,7 @@ export class AddDynamicObjectComponent implements OnInit {
       desc: ['', [Validators.required, Validators.maxLength(150)]],
       scope: ['global', Validators.required],
       status: [true, Validators.required],
+      enableform: [false],
     });
     this.formNameGroup = this.fb.group({
       userName: ['', Validators.required],
@@ -240,34 +272,38 @@ export class AddDynamicObjectComponent implements OnInit {
       type: 'insert',
       isDialog: false,
       isUserDefined: false,
+      context: 'grid'
     });
     temp.push({
       name: 'Update Record',
       type: 'update',
       isDialog: false,
       isUserDefined: false,
+      context:'grid'
     });
     temp.push({
       name: 'Delete Record',
       type: 'delete',
       isDialog: false,
       isUserDefined: false,
+      context:'grid'
     });
     this.objectFunctionsGroup = this.formBuilder.group(
       this.parseFormControlsFunctionsGroup(temp)
     );
     this.funlist = temp;
+    console.log("======== Init Add Functions :: funlist",this.funlist);
   }
   addFunction() {
     var temp = this.parseFunctionsFormValues(
       this.objectFunctionsGroup.getRawValue()
     );
-    temp.push({ name: null, type: null, isDialog: null, isUserDefined: true });
+    temp.push({ name: null, type: null, isDialog: null, isUserDefined: true, context:'grid' });
     this.objectFunctionsGroup = this.formBuilder.group(
       this.parseFormControlsFunctionsGroup(temp)
     );
     this.funlist = temp;
-    //console.log('addField');
+    console.log("======== Add Function :: funlist",this.funlist);
   }
   parseFormControlsAddAutoKey(
     list: Array<{
@@ -355,6 +391,7 @@ export class AddDynamicObjectComponent implements OnInit {
       type: string;
       isDialog: boolean;
       isUserDefined: boolean;
+      context:string;
     }>
   ) {
     var formControls: any = {};
@@ -378,6 +415,7 @@ export class AddDynamicObjectComponent implements OnInit {
           { value: list[i].isUserDefined, disabled: true },
           Validators.required,
         ];
+        formControls['fun_' + i + '_context'] = [{value:list[i].context,disabled:true}];
       } else {
         formControls['fun_' + i] = [
           list[i].name,
@@ -392,6 +430,7 @@ export class AddDynamicObjectComponent implements OnInit {
           Validators.required,
         ];
         formControls['fun_' + i + '_isUserDefined'] = [list[i].isUserDefined];
+        formControls['fun_' + i + '_context'] = [list[i].context];
       }
     }
 
@@ -424,12 +463,13 @@ export class AddDynamicObjectComponent implements OnInit {
     var keys = Object.keys(formValues);
     var length = keys.length;
     var temp: any = [];
-    for (var i = 0; i < length / 4; i++) {
+    for (var i = 0; i < length / 5; i++) {
       var attr = {
         name: formValues['fun_' + i],
         type: formValues['fun_' + i + '_type'],
         isDialog: formValues['fun_' + i + '_isDialog'],
         isUserDefined: formValues['fun_' + i + '_isUserDefined'],
+        context: formValues['fun_' + i + '_context'],
       };
       temp.push(attr);
     }
@@ -453,7 +493,7 @@ export class AddDynamicObjectComponent implements OnInit {
     this.list = temp;
   }
   deleteFunction(index: number) {
-    var temp = this.parseFunctionsFormValues(this.objectFunctionsGroup.value);
+    var temp = this.parseFunctionsFormValues(this.objectFunctionsGroup.getRawValue());
     temp = this.RemoveElementFromArray(temp, index);
     //console.log('index', index);
     //console.log('temp', temp);
@@ -634,6 +674,7 @@ export class AddDynamicObjectComponent implements OnInit {
       ],
       scope: [this.metaData['scope'], Validators.required],
       status: [this.metaData['status'], Validators.required],
+      enableform: [this.metaData['enableform']?this.metaData['enableform']:false],
     });
 
     this.list = this.metaData['attributes'];

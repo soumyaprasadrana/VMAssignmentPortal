@@ -26,6 +26,11 @@ module.exports = {
   hideloginfooter: process.env.HIDELOGINFOOTER || false,
   /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
   includedSPA: [ "androidassetstudio", "textcompare", "prettier", "sshclient" ],
+  /* You need to include custom functions name here */
+  userDefinedFunctions: [ "fullname" ],
+  /*Redirect to userdefinedfunctions*/
+  // eg { appName : functionName }
+  redirectToUserdefinedFunctions: {},
   /* Enable gzip on server */
   useGzip: process.env.USEGZIP || true,
   /* Disable Cache */
@@ -46,6 +51,8 @@ module.exports = {
   disableColorForSnapWarning: process.env.DISABLESNAPHIGHLIGHT || true,
   /* Enbale node ssh2 to execute remote commands*/
   enableSSH2: process.env.ENABLESSH2 || true,
+  /* Force sanitize all fields of custom apps */
+  sanitizeAllCustomAppsFields: process.env.SANITIZECUSTOMAPPFIELDS || true,
 
   vm_rest_path: "/vmDetails/getAll",
   dynamicobjects_rest_path: "/dynamicobjects/getAll",
@@ -53,12 +60,23 @@ module.exports = {
   dynamicobjects_get_object_records_rest_path: "/dynamicobjects/getRecords",
   dynamicobjects_get_object_attributes_rest_path:
     "/dynamicobjects/getAttributes",
+  dynamicobjects_get_object_functions_rest_path: "/dynamicobjects/getFunctions",
+  dynamicobjects_check_object_enableform_rest_path:
+    "/dynamicobjects/checkFormEnabled",
   dynamicobjects_add_object_record_rest_path: "/dynamicobjects/addRecord",
   dynamicobjects_update_object_record_rest_path: "/dynamicobjects/updateRecord",
   dynamicobjects_delete_object_record_rest_path: "/dynamicobjects/deleteRecord",
   dynamicobjects_add_rest_path: "/dynamicobjects/addObject",
   dynamicobjects_update_rest_path: "/dynamicobjects/updateObject",
   dynamicobjects_delete_rest_path: "/dynamicobjects/deleteObject",
+  dynamicobjects_anonymous_form_attributes_rest_path:
+    "/dynamicobjects/anonymousform/getAttributes",
+  dynamicobjects_anonymous_form_users_rest_path:
+    "/dynamicobjects/anonymousform/getusers",
+  dynamicobjects_anonymous_form_teams_rest_path:
+    "/dynamicobjects/anonymousform/getteamlist",
+  dynamicobjects_anonymous_form_submit_rest_path:
+    "/dynamicobjects/anonymousform/submit",
   technotes_rest_path: "/technotes/getAll",
   get_technote_rest_path: "/technotes/getTechnote",
   technotes_add_rest_path: "/technotes/addTechnote",

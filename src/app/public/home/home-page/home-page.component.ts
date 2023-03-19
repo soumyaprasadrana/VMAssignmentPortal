@@ -30,7 +30,8 @@ import {
   MenuCommandItem,
   AngularUtilService,  
   SlickRowDetailView,
-  SlickGrid
+  SlickGrid,
+  Formatters
 } from 'angular-slickgrid';
 import { Subscription } from 'rxjs';
 import { AuthserviceService } from '../../services/authservice.service';
@@ -1444,8 +1445,8 @@ export class HomePageComponent implements OnInit {
       <table>
       <tr>
       <td class="left-align">${(vm.snap_count >= this.properties.warnSnapshot &&
-        vm.snap_count <= this.properties.alertSnapshot)?'<span placement="right"  class="btn  card badge badge-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
-      ${(vm.snap_count > this.properties.alertSnapshot)?'<span placement="right"  class="btn card badge badge-danger customA"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+        vm.snap_count <= this.properties.alertSnapshot)?'<span placement="right"  class="btn  card badge badge-warning mui-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+      ${(vm.snap_count > this.properties.alertSnapshot)?'<span placement="right"  class="btn card badge badge-danger customA mui-danger"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
       
       </td>
       <td>
@@ -1513,7 +1514,7 @@ export class HomePageComponent implements OnInit {
         field: 'ip',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputText },
         headerCssClass: 'gridRow',
         customTooltip:{
@@ -1556,7 +1557,7 @@ export class HomePageComponent implements OnInit {
         field: 'hostname',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputText },
         customTooltip:{
           hideArrow:true,
@@ -1569,7 +1570,7 @@ export class HomePageComponent implements OnInit {
         field: 'os',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: osFilterModel,
         customTooltip:{
           hideArrow:true,
@@ -1582,7 +1583,7 @@ export class HomePageComponent implements OnInit {
         field: 'ver',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: osVersionTypeModel,
         customTooltip:{
           hideArrow:true,
@@ -1595,7 +1596,7 @@ export class HomePageComponent implements OnInit {
         field: 'group',
         sortable: true,
         filterable: true,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputText },
         customTooltip:{
           hideArrow:true,
@@ -1643,7 +1644,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         type: FieldType.number,
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         filter: { model: Filters.compoundInputNumber },
         customTooltip:{
           hideArrow:true,
@@ -1690,7 +1691,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: ownerCellFormatter,
+        formatter: Formatters.alignCenter,
         customTooltip:{
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter
@@ -1748,7 +1749,7 @@ export class HomePageComponent implements OnInit {
           sortable: true,
           filterable: true,
           filter: { model: Filters.compoundInputText },
-          formatter: cellFormatter,
+          formatter: Formatters.alignCenter,
           customTooltip:{
             hideArrow:true,
             headerFormatter:this.headerFormatter.bind(this) as Formatter
@@ -1763,7 +1764,7 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: { model: Filters.compoundInputText },
-        formatter: cellFormatter,
+        formatter: Formatters.alignCenter,
         customTooltip:{
           hideArrow:true,
           headerFormatter:this.headerFormatter.bind(this) as Formatter

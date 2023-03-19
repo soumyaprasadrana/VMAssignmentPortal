@@ -1,0 +1,19 @@
+.bg-primary {
+  background-color: var(--mui-btn-primary-background-color) !important;
+}
+.btn-close {
+  display: inline-block;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 13px 23px;
+  font-size: 18px;
+  transition: 0.2s all;
+  background-color: rgb(255, 223, 223);
+  color: var(--mui-btn-error-text-color);
+}
+.btn-close:hover {
+  background-color: var(--mui-btn-error-background-color-hover);
+  color: var(--mui-primary-background-color);
+}

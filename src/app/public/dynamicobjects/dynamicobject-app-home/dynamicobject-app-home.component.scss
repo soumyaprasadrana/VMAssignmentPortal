@@ -1,7 +1,10 @@
 .fa-check-circle {
-    color: #5cb85c;
+  color: #5cb85c;
 }
 
 .fa-times-circle {
-    color: #f90000;
+  color: #f90000;
+}
+.primary-text-color {
+  color: var(--mui-btn-primary-text-color) !important;
 }
