@@ -18,7 +18,7 @@ import { Router } from "@angular/router";
   <div>
   <span [ngbPopover]="richTextPopOver" [matTooltip]="'View Details'" [autoClose]="'outside'"  container="body" placement="bottom" class="btn  card badge badge-warning mui-warning"><i class="fa fa-file-text " aria-label="hidden"></i></span>
   <ng-template #richTextPopOver>
-              <div class="richtext-container w-100 h-100">
+              <div *ngIf="data" class="richtext-container w-100">
                 <p class="w-100" [innerHtml]="sanitizer.bypassSecurityTrustHtml(data)">
                 </p>
               </div>
@@ -29,7 +29,8 @@ import { Router } from "@angular/router";
     `
     .richtext-container{
       overflow: scroll;
-      height: 200px !important;
+      height: auto ;
+      max-height: 200px;
     }
     .card:hover {
     transform: scale(1.05);

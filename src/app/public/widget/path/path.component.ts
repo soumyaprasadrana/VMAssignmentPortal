@@ -9,26 +9,26 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Portal Path Component
  */
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 @Component({
-  selector: 'app-path',
-  templateUrl: './path.component.html',
-  styleUrls: ['./path.component.scss'],
+  selector: "app-path",
+  templateUrl: "./path.component.html",
+  styleUrls: [ "./path.component.scss" ],
 })
 export class PathComponent implements OnInit {
   path: any = [];
-  htmlToBind: string = '';
+  htmlToBind: string = "";
   constructor(private router: Router) {
     //console.log(this.router.url);
     var url = this.router.url;
-    url = url.replace('/portal', '');
+    url = url.replace("/portal", "");
     //console.log(url)
-    var list = url.split('/');
+    var list = url.split("/");
     list = list.slice(1, list.length);
     //console.log(list);
     for (var i = 0; i < list.length; i++) {
-      var parent = '/portal';
+      var parent = "/portal";
       for (var j = 0; j <= i; j++) {
         //console.log("Calling pathbuilder for index :"+j);
         parent = this.pathBuilder(parent, list[j]);
@@ -48,11 +48,11 @@ export class PathComponent implements OnInit {
   pathBuilder(oldPath: string, query: string) {
     //console.log("pathBuilder: called")
 
-    return oldPath + '/' + query;
+    return oldPath + "/" + query;
   }
   parsePathToHtml(path: string, isParent: boolean) {
     //console.log("parsePathToHtml: called");
-    var tempL = path.split('/');
+    var tempL = path.split("/");
 
     this.path.push({
       path: path,

@@ -40,6 +40,7 @@ if (command == "--add-function" && !commandArg) {
   );
   process.exit(1);
 }
+var commandArg2 = arg[2];
 async function createFile(dir, file, data) {
   const fsPromises = fs.promises;
   //console.log("Recieved data for file writtting : ", data);
@@ -63,12 +64,185 @@ try {
   if (!fs.existsSync("./api/functions/" + commandArg)) {
     fs.mkdirSync("./api/functions/" + commandArg, { recursive: true });
   }
-  const client_file_data = `module.exports = {
+  let client_file_data = ``;
+  if (!commandArg2) {
+    client_file_data = `module.exports = {
   client: (parent, grid, row, utils) => {
     return {
       //All data members you want to use in template script goes here
       //Enable utils to be accessible inside event bindings
       utils: utils,
+      //Custom Function supports angular js , uncomment below properties to enable angular js for your custom function 
+      //Angular source code should be written inside angularScript; and template's can be defined inside template.js
+      //If you want to include any additional libraries you can pass path for the files inside angularJSDependacies list
+
+      /** applicationType: 'angularjs',
+          angularJSDependacies: [],
+          angularScript: (context, utils) => {
+                var app = angular.module("customFunApp", []);
+                app.controller("customController", function($scope) {
+                $scope.message = "Hello from Custom Function Controller";
+                });
+      },
+      //DO NOT REMOVE BELOW METHOD; IT IS MANDATORY TO BOOTSTRAP YOUR ANGULARJS APPLICATION IF YOU ARE USING DEPENDANCY LIBRRARIES
+      //YOU CAN ALWAYS CHANGE BOOTSTRAP SPECIFICATION TO INCLUDE OTHER DEPENDACIES
+      angularBootstrapScript: (context, utils) => {
+        angular.bootstrap($("#angular-shell"), [ "app" ]);
+      },
+      */
+      // eventBindings : helps to bind event to your template's html dom elements
+      /**
+            * You can add dom element binding like below; add a property to eventBindings object with the selector
+            * You can access client script's return data members
+            * domElementSelector : {type:'eventType',event : (context,event)=>{}}
+            *
+            * 
+            * Example you have defined a button in template script with id alertButtton 
+            * Build event for this element as below :
+            * eventBindings : {
+            *   '#alertButton' : {
+            *                       type: 'click',
+            *                       event: (context,event) => { alert(1); }
+            *                   }
+            * }
+            * 
+            */
+      eventBindings: {},
+      /**
+             * Life Cycle Event; It will work as a script tag after template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScript: (context, utils) => {
+        $(document).ready(function() {
+          var btn = $("#backToTop");
+          $(
+            "#angular-shell"
+          )[0].parentElement.parentElement.parentElement.addEventListener(
+            "scroll",
+            function() {
+              if (
+                $("#angular-shell")[0].parentElement.parentElement.parentElement
+                  .scrollTop > 300
+              ) {
+                btn.addClass("show");
+              } else {
+                btn.removeClass("show");
+              }
+            }
+          );
+          btn.on("click", function(e) {
+            e.preventDefault();
+            $("#angular-shell").get(0).scrollIntoView({ behavior: "smooth" });
+          });
+          $("#templateScriptABBR").on("click", function() {
+            $("#templateScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#clientScriptABBR").on("click", function() {
+            $("#clientScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#serverScriptABBR").on("click", function() {
+            $("#serverScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#example1ABBR").on("click", function() {
+            $("#exampleScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+
+          $("#example2ABBR").on("click", function() {
+            $("#example2").get(0).scrollIntoView({ behavior: "smooth" });
+          });
+        });
+      },
+      /**
+             * Life Cycle Event; It will work as a script tag before template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScriptBefore: (context, utils) => {},
+    };
+  },
+};
+`;
+  } else if (commandArg2 == "--angular-js") {
+    client_file_data = `module.exports = {
+  client: (parent, grid, row, utils) => {
+    return {
+      //All data members you want to use in template script goes here
+      //Enable utils to be accessible inside event bindings
+      utils: utils,
+      //Custom Function supports angular js , uncomment below properties to enable angular js for your custom function 
+      //Angular source code should be written inside angularScript; and template's can be defined inside template.js
+      //If you want to include any additional libraries you can pass path for the files inside angularJSDependacies list
+      // Limitation : You can use angular js route as it is already configured with ANgular's route feature.
+      applicationType: 'angularjs',
+      //angularJSDependacies: [],
+      angularScript: (context, utils) => {
+         var app = angular.module("customFunApp", []);
+         app.controller("customController", function($scope) {
+          $scope.message = "Awsome!, You have successfully created a custom function with Angular JS.";
+           $(document).ready(function() {
+          var btn = $("#backToTop");
+          $(
+            "#angular-shell"
+          )[0].parentElement.parentElement.parentElement.addEventListener(
+            "scroll",
+            function() {
+              if (
+                $("#angular-shell")[0].parentElement.parentElement.parentElement
+                  .scrollTop > 300
+              ) {
+                btn.addClass("show");
+              } else {
+                btn.removeClass("show");
+              }
+            }
+          );
+          btn.on("click", function(e) {
+            e.preventDefault();
+            $("#angular-shell").get(0).scrollIntoView({ behavior: "smooth" });
+          });
+          $("#templateScriptABBR").on("click", function() {
+            $("#templateScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#clientScriptABBR").on("click", function() {
+            $("#clientScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#serverScriptABBR").on("click", function() {
+            $("#serverScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+          $("#example1ABBR").on("click", function() {
+            $("#exampleScriptSection")
+              .get(0)
+              .scrollIntoView({ behavior: "smooth" });
+          });
+
+          $("#example2ABBR").on("click", function() {
+            $("#example2").get(0).scrollIntoView({ behavior: "smooth" });
+          });
+        });
+        });
+      },
+      //DO NOT REMOVE BELOW METHOD; IT IS MANDATORY TO BOOTSTRAP YOUR ANGULARJS APPLICATION IF YOU ARE USING DEPENDANCY LIBRRARIES
+      //YOU CAN ALWAYS CHANGE BOOTSTRAP SPECIFICATION TO INCLUDE OTHER DEPENDACIES
+      angularBootstrapScript: (context, utils) => {
+        angular.bootstrap($("#angular-shell"), [ "customFunApp" ]);
+      },
       // eventBindings : helps to bind event to your template's html dom elements
       /**
             * You can add dom element binding like below; add a property to eventBindings object with the selector
@@ -105,11 +279,82 @@ try {
   },
 };
 `;
-  const template_js_data =
-    "module.exports = {" +
-    "template: (context, grid, row) => {" +
-    "let domContent = `  <style>" +
-    `.bg-white{
+  } else if (commandArg2 == "--default-template") {
+    client_file_data = `module.exports = {
+  client: (parent, grid, row, utils) => {
+    return {
+      //All data members you want to use in template script goes here
+      //Enable utils to be accessible inside event bindings
+      utils: utils,
+      //Custom Function supports angular js , uncomment below properties to enable angular js for your custom function 
+      //Angular source code should be written inside angularScript; and template's can be defined inside template.js
+      //If you want to include any additional libraries you can pass path for the files inside angularJSDependacies list
+      //Limitation : You can use angular js route as it is already configured with ANgular's route feature.
+      /*applicationType: 'angularjs',
+      angularJSDependacies: [],
+      angularScript: (context, utils) => {},
+      //DO NOT REMOVE BELOW METHOD; IT IS MANDATORY TO BOOTSTRAP YOUR ANGULARJS APPLICATION IF YOU ARE USING DEPENDANCY LIBRRARIES
+      //YOU CAN ALWAYS CHANGE BOOTSTRAP SPECIFICATION TO INCLUDE OTHER DEPENDACIES
+      //CHANGE ANGULAR JS MODULE NAME BEFORE USING IT
+      angularBootstrapScript: (context, utils) => {
+        angular.bootstrap($("#angular-shell"), [ "app" ]);
+      },*/
+      // eventBindings : helps to bind event to your template's html dom elements
+      /**
+            * You can add dom element binding like below; add a property to eventBindings object with the selector
+            * You can access client script's return data members
+            * domElementSelector : {type:'eventType',event : (context,event)=>{}}
+            *
+            * 
+            * Example you have defined a button in template script with id alertButtton 
+            * Build event for this element as below :
+            * eventBindings : {
+            *   '#alertButton' : {
+            *                       type: 'click',
+            *                       event: (context,event) => { alert(1); }
+            *                   }
+            * }
+            * 
+            */
+      eventBindings: {},
+      /**
+             * Life Cycle Event; It will work as a script tag after template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScript: (context, utils) => {},
+      /**
+             * Life Cycle Event; It will work as a script tag before template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScriptBefore: (context, utils) => {},
+    };
+  },
+};
+`;
+  } else {
+    console.log(
+      fn +
+        "- Invalid tamplate name " +
+        `
+    VM PORTAL APP CLI:
+        USAGES :
+            --add-function functionName --angular-js
+    `
+    );
+    process.exit(1);
+  }
+
+  let template_js_data = "";
+  if (!commandArg2 || commandArg2 == "--angular-js") {
+    template_js_data =
+      "module.exports = {" +
+      "template: (context, grid, row) => {" +
+      "let domContent = `  <style>" +
+      `.bg-white{
 background-color:#fff;
 }
 .bg-mui-primary{
@@ -147,13 +392,122 @@ border-radius:8px;
 .code-color{
 color: #e83e8c !important;
 }
+.back-to-top {
+    position: fixed;
+    bottom: -40px;
+    right: 40px;
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background: var(--mui-btn-primary-background-color-hover);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    opacity: 0;
+    -webkit-transform: scale(0.3);
+    -ms-transform: scale(0.3);
+    transform: scale(0.3);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.back-to-top:focus {
+    color: #fff;
+}
+.back-to-top.show {
+    bottom: 40px;
+    right: 40px;
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+.back-to-top.show:hover {
+    color: #fff;
+    bottom: 30px;
+    opacity: 1;
+}
+.arrow {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHN0eWxlPi5zdDB7ZmlsbDojZmZmfTwvc3R5bGU+PHBhdGggY2xhc3M9InN0MCIgZD0iTTMxOS4xIDIxN2MyMC4yIDIwLjIgMTkuOSA1My4yLS42IDczLjdzLTUzLjUgMjAuOC03My43LjZsLTE5MC0xOTBjLTIwLjEtMjAuMi0xOS44LTUzLjIuNy03My43UzEwOSA2LjggMTI5LjEgMjdsMTkwIDE5MHoiLz48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzE5LjEgMjkwLjVjMjAuMi0yMC4yIDE5LjktNTMuMi0uNi03My43cy01My41LTIwLjgtNzMuNy0uNmwtMTkwIDE5MGMtMjAuMiAyMC4yLTE5LjkgNTMuMi42IDczLjdzNTMuNSAyMC44IDczLjcuNmwxOTAtMTkweiIvPjwvc3ZnPg==);
+    position: absolute; width: 12px; height: 12px; background-size: contain;
+    transform: rotate(-90deg);
+    top: 30%;
+    left: 40%;
+}
+.arrow:nth-child(2){
+    top: 42%;
+}
+
+@keyframes bounceAlpha {
+    0% {opacity: 1; transform: rotate(-90deg) translateX(0px) scale(1);}
+    25%{opacity: 0; transform: rotate(-90deg) translateX(10px) scale(0.9);}
+    26%{opacity: 0; transform: rotate(-90deg) translateX(-10px) scale(0.9);}
+    55% {opacity: 1; transform: rotate(-90deg) translateX(0px) scale(1);}
+}
+
+.back-to-top:hover .arrow{
+    animation-name: bounceAlpha;
+    animation-duration:1.4s;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+}
+.back-to-top:hover .arrow:nth-child(2){
+    animation-name: bounceAlpha;
+    animation-duration:1.4s;
+    animation-delay:0.2s;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+}
+
+@media only screen and (max-width: 575px) {
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+    }
+    .back-to-top.show {
+        bottom: 10px;
+        right: 10px;
+    }
+    .back-to-top.show:hover {
+        bottom: 10px;
+    }
+    .arrow {
+        top: 27%;
+        left: 37%;
+    }
+}
 </style>
-<div class="shadow-sm  jumbotron d-flex align-items-center justify-content-center text-center bg-mui-secondary portal-text-secondary mt-1">
+<div ${commandArg2 && commandArg2 == "--angular-js"
+        ? `ng-app="customFunApp"`
+        : ""} ${commandArg2 && commandArg2 == "--angular-js"
+        ? `ng-controller="customController"`
+        : ""}>
+<a href="javascript:void(0);" id="backToTop" class="back-to-top">
+    <i class="arrow"></i><i class="arrow"></i>
+</a>
+<div  class="shadow-sm  jumbotron d-flex align-items-center justify-content-center text-center bg-mui-secondary portal-text-secondary mt-1">
 <i class="fa fa-5x fa-cog rotate"></i>
-<h3 class="font-italic ml-5"> Awsome!, You have successfully created a custom function.</3>
+<h3 class="font-italic ml-5"> ${commandArg2 && commandArg2 == "--angular-js"
+        ? "{{message}}"
+        : "Awsome!, You have successfully created a custom function."}</3>
 </div>
 <div class="shadow-sm jumbotron p-2 mt-4 bg-mui-primary d-flex align-items-center portal-text">
-<p class="h3">Quick Start</p>
+<p class="h3">Quick Start<br>
+<abbr id="templateScriptABBR" class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: pointer;">Template Script</abbr> 
+<abbr class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: none;">|</abbr>
+<abbr id="clientScriptABBR" class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: pointer;">Client Script</abbr>
+<abbr class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: none;">|</abbr>
+<abbr id="serverScriptABBR" class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: pointer;">Server Script</abbr>
+<abbr class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: none;">|</abbr>
+<abbr id="example1ABBR" class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: pointer;">Example-1</abbr>
+<abbr class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: none;">|</abbr>
+<abbr id="example2ABBR" class="font-italic" style="font-size: 12px;color: #888;font-weight: bold;cursor: pointer;">Example-2</abbr>
+
+</p>
 </div>
 <div class="p-2 m-2">
 <div id="templateScriptSection" class="mt-1">
@@ -172,58 +526,61 @@ module.exports = {<br>
 <p>Parameters <code>context :</code> <mark>Return object from client script</mark>, <code>grid:</code><mark>Database table data as an array</mark> , <code>row:</code><mark>Selected row; if function has invoked from Row Action menu.</mark>  will be bind to the template script.
 For more information about client script <a href="#">click here</a>. </p>
 </div>
-<div class="mt-5">
+<div id="clientScriptSection" class="mt-5">
 <h2>Client Script</h2>
 <p>Client script helps you to process your business logic and enables you to make your function page/result dynamic. Client script will always invoked first before invoking template script. For more information about template script <a href="#">click here</a>. 
 </p>
 <code>
 <b class="font-italic">client.js</b> <br>
-<p>module.exports = {<br>
- &emsp; &emsp; &emsp;client: (parent, grid, row, utils) => {<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;return {<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; //All data members you want to use in template script goes here<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; //Enable utils to be accessible inside event bindings<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; utils: utils,<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; // eventBindings : helps to bind event to your template's html dom elements<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; /**<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* You can add dom element binding like below; add a property to eventBindings object with the selector<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* You can access client script's return data members<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* domElementSelector : {type:'eventType',event : (context,event)=>{}}<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; *<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* <br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* Example you have defined a button in template script with id alertButtton <br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; * Build event for this element as below :<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* eventBindings : {<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* '#alertButton' : {<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* type: 'click',<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* event: (context,event) => { alert(1); }<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* }<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* }<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* <br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;*/<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;eventBindings: {},<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; /**<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* Life Cycle Event; It will work as a script tag after template is attached to DOM this event will be fired<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* <br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* @param {*} context refers to this >  return object from client script<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* @param {*} utils available utils object  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;*/<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;templateScript: (context, utils) => {<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&#36;(&quot;#text&quot;).bind(&quot;input propertychange&quot;, function() {<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&#36;(&quot;#html&quot;).html(this.value).fadeIn(500);<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;});<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;},<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;/**<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; * Life Cycle Event; It will work as a script tag before template is attached to DOM this event will be fired<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* <br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* @param {*} context refers to this > return object from client script<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;* @param {*} utils available utils object <br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;*/<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; templateScriptBefore: (context, utils) => {},<br>
- &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; };<br>
-  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;},<br>
- &emsp; &emsp; &emsp; };<br>
-</p>
+<pre class="code-color">module.exports = {
+  client: (parent, grid, row, utils) => {
+    return {
+      //All data members you want to use in template script goes here
+      //Enable utils to be accessible inside event bindings
+      utils: utils,
+      //Custom Function supports angular js , uncomment below properties to enable angular js for your custom function 
+      //Angular source code should be written inside angularScript; and template's can be defined inside template.js
+      //If you want to include any additional libraries you can pass path for the files inside angularJSDependacies list
+      //Limitation : You can use angular js route as it is already configured with ANgular's route feature.
+      //applicationType: 'angularjs',
+      //angularJSDependacies: [],
+      //angularScript: (context, utils) => {},
+      // eventBindings : helps to bind event to your template's html dom elements
+      /**
+            * You can add dom element binding like below; add a property to eventBindings object with the selector
+            * You can access client script's return data members
+            * domElementSelector : {type:'eventType',event : (context,event)=>{}}
+            *
+            * 
+            * Example you have defined a button in template script with id alertButtton 
+            * Build event for this element as below :
+            * eventBindings : {
+            *   '#alertButton' : {
+            *                       type: 'click',
+            *                       event: (context,event) => { alert(1); }
+            *                   }
+            * }
+            * 
+            */
+      eventBindings: {},
+      /**
+             * Life Cycle Event; It will work as a script tag after template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScript: (context, utils) => {},
+      /**
+             * Life Cycle Event; It will work as a script tag before template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScriptBefore: (context, utils) => {},
+    };
+  },
+};
+</pre>
 </code> 
 <p>Parameters <code>parent:</code> <mark>Angular component class object</mark>, <code>grid:</code><mark>Database table data as an array</mark> , <code>row:</code><mark>Selected row; if function has invoked from Row Action menu.</mark> ,<code>utils:</code><mark>Contains number of utility methods to allow client script to interact with Angular Services/Components</mark>  will be bind to the client script.
 For more information about client script <a href="#">click here</a>. </p>
@@ -264,12 +621,12 @@ module.exports = {
 
 </div>
 <div id="exampleScriptSection" class="mt-5">
-<h2>Example</h2>
+<h2>Example-1</h2>
 <label for="reqtext" class="badge badge-primary">Requirement :</label>
 <span name="reqtext" >We have a employee Dynamic Object Table with three columns FIRSTNAME, MIDDLENAME, LASTNAME.<br>
 <ul><li> 1. Create a custom function to generate full name's of employee and show it in a table.</li><li> 2. Add a action button in each row of the table called <code>&#96</code>Click Me<code>&#96</code>. On click it will show an alert with selected employee's full name. <li><li>3. Add a button before the table called angular dialog; On click use Angular InputDialog Component to ask user Age and Profession. On user's submit alert user details in below format.<br>
-E.g Employee Name: Soumya Prasad Rana , Age: 25, Profession: Software Engineer <br>
-Dialog will show <code>&#96</code>Soumya Prasad Rana is 25 years old and is a Software Engineer by profession.</ul></span>
+E.g Age: 25, Profession: Software Engineer <br>
+Dialog will show <code>&#96</code>Employee is 25 years old and is a Software Engineer by profession.</ul></span>
 
 <label for="analysistext" class="badge badge-warning">Analysis :</label>
 <p class="ml-3"> <label class="badge badge-default">1</label>For first requirement it can be achieved by two ways, 1. processing all tables data iniside client script and accessing it inside template script while building the dom content . 2 As grid object is also available to template script you can generate full name inisde template script itself, but in case of large operation it is recomended to client script to add your logic. As we already have the data and it's a small operation lets do it inside template script.</p>
@@ -433,16 +790,124 @@ openDialog: {
           },
 </pre>
 </code>
+<div id="example2">
+<h2>Example-2</h2>
+<label for="reqtext" class="badge badge-primary">Requirement :</label>
+<span> How to call custom function's APIs from client script. For eg your function name is TESTFUN and you have two api's defined in server.js; One is get and one is post.
+Se below client.js how you can initiate HTTP GET and HTTP POST to node js using nodeclient service.
+</span>
+<br>
+<code>
+<b class="font-italic">client.js</b> <br>
+<pre class="code-color">
+module.exports = {
+  client: (parent, grid, row, utils) => {
+    var nodeclient = utils.getApplicationService("nodeclient");
+    console.log("nodeclient", nodeclient);
+    console.log("nodeclient", nodeclient.get);
+    const httpOptions = {
+      headers: {
+        Accept: "text/html, application/xhtml+xml, */*",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      responseType: "text",
+    };
+
+    nodeclient
+      .get(
+        "api/dynamicobjects/userDefinedFunctions/TESTFUN/server/get",
+        httpOptions
+      )
+      .then((res) => {
+        alert(res);
+      })
+      .catch((err) => {
+        alert(JSON.stringify(err));
+        console.log("nodeclient", err);
+      });
+    const reqBody = { ip: "ip", user: "user" };
+    const httpOptionsPost = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    nodeclient
+      .postToCustomAPI(
+        "api/dynamicobjects/userDefinedFunctions/TESTFUN/server/post",
+        reqBody,
+        httpOptionsPost
+      )
+      .then((res) => {
+        alert(JSON.stringify(res));
+      })
+      .catch((err) => {
+        alert(JSON.stringify(err));
+        console.log("nodeclient", err);
+      });
+
+    return {
+      //All data members you want to use in template script goes here
+      //Enable utils to be accessible inside event bindings
+      utils: utils,
+      // eventBindings : helps to bind event to your template's html dom elements
+      /**
+            * You can add dom element binding like below; add a property to eventBindings object with the selector
+            * You can access client script's return data members
+            * domElementSelector : {type:'eventType',event : (context,event)=>{}}
+            *
+            * 
+            * Example you have defined a button in template script with id alertButtton 
+            * Build event for this element as below :
+            * eventBindings : {
+            *   '#alertButton' : {
+            *                       type: 'click',
+            *                       event: (context,event) => { alert(1); }
+            *                   }
+            * }
+            * 
+            */
+      eventBindings: {},
+      /**
+             * Life Cycle Event; It will work as a script tag after template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScript: (context, utils) => {},
+      /**
+             * Life Cycle Event; It will work as a script tag before template is attached to DOM this event will be fired
+             * 
+             * @param {*} context refers to this > return object from client script
+             * @param {*} utils available utils object 
+             */
+      templateScriptBefore: (context, utils) => {},
+    };
+  },
+};
+</pre>
+</code>
+</div>
+</div>
 </div>
 </div>
 </div>` +
-    "`;" +
-    `
+      "`;" +
+      `
 
     return domContent;
   },
 };
 `;
+  } else {
+    template_js_data =
+      `module.exports = {
+  template: (context, grid, row, utils) => {` +
+      "domContent= `Awsome! You have successfully created a custom function.`;" +
+      `
+      return domContent;
+  },
+};`;
+  }
   const server_js_content = `module.exports = {
   server: (app) => {
     function handle${commandArg}API(req, res, app) {
@@ -458,16 +923,19 @@ openDialog: {
         .json(
           {
             text:"Awsome! Custom API is listening for user defined function ${commandArg}...",
-            body: req.body.params
+            body: req.body
           }
         );
     }
     app.get("/api/dynamicobjects/userDefinedFunctions/${commandArg}/server/get", handle${commandArg}API);
     app.post("/api/dynamicobjects/userDefinedFunctions/${commandArg}/server/post", handle${commandArg}APIPOST);
+    const express = require("express");
+    app.use("/functions/${commandArg}/", express.static(__dirname + "/assets"));
   },
 };
 
 `;
+
   createFile("./api/functions/" + commandArg, "client.js", client_file_data);
   createFile("./api/functions/" + commandArg, "template.js", template_js_data);
   createFile("./api/functions/" + commandArg, "server.js", server_js_content);

@@ -137,43 +137,60 @@ module.exports = {
         },
       };
       request_promise(extServerOptions, function(error, response, body) {
-        if (error) {
-          logger.debug("Error Occurred!");
-          err = {};
-          if (error.code == "ECONNREFUSED")
-            err.message =
-              "Unable to connect VM Assignment Portal API , Contact System Administrator.";
-          else err.message = error.code;
-          res
-            .status(500)
-            .json({ status: false, message: "Inernal Server Error occurred." });
-          next();
-          return;
-        }
-        if (typeof response.headers == "undefined") {
-          res
-            .status(500)
-            .json({ status: false, message: "Inernal Server Error occurred." });
-          next();
-        }
-        logger.info(fun + "- Authenticating to " + extServerOptions.uri);
-        logger.debug(fun + "- Response body:" + body);
-        logger.debug(
-          fun + "- Response headers:" + JSON.stringify(response.headers)
-        );
-        if (body != "") {
-          body = JSON.parse(body);
-          headers = JSON.parse(JSON.stringify(response.headers));
-          if (body.status) {
-            res.status(200).json({ status: true });
+        try {
+          if (error) {
+            logger.debug("Error Occurred!");
+            err = {};
+            if (error.code == "ECONNREFUSED")
+              err.message =
+                "Unable to connect VM Assignment Portal API , Contact System Administrator.";
+            else err.message = error.code;
+            res
+              .status(500)
+              .json({
+                status: false,
+                message: "Inernal Server Error occurred.",
+              });
             next();
+            return;
+          }
+          if (typeof response.headers == "undefined") {
+            res
+              .status(500)
+              .json({
+                status: false,
+                message: "Inernal Server Error occurred.",
+              });
+            next();
+          }
+          logger.info(fun + "- Authenticating to " + extServerOptions.uri);
+          logger.debug(fun + "- Response body:" + body);
+          logger.debug(
+            fun + "- Response headers:" + JSON.stringify(response.headers)
+          );
+          if (body != "") {
+            body = JSON.parse(body);
+            headers = JSON.parse(JSON.stringify(response.headers));
+            if (body.status) {
+              res.status(200).json({ status: true });
+              next();
+            } else {
+              req.session = null;
+              res.status(401).json({ status: false });
+              next();
+            }
           } else {
-            req.session = null;
             res.status(401).json({ status: false });
             next();
           }
-        } else {
-          res.status(401).json({ status: false });
+        } catch (e) {
+          res
+            .status(500)
+            .json({
+              status: false,
+              message: "Internal Server Error",
+              stack: e.toString(),
+            });
           next();
         }
       }).catch(function(error) {

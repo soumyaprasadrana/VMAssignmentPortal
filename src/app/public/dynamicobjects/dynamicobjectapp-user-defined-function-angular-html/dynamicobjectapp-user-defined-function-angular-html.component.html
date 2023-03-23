@@ -13,5 +13,11 @@
 -->
 
 <div *ngIf="elementType == 'div'">
-<div [attributes] = "attributes" [(ngModel)] = "model" (click) = "click" *ngIf="ngIf" [ngStyle]="ngStyle" [ngClass]="ngClass"></div>
+    <div [attributes] = "attributes" (click) = "HandleClick()" *ngIf="ngIf" [ngStyle]="ngStyle" [ngClass]="ngClass" [innerHTML]="innerHTML"></div>
+</div>
+<div *ngIf="elementType == 'button'">
+    <button [attributes] = "attributes" (click) = "HandleClick()" *ngIf="ngIf" [ngStyle]="ngStyle" [ngClass]="ngClass" [innerHTML]="innerHTML"></button>
+</div>
+<div *ngIf="elementType == 'mat-button'">
+    <button mat-button [attributes] = "attributes" (click) = "HandleClick()" *ngIf="ngIf" [ngStyle]="ngStyle" [ngClass]="ngClass" [innerHTML]="innerHTML"></button>
 </div>

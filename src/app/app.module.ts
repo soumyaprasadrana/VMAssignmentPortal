@@ -22,7 +22,6 @@ import { LoginViewComponent } from "./public/login/login-view/login-view.compone
 import { PageNotFoundComponent } from "./public/widget/page-not-found/page-not-found.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FooterModule } from "./public/widget/footer/footer.module";
-import { MaterialModule } from "./material.module";
 import { Config } from "./app.config";
 import { AdminConfig } from "./public/admin/admin.config";
 import { AuthInterceptor } from "./public/services/customHttp";
@@ -32,10 +31,13 @@ import { NgIdleKeepaliveModule } from "@ng-idle/keepalive";
 import { NgSelectModule } from "@ng-select/ng-select";
 import {
   MatDialog,
+  MatDialogModule,
   MAT_DIALOG_DEFAULT_OPTIONS,
 } from "@angular/material/dialog";
 import { ToastModule } from "./public/widget/toast/toast.module";
 import { DynamicObjectAppFormComponent } from "./public/dynamicobjects/dynamicobjectapp-form/dynamicobjectapp-form.component";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { MatToolbarModule } from "@angular/material/toolbar";
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,12 +54,14 @@ import { DynamicObjectAppFormComponent } from "./public/dynamicobjects/dynamicob
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
+    MatToolbarModule,
     FooterModule,
-    MaterialModule,
     HttpClientModule,
     ToastModule,
     NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
     NgSelectModule,
+    MatDialogModule,
   ],
   exports: [],
   providers: [

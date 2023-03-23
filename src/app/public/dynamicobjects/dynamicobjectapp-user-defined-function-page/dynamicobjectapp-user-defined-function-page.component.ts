@@ -9,7 +9,7 @@
  * @modify date 2022-04-19 18:26:41
  * @desc Dynamic Object App View Record Component
  */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -41,7 +41,7 @@ import { InputDialogComponent } from "../../widget/alert-dialog/input-dialog.com
   styleUrls: [ "./dynamicobjectapp-user-defined-function-page.component.scss" ],
 })
 export class DynamicObjectAppUserDefinedFunctionPageComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   fun: string = "";
   app: string = "";
   funContext: any;
@@ -74,8 +74,17 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
         this.initializeFunService();
       } else {
         this.doInit();
-        this.loaded = true;
       }
+    }
+  }
+  ngOnDestroy(): void {
+    // Try to remove all attached resources from custom function
+    {
+      if (
+        this.funContext.applicationType &&
+        this.funContext.applicationType == "angularjs"
+      )
+        location.reload();
     }
   }
   initializeFunService() {
@@ -117,7 +126,6 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
                   if (res.status) {
                     this._funService.setGrid(res.data);
                     this.doInit();
-                    this.loaded = true;
                   } else {
                     this.openDialog(
                       {
@@ -183,6 +191,7 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
       });
   }
   doInit() {
+    this.spinner.setSpinnerState(true);
     console.log("++++++++++++ DO INIT +++++++++++++++");
     const fun = this._funService.getFunction(this.fun);
     console.log("++++++++++++ DO INIT +++++++++++++++", fun);
@@ -198,7 +207,41 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
     console.log("RESULT FROM CLIENTSCRIPT", this.funContext);
     this.funTemplate = this._funService.getFunctionTemalate(this.fun);
     console.log("CLIENTTEMPLATE ", this.funTemplate);
+    if (
+      typeof this.funContext.applicationType != "undefined" &&
+      this.funContext.applicationType == "angularjs"
+    ) {
+      console.log(
+        "ANGULRJS :: DEBUG :: FUNCTION TYPE IS ANGULAR JS GOING TO LOAD ANGULAR JS OTHER DEPENDACY LIBRARIRES"
+      );
+      this.loadAngularJsLibrary(this.funContext)
+        .then((res: any) => {
+          this.loadAngularJsDependancyLibraries(this.funContext)
+            .then((res: any) => {
+              this.spinner.setSpinnerState(false);
+              this.loaded = true;
+            })
+            .catch((e) => {
+              this.spinner.setSpinnerState(false);
+              console.log(
+                "ANGULRJS :: DEBUG :: FUNCTION TYPE IS ANGULAR JS GOING TO LOAD ANGULAR JS OTHER DEPENDACY LIBRARIRES :: ERROR",
+                e
+              );
+            });
+        })
+        .catch((e) => {
+          this.spinner.setSpinnerState(false);
+          console.log(
+            "ANGULRJS :: DEBUG :: FUNCTION TYPE IS ANGULAR JS GOING TO LOAD ANGULAR JS OTHER DEPENDACY LIBRARIRES :: ERROR",
+            e
+          );
+        });
+    } else {
+      this.spinner.setSpinnerState(false);
+      this.loaded = true;
+    }
   }
+
   ngOnInit(): void {}
   openDialog(data: any, callback: any) {
     this.dialog
@@ -230,5 +273,168 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
           callback(res);
         }
       });
+  }
+
+  async loadAngularJsLibrary(context: any) {
+    function addScript(src: any) {
+      return new Promise((resolve, reject) => {
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: addScript :: src :: ",
+          src
+        );
+        try {
+          const s = document.createElement("script");
+          s.setAttribute("id", "customFunResource");
+          s.setAttribute("src", src);
+          s.addEventListener("load", resolve);
+          s.addEventListener("error", reject);
+
+          document.body.appendChild(s);
+        } catch (e) {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: addScript :: err :: "
+          );
+          console.log(e);
+        }
+      });
+    }
+    function addCSS(src: any) {
+      return new Promise((resolve, reject) => {
+        try {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: addCSS :: src :: ",
+            src
+          );
+          const s = document.createElement("link");
+          s.setAttribute("id", "customFunResource");
+          s.setAttribute("rel", "stylesheet");
+          s.setAttribute("href", src);
+          s.addEventListener("load", resolve);
+          s.addEventListener("error", reject);
+
+          document.body.appendChild(s);
+        } catch (e) {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: addCSS :: err :: ",
+            e
+          );
+        }
+      });
+    }
+    var js = [ "/assets/js/angular.min.js" ];
+
+    console.log("ANGULRJS :: DEBUG :: loadAngularJsLibrary :: js ::  ", js);
+    for (var i = 0; i < js.length; i++) {
+      try {
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: js :: js[" + i + "] ::",
+          js[i]
+        );
+        var tempArr = js[i].split(".");
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: js :: js[" +
+            i +
+            "] :: split",
+          tempArr
+        );
+        if (tempArr[tempArr.length - 1] == "js") await addScript(js[i]);
+        else if (tempArr[tempArr.length - 1] == "css") await addCSS(js[i]);
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsLibrary :: js :: js[" +
+            i +
+            "] :: loaded",
+          js[i]
+        );
+        // do something after it was loaded
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  async loadAngularJsDependancyLibraries(context: any) {
+    function addScript(src: any) {
+      return new Promise((resolve, reject) => {
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: addScript :: src :: ",
+          src
+        );
+        try {
+          const s = document.createElement("script");
+          s.setAttribute("id", "customFunResource");
+          s.setAttribute("src", src);
+          s.addEventListener("load", resolve);
+          s.addEventListener("error", reject);
+
+          document.body.appendChild(s);
+        } catch (e) {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: addScript :: err :: "
+          );
+          console.log(e);
+        }
+      });
+    }
+    function addCSS(src: any) {
+      return new Promise((resolve, reject) => {
+        try {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: addCSS :: src :: ",
+            src
+          );
+          const s = document.createElement("link");
+          s.setAttribute("id", "customFunResource");
+          s.setAttribute("rel", "stylesheet");
+          s.setAttribute("href", src);
+          s.addEventListener("load", resolve);
+          s.addEventListener("error", reject);
+
+          document.body.appendChild(s);
+        } catch (e) {
+          console.log(
+            "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: addCSS :: err :: ",
+            e
+          );
+        }
+      });
+    }
+    var js: any = [];
+    if (
+      typeof context.angularJSDependacies != "undefined" &&
+      context.angularJSDependacies
+    )
+      js = [ ...context.angularJSDependacies ];
+    console.log(
+      "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: js ::  ",
+      js
+    );
+    for (var i = 0; i < js.length; i++) {
+      try {
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: js :: js[" +
+            i +
+            "] ::",
+          js[i]
+        );
+        var tempArr = js[i].split(".");
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: js :: js[" +
+            i +
+            "] :: split",
+          tempArr
+        );
+        if (tempArr[tempArr.length - 1] == "js") await addScript(js[i]);
+        else if (tempArr[tempArr.length - 1] == "css") await addCSS(js[i]);
+        console.log(
+          "ANGULRJS :: DEBUG :: loadAngularJsDependancyLibraries :: js :: js[" +
+            i +
+            "] :: loaded",
+          js[i]
+        );
+        // do something after it was loaded
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 }

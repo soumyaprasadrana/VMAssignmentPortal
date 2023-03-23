@@ -46,13 +46,17 @@ import { MatButton } from "@angular/material/button";
 })
 export class DynamicObjectAppUserDefinedFunctionANgularHTMLPageComponent
   implements OnInit {
-  @Input() elementType?: any = "div";
-  @Input() attributes?: any = { color: "red" };
+  @Input() elementType?: any;
+  @Input() attributes?: any;
   @Input() model?: any;
-  @Input() click?: any = () => alert(1);
-  @Input() ngIf?: any = true;
+  @Input() click?: any;
+  @Input() ngIf?: any;
   @Input() ngStyle?: any;
   @Input() ngClass?: any;
+  @Input() context?: any;
+  @Input() innerHTML?: any;
+  CLASS = "<DynamicObjectAppUserDefinedFunctionANgularHTMLPageComponent>";
+  ngIfOrigional: string = "";
   constructor(
     private _funService: UserDefinedFunctionsService,
     private route: ActivatedRoute,
@@ -62,5 +66,30 @@ export class DynamicObjectAppUserDefinedFunctionANgularHTMLPageComponent
     private dynamicobjectappServie: DynamicObjectAppService,
     private dialog: MatDialog
   ) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.CLASS + " :: entry");
+    console.log(this.CLASS + " :: entry :: elementType ::", this.elementType);
+    console.log(this.CLASS + " :: entry :: attributes ::", this.attributes);
+    console.log(this.CLASS + " :: entry :: model ::", this.model);
+    console.log(this.CLASS + " :: entry :: click ::", this.click);
+    console.log(this.CLASS + " :: entry :: ngStyle ::", this.ngStyle);
+    console.log(this.CLASS + " :: entry :: ngClass ::", this.ngClass);
+    console.log(this.CLASS + " :: entry :: ngIf ::", this.ngIf);
+    if (typeof this.ngIf == "string") {
+      this.ngIfOrigional = this.ngIf;
+      if (this.ngIf.includes("context"))
+        this.ngIf = this.context[this.ngIf.split(".")[1]];
+    }
+    if (typeof this.ngIf == "undefined") this.ngIf = true;
+  }
+  HandleClick() {
+    console.log(
+      ">>>>>>>>>>>>>>>> HANDLE CLICK >>>>>>>>>>>",
+      typeof this.click,
+      typeof this.click == "function"
+    );
+    if (typeof this.click == "function") {
+      this.click(this.context);
+    }
+  }
 }
