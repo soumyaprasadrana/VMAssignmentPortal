@@ -86,6 +86,10 @@ module.exports = function(app) {
     dynamicObjectCtrl.updateObjectRecord
   );
   app.post(
+    "/api/dynamicobjects/:app/count",
+    dynamicObjectCtrl.getObjectRecordCount
+  );
+  app.post(
     "/api/dynamicobjects/:app/delete",
     dynamicObjectCtrl.deleteObjectRecord
   );

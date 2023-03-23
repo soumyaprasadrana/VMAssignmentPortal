@@ -258,6 +258,21 @@ module.exports = {
       next
     );
   },
+  getObjectRecordCount: function(req, res, next) {
+    var id = req.params.app;
+    const fn = "dynamicobjectsmodule.js :-: getObjectRecordCount -";
+    //logger.debug(fn + "JSESSIONID:" + req.user.jsession);
+    //logger.debug(fn + "AUTH:" + req.user.auth);
+    _client.post(
+      _client.getHttpPostOptions(
+        req,
+        config.dynamicobjects_get_object_record_count_rest_path + "/" + id
+      ),
+      req,
+      res,
+      next
+    );
+  },
   deleteObjectRecord: function(req, res, next) {
     var id = req.params.app;
     const fn = "dynamicobjectsmodule.js :-: deleteObjectRecord -";

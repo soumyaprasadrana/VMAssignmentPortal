@@ -9,13 +9,18 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Node Client Services
  */
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Config } from '../../app.config';
-import { map, catchError } from 'rxjs/operators';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { Injectable } from "@angular/core";
+import {
+  HttpClient,
+  HttpContext,
+  HttpHeaders,
+  HttpParams,
+} from "@angular/common/http";
+import { Config } from "../../app.config";
+import { map, catchError } from "rxjs/operators";
+import { DeviceDetectorService } from "ngx-device-detector";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class NodeclientService {
   constructor(
@@ -27,7 +32,7 @@ export class NodeclientService {
   post(apiPath: string, params: HttpParams | null, httpOptions: any | null) {
     const promise = new Promise((resolve, reject) => {
       const apiURL = this.config.apiUrl;
-      const url = apiURL + '/' + apiPath;
+      const url = apiURL + "/" + apiPath;
       //console.log('URL for login:' + url);
       //console.log(JSON.stringify(httpOptions));
       this.http
@@ -48,21 +53,69 @@ export class NodeclientService {
     return promise;
   }
 
+  postToCustomAPI(
+    apiPath: string,
+    reqBody: any,
+    options: {
+      headers?:
+        | HttpHeaders
+        | {
+            [header: string]: string | string[];
+          };
+      context?: HttpContext;
+      observe?: "body";
+      params?:
+        | HttpParams
+        | {
+            [param: string]:
+              | string
+              | number
+              | boolean
+              | ReadonlyArray<string | number | boolean>;
+          };
+      reportProgress?: boolean;
+      responseType: "arraybuffer";
+      withCredentials?: boolean;
+    }
+  ) {
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = this.config.apiUrl;
+      const url = apiURL + "/" + apiPath;
+      //console.log('URL for login:' + url);
+      //console.log(JSON.stringify(httpOptions));
+      this.http
+        .post(url, reqBody, options)
+        .toPromise()
+        .then((res: any) => {
+          //console.log('nodeclient- post - resolve', res);
+          // callback(res);
+          resolve(res);
+        })
+        .catch((err: any) => {
+          //  callback(err);
+          //console.log('nodeclient- post - reject', err);
+          reject(err);
+        });
+    });
+
+    return promise;
+  }
+
   get(apiPath: string, httpOptions: any | null) {
     const promise = new Promise((resolve, reject) => {
       const apiURL = this.config.apiUrl;
-      const url = apiURL + '/' + apiPath;
+      const url = apiURL + "/" + apiPath;
       //console.log('URL for GET:' + url);
       //console.log(JSON.stringify(httpOptions));
       this.http
         .get(url, httpOptions)
         .toPromise()
-        .then(function (res) {
+        .then(function(res) {
           //console.log('nodeclient- get - resolve');
           // callback(res);
           resolve(res);
         })
-        .catch(function (err) {
+        .catch(function(err) {
           //  callback(err);
           //console.log('nodeclient- get - reject');
           reject(err);
@@ -96,5 +149,17 @@ export class NodeclientService {
   }
   deviceBrowser() {
     return this.deviceService.browser;
+  }
+  createHttpOptions(params: any, options: any) {
+    let httpParams = new HttpParams();
+    for (var key in params) {
+      console.log("DEBUGHTTPPARAMS", key, params[key]);
+      httpParams = httpParams.set(key, params[key]);
+    }
+    let httpOptions: any = { params: httpParams.toString() };
+    for (var key in options) {
+      httpOptions[key] = options[key];
+    }
+    return httpOptions;
   }
 }

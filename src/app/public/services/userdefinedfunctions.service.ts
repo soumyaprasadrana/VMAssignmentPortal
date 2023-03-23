@@ -42,14 +42,14 @@ export class UserDefinedFunctionsService {
   needReload: boolean = false;
   parent: any;
   constructor(
-    private _client: NodeclientService,
+    public _client: NodeclientService,
     public _toastService: ToastService,
     public _spinner: SpinnerService,
     public _auth: AuthserviceService,
-    private _http: HttpClient,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private router: Router,
+    public _http: HttpClient,
+    public route: ActivatedRoute,
+    public dialog: MatDialog,
+    public router: Router,
     public _shell: ShellService,
     public dynamicobjectappServie: DynamicObjectAppService
   ) {
@@ -86,7 +86,7 @@ export class UserDefinedFunctionsService {
         switch (name) {
           case "toast":
             return this._toastService;
-          case "loader":
+          case "spinner":
             return this._spinner;
           case "auth":
             return this._auth;
@@ -96,7 +96,7 @@ export class UserDefinedFunctionsService {
               openInputDialog: this.openDialogInput.bind(this),
             };
           case "nodeclient":
-            return this._nodeclient;
+            return this._client;
           case "http":
             return this._http;
           case "shell":
@@ -140,6 +140,26 @@ export class UserDefinedFunctionsService {
                 dataContext
               );
               this.router.navigate([ appRelativeUrl + "/edit" ], {
+                state: { recordData: dataContext },
+              });
+            };
+          case "view":
+            return (dataContext: any) => {
+              let appRelativeUrl = this.router.url;
+              appRelativeUrl = appRelativeUrl.substring(
+                0,
+                appRelativeUrl.lastIndexOf("/")
+              );
+              appRelativeUrl = appRelativeUrl.substring(
+                0,
+                appRelativeUrl.lastIndexOf("/")
+              );
+              console.log(
+                "::::::::::::::::: getCurrentNavigation ::  UPDATE    ::::::::::::::",
+                this.router.url,
+                dataContext
+              );
+              this.router.navigate([ appRelativeUrl + "/view" ], {
                 state: { recordData: dataContext },
               });
             };
@@ -229,10 +249,10 @@ export class UserDefinedFunctionsService {
           "api/dynamicobjects/userDefinedFunctions/" + functionName,
           this.getOptions(this.getHeaders())
         );
-        console.log(
-          CLASS + "::" + METHOD + " :: Fetch function :: res = ",
-          res
-        );
+        //console.log(
+        //  CLASS + "::" + METHOD + " :: Fetch function :: res = ",
+        //  res
+        // );
         if (res.status) {
           try {
             // var fun = eval(
@@ -240,7 +260,7 @@ export class UserDefinedFunctionsService {
             // );
             var fun = new Function("return " + res.function.toString());
             fun = fun();
-            console.log(fun, fun.toString());
+            //console.log(fun, fun.toString());
             if (typeof fun == "function") {
               funLoaded = true;
               this.userDefinedFunctions[functionName] = fun;
@@ -261,25 +281,25 @@ export class UserDefinedFunctionsService {
           this.getOptions(this.getHeaders())
         );
         if (res2.status) {
-          console.log(
-            CLASS + "::" + METHOD + " :: Fetch function template :: res = ",
-            res2
-          );
+          // console.log(
+          //  CLASS + "::" + METHOD + " :: Fetch function template :: res = ",
+          //   res2
+          // );
           try {
             //var res = eval(`console.log(ABC${res2.toString()} DEF ${CLASS})`);
-            console.log(
-              "TESTRES2 = ",
-              res2,
-              typeof res2.template,
-              res2.template
-            );
+            // console.log(
+            //   "TESTRES2 = ",
+            //res2,
+            //      typeof res2.template,
+            //    res2.template
+            //    );
             //var fun2: any = eval(
             // "(function(){ return " + res2.template.toString() + ";})"
             //);
             var fun2 = new Function("return " + res2.template);
             fun2 = fun2();
 
-            console.log(fun2, fun2.toString());
+            //  console.log(fun2, fun2.toString());
             if (typeof fun2 == "function") {
               templateLoaded = true;
               this.userDefinedFunctionsTemplate[functionName] = fun2;

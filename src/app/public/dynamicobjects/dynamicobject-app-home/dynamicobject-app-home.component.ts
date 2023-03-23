@@ -125,15 +125,16 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var httpOptions = {
       headers: headers,
     };
-     this._client
+    var attributeListPromise: any[] = [];
+     attributeListPromise.push(this._client
       .get("api/config/redirectToUserdefinedFunctions", httpOptions)
       .then((res: any) => {
         if (res.redirectToUserdefinedFunctions) {
             if(res.redirectToUserdefinedFunctions.hasOwnProperty(this.app)){
               this.router.navigate(['function/'+res.redirectToUserdefinedFunctions[this.app]],{relativeTo:this.route,state:{reload:true}});
             }
-        }});
-    var attributeListPromise: any[] = [];
+        }}));
+    
     //Load Technote Data
     this.spinner.setSpinnerState(true); 
     //Load Functions Metadata

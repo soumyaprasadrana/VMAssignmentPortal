@@ -69,6 +69,8 @@ module.exports = {
   dynamicobjects_add_rest_path: "/dynamicobjects/addObject",
   dynamicobjects_update_rest_path: "/dynamicobjects/updateObject",
   dynamicobjects_delete_rest_path: "/dynamicobjects/deleteObject",
+  dynamicobjects_get_object_record_count_rest_path:
+    "/dynamicobjects/getTableRowCount",
   dynamicobjects_anonymous_form_attributes_rest_path:
     "/dynamicobjects/anonymousform/getAttributes",
   dynamicobjects_anonymous_form_users_rest_path:
