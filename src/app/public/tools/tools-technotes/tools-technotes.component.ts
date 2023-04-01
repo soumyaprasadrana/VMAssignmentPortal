@@ -276,7 +276,7 @@ export class ToolsTechnotesComponent implements OnInit {
       } else {
         html += `<div style='text-align:center;width:auto;height:50px;overflow-x:auto;overflow-y:hidden;'>`;
         for (var item in list) {
-          html += `<span class="keyword-container ml-1">
+          html += `<span class="keyword-container ms-1">
           <span class="keyword p-1">${list[item]}</span>
       </span>`;
         }

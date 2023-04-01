@@ -32,15 +32,12 @@
         
            </svg>
          Snapshots 
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
 <mat-dialog-content class="alertMssg">
     <div class="snapDialog pt-0 mt-0 ">
-        <span *ngIf="!isSnapshotSelcted" class="badge badge-warning ">**Select any Snapshot to enable Revert button.</span>
+        <span *ngIf="!isSnapshotSelcted" class="badge bg-warning ">**Select any Snapshot to enable Revert button.</span>
         <div style="list-style: circle;text-align:center;">
         <div class="row mt-1">
                 <div class="col-8 desktopImage card p-2" style="width:300px;overflow: auto;">
@@ -68,27 +65,27 @@
     <div *ngIf="isSnapshotSelcted" class="row mt-2" style="height:max-content;margin:0;padding:0;">
         <div class="col">
         <div class="row p-0 m-0">
-            <span class="badge badge-secondary">Name</span>
+            <span class="badge bg-danger">Name</span>
         </div>
         <div class="row p-0 m-0">
             <span style="text-align: left;">{{selectedSnap.name}}</span>
         </div>
         <div class="row p-0 m-0">
-            <span class="badge badge-secondary">Description</span>
+            <span class="badge bg-danger">Description</span>
         </div>
         <div class="row p-0 m-0">
           <span style="text-align: left;">  {{selectedSnap.description}}</span>
         </div>
     </div>
         <!--<div class="col" style="width:100%;text-align:left;margin:0;padding:0;">
-        <label class="badge badge-secondary" style="background:#3c3c3c;">
+        <label class="badge bg-danger" style="background:#3c3c3c;">
         Name:</label>
         
         <p style="text-align:left;">
         
         {{selectedSnap.name}}</p>
         
-        <label class="badge badge-secondary" style="background:#3c3c3c;">
+        <label class="badge bg-danger" style="background:#3c3c3c;">
         
                                                                                               Description:</label>
         

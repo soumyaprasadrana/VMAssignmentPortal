@@ -1,13 +1,10 @@
 <h1 mat-dialog-title class="dialog-title">
     <span>
          {{data.title}}
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <br> {{data.label}}
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row pt-3 pl-3 pr-3 pb-0">
@@ -17,8 +14,8 @@
                     <span (click)="showCurrPass=!showCurrPass" [ngClass]="{'fa-eye':showCurrPass,'fa-eye-slash':!showCurrPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
                     <input id="currPassword" [type]="showCurrPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="user_curr_pass" [ngClass]="{ 'is-invalid': submitted && f.user_curr_pass.errors }">
                     <div *ngIf="submitted && f.user_curr_pass.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.user_curr_pass.errors.required">Current Password is required</div>
-                        <div class="ml-1" *ngIf="f.user_curr_pass.errors.minlength">Current Password must be at least 6 characters</div>
+                        <div class="ms-1" *ngIf="f.user_curr_pass.errors.required">Current Password is required</div>
+                        <div class="ms-1" *ngIf="f.user_curr_pass.errors.minlength">Current Password must be at least 6 characters</div>
                     </div>
                 </div>
             </div>    
@@ -30,8 +27,8 @@
                         <span (click)="showPassword=!showPassword" [ngClass]="{'fa-eye':showPassword,'fa-eye-slash':!showPassword}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
                         <input id="password" [type]="showPassword?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="user_pass" [ngClass]="{ 'is-invalid': submitted && f.user_pass.errors }">
                         <div *ngIf="submitted && f.user_pass.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.user_pass.errors.required">Password is required</div>
-                            <div class="ml-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
+                            <div class="ms-1" *ngIf="f.user_pass.errors.required">Password is required</div>
+                            <div class="ms-1" *ngIf="f.user_pass.errors.minlength">Password must be at least 6 characters</div>
                         </div>
                     </div>
                 </div>    
@@ -43,8 +40,8 @@
                     <span (click)="showPass=!showPass" [ngClass]="{'fa-eye':showPass,'fa-eye-slash':!showPass}" class="fa form-control-prefix-icon-with-event text-muted" area-label="false"></span>
                     <input id="conf_password" [type]="showPass?'text':'password'" autocomplete="new-password" class="form-control form-control-include-icon" formControlName="conf_pass" [ngClass]="{ 'is-invalid': submitted && f.conf_pass.errors }">
                     <div *ngIf="submitted && f.conf_pass.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.conf_pass.errors.required">Confirm Password is required</div>
-                        <div class="ml-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
+                        <div class="ms-1" *ngIf="f.conf_pass.errors.required">Confirm Password is required</div>
+                        <div class="ms-1" *ngIf="f.conf_pass.errors.mustMatch">Passwords must match</div>
                     </div>
                 </div>
             </div>

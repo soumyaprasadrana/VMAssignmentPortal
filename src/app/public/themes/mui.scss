@@ -67,6 +67,7 @@ $form-control-focus-box-shadow: $custom-alert-background;
   --mui-primary-background-color: rgb(255, 255, 255);
   --mui-secondary-backgroud-color: rgb(237, 231, 246);
   --mui-text-color: rgb(103, 58, 183);
+  --form-control-focus-box-shadow: rgb(237, 231, 246);
 
   --mui-btn-primary-background-color: rgb(237, 231, 246);
   --mui-btn-primary-background-color-hover: rgb(94, 53, 177);
@@ -432,6 +433,7 @@ $form-control-focus-box-shadow: $custom-alert-background;
   flex: 0 0 auto;
 }
 #login-form-content-container {
+  z-index: 9999;
   form {
     button {
       font-weight: bolder;
@@ -908,12 +910,12 @@ mat-nav-list a :hover {
 .form-control:focus {
   color: #495057 !important;
   background-color: #fff !important;
-  border-color: var(--mui-secondary-backgroud-color) !important;
+  border-color: var(--mui-text-color) !important;
   outline: 0 !important;
   box-shadow: 0 0 0 0.2rem var(--form-control-focus-box-shadow) !important;
 }
 .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-  border-color: var(--mui-secondary-backgroud-color) !important;
+  border-color: var(--mui-text-color) !important;
   box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%),
     0 0 0 3px var(--form-control-focus-box-shadow) !important;
 }

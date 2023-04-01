@@ -1,28 +1,28 @@
 <div *ngIf="isLoaded && !isDataloadFailed" class="container-fluid-lg p-3 my-3  text-muted ">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="ml-3 technote-header">
+            <h3 class="ms-3 technote-header">
 
                 <p><b>[{{technote.id}}] {{technote.description}}</b></p>
                 <hr>
             </h3>
-            <div class="ml-3 label">
+            <div class="ms-3 label">
                 <label *ngIf="technote.keywords.split(',').length>1" for="keywords" class="label">
                 Keywords:<span  *ngFor="let item of technote.keywords.split(',')">
-                    <span class="keyword-container ml-3">
+                    <span class="keyword-container ms-3">
                         <span class="keyword p-2">{{item}}</span>
                     </span>
                 </span>
                 
                </label>
-                <label for="keywords" class="label" *ngIf="technote.keywords.split(',').length<2">Keywords: <span class="ml-3">{{technote.keywords}}</span></label>
+                <label for="keywords" class="label" *ngIf="technote.keywords.split(',').length<2">Keywords: <span class="ms-3">{{technote.keywords}}</span></label>
 
             </div>
         </div>
     </div>
 </div>
 <div *ngIf="isLoaded" class=" container p-3 ">
-    <div class="ml-3 ">
+    <div class="ms-3 ">
         <p [innerHtml]="technote.technote "></p>
     </div>
 </div>

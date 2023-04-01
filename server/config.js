@@ -132,4 +132,5 @@ module.exports = {
   update_snap_count_rest_path: "/admin/updateSnapCount",
   update_vm_extra_data_rest_path: "/admin/updateVMData",
   restart_snap_service_rest_path: "/admin/restartSnapshotService",
+  powercli_execute_rest_path: "/powercli/execute",
 };

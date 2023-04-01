@@ -317,7 +317,7 @@ export class SnapshotsGridComponent implements OnInit {
       }
 
       return {
-        text: `<div style='text-align:center;width:auto;color:#000;' ><span  class="badge" style='text-align:center'>${value}</span></div>`,
+        text: `<div style='text-align:center;width:auto;color:#000;' ><span    style='text-align:center'>${value}</span></div>`,
         toolTip: value,
       };
     };
@@ -340,12 +340,12 @@ export class SnapshotsGridComponent implements OnInit {
       if (vm.status == 'Available' || vm.status == 'true' || vm.status == true) {
         //console.log('statusCellFormatter: Available true', vm.status);
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success'>Available</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge bg-success'>Available</span></div>`,
           toolTip: value,
         };
       } else if (vm.status == 'Occupied' || vm.status == 'false' || vm.status == false) {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-secondary'>Occupied</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-danger'>Occupied</span></div>`,
           toolTip: value,
         };
       } else {

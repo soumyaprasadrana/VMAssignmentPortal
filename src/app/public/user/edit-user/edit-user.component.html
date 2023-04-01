@@ -3,14 +3,14 @@
 <div class="container-fluid-lg p-3 my-3">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="page-title ml-3">
+            <h3 class="page-title ms-3">
                 <i class="fa fa-user" area-label="false"></i> {{title}}
                 <hr>
             </h3>
         </div>
     </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="row  ml-4">
+        <div class="row  ms-4">
             <div class="col-lg-12">
                 <div class="row p-3 ">
                     <div class="col-sm-6">
@@ -19,7 +19,7 @@
                             <span class="fa fa-vcard form-control-prefix-icon text-muted" area-label="false"></span>
                             <input id="name" type="text" class="form-control form-control-include-icon" formControlName="user_name" [ngClass]="{ 'is-invalid': submitted && f.user_name.errors }">
                             <div *ngIf="submitted && f.user_name.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.user_name.errors.required">Full name is required</div>
+                                <div class="ms-1" *ngIf="f.user_name.errors.required">Full name is required</div>
                             </div>
                         </div>
                     </div>
@@ -29,8 +29,8 @@
                             <span class="fa fa-envelope form-control-prefix-icon text-muted" area-label="false"></span>
                             <input id="email" class="form-control form-control-include-icon" formControlName="user_email" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }">
                             <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
-                                <div class="ml-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
+                                <div class="ms-1" *ngIf="f.user_email.errors.required">E-Mail is required</div>
+                                <div class="ms-1" *ngIf="f.user_email.errors.email">Invalid E-Mail!</div>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <ng-select [items]="teams" bindLabel="team_desc" class="form-control-include-icon" placeholder="Select Team" bindValue="team_name" [formControl]="team" formControlName="team" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && f.team.errors }" ngDefaultControl>
                             </ng-select>
                             <div *ngIf="submitted && f.team.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.team.errors.required">Team is required</div>
+                                <div class="ms-1" *ngIf="f.team.errors.required">Team is required</div>
                             </div>
                         </div>
                     </div>
@@ -55,14 +55,14 @@
                 <div class="row">
                     <div class="col-xs-6 ">
 
-                        <h4 class="ml-3">
+                        <h4 class="ms-3">
 
                             <i class="fa fa-key" area-label="false"></i> User Permissions
                             <hr>
                         </h4>
                     </div>
                 </div>
-                <div class="row p-3 ml-4">
+                <div class="row p-3 ms-4">
                     <div class="col-sm-2 mr-0 pr-0">
                         <div class="form-group required">
                             <label for="remove_vm">Delete VM:</label>
@@ -70,7 +70,7 @@
                         <option *ngFor="let item of permissionValueList">{{item}}</option>
                     </select>
                             <div *ngIf="submitted && f.removeVM.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.removeVM.errors.required">Delete VM is required</div>
+                                <div class="ms-1" *ngIf="f.removeVM.errors.required">Delete VM is required</div>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <option *ngFor="let item of permissionValueList">{{item}}</option>
                     </select>
                             <div *ngIf="submitted && f.addUser.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.addUser.errors.required">Create User is required</div>
+                                <div class="ms-1" *ngIf="f.addUser.errors.required">Create User is required</div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                         <option *ngFor="let item of permissionValueList">{{item}}</option>
                     </select>
                             <div *ngIf="submitted && f.editUser.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.editUser.errors.required">Edit User is required</div>
+                                <div class="ms-1" *ngIf="f.editUser.errors.required">Edit User is required</div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                         <option *ngFor="let item of permissionValueList">{{item}}</option>
                     </select>
                             <div *ngIf="submitted && f.removeUser.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.removeUser.errors.required">Delete User is required</div>
+                                <div class="ms-1" *ngIf="f.removeUser.errors.required">Delete User is required</div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                 <div class="row p-3">
                     
                     <div class="col mr-0 ">
-                        <button type="submit" mat-button (click)="onSubmit" class="btn  float-sm-right text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
+                        <button type="submit" mat-button (click)="onSubmit" class="btn  float-sm-end text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
                     </div>
                 </div>
 

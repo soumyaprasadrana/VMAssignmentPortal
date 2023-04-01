@@ -35,7 +35,7 @@ export class LoginViewComponent implements OnInit {
   /* For View */
   showNavigationArrows = false;
   showNavigationIndicators = true;
-  images = [ 1, 2, 3, 4, 5, 6 ].map((n) => `assets/images/${n}.PNG`);
+  images = [ 2, 3, 4, 5, 6 ].map((n) => `assets/images/${n}.PNG`);
   /* For Validation */
   form: FormGroup = new FormGroup({
     password: new FormControl("", Validators.minLength(2)),
@@ -55,6 +55,7 @@ export class LoginViewComponent implements OnInit {
   subscription!: Subscription;
   theme: any;
   THEME_LOCAL = 'theme';
+  requestedFor = '';
   constructor(
     config: NgbCarouselConfig,
     private formBuilder: FormBuilder,
@@ -75,7 +76,8 @@ export class LoginViewComponent implements OnInit {
     var httpOptions = {
       headers: headers,
     };
-
+    if(typeof history.state.requestedFor !='undefined')
+      this.requestedFor = history.state.requestedFor;
     var hideloginfooter;
     this._client
       .get("api/config/hideloginfooter", httpOptions)
@@ -113,6 +115,10 @@ export class LoginViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const target: string|null = this.route.snapshot.queryParamMap.get('target');
+    if(target &&  target!=null)
+      this.requestedFor = target;
+    console.log(">>>>>>>>>>>>>> DEBUG0 >>>>>>>>>",this.requestedFor);
     this.form = this.formBuilder.group({
       username: [ "", Validators.required ],
       password: [ "", Validators.required ],
@@ -127,6 +133,17 @@ export class LoginViewComponent implements OnInit {
           this.alert.message = "Login Success";
           this.showAlert = true;
           this.spinner.setSpinnerState(true);
+          if(this.requestedFor.length !=0){
+            console.log(">>>>>>>>>>>>>> DEBUG0 >>>>>>>>> Inside If requstedFor != ''",this.requestedFor);
+            this.router
+            .navigate([ this.requestedFor ])
+            .then((res: any) => {
+              this.spinner.setSpinnerState(false);
+            })
+            .catch((err: any) => {
+              this.spinner.setSpinnerState(false);
+            });
+          }else{
           this.router
             .navigate([ "/portal/home/dash" ])
             .then((res: any) => {
@@ -135,6 +152,7 @@ export class LoginViewComponent implements OnInit {
             .catch((err: any) => {
               this.spinner.setSpinnerState(false);
             });
+          }
         }
       })
       .catch((result) => {
@@ -168,6 +186,17 @@ export class LoginViewComponent implements OnInit {
           this.alert.message = "Login Success";
           this.showAlert = true;
           this.spinner.setSpinnerState(true);
+          if(this.requestedFor.length !=0){
+            console.log(">>>>>>>>>>>>>> DEBUG0 >>>>>>>>> Inside If requstedFor != ''",this.requestedFor);
+            this.router
+            .navigate([ this.requestedFor ])
+            .then((res: any) => {
+              this.spinner.setSpinnerState(false);
+            })
+            .catch((err: any) => {
+              this.spinner.setSpinnerState(false);
+            });
+          }else{
           this.router
             .navigate([ "/portal/home/dash" ])
             .then((res: any) => {
@@ -176,6 +205,7 @@ export class LoginViewComponent implements OnInit {
             .catch((err: any) => {
               this.spinner.setSpinnerState(false);
             });
+          }
         } else {
           this.alert.type = "danger";
           this.alert.message = result.message;

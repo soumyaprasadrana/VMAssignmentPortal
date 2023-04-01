@@ -16,7 +16,7 @@ import { Router } from "@angular/router";
   selector: "app-richtext",
   template: `<div class="text-center">
   <div>
-  <span [ngbPopover]="richTextPopOver" [matTooltip]="'View Details'" [autoClose]="'outside'"  container="body" placement="bottom" class="btn  card badge badge-warning mui-warning"><i class="fa fa-file-text " aria-label="hidden"></i></span>
+  <span [ngbPopover]="richTextPopOver" [matTooltip]="'View Details'" [autoClose]="'outside'"  container="body" placement="bottom" class="btn  card badge bg-warning mui-warning"><i class="fa fa-file-text " aria-label="hidden"></i></span>
   <ng-template #richTextPopOver>
               <div *ngIf="data" class="richtext-container w-100">
                 <p class="w-100" [innerHtml]="sanitizer.bypassSecurityTrustHtml(data)">

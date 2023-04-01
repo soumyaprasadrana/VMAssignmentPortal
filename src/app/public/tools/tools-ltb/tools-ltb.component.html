@@ -18,7 +18,7 @@
 <div class="container-fluid mt-3 ">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="page-title ml-3">
+            <h3 class="page-title ms-3">
                 <i class="fa fa-desktop" area-label="false"></i> SSH Tool
                 <hr>
             </h3>
@@ -29,9 +29,9 @@
             </button>
         </div>
     </div>
-    <div class="ml-2 ">
-        <div class="row ml-5" *ngFor='let row of cardsMetaData'>
-            <div class="card-container column p-2" *ngFor='let card of row'>
+    <div class="ms-2 container">
+        <div class="row row-cols-auto ms-5" *ngFor='let row of cardsMetaData'>
+            <div class="card-container col p-2" *ngFor='let card of row'>
 
                 <app-ltb-button [cardWidth]="card.cardWidth" [cardHeigth]="card.cardHeight" [callback]="card.cardCallback" [title]="card.cardTitle" [inputFields]="card.cardFields" [commandQuerryParser]="card.commandQuerryParser" [queryFields]="card.queryFields"></app-ltb-button>
             </div>

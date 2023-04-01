@@ -18,11 +18,11 @@ import { Router } from "@angular/router";
   <table>
   <tr>
   <td class="left-align">
-  <span [ngbPopover]="warnPopOver" [autoClose]="'outside'"  container="body" placement="right" *ngIf="type=='warn'" class="btn  card badge badge-warning mui-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>
-  <span [ngbPopover]="alertPopOver" [autoClose]="'outside'"  container="body" placement="right" *ngIf="type=='alert'" class="btn card badge badge-danger customA mui-danger"><i class="fa fa-warning" aria-label="hidden"></i></span>
+  <span [ngbPopover]="warnPopOver" [autoClose]="'outside'"  container="body" placement="right" *ngIf="type=='warn'" class="btn  card badge bg-warning mui-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>
+  <span [ngbPopover]="alertPopOver" [autoClose]="'outside'"  container="body" placement="right" *ngIf="type=='alert'" class="btn card badge bg-danger customA mui-danger"><i class="fa fa-warning" aria-label="hidden"></i></span>
   </td>
   <td>
-  <!--<span class="badge" (click)="callParentFunction()" [innerHtml]="template">
+  <!--<span   (click)="callParentFunction()" [innerHtml]="template">
   </span>-->
   </td>
   </tr>
@@ -31,12 +31,12 @@ import { Router } from "@angular/router";
   </div>
   <ng-template #warnPopOver>
                 <p >
-                  <span><span class="badge badge-warning">[WARNING]</span><br> No of snapshots of this vm is more than allowed no of snapshots i.e. {{uiprop.warnSnapshot}}.</span>
+                  <span><span class="badge bg-warning">[WARNING]</span><br> No of snapshots of this vm is more than allowed no of snapshots i.e. {{uiprop.warnSnapshot}}.</span>
                 </p>
   </ng-template>
   <ng-template #alertPopOver>
                 <p >
-                <span><span class="badge badge-danger">[ALERT]</span> <span class="badge badge-primary">[NEED ATTENTION]</span><br> No of snapshots of this vm is more than allowed no of snapshots i.e {{uiprop.alertSnapshot}}.</span>
+                <span><span class="badge bg-danger">[ALERT]</span> <span class="badge bg-primary">[NEED ATTENTION]</span><br> No of snapshots of this vm is more than allowed no of snapshots i.e {{uiprop.alertSnapshot}}.</span>
                 </p>
   </ng-template>
   `,

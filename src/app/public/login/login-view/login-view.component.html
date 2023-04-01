@@ -13,18 +13,39 @@
 -->
 <app-navbar></app-navbar>
 
-<div class="container-fluid d-flex justify-content-between align-items-center ">
-    <div class="row no-gutter app-login-content">
+<div style="height:max-content !important" class="container-fluid d-flex justify-content-between align-items-center ">
+    <div class="row no-gutter w-100 app-login-content">
         <!-- The image half -->
         <div id="login-image-container" class="col-md-6 d-none d-md-flex bg-image" style="padding-top:50px;">
-            <ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" class="mh-100" style="width: 100%; ">
+            <!--<ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" class="mh-100" style="width: 100%; ">
                 <ng-template ngbSlide *ngFor="let image of images">
                     <div class="picsum-img-wrapper">
                         <img [src]="image" alt="Random slide" style="width:100%; margin:0 auto;">
                     </div>
 
                 </ng-template>
-            </ngb-carousel>
+            </ngb-carousel>-->
+            <div id="login-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="3" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="4" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#login-carousel" data-bs-slide-to="5" aria-label="Slide 2"></button>
+    
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" >
+        <img  alt="..." class="d-block w-100" src="assets/images/1.PNG">
+    </div>
+    
+    <div class="carousel-item" *ngFor="let image of images">
+      <img src="{{image}}" class="d-block w-100" alt="...">
+    </div>
+    
+  </div>
+</div>
 
             <hr>
 
@@ -45,7 +66,9 @@
                             <p class="text-muted mb-4">Please login to use VM Assignment Portal.</p>
 
                             <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                                <ngb-alert *ngIf="showAlert" [type]="alert.type" [dismissible]="false">{{ alert.message }}</ngb-alert>
+                                <div *ngIf="showAlert" class="alert" [ngClass]="{'alert-danger':alert.type=='danger','alert-success':alert.type=='success'}" role="alert">
+                                    {{ alert.message }}
+                                </div>
                                 <div class="form-group mb-3">
                                     <span class="fa fa-user form-control-prefix-icon text-muted" area-label="false"></span>
                                     <input id="username" type="text" placeholder="Username" formControlName="username" class="form-control form-control-include-icon " [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
@@ -62,7 +85,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary btn-block btn-portal text-uppercase mb-2 rounded-pill shadow-sm">Sign in</button>
+                                <button type="submit" class="btn btn-primary w-100 btn-block btn-portal text-uppercase mb-2 rounded-pill shadow-sm">Sign in</button>
                                 <div class="text-center d-flex justify-content-between mt-4"></div>
                             </form>
                         </div>

@@ -80,11 +80,12 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
   ngOnDestroy(): void {
     // Try to remove all attached resources from custom function
     {
-      if (
+      /*if (
         this.funContext.applicationType &&
         this.funContext.applicationType == "angularjs"
       )
-        location.reload();
+        //location.reload();
+        */
     }
   }
   initializeFunService() {
@@ -137,6 +138,7 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
                   }
                 })
                 .catch((err: any) => {
+                  this.spinner.setSpinnerState(false);
                   this.openDialog(
                     {
                       type: "alert",
@@ -205,6 +207,10 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
       this._funService.getUtils()
     );
     console.log("RESULT FROM CLIENTSCRIPT", this.funContext);
+
+    //Set utils to global object; If it's an angular js application user might use angularIntegrator module to use ANgular2 components
+    window.utils = this._funService.getUtils();
+
     this.funTemplate = this._funService.getFunctionTemalate(this.fun);
     console.log("CLIENTTEMPLATE ", this.funTemplate);
     if (
@@ -321,7 +327,7 @@ export class DynamicObjectAppUserDefinedFunctionPageComponent
         }
       });
     }
-    var js = [ "/assets/js/angular.min.js" ];
+    var js: any = [ "/assets/js/hybrid.app.routing.service.js" ];
 
     console.log("ANGULRJS :: DEBUG :: loadAngularJsLibrary :: js ::  ", js);
     for (var i = 0; i < js.length; i++) {

@@ -3,13 +3,10 @@
         <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
          {{data.title}}
        
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row p-3 ">
             <div class="col ">
@@ -17,7 +14,7 @@
                     <label for="snapName">Snapshot Name:</label>
                     <input name="snapName" id="snapName" class="form-control" formControlName="snapName" [ngClass]="{ 'is-invalid': submitted && f.snapName.errors }">
                     <div *ngIf="submitted && f.snapName.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.snapName.errors.required">Field is required</div>
+                        <div class="ms-1" *ngIf="f.snapName.errors.required">Field is required</div>
                     </div>
 
                 </div>
@@ -27,7 +24,7 @@
                     <label for="snapDesc">Snapshot Description:</label>
                     <input  name="snapDesc" id="snapDesc" class="form-control" formControlName="snapDesc" [ngClass]="{ 'is-invalid': submitted && f.snapDesc.errors }">
                     <div *ngIf="submitted && f.snapDesc.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.snapDesc.errors.required">Field is required</div>
+                        <div class="ms-1" *ngIf="f.snapDesc.errors.required">Field is required</div>
                     </div>
 
                 </div>

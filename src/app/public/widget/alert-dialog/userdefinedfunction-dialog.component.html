@@ -4,10 +4,7 @@
         <img src="assets/images/alert.svg" *ngIf="type=='alert'" class="titleicon far fa-2 " style="fill:#b72727;vertical-align:sub;height:20px;">
         <img src="assets/images/alert.svg" *ngIf="type=='warn'" class="titleicon far fa-2 " style="fill:#f5cd01;vertical-align:sub;height:20px;">
          System Message 
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
 <mat-dialog-content class="alertMssg">

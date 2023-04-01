@@ -3,14 +3,14 @@
 <div class="container-fluid-lg p-3 my-3  ">
     <div class="row">
         <div class="col-xs-6 ">
-            <h3 class="page-title ml-3">
+            <h3 class="page-title ms-3">
                 <i class="fa fa-sticky-note-o" area-label="false"></i> {{title}}
                 <hr>
             </h3>
         </div>
     </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="row  ml-4">
+        <div class="row  ms-4">
             <div class="col-lg-12">
                 <div class="row p-1 ">
                     <div class="col-sm-6">
@@ -18,7 +18,7 @@
                             <label for="description">Description:</label>
                             <input [readonly]="editMode" id="description" type="text" class="form-control" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
                             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.description.errors.required">description is required</div>
+                                <div class="ms-1" *ngIf="f.description.errors.required">description is required</div>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                             <label for="keywords">Keywords:</label>
                             <input id="keywords" type="text" class="form-control" formControlName="keywords" [ngClass]="{ 'is-invalid': submitted && f.keywords.errors }">
                             <div *ngIf="submitted && f.keywords.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.keywords.errors.required">keywordsname is required</div>
+                                <div class="ms-1" *ngIf="f.keywords.errors.required">keywordsname is required</div>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 <option *ngFor="let item of isGlobalValueList">{{item}}</option>
                             </select>
                             <div *ngIf="submitted && f.is_global.errors" class="invalid-feedback">
-                                <div class="ml-1" *ngIf="f.is_global.errors.required">Is a global technote? is required</div>
+                                <div class="ms-1" *ngIf="f.is_global.errors.required">Is a global technote? is required</div>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             </ng-select>
                             <div *ngIf="submitted && f.ngxteam.errors" class="invalid-feedback">
 
-                                <div class="ml-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
+                                <div class="ms-1" *ngIf="f.ngxteam.errors.required">Team is required</div>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="form-group required">
                         <label for="technote">Technote:</label>
                         <div *ngIf="submitted && f.technote.errors">
-                            <div class="ml-1" *ngIf="f.technote.errors.required" [ngClass]="{ 'is-richtext-invalid is-invalid': submitted && f.technote.errors.required }">Technote is required</div>
+                            <div class="ms-1" *ngIf="f.technote.errors.required" [ngClass]="{ 'is-richtext-invalid is-invalid': submitted && f.technote.errors.required }">Technote is required</div>
                         </div>
                         <quill-editor [styles]="{height: '200px'}" name="technote" id="technote" formControlName="technote" [ngClass]="{ 'is-richtext-invalid is-invalid': submitted && f.technote.errors }" ngDefaultControl></quill-editor>
                     </div>
@@ -76,7 +76,7 @@
 
         <div class="row ">
             <div class="col-lg-12 ">
-                <button mat-button type="submit" class="btn float-sm-right text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
+                <button mat-button type="submit" class="btn float-sm-end text-capitalize btn-primary mui-w-100 mui-text-bold">Submit</button>
             </div>
         </div>
     </form>

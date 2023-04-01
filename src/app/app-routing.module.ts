@@ -34,6 +34,11 @@ const routes: Routes = [
     data: { title: "Home" },
   },
   {
+    path: "portal/docs",
+    loadChildren: () => import(`./docs/docs.module`).then((m) => m.DocsModule),
+    data: { title: "Docs" },
+  },
+  {
     path: "**",
     component: PageNotFoundComponent,
     data: { title: "404-Page Not Found" },

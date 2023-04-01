@@ -556,6 +556,10 @@ module.exports = {
   },
   getUserFunction: async function(req, res, next) {
     const funName = req.params.id;
+    if (!config.userDefinedFunctions.includes(funName))
+      return res
+        .status(404)
+        .send({ status: false, message: "Requested function not found!" });
     try {
       const userFun = require("./functions/" + funName + "/client");
       console.log(userFun);
@@ -585,6 +589,10 @@ module.exports = {
   },
   getUserFunctionTemplate: function(req, res, next) {
     const funName = req.params.id;
+    if (!config.userDefinedFunctions.includes(funName))
+      return res
+        .status(404)
+        .send({ status: false, message: "Requested function not found!" });
     /*if (
       _functions[funName + "template"] &&
       _functions[funName + "template"].toString()

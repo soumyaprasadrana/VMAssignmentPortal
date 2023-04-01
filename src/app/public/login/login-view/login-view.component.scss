@@ -38,3 +38,6 @@ a.carousel-control-next {
   overflow: hidden;
   position: absolute;
 }
+.carousel-indicators [data-bs-target] {
+  background-color: var(--blue);
+}

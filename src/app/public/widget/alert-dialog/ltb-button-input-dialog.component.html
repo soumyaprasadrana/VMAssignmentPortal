@@ -1,13 +1,10 @@
 <h1 mat-dialog-title class="dialog-title">
     <span>
         Required Fields
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <br>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row p-3 ">
@@ -17,7 +14,7 @@
                     <label for="{{item.field_name}}">{{item.label}}</label>
                     <input id="{{item.field_name}}" class="form-control" formControlName="{{item.field_name}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(item.field_name) }">
                     <div *ngIf="submitted && checkIsInvalid(item.field_name)" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired(item.field_name)">Field is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired(item.field_name)">Field is required</div>
                     </div>
 
                 </div>

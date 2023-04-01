@@ -34,7 +34,7 @@
     }
 </style>
 <div class="container-fluid mt-3  no-scroller" *ngIf="isLoadedData && isLoadedAttributes">
-    <ngb-alert id="chart-option-sections" type="warning" [dismissible]="false">
+    <div id="chart-option-sections" class="alert alert-primary">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="row w-100">
                 <div class="col-sm-2">
@@ -44,7 +44,7 @@
                             <mat-option value="{{item.name.value}}" *ngFor="let item of attributeList">{{item.alias.value}}</mat-option>
                         </mat-select>
                         <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.field.errors.required">Field is required</div>
+                            <div class="ms-1" *ngIf="f.field.errors.required">Field is required</div>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         <label for="height">Chart Height:</label>
                         <input id="height" type="text" class="form-control" formControlName="height" [ngClass]="{ 'is-invalid': submitted && f.height.errors }">
                         <div *ngIf="submitted && f.height.errors" class="invalid-feedback">
-                            <div class="ml-1" *ngIf="f.height.errors.required">Height is required</div>
+                            <div class="ms-1" *ngIf="f.height.errors.required">Height is required</div>
                         </div>
                     </div>
                 </div>
@@ -70,16 +70,16 @@
                         </mat-button-toggle-group>
                         </div>
                 </div>
-                <div class="col-sm-2  ml-5">
+                <!--<div class="col-sm-2  ms-5">
                     <div class="form-group ">
                         <label for="button"> &nbsp; </label>
-                        <button mat-stroked-button name="button" type="submit" (click)="onSubmit" class="btn form-control float-sm-right text-capitalize" style="background-color: white;">Submit</button>
+                        <button mat-stroked-button name="button" type="submit" (click)="onSubmit" class="btn form-control float-sm-end text-capitalize" style="background-color: white;">Submit</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             
         </form>
-    </ngb-alert>
+    </div>
   
     <div class="p-4">
     <div id="pie-chart-parent" *ngIf="showPie" [ngStyle]="{'height.px': cardHeight}">

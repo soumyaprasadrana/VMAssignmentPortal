@@ -211,9 +211,17 @@ export class VmChartComponent implements OnInit {
   }
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      field: ['OS', Validators.required],
+      field: ['', Validators.required],
       chartType: ['PIE CHART', Validators.required],
       height: [300, Validators.required],
+    });
+    this.registerForm.valueChanges.subscribe(val => {
+      if(val.field != ''){
+      this.toggleChart(val.chartType);
+      this.getParseData(val.field);
+    this.cardHeight = val.height;
+    this.showChart = true;
+      }
     });
   }
   /**

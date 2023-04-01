@@ -254,13 +254,39 @@ export class AngularShellComponent implements OnInit, AfterViewInit, OnChanges {
     console.log(METHOD + "::" + " grid  :: ",this.grid);
     console.log(METHOD + "::" + " row  :: ",this.row);
     setTimeout(() => {
-      if (this.context.eventBindings) {
-        console.log("<AngularShellComponent> :: found event bindings ::");
-        for (var item in this.context.eventBindings) {
-          console.log(
-            "<AngularShellComponent> :: found event bindings :: item :: ",
-            item
-          );
+       console.log("<AngularShellComponent> :: re-render ::");
+
+    if (
+            typeof this.context.angularScript != "undefined" &&
+            typeof this.context.angularScript == "function"
+          ){
+            console.log("<AngularShellComponent> :: re-render ::" + " angularScript :: before")
+            this.context.angularScript(
+              this.context,
+              this._funService.getUtils()
+            );
+             if (
+            typeof this.context.angularBootstrapScript != "undefined" &&
+            typeof this.context.angularBootstrapScript == "function"
+            ){
+               console.log("<AngularShellComponent> :: re-render ::" + " angularBootstrapScript :: before")
+              this.context.angularBootstrapScript(
+              this.context,
+              this._funService.getUtils()
+            );
+            console.log("<AngularShellComponent> :: re-render ::" + " angularBootstrapScript :: after")
+            }
+            console.log("<AngularShellComponent> :: re-render ::" + " angularScript :: after")
+            }
+    //View has beeen initialized now we can bind events
+    if (this.context.eventBindings) {
+      console.log("<AngularShellComponent> :: re-render :: found event bindings ::");
+      for (var item in this.context.eventBindings) {
+        console.log(
+          "<AngularShellComponent> :: re-render :: found event bindings :: item :: ",
+          item
+        );
+        try {
           const onClickFun = this.context.eventBindings[item].event;
           const eventName = this.context.eventBindings[item].type;
           this.elementRef.nativeElement
@@ -268,15 +294,33 @@ export class AngularShellComponent implements OnInit, AfterViewInit, OnChanges {
             .addEventListener(eventName, () => {
               onClickFun(this.context, event);
             });
-        }
+        } catch (e) {}
       }
-      if (
-        this.context.templateScript &&
-        typeof this.context.templateScript == "function"
-      ) {
-        this.context.templateScript(this.context, this._funService.getUtils());
+    }
+    
+    //Process post render of angular path components
+    try {
+      console.log("<AngularShellComponent> :: re-render :: createAngularComponents :: before");
+      this.createAngularComponent();
+      console.log("<AngularShellComponent> :: re-render :: createAngularComponents :: after");
+    } catch (e) {}
+    // Process Render Angular Components
+    try {
+      if(this.context.angularComponents){
+          console.log("<AngularShellComponent> :: re-render :: renderAngularComponents :: before");
+          this.renderAngularComponents(this.context.angularComponents);
+          console.log("<AngularShellComponent> :: re-render :: renderAngularComponents :: after");
       }
-    });
+    } catch (e) {console.log(e);}
+    if (
+      this.context.templateScript &&
+      typeof this.context.templateScript == "function"
+    ) {
+      console.log("<AngularShellComponent> :: re-render :: templateScript :: before");
+      this.context.templateScript(this.context, this._funService.getUtils());
+      console.log("<AngularShellComponent> :: re-render :: templateScript :: after");
+    }
+    },300);
   }
 
  

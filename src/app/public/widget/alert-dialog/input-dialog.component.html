@@ -3,13 +3,10 @@
         <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
          {{data.title}}
        
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" (click)="onClose()">
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+    <i (click)="onClose()" aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <br> {{data.label}}
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row p-3 ">
@@ -20,7 +17,7 @@
                     </ng-select>
                     <input *ngIf="data.isText" id="dataCtrl" class="form-control" formControlName="dataCtrl" [ngClass]="{ 'is-invalid': submitted && f.dataCtrl.errors }">
                     <div *ngIf="submitted && f.dataCtrl.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
+                        <div class="ms-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
                     </div>
 
                 </div>

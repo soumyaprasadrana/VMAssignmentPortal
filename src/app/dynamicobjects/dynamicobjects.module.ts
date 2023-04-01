@@ -75,7 +75,6 @@ import { AttributeDirective } from "../public/widget/utils/attributes";
         rightPadding: 10,
       },
     }),
-
     NgSelectModule,
   ],
 })

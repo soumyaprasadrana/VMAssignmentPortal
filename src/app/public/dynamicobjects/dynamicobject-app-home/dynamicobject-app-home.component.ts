@@ -141,6 +141,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     var funPromise =  this.dynamicobjectappServie.getDynamicObjectAppFunctions(
       this.app
     );
+    attributeListPromise.push(funPromise);
     funPromise.then((res:any)=>{
       res = JSON.parse(res);
         //console.log(res);
