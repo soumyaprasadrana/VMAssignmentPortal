@@ -33,6 +33,9 @@ module.exports = function(app) {
   app.post("/api/dynamicobjects/*", portalAuth.ensureAuthenticated);
   app.get("/api/technotes/*", portalAuth.ensureAuthenticated);
   app.post("/api/technotes/*", portalAuth.ensureAuthenticated);
+  app.get("/api/powercli/*", portalAuth.ensureAuthenticated);
+  app.post("/api/powercli/*", portalAuth.ensureAuthenticated);
+
   app.get("/api/login", portalAuth.authenticate);
   app.post("/api/login", portalAuth.authenticate);
   app.post("/api/logout", portalAuth.logOut);
@@ -175,4 +178,5 @@ module.exports = function(app) {
   app.get("/api", (req, res, next) => {
     res.status(200).send("VM Assignment Portal API Listening ...");
   });
+  app.post("/api/powercli/execute", commonCtrl.executePowerCLICommand);
 };

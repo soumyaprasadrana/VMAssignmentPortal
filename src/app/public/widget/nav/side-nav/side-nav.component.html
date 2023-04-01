@@ -1,46 +1,49 @@
 <mat-nav-list class="app-side-nav">
     <a mat-list-item [routerLink]="['/portal/home/dash']" (click)="onSidenavClose()">
-        <mat-icon>home</mat-icon> <span class="ml-1">Home</span>
+        <mat-icon>home</mat-icon> <span class="ms-1">Home</span>
     </a>
     <a mat-list-item [routerLink]="['/portal/home/vmm/dash']" (click)="onSidenavClose()">
-        <mat-icon>desktop_windows</mat-icon> <span class="ml-1">VMM</span>
+        <mat-icon>desktop_windows</mat-icon> <span class="ms-1">VMM</span>
     </a>
     <a mat-list-item [routerLink]="['/portal/home/chart']" (click)="onSidenavClose()">
-        <mat-icon>pie_chart</mat-icon> <span class="ml-1">Charts</span>
+        <mat-icon>pie_chart</mat-icon> <span class="ms-1">Charts</span>
     </a>
     <a *ngIf="this.loggedUser.enableSnapshotManagements" mat-list-item [routerLink]="['/portal/home/vmm/snapshots']" (click)="onSidenavClose()">
-        <mat-icon>memory</mat-icon> <span class="ml-1">Snapshots</span>
+        <mat-icon>memory</mat-icon> <span class="ms-1">Snapshots</span>
     </a>
     <a *ngIf="loggedUser.permissions.is_teamLead || loggedUser.permissions.update_user || loggedUser.permissions.create_user || loggedUser.permissions.delete_user" mat-list-item [routerLink]="['/portal/home/user/dash']" (click)="onSidenavClose()">
-        <mat-icon>people</mat-icon> <span class="ml-1">Users</span>
+        <mat-icon>people</mat-icon> <span class="ms-1">Users</span>
     </a>
     <a mat-list-item [routerLink]="['/portal/home/tools/dash']" (click)="onSidenavClose()">
-        <mat-icon>build_circle</mat-icon> <span class="ml-1">Tools</span>
+        <mat-icon>build_circle</mat-icon> <span class="ms-1">Tools</span>
     </a>
     <a *ngIf="loggedUser.permissions.is_admin || loggedUser.permissions.is_teamLead" mat-list-item [routerLink]="['/portal/home/admin/dash']" (click)="onSidenavClose()">
-        <mat-icon>settings</mat-icon> <span class="ml-1">Administration</span>
+        <mat-icon>settings</mat-icon> <span class="ms-1">Administration</span>
     </a>
     <a mat-list-item [matMenuTriggerFor]="themeMenu" id="themeDropdown">
         <mat-icon>
             format_color_fill
-        </mat-icon><span class="ml-1">Themes</span>
+        </mat-icon><span class="ms-1">Themes</span>
     </a>
     <a mat-list-item *ngIf="quicklinks.length>0" [matMenuTriggerFor]="LinkMenu" id="linkDropdown">
         <mat-icon>
             link
-        </mat-icon><span class="ml-1">Quick Links</span>
+        </mat-icon><span class="ms-1">Quick Links</span>
     </a>
     <mat-menu #LinkMenu="matMenu" yPosition="below">
         <app-quick-link *ngFor="let item of quicklinks" [iconClass]="item.iconClass" [iconSrc]="item.iconSrc" [linkUrl]="item.linkUrl" [linkTitle]="item.linkTitle"> </app-quick-link>
     </mat-menu>
 
     <a mat-list-item [matMenuTriggerFor]="sideMenu">
-        <mat-icon>perm_identity</mat-icon> <span class="ml-1">{{loggedUser.name | uppercase }}</span>
+        <mat-icon>perm_identity</mat-icon> <span class="ms-1">{{loggedUser.name | uppercase }}</span>
 
 
     </a>
     <a mat-list-item (click)="onSidenavClose()">
         <mat-icon>close</mat-icon> Close
+    </a>
+    <a mat-list-item [routerLink]="['/portal/docs']" (click)="onSidenavClose()">
+        <mat-icon>close</mat-icon> Documentation
     </a>
     <mat-menu #sideMenu="matMenu" xPosition="after">
         <button mat-menu-item (click)="openDialog()"><span><i

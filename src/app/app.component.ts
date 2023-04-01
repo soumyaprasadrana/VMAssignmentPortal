@@ -10,7 +10,7 @@
  * @desc App Component
  */
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, NavigationStart, NavigationCancel, NavigationError } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SpinnerService } from './public/services/spinner-service';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';

@@ -151,6 +151,14 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
       chartType: ['PIE CHART', Validators.required],
       height: [300, Validators.required],
     });
+     this.registerForm.valueChanges.subscribe(val => {
+      if(val.field != ''){
+      this.toggleChart(val.chartType);
+      this.getParseData(val.field);
+    this.cardHeight = val.height;
+    this.showChart = true;
+      }
+    });
     this.app = this.route.snapshot.params.app;
     if (typeof history.state.recordData == 'undefined') {
       var promiseR = this.dynamicobjectappServie.getDynamicObjectAppRecords(this.app);
@@ -402,8 +410,9 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
       }
     });
     
-    console.log(this.resultSet)
+    console.log(">>>>>>>>>>> CHAT RESULT >>>>>>>>>>>>",result)
     this.resultSet = result;
+
   }
   /**
    * Group by function to extract data from vmList

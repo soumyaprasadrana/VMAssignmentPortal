@@ -48,3 +48,24 @@ $form-control-focus-box-shadow: $custom-alert-background;
     z-index: 9999 !important;
   }
 }
+a {
+  text-decoration: none !important;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.sidenav-container {
+  width: auto !important;
+  height: max-content !important;
+}
+.carousel-indicators {
+  list-style-type: none !important;
+}
+.form-group {
+  position: relative;
+}

@@ -14,6 +14,7 @@ import { Injectable } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Filters } from "angular-slickgrid";
 import { AlertDialogComponent } from "../widget/alert-dialog/alert-dialog.component";
 import { InputDialogComponent } from "../widget/alert-dialog/input-dialog.component";
 import { ToastService } from "../widget/toast/toast-service";
@@ -101,6 +102,8 @@ export class UserDefinedFunctionsService {
             return this._http;
           case "shell":
             return this._shell;
+          case "slikFilters":
+            return Filters;
         }
         return null;
       },

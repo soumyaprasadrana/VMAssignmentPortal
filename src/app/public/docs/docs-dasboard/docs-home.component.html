@@ -1,0 +1,159 @@
+ <style>
+    /* Hero Section */
+    .hero-section {
+      background-image: url("https://images.unsplash.com/photo-1505409088100-1d25bca83b24?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHZpdGFsaWFuJTIwbWV0YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
+      background-position: center;
+      background-size: cover;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .hero-section h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      text-shadow: 2px 2px #000;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .hero-section p {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 2rem;
+    }
+    .hero-section a {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      background-color: #007bff;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    .hero-section a:hover {
+      background-color: #0062cc;
+    }
+  </style>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <h1>VM Assignment Portal</h1>
+    <p>A web-based application to simplify VM management within your team</p>
+    <a href="#learn-more">Learn More</a>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container my-5">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h2>Features</h2>
+        <ul>
+          <li>Create and manage VM entries</li>
+          <li>Assign, release, and update VMs</li>
+          <li>Snapshot management</li>
+          <li>Integrated with vCenter</li>
+        </ul>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h2>Roles</h2>
+        <ul>
+          <li>Admin</li>
+          <li>Team Leader</li>
+          <li>User</li>
+        </ul>
+      </div>
+    </div>
+</main>
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <h3>Team Management</h3>
+                    <p>Create teams and team leader accounts, and manage VMs at the team level</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature">
+                    <i class="fas fa-hdd"></i>
+                    <h3>VM Management</h3>
+                    <p>Create, assign, release, and update VMs, and manage snapshots and comments</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Advanced Analytics</h3>
+                    <p>View VM data in different chart views and link multiple VMs to a single VM and see the linked VMs tree</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>About VM Assignment Portal</h2>
+                <p>VM Assignment Portal (VM AP) is a web-based application designed to simplify the management of virtual machines within a team. The application is built on Node.js and Angular 13, providing a more enhanced user interface with advanced features.</p>
+                <p>VM AP allows for the creation of VM entries, after which various operations like assign, release, and snapshot management can be performed. The portal is integrated with vCenter to get VM information and perform actions like taking and reverting snapshots. VMs of one team are not visible to another team, and all team leaders, users, and VMs are mapped with their team.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="img/about-img.png" alt="About VM AP Image">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+This code includes a hero section with a background image and a call to action button to get started. You can customize the text and button to fit your needs. Additionally, the code includes links to Bootstrap 5 CSS and JS, which are used to style the page and add interactive features.
+
+<h1>Comprehensive Introduction to VM Assignment Portal</h1>
+<p>VM Assignment Portal (VM AP) is a web application that enables teams to easily manage their virtual machine (VM) related activities. It allows users to create VM entries and perform various operations such as assigning and releasing VMs. The application is integrated with VCenter to get VM information and perform actions like taking and reverting snapshots.</p>
+<h2>Roles in VM Assignment Portal</h2>
+<p>VM Assignment Portal has three roles:</p>
+<ol>
+  <li>Admin</li>
+  <li>Team Leader</li>
+  <li>User</li>
+</ol>
+<p>The Admin creates Team and Team Leader accounts. The Team Leader can create Users and add VMs. Almost all basic operations of the VM Assignment Portal can be performed by the User.</p>
+<h2>Team Leader</h2>
+<p>The Team Leader can manage various VM Assignment Portal activities at the team level. In case a new VM is required, the Team Leader sends a request to their manager. It is the responsibility of the Team Leader to monitor snapshot count and keep them less than 6 in all VMs.</p>
+<p>The following actions can be performed by the Team Leader:</p>
+<ul>
+  <li>Create User</li>
+  <li>Edit User</li>
+  <li>Delete User</li>
+  <li>Remove VM</li>
+  <li>Sync Snapshot Count</li>
+  <li>Sync VM Additional Data</li>
+  <li>Activity Logs</li>
+</ul>
+<p>The Snapshot Count of all the VMs of the team can be synced from VCenter. The Additional Data of all the VMs of the team can be synced from VCenter.</p>
+<h2>User</h2>
+<p>The User can perform various operations, including adding, assigning, releasing, updating VMs, adding comments, deleting comments, opening ICD, opening SP, Linux Tool Box, checking ICD Upgrade Status, DB Tool Box, snapshot management, and adding additional information. Almost all basic operations of the VM Assignment Portal can be performed by the User.</p>
+<p>When a new VM is required, Users shall contact their Team Leader. The following operations can be performed by the User:</p>
+<ul>
+  <li>Add VM</li>
+  <li>Assign VM</li>
+  <li>Release VM</li>
+  <li>Update VM</li>
+  <li>Add Comment</li>
+  <li>Delete Comment</li>
+  <li>Open ICD</li>
+  <li>Open SP</li>
+  <li>Linux Tool Box</li>
+  <li>Check ICD Upgrade Status</li>
+  <li>DB Tool Box</li>
+  <li>Snapshot Management</li>
+  <li>Add Additional Info</li>
+</ul>
+<p>Various snapshot related operations can be performed from the VM Assignment Portal. A new snapshot can be taken by clicking on the 'Take Snapshot' button. Users should not keep more than 5 snapshots on any VM (as per IBM project guidelines). The VM can be reverted to any existing snapshot. The 'View All Snapshots' option shall fetch the list of all snapshots taken on all VMs of the team. The 'Search Snapshots' option shall fetch a list of all snapshots having searched keyword in their Name or Description.</p>

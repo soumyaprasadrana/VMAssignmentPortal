@@ -115,4 +115,20 @@ module.exports = {
     };
     _client.get(httpOptions, req, res, next);
   },
+  executePowerCLICommand: function(req, res, next) {
+    logger.info(req.body);
+    _client.post(
+      _client.getHttpPostOptionsWithCustomQS(
+        req,
+        config.powercli_execute_rest_path,
+        {
+          AUTH: req.user.auth,
+          JSESSIONID: req.user.jsession,
+        }
+      ),
+      req,
+      res,
+      next
+    );
+  },
 };

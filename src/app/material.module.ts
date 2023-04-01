@@ -94,8 +94,6 @@ import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
     MatTableModule,
     QuillModule,
     MatSliderModule,
-    NgbAlertModule,
-    NgbCarouselModule,
     NgbToastModule,
     ToastModule,
     ClipboardModule,

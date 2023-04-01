@@ -9,13 +9,11 @@
  * @modify date 2022-03-25 18:26:41
  * @desc Tree Diagram Component
  */
-import { Component, Input,OnInit,TemplateRef } from '@angular/core';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
-
-
+import { Component, Input, OnInit, TemplateRef } from "@angular/core";
+import { throwToolbarMixedModesError } from "@angular/material/toolbar";
 
 @Component({
-  selector: 'app-snap-view',
+  selector: "app-snap-view",
   template: `
   <div class="treeNode">
 
@@ -66,7 +64,7 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
               <div class="icon">
 
-              <i class="fa ml-4 fa-map-marker badge badge-warning" style="color:#fff" area-label="hidden"> </i></div>
+              <i class="fa ms-4 fa-map-marker badge bg-warning" style="color:#fff" area-label="hidden"> </i></div>
 
    </div>
 
@@ -84,7 +82,8 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
     </div>
     `,
-  styles: [`
+  styles: [
+    `
   .treeNode{
 
     width: max-content;
@@ -125,17 +124,15 @@ cursor: pointer;
 
 }
 
-  `]
+  `,
+  ],
 })
-export class SnapViewComponent  implements OnInit{
-  @Input() parentObject?:any;
-  @Input() snap?:any;
-  constructor(){
-    
-  }
-  toggleSelectedSnap(snap:any){
+export class SnapViewComponent implements OnInit {
+  @Input() parentObject?: any;
+  @Input() snap?: any;
+  constructor() {}
+  toggleSelectedSnap(snap: any) {
     this.parentObject.toggleSelectedSnap(snap);
   }
-  ngOnInit(){
-  }
-  }
+  ngOnInit() {}
+}

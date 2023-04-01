@@ -2,14 +2,11 @@
     <span>
         <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
          {{data.title}}
-       
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+    
+    <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <br>
     <a mat-button href="{{sampleDownloadUrl}}">
         <mat-icon>cloud_download</mat-icon><span>Download sample sheet.</span></a>
@@ -25,8 +22,8 @@
                             </button>
                         </div>
                         <div class="col-sm">
-                            <span *ngIf="f.dataCtrl.value" class="ml-3"> File Name: {{getFileName(f.dataCtrl.value)}} </span>
-                            <span *ngIf="!f.dataCtrl.value" class="ml-3"> No file choosen </span>
+                            <span *ngIf="f.dataCtrl.value" class="ms-3"> File Name: {{getFileName(f.dataCtrl.value)}} </span>
+                            <span *ngIf="!f.dataCtrl.value" class="ms-3"> No file choosen </span>
                         </div>
                     </div>
                 -->
@@ -35,7 +32,7 @@
 
                     <!--    <input #dataCtrl (change)="onFileSelect($event)" type="file" id="dataCtrl" class="form-control" formControlName="dataCtrl" [ngClass]="{ 'is-invalid': submitted && f.dataCtrl.errors }" style="display:none;" accept=".xlsx">
                     <div *ngIf="submitted && f.dataCtrl.errors" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
+                        <div class="ms-1" *ngIf="f.dataCtrl.errors.required">Field is required</div>
                     </div>-->
 
                 </div>

@@ -1087,12 +1087,12 @@ export class HomePageComponent implements OnInit {
       if (vm.status == 'Available') {
         //console.log('statusCellFormatter: Available true', vm.status);
         return {
-          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge badge-success mui-success'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'> <span style='text-align:center;padding:5px;' class='badge bg-success mui-success'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.status == 'Occupied') {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge badge-secondary'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-danger'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
@@ -1155,17 +1155,17 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;width:auto;' > <span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;color:#000;' > <span  class='  ${this.loggedUser.enableBadgeForSnapWarning?'badge bg-warning':this.loggedUser.disableColorForSnapWarning?'':'badge warnSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;color:#000;' ><span style='text-align:center;color:#000;' class=' ${this.loggedUser.enableBadgeForSnapWarning?'badge bg-danger':this.loggedUser.disableColorForSnapWarning?'':'badge alertSnapshot'}'>${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' class='badge'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;' ><span style='text-align:center' >${value}</span></div>`,
           toolTip: value,
         };
       }
@@ -1180,17 +1180,17 @@ export class HomePageComponent implements OnInit {
         vm.snap_count <= this.properties.alertSnapshot
       ) {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'> <span   class="badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}">${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'> <span   class="badge ${this.loggedUser.enableBadgeForSnapWarning?'bg-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}">${value}</span></div>`,
           toolTip: value,
         };
       } else if (vm.snap_count > this.properties.alertSnapshot) {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}' >${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'bg-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}' >${value}</span></div>`,
           toolTip: value,
         };
       } else {
         return {
-          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center' class="badge">${value}</span></div>`,
+          text: `<div style='text-align:center;text-transform:capitalize;width:auto;'><span style='text-align:center'  >${value}</span></div>`,
           toolTip: value,
         };
       }
@@ -1445,12 +1445,12 @@ export class HomePageComponent implements OnInit {
       <table>
       <tr>
       <td class="left-align">${(vm.snap_count >= this.properties.warnSnapshot &&
-        vm.snap_count <= this.properties.alertSnapshot)?'<span placement="right"  class="btn  card badge badge-warning mui-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
-      ${(vm.snap_count > this.properties.alertSnapshot)?'<span placement="right"  class="btn card badge badge-danger customA mui-danger"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+        vm.snap_count <= this.properties.alertSnapshot)?'<span placement="right"  class="btn  card badge bg-warning mui-warning"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
+      ${(vm.snap_count > this.properties.alertSnapshot)?'<span placement="right"  class="btn card badge bg-danger customA mui-danger"><i class="fa fa-warning" aria-label="hidden"></i></span>':''}
       
       </td>
       <td>
-      <!--<span class="badge" (click)="callParentFunction()" [innerHtml]="template">
+      <!--<span   (click)="callParentFunction()" [innerHtml]="template">
       </span>-->
       </td>
       </tr>
@@ -1535,7 +1535,7 @@ export class HomePageComponent implements OnInit {
         excludeFromColumnPicker:true,
         resizable:false,
         formatter: snapshotWarnFormatter,
-        width:30,
+        width:40,
         headerCssClass:'',
         cssClass:'slick-cell-checkboxse',
         customTooltip:{
@@ -2202,9 +2202,9 @@ export class HomePageComponent implements OnInit {
         dataContext.snap_count >= this.properties.warnSnapshot &&
         dataContext.snap_count <= this.properties.alertSnapshot
       ) {
-        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}'>${dataContext.ip}</span>`,type:'warn',uiprop:this.properties });
+        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'bg-warning':this.loggedUser.disableColorForSnapWarning?'':'warnSnapshot'}'>${dataContext.ip}</span>`,type:'warn',uiprop:this.properties });
       } else if (dataContext.snap_count > this.properties.alertSnapshot) {
-        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'badge-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}'>${dataContext.ip}</span>`,type:'alert',uiprop:this.properties });
+        Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:`<span  class=' badge ${this.loggedUser.enableBadgeForSnapWarning?'bg-danger':this.loggedUser.disableColorForSnapWarning?'':'alertSnapshot'}'>${dataContext.ip}</span>`,type:'alert',uiprop:this.properties });
       } else {
         Object.assign(componentOutput.componentRef.instance, { data: dataContext,template:dataContext.ip,uiprop:this.properties });  
       }

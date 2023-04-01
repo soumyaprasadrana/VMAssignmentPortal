@@ -13,14 +13,14 @@
 -->
 <div *ngIf="visible" class="card" [ngStyle]="{'width.px':cardWidth ,'height.px': cardHeight}">
     <div [routerLink]="cardRouterLink" [state]="cardRouterState" class="card-body text-center" (click)="clickHandle()">
-        <span class="card-notify-badge" [ngClass]="{'card-notify-badge-danger' : cardDanger}"><i class="{{badgeIcon}}"></i></span>
+        <span class="card-notify-badge" [ngClass]="{'card-notify-bg-danger' : cardDanger}"><i class="{{badgeIcon}}"></i></span>
         <h1 class="h4 bg-light -1 text-muted link pe-auto  center-block ">
             <span class="fa-stack">
                  <i class="{{cardIconClass}} fa-stack-2x card-icon-color" [ngStyle]="{'color':cardIconColor}"  area-label="false"></i>
-                <i *ngIf="cardStackIcon" class="h5 {{cardStackIcon}} fa-stack-1x ml-1 mt-1 card-icon-color" [ngStyle]="{'color':cardStackIconColor}"></i>
+                <i *ngIf="cardStackIcon" class="h5 {{cardStackIcon}} fa-stack-1x ms-1 mt-1 card-icon-color" [ngStyle]="{'color':cardStackIconColor}"></i>
             </span>
             <br>
-            <span class="ml-2 mt-2 align-middle">{{cardTitle}}</span>
+            <span class="ms-2 mt-2 align-middle">{{cardTitle}}</span>
         </h1>
         <ng-template #tipContent>{{cardText}}</ng-template>
         <p [clamp]="cardTextClamp" [ngbTooltip]="cardTextClamp?tipContent:null" [placement]="cardTitle.includes('Dynamic Objects')?'top':'bottom'" class="card-text" container="body" >{{cardText}}</p>

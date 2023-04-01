@@ -213,6 +213,8 @@ app.get("/portal/spa/:app/*", loadSPAAsset);
 app.get("/portal/login", getRoot);
 app.get("/portal/customappform/*", getRoot);
 app.get("/portal/home/*", portalAuth.ensureAuthenticated, getUndefined);
+app.get("/portal/docs/*", portalAuth.ensureAuthenticated, getUndefined);
+app.get("/portal/docs", portalAuth.ensureAuthenticated, getUndefined);
 
 if (config.userDefinedFunctions.length != 0) {
   logger.info("Found user defined functions; Processing server scripts....");

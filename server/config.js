@@ -27,10 +27,19 @@ module.exports = {
   /* You need to include single page app name here; This property helps to easily manage multiple single page applications*/
   includedSPA: [ "androidassetstudio", "textcompare", "prettier", "sshclient" ],
   /* You need to include custom functions name here */
-  userDefinedFunctions: [ "fullname" ],
+  userDefinedFunctions: [
+    "fullname",
+    "fullnameexample",
+    "TESTOBJ",
+    "TESTFUN",
+    "l3envs",
+    "powerclicmd",
+  ],
   /*Redirect to userdefinedfunctions*/
   // eg { appName : functionName }
-  redirectToUserdefinedFunctions: {},
+  redirectToUserdefinedFunctions: {
+    POWERCLICMD: "powerclicmd",
+  },
   /* Enable gzip on server */
   useGzip: process.env.USEGZIP || true,
   /* Disable Cache */
@@ -42,7 +51,7 @@ module.exports = {
   /*Hide LAB OWNER field ffrom dashboard grid*/
   hideOwner: process.env.HIDEOWNER || false,
   /*Enable Snapshot Module*/
-  enableSnapshotManagements: process.env.SNAPSHOTMANAGEMENT || false,
+  enableSnapshotManagements: process.env.SNAPSHOTMANAGEMENT || true,
   /*Enable RichText for VM comment*/
   enableRichTextForVMComment: process.env.RICHTEXTFORVMCOMMENT || false,
   /*Enable badge for snapshot warning*/
@@ -132,4 +141,5 @@ module.exports = {
   update_snap_count_rest_path: "/admin/updateSnapCount",
   update_vm_extra_data_rest_path: "/admin/updateVMData",
   restart_snap_service_rest_path: "/admin/restartSnapshotService",
+  powercli_execute_rest_path: "/powercli/execute",
 };

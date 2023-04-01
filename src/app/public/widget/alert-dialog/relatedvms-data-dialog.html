@@ -14,13 +14,10 @@
 <h1 mat-dialog-title class="dialog-title">
     <span>
          {{data.title}}
-         <button  type="button" class="close" style="background: white;
-    padding-right: 10px;"  aria-label="Close" mat-dialog-close>
-        <span style="font-size:30px;" aria-hidden="true">&times;</span>
-    </button>
+         <i mat-dialog-close aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
     </span>
 </h1>
-<mat-dialog-content class="alertMssg ml-2">
+<mat-dialog-content class="alertMssg ms-2">
     <br> {{data.label}}
     <label *ngIf="norecordFound" class="label label-default" style="color:#3e3b3b;background-color:#f5f5f5;">
         No Relationships found;  
@@ -34,7 +31,7 @@
         <div class="row p-3 card mb-2" *ngFor="let item of data.list;let i = index">
             <div class="row w-100">
             <div class="col-sm-1">
-                <label [matTooltip]="'Delete field!'" (click)="deleteField(i)" class="label btn btn-danger "><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
+                <label [matTooltip]="'Delete field!'" (click)="deleteField(i)" class="label btn btn-danger col-sm-1 d-flex justify-content-center"><i class="fa fa-trash fa-2" aria-hidden="true"></i></label>
             </div>
             <div class="col-sm-3 ">
                 <div class="form-group required">
@@ -42,8 +39,8 @@
                     <label for="relationship_{{i}}">Relationship name:</label>
                     <input maxlength="31" id="relationship_{{i}}" class="form-control" formControlName="relationship_{{i}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i) }">
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i)" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i)">Relationship name is required</div>
-                        <div class="ml-1" *ngIf="checkIsInvalidLength('relationship_'+i)">Maximum lengh exceeded.</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i)">Relationship name is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidLength('relationship_'+i)">Maximum lengh exceeded.</div>
                         <div *ngIf="checkIsInvalidWhiteSpace('relationship_'+i)">White Space is not allowed.</div>
                     </div>
 
@@ -55,7 +52,7 @@
                     <label for="relationship_{{i}}_source">Source: </label>
                     <input id="relationship_{{i}}_source" class="form-control" formControlName="relationship_{{i}}_source" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_source') }" disabled>
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_source')" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_source')">Source is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_source')">Source is required</div>
                     </div>
 
                 </div>
@@ -69,7 +66,7 @@
                     <ng-select  [items]="vmList" bindValue="ip" bindLabel="ip" placeholder="Select VM"  formControlName="relationship_{{i}}_destination" [ngClass]="{ 'is-ngx-invalid is-invalid': submitted && checkIsInvalid('relationship_'+i+'_destination') }" ngDefaultControl>
                     </ng-select>
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_destination')" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_destination')">Destination is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_destination')">Destination is required</div>
                     </div>
 
                 </div>
@@ -83,7 +80,7 @@
                     <label for="relationship_{{i}}_description">Description: </label>
                     <input id="relationship_{{i}}_description" class="form-control" formControlName="relationship_{{i}}_description" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_description') }">
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_description')" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_description')">Description is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_description')">Description is required</div>
                     </div>
 
                 </div>
@@ -95,7 +92,7 @@
                     <label for="relationship_{{i}}_group">Group: </label>
                     <input id="relationship_{{i}}_group" class="form-control" formControlName="relationship_{{i}}_group" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('relationship_'+i+'_group') }">
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_group')" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_group')">Group is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_group')">Group is required</div>
                     </div>
 
                 </div>
@@ -109,7 +106,7 @@
                     </ng-select>
                     
                     <div *ngIf="submitted && checkIsInvalid('relationship_'+i+'_icon')" class="invalid-feedback">
-                        <div class="ml-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_icon')">Icon is required</div>
+                        <div class="ms-1" *ngIf="checkIsInvalidRequired('relationship_'+i+'_icon')">Icon is required</div>
                     </div>
                 </div>
             </div>

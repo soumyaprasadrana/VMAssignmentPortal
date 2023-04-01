@@ -10,7 +10,6 @@
  * @desc Main application module
  */
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -38,6 +37,8 @@ import { ToastModule } from "./public/widget/toast/toast.module";
 import { DynamicObjectAppFormComponent } from "./public/dynamicobjects/dynamicobjectapp-form/dynamicobjectapp-form.component";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { HybridModule } from "./hybrid.module";
+import { NgbCarousel, NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +49,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
     DynamicObjectAppFormComponent,
   ],
   imports: [
-    BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
@@ -62,6 +62,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
     NgIdleKeepaliveModule.forRoot(), // use NgIdleModule.forRoot() if not using keepalive
     NgSelectModule,
     MatDialogModule,
+    HybridModule,
   ],
   exports: [],
   providers: [

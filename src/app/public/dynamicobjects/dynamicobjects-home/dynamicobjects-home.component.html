@@ -22,9 +22,9 @@
             <hr>
         </h1>
     </div>
-    <div class="ml-2 ">
-        <div class="row ml-5" >
-            <div class="card-container column p-2" *ngFor='let card of cardsMetaData' >
+    <div class="ms-2 container">
+        <div class="row row-cols-auto ms-5" >
+            <div class="card-container col p-2" *ngFor='let card of cardsMetaData' >
                 <app-card-small [cardDanger]="card.cardDanger" [cardTextClamp]="card.cardTextClamp" [cardRouterLink]="card.cardRouterLink" [cardTitle]="card.cardTitle" [cardText]="card.cardText" [cardHeight]='card.cardHeight' [cardWidth]='card.cardWidth' [cardIconClass]="card.cardIconClass"
                     [badgeIcon]="card.badgeIcon" [cardStackIcon]="card.cardStackIcon" [cardIconColor]="card.cardIconColor" [cardStackIconColor]="card.cardStackIconColor" [cardRouterState]="card.cardRouterState"></app-card-small>
             </div>
