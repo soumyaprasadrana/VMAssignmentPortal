@@ -1092,7 +1092,7 @@ export class HomePageComponent implements OnInit {
         };
       } else if (vm.status == 'Occupied') {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-danger'>${value}</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-secondary'>${value}</span></div>`,
           toolTip: value,
         };
       } else {

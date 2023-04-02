@@ -345,7 +345,7 @@ export class SnapshotsGridComponent implements OnInit {
         };
       } else if (vm.status == 'Occupied' || vm.status == 'false' || vm.status == false) {
         return {
-          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-danger'>Occupied</span></div>`,
+          text: `<div style='text-align:center;width:auto;'><span style='text-align:center;padding:5px;' class='badge bg-secondary'>Occupied</span></div>`,
           toolTip: value,
         };
       } else {
