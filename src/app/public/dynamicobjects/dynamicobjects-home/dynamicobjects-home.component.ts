@@ -30,6 +30,7 @@ export class DynamicobjectsHomeComponent implements OnInit {
   isLoaded: boolean = false;
   loggedUser: any;
   redirectToUserdefinedFunctions: any = {};
+  searchTerm: string = "";
   constructor(
     private dos: DynamicObjectsService,
     private spinner: SpinnerService,

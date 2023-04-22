@@ -48,6 +48,86 @@ class DynamicObjectAppService {
     );
     return promise;
   }
+
+  addDynamicObjectAppRecord(app: any, dataContext: any) {
+    const promise = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        "Content-Type": "application/json",
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      var metaDataTobeSent: any = {};
+      var attributeList: [] = [];
+      this.getDynamicObjectAppAttributes(app).then((res: any) => {
+        res = JSON.parse(res);
+        if (res.status) {
+          attributeList = this.filterAttributes(res.data);
+          attributeList.forEach((item: any) => {
+            metaDataTobeSent[item.name.value] = item.type.value;
+          });
+          var reqBodyToBeSent: any = {
+            form: dataContext,
+            metadata: metaDataTobeSent,
+          };
+          var _promise = this._client.post(
+            "api/dynamicobjects/" + app + "/add",
+            reqBodyToBeSent,
+            httpOptions
+          );
+          resolve(_promise);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+    return promise;
+  }
+
+  updateDynamicObjectAppRecord(app: any, dataContext: any) {
+    const promise = new Promise((resolve, reject) => {
+      var headers = new HttpHeaders({
+        "Content-Type": "application/json",
+      });
+
+      var httpOptions = {
+        headers: headers,
+      };
+      var metaDataTobeSent: any = {};
+      var attributeList: [] = [];
+      this.getDynamicObjectAppAttributes(app).then((res: any) => {
+        res = JSON.parse(res);
+        if (res.status) {
+          attributeList = this.filterAttributes(res.data);
+          attributeList.forEach((item: any) => {
+            metaDataTobeSent[item.name.value] = item.type.value;
+          });
+          var reqBodyToBeSent: any = {
+            form: dataContext,
+            metadata: metaDataTobeSent,
+          };
+          var _promise = this._client.post(
+            "api/dynamicobjects/" + app + "/update",
+            reqBodyToBeSent,
+            httpOptions
+          );
+          resolve(_promise);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+    return promise;
+  }
+
+  filterAttributes(list: any): any {
+    var newList = [];
+    for (var item in list) {
+      if (list[item].type.value != "autokey") newList.push(list[item]);
+    }
+    return newList;
+  }
   deleteDynamicObjectAppRecord(app: any, dataContext: any): any {
     var headers = new HttpHeaders({
       "Content-Type": "application/json",

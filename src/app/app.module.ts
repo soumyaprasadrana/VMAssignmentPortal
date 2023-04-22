@@ -38,7 +38,7 @@ import { DynamicObjectAppFormComponent } from "./public/dynamicobjects/dynamicob
 import { NgxSpinnerModule } from "ngx-spinner";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HybridModule } from "./hybrid.module";
-import { NgbCarousel, NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
+import { QuillModule } from "ngx-quill";
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +63,7 @@ import { NgbCarousel, NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
     NgSelectModule,
     MatDialogModule,
     HybridModule,
+    QuillModule,
   ],
   exports: [],
   providers: [

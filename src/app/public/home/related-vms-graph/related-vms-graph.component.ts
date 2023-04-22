@@ -159,12 +159,12 @@ export class RealtedVMSGraphComponent implements OnInit {
     this.spinner.setSpinnerState(false);
   }
   parseRelationships(){
-    this.data={data:{isRoot:true,id:this.ip,iconClass:'fa fa-desktop'},linkColor:"#888",background:"#fff",color:"#000",width:140,height:140,children:[]};
+    this.data={data:{isRoot:true,id:this.ip,iconClass:'fa fa-desktop'},linkColor:"#888",background:"#fff",color:"#000",width:160,height:160,children:[]};
     var childrens=[];
     for(var i=0; i<this.relationships.length; i++){
       var item=this.relationships[i];
       if(!item.childRelationship)
-        childrens.push({data:{item:item,id:item.destination,iconClass:item.icon},linkColor:"#888",background:"#fff",color:"#000",width:140,height:140})
+        childrens.push({data:{item:item,id:item.destination,iconClass:item.icon},linkColor:"#888",background:"#fff",color:"#000",width:160,height:160})
     }
     this.data.children=childrens;
   }
@@ -338,5 +338,14 @@ export class RealtedVMSGraphComponent implements OnInit {
       
     
     
+  }
+  processRelationshipName(data:any){
+    if(!data.item && !data.item.name)
+      return '';
+    else
+      if(data.item.name.length > 14)
+        return data.item.name.substring(0,15)+'...';
+      else
+        return data.item.name;
   }
 }

@@ -87,6 +87,8 @@ export class UserDefinedFunctionsService {
         switch (name) {
           case "toast":
             return this._toastService;
+          case "appservice":
+            return this.dynamicobjectappServie;
           case "spinner":
             return this._spinner;
           case "auth":
@@ -125,6 +127,13 @@ export class UserDefinedFunctionsService {
                 this.router.url
               );
               this.router.navigate([ appRelativeUrl + "/add" ], {});
+            };
+          case "addfun":
+            return (dataContext: any) => {
+              return this.dynamicobjectappServie.addDynamicObjectAppRecord(
+                this.app,
+                dataContext
+              );
             };
           case "update":
             return (dataContext: any) => {

@@ -100,7 +100,7 @@ try {
             * Example you have defined a button in template script with id alertButtton 
             * Build event for this element as below :
             * eventBindings : {
-            *   '#alertButton' : {
+            *   'alertButton' : {
             *                       type: 'click',
             *                       event: (context,event) => { alert(1); }
             *                   }
@@ -253,7 +253,7 @@ try {
             * Example you have defined a button in template script with id alertButtton 
             * Build event for this element as below :
             * eventBindings : {
-            *   '#alertButton' : {
+            *   'alertButton' : {
             *                       type: 'click',
             *                       event: (context,event) => { alert(1); }
             *                   }
@@ -309,7 +309,7 @@ try {
             * Example you have defined a button in template script with id alertButtton 
             * Build event for this element as below :
             * eventBindings : {
-            *   '#alertButton' : {
+            *   'alertButton' : {
             *                       type: 'click',
             *                       event: (context,event) => { alert(1); }
             *                   }
@@ -555,7 +555,7 @@ For more information about client script <a href="#">click here</a>. </p>
             * Example you have defined a button in template script with id alertButtton 
             * Build event for this element as below :
             * eventBindings : {
-            *   '#alertButton' : {
+            *   'alertButton' : {
             *                       type: 'click',
             *                       event: (context,event) => { alert(1); }
             *                   }
@@ -859,7 +859,7 @@ module.exports = {
             * Example you have defined a button in template script with id alertButtton 
             * Build event for this element as below :
             * eventBindings : {
-            *   '#alertButton' : {
+            *   'alertButton' : {
             *                       type: 'click',
             *                       event: (context,event) => { alert(1); }
             *                   }
