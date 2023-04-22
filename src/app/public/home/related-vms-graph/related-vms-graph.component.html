@@ -108,7 +108,8 @@
                     </tr>
                     <tr>
                       <td  class="text-center">
-                        <b>{{node.data.id}}</b>
+                        <b>{{node.data.id}}</b><br>
+                        <p *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent" style="display: block;overflow: hidden;text-overflow: ellipsis;width: 140px;margin: 0 !important;white-space: nowrap;">{{node.data.item.name}}</p>
                       </td>
                     </tr>
                     <tr>

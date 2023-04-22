@@ -69,3 +69,8 @@ body {
 .form-group {
   position: relative;
 }
+
+button[type=submit],
+mat-dialog-container button[type=button] {
+  margin-top: 10px !important;
+}

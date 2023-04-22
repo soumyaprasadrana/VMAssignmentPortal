@@ -14,59 +14,58 @@ Please, don't remove the comment
  * @modify date 2022-03-25 18:26:41
  * @desc Econodes ; Modified
  */
-export interface IECONode
-{
-  data:any;
-  linkColor?:string;
-  background?:string;
-  color?:string;
-  width?:number;
-  height?:number;
-  children?:IECONode[];
+export interface IECONode {
+  data: any;
+  linkColor?: string;
+  background?: string;
+  color?: string;
+  width?: number;
+  height?: number;
+  children?: IECONode[];
 }
 
 export enum Orientation {
   RO_TOP,
   RO_BOTTOM,
   RO_RIGHT,
-  RO_LEFT
+  RO_LEFT,
 }
 export enum Aligment {
   NJ_TOP,
   NJ_CENTER,
-  NJ_BOTTOM
+  NJ_BOTTOM,
 }
 export enum Fill {
   NF_GRADIENT,
-  NF_FLAT
+  NF_FLAT,
 }
 export enum Colorize {
   CS_NODE,
-  CS_LEVEL
+  CS_LEVEL,
 }
 //Search method: Title, metadata or both
 export enum Search {
   SM_DSC,
   SM_META,
-  SM_BOTH
+  SM_BOTH,
 }
 //Selection mode: single, multiple, no selection
 export enum Select {
   SL_MULTIPLE,
   SL_SINGLE,
-  SL_NONE
+  SL_NONE,
 }
 
 export class ECONode {
-  id:any;
-  pid:any;
-  dsc:any;
-  w:any;
-  h:any;
-  c:any;
-  bc:any;
-  linkColor:any;
-  data:any;
+  id: any;
+  pid: any;
+  dsc: any;
+  w: any;
+  h: any;
+  c: any;
+  bc: any;
+  linkColor: any;
+  data: any;
 
   siblingIndex = 0;
   dbIndex = 0;
@@ -75,17 +74,27 @@ export class ECONode {
   YPosition = 0;
   prelim = 0;
   modifier = 0;
-  leftNeighbor :any;
-  rightNeighbor :any;
-  nodeParent :any;
-  nodeChildren :any;
+  leftNeighbor: any;
+  rightNeighbor: any;
+  nodeParent: any;
+  nodeChildren: any;
 
   isCollapsed = false;
   canCollapse = false;
 
   isSelected = false;
 
-  constructor(id:any, pid:any, dsc:any, w:any, h:any, c:any, bc:any, lc:any, meta:any) {
+  constructor(
+    id: any,
+    pid: any,
+    dsc: any,
+    w: any,
+    h: any,
+    c: any,
+    bc: any,
+    lc: any,
+    meta: any
+  ) {
     this.id = id;
     this.pid = pid;
     this.dsc = dsc;
@@ -123,17 +132,16 @@ export class ECONode {
     if (this.nodeParent.isCollapsed) {
       return true;
     } else {
-        if (this.nodeParent.id == -1 && this.isCollapsed) {
-            return true;
-          }
-          if(this.isCollapsed){
-            return true;
-          }
+      if (this.nodeParent.id == -1 && this.isCollapsed) {
+        return true;
+      }
+      if (this.isCollapsed) {
+        return true;
+      }
 
       if (this.nodeParent.id == -1) {
         return false;
-      } 
-      else {
+      } else {
         return this.nodeParent._isAncestorCollapsed();
       }
     }
@@ -144,8 +152,7 @@ export class ECONode {
     } else {
       if (this.nodeParent.id == -1) {
         return false;
-      } 
-      else {
+      } else {
         return this.nodeParent._isAncestorCollapsed();
       }
     }
@@ -184,11 +191,11 @@ export class ECONode {
     else return null;
   }
 
-  _getChildAt(i:any) {
+  _getChildAt(i: any) {
     return this.nodeChildren[i];
   }
 
-  _getChildrenCenter(tree:any) {
+  _getChildrenCenter(tree: any) {
     const node = this._getFirstChild();
     const node1 = this._getLastChild();
     return (
@@ -204,7 +211,7 @@ export class ECONode {
     return this._getChildAt(this._getChildrenCount() - 1);
   }
 
-  _drawChildrenLinks(tree:any) {
+  _drawChildrenLinks(tree: any) {
     let s = [];
     let xa = 0,
       ya = 0,
@@ -368,26 +375,26 @@ export class ECONode {
 
 export class ECOTree {
   config: any;
-  version:any = "1.1";
-  canvasoffsetTop:any = 0;
-  canvasoffsetLeft:any = 0;
+  version: any = "1.1";
+  canvasoffsetTop: any = 0;
+  canvasoffsetLeft: any = 0;
 
-  maxLevelHeight : any=[];
-  maxLevelWidth :any [];
-  previousLevelNode:any = [];
+  maxLevelHeight: any = [];
+  maxLevelWidth: any[];
+  previousLevelNode: any = [];
 
-  rootYOffset:any = 0;
-  rootXOffset:any = 0;
+  rootYOffset: any = 0;
+  rootXOffset: any = 0;
 
-  nDatabaseNodes:any = [];
-  mapIDs:any = {};
+  nDatabaseNodes: any = [];
+  mapIDs: any = {};
 
-  root:any;
-  iSelectedNode:any = -1;
-  iLastSearch:any = 0;
+  root: any;
+  iSelectedNode: any = -1;
+  iLastSearch: any = 0;
 
-  width:any = 0;
-  height:any = 0;
+  width: any = 0;
+  height: any = 0;
 
   constructor() {
     this.config = {
@@ -429,13 +436,13 @@ export class ECOTree {
     this.iLastSearch = 0;
   }
 
-/*  _canvasNodeClickHandler(tree, target, nodeid) {
+  /*  _canvasNodeClickHandler(tree, target, nodeid) {
     if (target != nodeid) return;
     tree.selectNode(nodeid, true);
   }
 */
   //Layout algorithm
-  _firstWalk(tree:any, node:any, level:any) {
+  _firstWalk(tree: any, node: any, level: any) {
     var leftSibling = null;
 
     node.XPosition = 0;
@@ -478,7 +485,7 @@ export class ECOTree {
     }
   }
 
-  _apportion(tree:any, node:any, level:any) {
+  _apportion(tree: any, node: any, level: any) {
     let firstChild = node._getFirstChild();
     let firstChildLeftNeighbor = firstChild.leftNeighbor;
     let j = 1;
@@ -536,7 +543,7 @@ export class ECOTree {
     }
   }
 
-  _secondWalk(tree:any, node:any, level:any, X:any, Y:any) {
+  _secondWalk(tree: any, node: any, level: any, X: any, Y: any) {
     if (level <= tree.config.iMaxDepth) {
       let xTmp = tree.rootXOffset + node.prelim + X;
       let yTmp = tree.rootYOffset + Y;
@@ -624,24 +631,24 @@ export class ECOTree {
     this._secondWalk(this, this.root, 0, 0, 0);
   }
 
-  _setLevelHeight(node:any, level:any) {
+  _setLevelHeight(node: any, level: any) {
     if (this.maxLevelHeight[level] == null) this.maxLevelHeight[level] = 0;
     if (this.maxLevelHeight[level] < node.h)
       this.maxLevelHeight[level] = node.h;
   }
 
-  _setLevelWidth(node:any, level:any) {
+  _setLevelWidth(node: any, level: any) {
     if (this.maxLevelWidth[level] == null) this.maxLevelWidth[level] = 0;
     if (this.maxLevelWidth[level] < node.w) this.maxLevelWidth[level] = node.w;
   }
 
-  _setNeighbors(node:any, level:any) {
+  _setNeighbors(node: any, level: any) {
     node.leftNeighbor = this.previousLevelNode[level];
     if (node.leftNeighbor != null) node.leftNeighbor.rightNeighbor = node;
     this.previousLevelNode[level] = node;
   }
 
-  _getNodeSize(node:any) {
+  _getNodeSize(node: any) {
     switch (this.config.iRootOrientation) {
       case Orientation.RO_TOP:
       case Orientation.RO_BOTTOM:
@@ -654,21 +661,25 @@ export class ECOTree {
     return 0;
   }
 
-  _getLeftmost(node:any, level:any, maxlevel:any) {
+  _getLeftmost(node: any, level: any, maxlevel: any) {
     if (level >= maxlevel) return node;
     if (node._getChildrenCount() == 0) return null;
 
     const n = node._getChildrenCount();
     for (let i = 0; i < n; i++) {
       const iChild = node._getChildAt(i);
-      const leftmostDescendant:any = this._getLeftmost(iChild, level + 1, maxlevel);
+      const leftmostDescendant: any = this._getLeftmost(
+        iChild,
+        level + 1,
+        maxlevel
+      );
       if (leftmostDescendant != null) return leftmostDescendant;
     }
 
     return null;
   }
 
-  _selectNodeInt(dbindex:any, flagToggle:any) {
+  _selectNodeInt(dbindex: any, flagToggle: any) {
     if (this.config.selectMode == Select.SL_SINGLE) {
       if (this.iSelectedNode != dbindex && this.iSelectedNode != -1) {
         this.nDatabaseNodes[this.iSelectedNode].isSelected = false;
@@ -681,7 +692,7 @@ export class ECOTree {
       : true;
   }
 
-  _collapseAllInt(flag:any) {
+  _collapseAllInt(flag: any) {
     let node = null;
     for (let n = 0; n < this.nDatabaseNodes.length; n++) {
       node = this.nDatabaseNodes[n];
@@ -690,7 +701,7 @@ export class ECOTree {
     this.UpdateTree();
   }
 
-  _selectAllInt(flag:any) {
+  _selectAllInt(flag: any) {
     let node = null;
     for (let k = 0; k < this.nDatabaseNodes.length; k++) {
       node = this.nDatabaseNodes[k];
@@ -706,26 +717,36 @@ export class ECOTree {
     this._positionTree();
     this.width =
       this.config.iRootOrientation == Orientation.RO_RIGHT
-        ? Math.max(...this.nDatabaseNodes.map((x:any) => -x.XPosition+x.w))
-        : Math.max(...this.nDatabaseNodes.map((x:any) => x.XPosition + x.w));
+        ? Math.max(...this.nDatabaseNodes.map((x: any) => -x.XPosition + x.w))
+        : Math.max(...this.nDatabaseNodes.map((x: any) => x.XPosition + x.w));
     this.height =
       this.config.iRootOrientation == Orientation.RO_BOTTOM
-        ? Math.max(...this.nDatabaseNodes.map((x:any) => -x.YPosition+x.h))
-        : Math.max(...this.nDatabaseNodes.map((x:any) => x.YPosition + x.h));
+        ? Math.max(...this.nDatabaseNodes.map((x: any) => -x.YPosition + x.h))
+        : Math.max(...this.nDatabaseNodes.map((x: any) => x.YPosition + x.h));
 
     if (this.config.iRootOrientation == Orientation.RO_BOTTOM) {
-      this.nDatabaseNodes.forEach((x:any) => {
+      this.nDatabaseNodes.forEach((x: any) => {
         x.YPosition = x.YPosition + this.height;
       });
     }
     if (this.config.iRootOrientation == Orientation.RO_RIGHT) {
-      this.nDatabaseNodes.forEach((x:any) => {
+      this.nDatabaseNodes.forEach((x: any) => {
         x.XPosition = x.XPosition + this.width;
       });
     }
   }
 
-  add = (id:any, pid:any, dsc:any, w:any, h:any, c:any, bc:any, lc:any, meta:any) => {
+  add = (
+    id: any,
+    pid: any,
+    dsc: any,
+    w: any,
+    h: any,
+    c: any,
+    bc: any,
+    lc: any,
+    meta: any
+  ) => {
     const nw = w || this.config.defaultNodeWidth; //Width, height, colors, target and metadata defaults...
     const nh = h || this.config.defaultNodeHeight;
     const color = c || this.config.nodeColor;
@@ -755,7 +776,7 @@ export class ECOTree {
     pnode.nodeChildren[h] = node;
   };
 
-  searchNodes(str:any) {
+  searchNodes(str: any) {
     let node = null;
     const m = this.config.searchMode;
     const sm = this.config.selectMode == Select.SL_SINGLE;
@@ -812,38 +833,38 @@ export class ECOTree {
     this._collapseAllInt(false);
   }
 
-  collapseNode(nodeid:any, upd:any) {
+  collapseNode(nodeid: any, upd: any) {
     const dbindex = this.mapIDs[nodeid];
     this.nDatabaseNodes[dbindex].isCollapsed = !this.nDatabaseNodes[dbindex]
       .isCollapsed;
     if (upd) this.UpdateTree();
   }
 
-  selectNode(nodeid:any, upd:any) {
+  selectNode(nodeid: any, upd: any) {
     this._selectNodeInt(this.mapIDs[nodeid], true);
     if (upd) this.UpdateTree();
   }
 
-  setNodeTitle(nodeid:any, title:any, upd:any) {
+  setNodeTitle(nodeid: any, title: any, upd: any) {
     const dbindex = this.mapIDs[nodeid];
     this.nDatabaseNodes[dbindex].dsc = title;
     if (upd) this.UpdateTree();
   }
 
-  setNodeMetadata(nodeid:any, meta:any, upd:any) {
+  setNodeMetadata(nodeid: any, meta: any, upd: any) {
     const dbindex = this.mapIDs[nodeid];
     this.nDatabaseNodes[dbindex].meta = meta;
     if (upd) this.UpdateTree();
   }
 
-/*
+  /*
   setNodeTarget(nodeid, target, upd) {
     const dbindex = this.mapIDs[nodeid];
     this.nDatabaseNodes[dbindex].target = target;
     if (upd) this.UpdateTree();
   }
 */
-  setNodeColors(nodeid:any, color:any, border:any, upd:any) {
+  setNodeColors(nodeid: any, color: any, border: any, upd: any) {
     const dbindex = this.mapIDs[nodeid];
     if (color) this.nDatabaseNodes[dbindex].c = color;
     if (border) this.nDatabaseNodes[dbindex].bc = border;
@@ -861,7 +882,7 @@ export class ECOTree {
         selnode = {
           id: node.id,
           dsc: node.dsc,
-          meta: node.meta
+          meta: node.meta,
         };
         selection[selection.length] = selnode;
       }

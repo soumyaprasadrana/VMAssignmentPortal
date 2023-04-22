@@ -1042,7 +1042,7 @@ export class DynamicObjectAppHomeComponent implements OnInit {
     if (colDef.params.component) {
       const componentOutput = this.angularUtilService.createAngularComponent(colDef.params.component);
        
-      Object.assign(componentOutput.componentRef.instance, { data: dataContext[colDef.name],uiprop:this.properties });  
+      Object.assign(componentOutput.componentRef.instance, { data: dataContext[colDef.field],uiprop:this.properties });  
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
     }

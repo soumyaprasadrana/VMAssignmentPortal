@@ -24,6 +24,7 @@ export class ToolsLtbComponent implements OnInit {
   selectedDataContext: any;
   defaultSSHUsername: any;
   defaultSSHPassword: any;
+  searchTerm: string = "";
   constructor(
     private _client: NodeclientService,
     private actRoute: ActivatedRoute,
