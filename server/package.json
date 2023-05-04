@@ -30,7 +30,7 @@
         "request": "^2.88.2",
         "request-promise": "^4.2.6",
         "sanitize-html": "^2.5.2",
-        "socket.io": "^4.5.4",
+        "socket.io": "^4.6.1",
         "ssh2": "^1.11.0",
         "utf8": "^3.0.0",
         "xlsx": "^0.17.5",
