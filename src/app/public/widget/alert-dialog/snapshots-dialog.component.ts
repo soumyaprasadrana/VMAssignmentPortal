@@ -148,7 +148,8 @@ getObject(){
       .toPromise()
       .then((res) => {
         if (typeof callback == 'function') {
-          callback(res);
+          if(res)
+            callback(res);
         }
       });
   }
