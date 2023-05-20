@@ -191,17 +191,25 @@ async function createSaaSFiles() {
     "\n" +
     'CMD [ "--max_connections=1000000" ]';
   const portal_api_docker_file_data =
-    "FROM tomcat:9.0 " +
+    `FROM mcr.microsoft.com/powershell:latest
+
+    # Install PowerCLI
+    RUN pwsh -Command "Install-Module -Name VMware.PowerCLI -Force -AllowClobber"
+
+    # Install default JDK and Apache Tomcat
+    RUN apt-get update && apt-get install -y default-jdk wget && \
+        wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.70/bin/apache-tomcat-8.5.70.tar.gz && \
+        tar -xvf apache-tomcat-8.5.70.tar.gz && \
+        mv apache-tomcat-8.5.70 /opt/tomcat && \
+        rm -rf apache-tomcat-8.5.70.tar.gz
+    
+    ` +
     "\n" +
-    "USER root " +
+    "COPY files/VMManagementPortalAPI.war /opt/tomcat/webapps/ " +
     "\n" +
-    'ENV JAVA_OPTS="-Xmx1024m -Xms1024m " ' +
-    "\n" +
-    "COPY files/VMManagementPortalAPI.war /usr/local/tomcat/webapps/ " +
-    "\n" +
-    "COPY files/wait-for-it.sh /usr/local/tomcat/bin/ ";
+    "COPY files/wait-for-it.sh /opt/tomcat/bin/ ";
   const docker_compose =
-    'version: \'3.7\'\n\nservices:\n  ui:\n    image: portal_ui:1.0\n    ports:\n      - "3000:3000"\n    environment:\n      LOG_LEVEL: \'info\'\n      APIBASE: http://api:8080/VMManagementPortalAPI\n    networks:\n      - portal_net\n    volumes:\n      - logs:/app/server/logs\n    depends_on:\n        - "api"\n\n  api:\n    image: portal_api:1.0\n    ports:\n      - "8080"\n    environment:\n      JAVA_OPTS : -Xmx1024m -Xms1024m \n      DB_NAME : vmportal02\n      DB_USER : alex\n      DB_PASSWORD : Full@ccess123\n      DB_SERVER:  db\n      DB_USE_SSL: false\n    networks:\n      - portal_net\n    depends_on:\n        - "db"\n    command: ["wait-for-it.sh", "db:3306","-t","300", "--", "catalina.sh", "run"]\n        \n  db:\n    image: portal_db:1.0\n    ports:\n        - "3306"\n    networks:\n        - portal_net\n    volumes:\n        - ./data/db:/var/lib/mysql\nnetworks:\n  portal_net:\n    driver: bridge\n\nvolumes:\n  logs:\n  ';
+    'version: \'3.7\'\n\nservices:\n  ui:\n    image: portal_ui:1.0\n    ports:\n      - "3000:3000"\n    environment:\n      LOG_LEVEL: \'info\'\n      APIBASE: http://api:8080/VMManagementPortalAPI\n    networks:\n      - portal_net\n    volumes:\n      - logs:/app/server/logs\n    depends_on:\n        - "api"\n\n  api:\n    image: portal_api:1.0\n    ports:\n      - "8080"\n    environment:\n      JAVA_OPTS : -Xmx1024m -Xms1024m \n      DB_NAME : vmportal02\n      DB_USER : alex\n      DB_PASSWORD : Full@ccess123\n      DB_SERVER:  db\n      DB_USE_SSL: "false"\n    networks:\n      - portal_net\n    depends_on:\n        - "db"\n    command: ["/opt/tomcat/bin/wait-for-it.sh", "db:3306","-t","300", "--", "/opt/tomcat/bin/catalina.sh", "run"]\n        \n  db:\n    image: portal_db:1.0\n    ports:\n        - "3306"\n    networks:\n        - portal_net\n    volumes:\n        - ./data/db:/var/lib/mysql\nnetworks:\n  portal_net:\n    driver: bridge\n\nvolumes:\n  logs:\n  ';
   createFile("./build/docker/saas/portal-ui", "Dockerfile", docker_file_data);
   createFile(
     "./build/docker/saas/portal-db",

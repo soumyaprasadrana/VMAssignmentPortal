@@ -1789,7 +1789,8 @@ export class HomePageComponent implements OnInit {
         sortable: true,
         filterable: true,
         filter: this.osList ? ownerFilter : { model: Filters.input },
-        formatter: Formatters.alignCenter,
+        formatter: Formatters.uppercase,
+        cssClass: "text-center",
         customTooltip: {
           hideArrow: true,
           headerFormatter: this.headerFormatter.bind(this) as Formatter,
