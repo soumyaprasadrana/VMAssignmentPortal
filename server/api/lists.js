@@ -185,5 +185,72 @@ module.exports = {
         text: "Production",
       },
     ],
+    vmapcomponents: [
+      {
+        value: "UI",
+        text: "User Interface",
+      },
+      {
+        value: "SNAPSHOTS",
+        text: "Snapshots Module",
+      },
+      {
+        value: "SSHTOOL",
+        text: "SSH Tools Module",
+      },
+      {
+        value: "API",
+        text: "Backend API",
+      },
+      {
+        value: "DYNAMICOBJECTAPPLICATION",
+        text: "More Application Module",
+      },
+      {
+        value: "SPA",
+        text: "Single Page Application Module",
+      },
+    ],
+    defecttype: [
+      {
+        value: "DEFECT",
+        text: "Defect",
+      },
+      {
+        value: "NEWREQUEST",
+        text: "New Request",
+      },
+    ],
+
+    defectstatus: [
+      {
+        value: "RESOLVED",
+        text: "Resolved",
+      },
+      {
+        value: "NEW",
+        text: "New",
+      },
+      {
+        value: "INPROG",
+        text: "In Progress",
+      },
+      {
+        value: "PLANNING",
+        text: "Planning",
+      },
+      {
+        value: "PENDING",
+        text: "Pending",
+      },
+      {
+        value: "CLOSED",
+        text: "Closed",
+      },
+      {
+        value: "REOPENED",
+        text: "Reopened",
+      },
+    ],
   },
 };
