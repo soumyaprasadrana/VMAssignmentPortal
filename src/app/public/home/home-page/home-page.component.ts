@@ -1854,6 +1854,21 @@ export class HomePageComponent implements OnInit {
         },
       });
     }
+    if (this.loggedUser.hideOwner && this.loggedUser.permissions.is_admin) {
+      this.columnDef.push({
+        id: "vm_owner_lab",
+        name: "Owner",
+        field: "vm_owner_lab",
+        sortable: true,
+        filterable: true,
+        filter: { model: Filters.input },
+        formatter: Formatters.alignCenter,
+        customTooltip: {
+          hideArrow: true,
+          headerFormatter: this.headerFormatter.bind(this) as Formatter,
+        },
+      });
+    }
     if (this.loggedUser.permissions.is_admin) {
       this.columnDef.push({
         id: "team",
