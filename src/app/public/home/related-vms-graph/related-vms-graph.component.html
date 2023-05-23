@@ -99,7 +99,7 @@
                     <tr>
                         <td class="text-center">
                           <ng-template #tipContent>
-                            <b>{{node.data.item.name}} </b>
+                            <b>{{node.data.item.description?node.data.item.description:node.data.item.name}} </b>
                           </ng-template>
                             <i *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-3x': node.canCollapse,'fa-4x':!node.canCollapse }"></i>
                             <i *ngIf="node.data.isRoot"  class="{{node.data.iconClass}}" [ngClass]="{ 'fa-3x': node.canCollapse,'fa-4x':!node.canCollapse }"></i>
@@ -109,7 +109,7 @@
                     <tr>
                       <td  class="text-center">
                         <b>{{node.data.id}}</b><br>
-                        <p *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent" style="display: block;overflow: hidden;text-overflow: ellipsis;width: 140px;margin: 0 !important;white-space: nowrap;">{{node.data.item.name}}</p>
+                        <p *ngIf="!node.data.isRoot" [ngbTooltip]="tipContent" style="display: block;overflow: hidden;text-overflow: ellipsis;width: 140px;margin: 0 !important;white-space: nowrap;">{{node.data.item.description && node.data.item.description!=""?node.data.item.description:node.data.item.name}}</p>
                       </td>
                     </tr>
                     <tr>
