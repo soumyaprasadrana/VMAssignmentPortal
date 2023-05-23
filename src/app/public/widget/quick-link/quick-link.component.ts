@@ -9,23 +9,27 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Portal Quick Links Component
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-quick-link',
-  templateUrl: './quick-link.component.html',
-  styleUrls: ['./quick-link.component.scss'],
+  selector: "app-quick-link",
+  templateUrl: "./quick-link.component.html",
+  styleUrls: [ "./quick-link.component.scss" ],
 })
 export class QuickLinkComponent implements OnInit {
   @Input() iconClass?: string;
-  @Input() iconSrc?: string;
+  @Input() iconSrc?: any;
   @Input() linkTitle?: string;
   @Input() linkUrl?: string;
 
-  constructor() {}
+  constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.iconSrc)
+      this.iconSrc = this.sanitizer.bypassSecurityTrustUrl(this.iconSrc);
+  }
   openLink(link: any) {
-    window.open(link, '_blank');
+    window.open(link, "_blank");
   }
 }

@@ -1,2 +1,3 @@
-<a class="m-2" mat-stroked-button (click)="openLink(linkUrl)" target="_blank"> <span><img *ngIf="iconSrc" src="{{iconSrc}}">
+<a class="m-2" mat-stroked-button (click)="openLink(linkUrl)" target="_blank"> <span>
+    <img *ngIf="iconSrc" [src]="iconSrc" style="height: 20px !important; width: 20px !important;">
     <i *ngIf="iconClass" class="{{iconClass}}" area-label="hidden"></i></span><span> {{linkTitle}}</span></a>
