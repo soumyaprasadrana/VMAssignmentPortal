@@ -42,7 +42,7 @@ export class ToolsSpaComponent implements OnInit {
         if (
           metadata[metadata.length - 1][
             metadata[metadata.length - 1].length - 1
-          ].cardTitle != "Font Awsome Icons"
+          ].cardTitle != "Font Awesome Icons"
         ) {
           //item
           if (!metadata[i][j].cardIconClass)
@@ -52,7 +52,7 @@ export class ToolsSpaComponent implements OnInit {
         }
       }
     }
-    /*Adding Internal apps */
+    /*Adding Internal apps 
     console.log(
       metadata[metadata.length - 1][metadata[metadata.length - 1].length - 1]
         .cardTitle
@@ -71,7 +71,7 @@ export class ToolsSpaComponent implements OnInit {
         badgeIcon: "fa fa-font ",
         cardTextClamp: 3,
       });
-    }
+    }*/
     return metadata;
   }
   ngOnInit(): void {}

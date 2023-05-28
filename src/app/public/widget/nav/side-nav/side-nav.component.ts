@@ -135,4 +135,17 @@ export class SideNavComponent implements OnInit {
       theme: theme,
     });
   }
+  versionInfo(){
+    this.openAlertDialog({type:"info",message:` <div class="modal-body">
+      <p class="mb-0">Version: 2.0.7</p>
+      <p class="mb-0">Build Number: 207-28052023</p>
+      <p >Build Date: May 28, 2023</p>
+      <p>
+    <!--Made with ❤ by <a href="https://in.linkedin.com/in/soumya-prasad-rana-5a7a6b70 ">Soumya</a>-->
+    VM Assignment Portal 2.0.7 © 2023 All rights reserved.
+ </p>
+      
+    </div>`});
+              
+  }
 }
