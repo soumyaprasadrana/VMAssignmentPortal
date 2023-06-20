@@ -93,6 +93,7 @@ export class HomePageComponent implements OnInit {
   osVersiontypes: any = [];
   isGoingToReset: boolean = false;
   ownerList: any = [];
+  teamList: any;
 
   /*vms-> Virtual Management Service, gss->  Global Search Service*/
   constructor(
@@ -127,6 +128,13 @@ export class HomePageComponent implements OnInit {
         //console.log('Props=>', res);
         this.properties = JSON.parse("" + res);
         var PageSizeList = this.properties.paginationPageSizesList.split(":");
+
+        this.teamList = [];
+        this.teamList.push({ label: "", value: "" });
+        var tlist = this.properties.teamList.split(":");
+        for (var item in tlist) {
+          this.teamList.push({ label: tlist[item], value: tlist[item] });
+        }
         try {
           for (var item in PageSizeList) {
             this.defaultPageSizeList.push(parseInt(PageSizeList[item]));
@@ -1596,6 +1604,20 @@ export class HomePageComponent implements OnInit {
         value: "value",
         label: "owner",
       },
+
+      model: Filters.singleSelect,
+
+      // we could add certain option(s) to the "multiple-select" plugin
+      filterOptions: { autoDropWidth: true } as MultipleSelectOption,
+    };
+
+    /* Team Filter */
+    var teamFilter = {
+      collection: this.teamList,
+      customStructure: {
+        value: "value",
+        label: "label",
+      },
       model: Filters.singleSelect,
 
       // we could add certain option(s) to the "multiple-select" plugin
@@ -1876,7 +1898,7 @@ export class HomePageComponent implements OnInit {
         field: "team",
         sortable: true,
         filterable: true,
-        filter: { model: Filters.input },
+        filter: this.teamList ? teamFilter : { model: Filters.input },
         formatter: Formatters.alignCenter,
         customTooltip: {
           hideArrow: true,

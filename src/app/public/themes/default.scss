@@ -483,12 +483,13 @@ mat-nav-list a {
   display: block;
   width: 2.375rem;
   height: 2.375rem;
-  margin-left: 75% !important;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
   line-height: 2.375rem;
   text-align: center;
   cursor: pointer;
   color: #000;
-  float: right;
 }
 
 .form-group .form-control-include-icon {
@@ -816,4 +817,21 @@ mat-nav-list a {
 .app-badge {
   color: #fff;
   background-color: var(--slick-primary-color);
+}
+#login-content-container,
+.app-login-content {
+  max-width: 100% !important;
+  width: 98% !important;
+  background-color: var(--mui-primary-background-color) !important;
+  flex: 0 0 auto;
+}
+#login-form-content-container {
+  z-index: 9999;
+  form {
+    button {
+      font-weight: bolder;
+      box-shadow: none !important;
+      border-radius: 8px !important;
+    }
+  }
 }
