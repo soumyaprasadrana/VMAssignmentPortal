@@ -946,12 +946,13 @@ mat-nav-list a :hover {
   display: block;
   width: 2.375rem;
   height: 2.375rem;
-  margin-left: 88% !important;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
   line-height: 2.375rem;
   text-align: center;
   cursor: pointer;
   color: #000;
-  float: right;
 }
 .form-group .form-control-include-icon {
   padding-left: 2.375rem;

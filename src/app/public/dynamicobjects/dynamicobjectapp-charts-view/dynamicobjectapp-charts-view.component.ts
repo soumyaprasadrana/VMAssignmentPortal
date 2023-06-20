@@ -92,6 +92,7 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
   //pie
   showLabels = true;
   cardHeight: any;
+  cardWidth: any;
   resultSet:any;
   constructor(
     private formBuilder: FormBuilder,
@@ -150,12 +151,14 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
       field: [null, Validators.required],
       chartType: ['PIE CHART', Validators.required],
       height: [300, Validators.required],
+      width: [window.innerWidth,Validators.required]
     });
      this.registerForm.valueChanges.subscribe(val => {
       if(val.field != ''){
       this.toggleChart(val.chartType);
       this.getParseData(val.field);
     this.cardHeight = val.height;
+    this.cardWidth = val.width;
     this.showChart = true;
       }
     });
@@ -357,6 +360,7 @@ export class DynamicObjectChartsViewRecordComponent implements OnInit {
     console.log(this.registerForm.value);
     this.getParseData(this.registerForm.value.field);
     this.cardHeight = this.registerForm.value.height;
+    this.cardWidth = this.registerForm.value.width;
     this.showChart = true;
   }
   toggleChart(type: string) {

@@ -23,7 +23,7 @@
 </div>
 <div *ngIf="isLoaded" class=" container p-3 ">
     <div class="ms-3 ">
-        <p [innerHtml]="technote.technote "></p>
+        <p [innerHtml]="sanitizer.bypassSecurityTrustHtml(technote.technote)"></p>
     </div>
 </div>
 <div *ngIf="!isLoaded && !isDataloadFailed " class="h-100 w-100 d-table ">

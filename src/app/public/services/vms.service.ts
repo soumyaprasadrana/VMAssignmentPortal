@@ -9,16 +9,16 @@
  * @modify date 2022-03-25 18:26:41
  * @desc VM Services
  */
-import { Injectable } from '@angular/core';
-import { VM } from '../DataModel/vm';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { NodeclientService } from './nodeclient.service';
+import { Injectable } from "@angular/core";
+import { VM } from "../DataModel/vm";
+import { Observable, Subject, Subscription } from "rxjs";
+import { HttpHeaders, HttpParams } from "@angular/common/http";
+import { NodeclientService } from "./nodeclient.service";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-/* VM Management System Services it will include all vm related services */
-export class VmsService {
+export /* VM Management System Services it will include all vm related services */
+class VmsService {
   vms: Array<any> = [];
   promiseX: any;
   observable: any;
@@ -59,7 +59,7 @@ export class VmsService {
     return this.observable;
   }
   getVms(): any {
-    console.log('getVMs() :: this.needReload ::', this.needReload);
+    console.log("getVMs() :: this.needReload ::", this.needReload);
     if (this.needReload) {
       this.promiseX = this.getDataFromNode();
     }
@@ -83,19 +83,19 @@ export class VmsService {
   }
   getDataFromNode(): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    var promise = this._client.get('api/vm/getAll', httpOptions);
+    var promise = this._client.get("api/vm/getAll", httpOptions);
     return promise;
   }
   assignVM(ip: string, user: string): any {
     //console.log('assignVM:ip>', ip, 'assignVM:user>', user);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = { ip: ip, user: user };
@@ -104,12 +104,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/vm/assignVM', params, httpOptions);
+    return this._client.post("api/vm/assignVM", params, httpOptions);
   }
   takeSnap(hostname: any, snapName: any, snapDesc: any) {
     //console.log('takesnap);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = {
@@ -121,12 +121,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/vm/takeSnap', params, httpOptions);
+    return this._client.post("api/vm/takeSnap", params, httpOptions);
   }
   revertSnap(hostname: any, snapName: any, snapID: any) {
     //console.log('takesnap);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = {
@@ -138,12 +138,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/vm/revertSnap', params, httpOptions);
+    return this._client.post("api/vm/revertSnap", params, httpOptions);
   }
   addComment(ip: string, Comment: string): any {
     //console.log('assignVM:ip>', ip, 'assignVM:user>', user);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = { comment: Comment };
@@ -153,36 +153,36 @@ export class VmsService {
       headers: headers,
     };
     return this._client.post(
-      'api/vm/' + ip + '/comment/add',
+      "api/vm/" + ip + "/comment/add",
       params,
       httpOptions
     );
   }
   assignMultipleVMS(ipList: any, user: string): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
     var httpOptions = {
       headers: headers,
     };
     var data: any = { ipList: ipList, vm_user: user };
-    return this._client.post('api/vm/assignMultipleVMS', data, httpOptions);
+    return this._client.post("api/vm/assignMultipleVMS", data, httpOptions);
   }
   releaseMultipleVMS(ipList: any): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
     var httpOptions = {
       headers: headers,
     };
     var data: any = { ipList: ipList };
-    return this._client.post('api/vm/releaseMultipleVMS', data, httpOptions);
+    return this._client.post("api/vm/releaseMultipleVMS", data, httpOptions);
   }
 
   releaseVM(ip: string): any {
     //console.log('releaseVM:ip>', ip);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = { ip: ip };
@@ -191,12 +191,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/vm/releaseVM', params, httpOptions);
+    return this._client.post("api/vm/releaseVM", params, httpOptions);
   }
   runUpdateSnapshotCount(): any {
     //console.log('releaseVM:ip>', ip);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = {};
@@ -205,12 +205,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/admin/run/snapcount', params, httpOptions);
+    return this._client.post("api/admin/run/snapcount", params, httpOptions);
   }
   runUpdateExtradata(): any {
     //console.log('releaseVM:ip>', ip);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = {};
@@ -219,12 +219,12 @@ export class VmsService {
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/admin/run/extradata', params, httpOptions);
+    return this._client.post("api/admin/run/extradata", params, httpOptions);
   }
   restartSnapshotService(): any {
     //console.log('releaseVM:ip>', ip);
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var params: any = {};
@@ -234,7 +234,7 @@ export class VmsService {
       headers: headers,
     };
     return this._client.post(
-      'api/admin/run/restartsnapshotservice',
+      "api/admin/run/restartsnapshotservice",
       params,
       httpOptions
     );
@@ -242,41 +242,41 @@ export class VmsService {
 
   getVMSObservable(): any {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    var observable = this._client.getObservable('api/vm/getAll', httpOptions);
+    var observable = this._client.getObservable("api/vm/getAll", httpOptions);
     return observable;
   }
   getVMSnapshots(hostname: string) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    return this._client.get('api/vm/snapshots/' + hostname, httpOptions);
+    return this._client.get("api/vm/snapshots/" + hostname, httpOptions);
   }
   getAllSnapshots() {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    var promisex = this._client.get('api/vm/get/snapshots', httpOptions);
+    var promisex = this._client.get("api/vm/get/snapshots", httpOptions);
     var resPromise = new Promise((resolve, reject) => {
       promisex
         .then((res: any) => {
           try {
             res = JSON.parse(res);
           } catch (e) {}
-          if (typeof res.status == 'undefined')
+          if (typeof res.status == "undefined")
             resolve(this.parseSnapshotsData(res));
           else reject(res);
         })
@@ -288,20 +288,20 @@ export class VmsService {
   }
   getAllSnapshotsCount() {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    var promisex = this._client.get('api/vm/get/snapshotscount', httpOptions);
+    var promisex = this._client.get("api/vm/get/snapshotscount", httpOptions);
     var resPromise = new Promise((resolve, reject) => {
       promisex
         .then((res: any) => {
           try {
             res = JSON.parse(res);
           } catch (e) {}
-          if (typeof res.status == 'undefined')
+          if (typeof res.status == "undefined")
             resolve(this.parseSnapshotsCountData(res));
           else reject(res);
         })
@@ -313,14 +313,14 @@ export class VmsService {
   }
   searchSnapshots(keyword: any) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
     var promisex = this._client.get(
-      'api/vm/get/snapshots/' + keyword,
+      "api/vm/get/snapshots/" + keyword,
       httpOptions
     );
     var resPromise = new Promise((resolve, reject) => {
@@ -329,7 +329,7 @@ export class VmsService {
           try {
             res = JSON.parse(res);
           } catch (e) {}
-          if (typeof res.status == 'undefined')
+          if (typeof res.status == "undefined")
             resolve(this.parseSnapshotsData(res));
           else reject(res);
         })
@@ -341,58 +341,68 @@ export class VmsService {
   }
   getVMAdditionalData(ip: string) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    return this._client.get('api/vm/' + ip + '/additionalData', httpOptions);
+    return this._client.get("api/vm/" + ip + "/additionalData", httpOptions);
   }
   getRelatedVMSData(ip: string) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    return this._client.get('api/vm/' + ip + '/relatedvms', httpOptions);
+    return this._client.get("api/vm/" + ip + "/relatedvms", httpOptions);
+  }
+  getAllRelatedVMSData() {
+    var headers = new HttpHeaders({
+      "Content-Type": "application/json",
+    });
+
+    var httpOptions = {
+      headers: headers,
+    };
+    return this._client.get("api/vm/relatedvms/asTree", httpOptions);
   }
   deleteVM(ip: string) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
     var data: any = {};
-    return this._client.post('api/vm/delete/' + ip, data, httpOptions);
+    return this._client.post("api/vm/delete/" + ip, data, httpOptions);
   }
   updateVMAdditionaalData(ip: string, data: any) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
     return this._client.post(
-      'api/vm/' + ip + '/additionalData',
+      "api/vm/" + ip + "/additionalData",
       data,
       httpOptions
     );
   }
   updateRelatedVMSData(ip: string, data: any) {
     var headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     var httpOptions = {
       headers: headers,
     };
-    return this._client.post('api/vm/' + ip + '/relatedvms', data, httpOptions);
+    return this._client.post("api/vm/" + ip + "/relatedvms", data, httpOptions);
   }
 
   parseData(res: any) {
@@ -400,7 +410,7 @@ export class VmsService {
     var parseRes = JSON.parse(res);
     var index = 0;
     for (var key in parseRes) {
-      if (key != 'user' && key != 'protocols') {
+      if (key != "user" && key != "protocols") {
         vmDataset[index] = {
           id: index,
           ip: parseRes[key].ip,
@@ -415,21 +425,21 @@ export class VmsService {
           comment: parseRes[key].comment,
           vm_owner_lab: parseRes[key].vm_owner_lab,
           team: parseRes[key].team,
-          cssClass: '',
-          global: '',
+          cssClass: "",
+          global: "",
         };
         if (
           vmDataset[index].snap_count >= 5 &&
           vmDataset[index].snap_count <= 8
         ) {
-          vmDataset[index].cssClass = 'warnSnap';
+          vmDataset[index].cssClass = "warnSnap";
         } else if (vmDataset[index].snap_count > 8) {
-          vmDataset[index].cssClass = 'alertSnap';
+          vmDataset[index].cssClass = "alertSnap";
         }
-        if (vmDataset[index].status == 'true') {
-          vmDataset[index].status = 'Available';
+        if (vmDataset[index].status == "true") {
+          vmDataset[index].status = "Available";
         } else {
-          vmDataset[index].status = 'Occupied';
+          vmDataset[index].status = "Occupied";
         }
         /*vmDataset[index].global =
           vmDataset[index].ip +
@@ -473,12 +483,12 @@ export class VmsService {
       };
 
       if (
-        snapshotsDataset[index].status == 'true' ||
+        snapshotsDataset[index].status == "true" ||
         snapshotsDataset[index].status == true
       ) {
-        snapshotsDataset[index].status = 'Available';
+        snapshotsDataset[index].status = "Available";
       } else {
-        snapshotsDataset[index].status = 'Occupied';
+        snapshotsDataset[index].status = "Occupied";
       }
       index++;
     }
@@ -500,12 +510,12 @@ export class VmsService {
       };
 
       if (
-        snapshotsDataset[index].status == 'true' ||
+        snapshotsDataset[index].status == "true" ||
         snapshotsDataset[index].status == true
       ) {
-        snapshotsDataset[index].status = 'Available';
+        snapshotsDataset[index].status = "Available";
       } else {
-        snapshotsDataset[index].status = 'Occupied';
+        snapshotsDataset[index].status = "Occupied";
       }
       index++;
     }

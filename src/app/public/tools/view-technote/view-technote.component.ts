@@ -17,6 +17,7 @@ import { SpinnerService } from '../../services/spinner-service';
 import { TechnotesService } from '../../services/technotes.service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { ToastService } from '../../widget/toast/toast-service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-technote',
@@ -38,6 +39,7 @@ export class ViewTechnoteComponent implements OnInit {
     private toastService:ToastService,
     private router: Router,
     private dialog: MatDialog,
+    private sanitizer: DomSanitizer
   ) {
     this.technoteID = this.actRoute.snapshot.params.technoteID;
     var promise = this.technotesServie.getTechnote(this.technoteID);
