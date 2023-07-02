@@ -401,13 +401,11 @@ module.exports = {
     console.log("upload::", req.file);
     console.log("upload::", req.body);
     if (!req.files && !req.file) {
-      return res
-        .status(400)
-        .json({
-          status: "Failed",
-          message: "Please upload a flie!",
-          nofile: true,
-        });
+      return res.status(400).json({
+        status: "Failed",
+        message: "Please upload a flie!",
+        nofile: true,
+      });
     }
     var file = null;
     if (req.file) file = req.file;
@@ -434,40 +432,40 @@ module.exports = {
             columnHeaders.push(worksheet[key].v);
           }
         }
-        console.log(columnHeaders);
+        // console.log("==============>", columnHeaders);
         if (!checkMandatoryCols(columnHeaders)) {
-          return res
-            .status(400)
-            .json({
-              status: "Failed",
-              message: "Cloumn Headers validation failed!",
-              mandatoryHeaders: [
-                "IP Address",
-                "Hostname",
-                "OS",
-                "OS Version",
-                "Team",
-              ],
-              otherAllowedHeaders: [
-                "RAM",
-                "Owner",
-                "Group",
-                "Comment",
-                "Assignee",
-              ],
-            });
+          return res.status(400).json({
+            status: "Failed",
+            message: "Cloumn Headers validation failed!",
+            mandatoryHeaders: [
+              "IP Address",
+              "Hostname",
+              "OS",
+              "OS Version",
+              "Team",
+            ],
+            otherAllowedHeaders: [
+              "RAM",
+              "Owner",
+              "Group",
+              "Comment",
+              "Assignee",
+              "Availability",
+            ],
+          });
         }
+        //console.log("===========> Worksheeet >", worksheet);
         let xlsData = XLSX.utils.sheet_to_json(worksheet, {
           raw: true,
+          defval: "",
         });
+        console.log("===========> xlsData >", xlsData);
         if (xlsData.length == 0) {
-          return res
-            .status(400)
-            .json({
-              status: "Failed",
-              message: "No recod found!",
-              noRecord: true,
-            });
+          return res.status(400).json({
+            status: "Failed",
+            message: "No recod found!",
+            noRecord: true,
+          });
         }
         var unique = Object.values(
           xlsData.reduce((r, o) => {
@@ -475,27 +473,23 @@ module.exports = {
             return r;
           }, {})
         );
-        console.log(unique);
+        // console.log(unique);
         if (unique.length != xlsData.length) {
-          return res
-            .status(400)
-            .json({
-              status: "Failed",
-              message:
-                "Duplicate IP found ! IP Address should be unique for each vm!",
-              duplicateIP: true,
-            });
+          return res.status(400).json({
+            status: "Failed",
+            message:
+              "Duplicate IP found ! IP Address should be unique for each vm!",
+            duplicateIP: true,
+          });
         }
         checkDataValidation(xlsData).then((result) => {
           console.log(result);
           if (!result.status) {
-            return res
-              .status(400)
-              .json({
-                status: "Failed",
-                message: result.message,
-                dataValidationFailed: true,
-              });
+            return res.status(400).json({
+              status: "Failed",
+              message: result.message,
+              dataValidationFailed: true,
+            });
           }
           req.body.params = {};
           req.body.params.ipList = xlsData;
