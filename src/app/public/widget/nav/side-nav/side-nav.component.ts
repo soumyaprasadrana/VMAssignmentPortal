@@ -137,13 +137,12 @@ export class SideNavComponent implements OnInit {
   }
   versionInfo(){
     this.openAlertDialog({type:"info",message:` <div class="modal-body">
-      <p class="mb-0">Version: 2.0.8</p>
-      <p class="mb-0">Build Number: 208-13062023</p>
-      <p>Build Date: June 13, 2023</p>
+      <p class="mb-0">Version: 2.0.9</p>
+      <p class="mb-0">Build Number: 209-15072023</p>
+      <p>Build Date: July 15, 2023</p>
       <p>
-    <!--Made with ❤ by <a href="https://in.linkedin.com/in/soumya-prasad-rana-5a7a6b70 ">Soumya</a>-->
-    VM Assignment Portal 2.0.8 © 2023 All rights reserved.
- </p>
+    VM Assignment Portal 2.0.9 © 2023 All rights reserved.</p>
+    <p>Made with ❤ by <a href="https://in.linkedin.com/in/soumya-prasad-rana-5a7a6b70 ">Soumya</a></p>
       
     </div>`});
               
