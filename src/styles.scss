@@ -74,3 +74,24 @@ button[type=submit],
 mat-dialog-container button[type=button] {
   margin-top: 10px !important;
 }
+
+/* App Font Styles*/
+.slickgrid-container .grid-canvas .slick-row {
+  font-family: var(--bs-font-sans-serif) !important;
+}
+
+.slickgrid-container .slick-header-columns .slick-column-name {
+  font-family: var(--bs-font-sans-serif) !important;
+}
+.mat-list-item {
+  font-family: var(--bs-font-sans-serif) !important;
+}
+body {
+  font-family: var(--bs-font-sans-serif) !important;
+}
+.mat-menu-item {
+  font-family: var(--bs-font-sans-serif) !important;
+}
+mat-nav-list a :hover {
+  font-weight: unset !important;
+}
