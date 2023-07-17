@@ -17,7 +17,7 @@
             <div class="col ">
                 <div class="form-group required">
 
-                    <label for="field_{{i}}">Field name: {{getFormCotrolData('field_'+i)}}</label>
+                    <label class="bold" for="field_{{i}}">Field name: {{getFormCotrolData('field_'+i)}}</label>
                     <input maxlength="31" id="field_{{i}}" class="form-control" formControlName="field_{{i}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('field_'+i) }">
                     <div *ngIf="submitted && checkIsInvalid('field_'+i)" class="invalid-feedback">
                         <div class="ms-1" *ngIf="checkIsInvalidRequired('field_'+i)">Field is required</div>
@@ -29,7 +29,7 @@
             <div class="col ">
                 <div class="form-group required">
 
-                    <label for="field_{{i}}_value">Value for field {{getFormCotrolData('field_'+i)}} </label>
+                    <label class="bold" for="field_{{i}}_value">Value for field {{getFormCotrolData('field_'+i)}} </label>
                     <input id="field_{{i}}_value" class="form-control" formControlName="field_{{i}}_value" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid('field_'+i+'_value') }">
                     <div *ngIf="submitted && checkIsInvalid('field_'+i+'_value')" class="invalid-feedback">
                         <div class="ms-1" *ngIf="checkIsInvalidRequired('field_'+i+'_value')">{{item.name}} is required</div>
@@ -58,8 +58,8 @@
             <div class="col ">
                 <div *ngFor="let item of data.list" class="form-group required">
 
-                    <label for="{{item.name}}">{{item.name}}</label>
-                    <input id="{{item.name}}" class="form-control" formControlName="{{item.name}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(item.name) }">
+                    <label class="bold" for="{{item.name}}">{{item.name}}</label>
+                    <input id="{{item.name}}" class="form-control" formControlName="{{item.name}}" [ngClass]="{ 'is-invalid': submitted && checkIsInvalid(item.name) }" disabled>
                     <div *ngIf="submitted && checkIsInvalid(item.name)" class="invalid-feedback">
                         <div class="ms-1" *ngIf="checkIsInvalidRequired(item.name)">Field is required</div>
                     </div>

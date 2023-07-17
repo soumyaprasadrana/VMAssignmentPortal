@@ -151,9 +151,9 @@ $slick-row-selected-color: #9ea7aa;
   border: none !important;
 }
 .slickgrid-container .slick-header-columns .slick-column-name {
-  font-size: 12px !important;
-  font-weight: lighter !important;
-  background-color: var(--mui-btn-grey-background-color);
+  font-size: 13px !important;
+  background-color: var(--mui-btn-primary-background-color);
+  color: var(--mui-btn-primary-text-color);
   border-radius: 8px !important;
 }
 .slickgrid-container .slick-header-columns .slick-header-menu-button {
@@ -401,7 +401,7 @@ $slick-row-selected-color: #9ea7aa;
   flex: 0 0 auto;
 }
 #login-form-content-container {
-  z-index: 9999;
+  z-index: 1;
   form {
     button {
       font-weight: bolder;

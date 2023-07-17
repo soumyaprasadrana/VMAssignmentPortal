@@ -1,44 +1,48 @@
 .snapDialog {
-    padding: 20px;
-    margin: 30px;
+  padding: 20px;
+  margin: 30px;
 }
 
 .titleBar {
-    float: right;
-    margin-top: 3px;
-    width: 100%;
-    text-align: end;
-    background: #a5a5a5;
-    padding-right: 3px;
+  float: right;
+  margin-top: 3px;
+  width: 100%;
+  text-align: end;
+  background: #a5a5a5;
+  padding-right: 3px;
 }
 
 .titleicon {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .alertMssg {
-    color: #000;
-    font-size: 13px;
-    width: 100%;
-    margin-top: 20px;
-    height: 80%;
+  color: #000;
+  font-size: 13px;
+  width: 100%;
+  margin-top: 20px;
+  height: 80%;
 }
 
 .ngx-select__choices {
-    z-index: 9999;
+  z-index: 9999;
 }
 
 ::ng-deep .app-dialog-class {
-    mat-dialog-container {
-        padding-top: 10px !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-        overflow: visible;
-    }
+  mat-dialog-container {
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    overflow: visible;
+  }
 }
 
 .float-end {
-    float: inline-end !important;
-    /*fallback for chrome*/
-    float: right !important;
+  float: inline-end !important;
+  /*fallback for chrome*/
+  float: right !important;
+}
+
+.quill-editor-is-invalid ~ .invalid-feedback {
+  display: block;
 }

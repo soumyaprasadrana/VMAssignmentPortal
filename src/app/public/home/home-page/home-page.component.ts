@@ -1041,7 +1041,7 @@ export class HomePageComponent implements OnInit {
         data: data,
         panelClass: "app-dialog-class",
 
-        width: this.loggedUser.enableRichTextForVMComment ? "1000px" : "300px",
+        width: this.loggedUser.enableRichTextForVMComment ? "600px" : "300px",
       })
       .afterClosed()
       .toPromise()
@@ -2385,6 +2385,7 @@ export class HomePageComponent implements OnInit {
               : "warnSnapshot"}'>${dataContext.ip}</span>`,
           type: "warn",
           uiprop: this.properties,
+          angularGrid: this.angularGrid,
         });
       } else if (dataContext.snap_count > this.properties.alertSnapshot) {
         Object.assign(componentOutput.componentRef.instance, {

@@ -14,7 +14,7 @@
         <tr *ngFor="let users of list|groupBy:'user_team' |toArray">
             <td>
 
-                <label style="margin-top:5px;"><span class="badge app-badge">Team: </span> {{ users[0].user_team }}</label>
+                <label style="margin-top:5px;cursor:pointer;"  (click)="temp[users[0].user_team]=!temp[users[0].user_team]"><span class="badge app-badge">Team: </span> {{ users[0].user_team }}</label>
                 <div style="float: right; margin-right: 10px;cursor:pointer;">
                     <div style="float:right;padding:5px;" *ngIf="!temp[users[0].user_team]" (click)="temp[users[0].user_team]=!temp[users[0].user_team]">
                         <i class="arrowX downX"></i>
@@ -32,11 +32,10 @@
                         <th>Action</th>
                         <tr *ngFor="let user of users | orderBy: 'user_name' ">
                             <td style="text-align:left; ">
-
-                                <i class="fa fa-user "></i> <label style="margin-left:5px;font-weight: 100; ">{{ user.user_id }}</label>
+                                <i class="fa fa-user "></i> <label style="margin-left:5px;font-weight: 500; ">{{ user.user_id }}</label>
                             </td>
                             <td style="text-align:left; ">
-                                <label [matTooltip]="user.user_name" style="overflow:hidden;white-space:nowrap; text-overflow: ellipsis;font-weight: 100; ">{{ user.user_name }}</label>
+                                <label [matTooltip]="user.user_name" style="overflow:hidden;white-space:nowrap; text-overflow: ellipsis;font-weight: 500; ">{{ user.user_name }}</label>
                             </td>
                             <td>
                                 <span *ngIf="user.is_teamLead=='1' "><i class="fa fa-check-circle "></i></span>

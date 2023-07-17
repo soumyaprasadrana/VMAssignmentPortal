@@ -41,6 +41,7 @@ export class DynamicobjectsHomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    this.spinner.setSpinnerState(true);
     this.loggedUser = _auth.getUser();
     var promise = this.dos.getDynamicObjects();
     var headers = new HttpHeaders({
@@ -83,6 +84,7 @@ export class DynamicobjectsHomeComponent implements OnInit {
               }
             }
             this.isLoaded = true;
+            this.spinner.setSpinnerState(false);
           })
           .catch((err: any) => {
             this.spinner.setSpinnerState(false);

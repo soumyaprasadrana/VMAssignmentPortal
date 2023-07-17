@@ -77,21 +77,32 @@ mat-dialog-container button[type=button] {
 
 /* App Font Styles*/
 .slickgrid-container .grid-canvas .slick-row {
-  font-family: var(--bs-font-sans-serif) !important;
+  font-family: Arial !important;
+  font-weight: var(--slick-cell-font-weight, 450) !important;
 }
 
 .slickgrid-container .slick-header-columns .slick-column-name {
-  font-family: var(--bs-font-sans-serif) !important;
+  font-family: Arial !important;
+  font-weight: var(--slick-cell-font-weight, 501) !important;
 }
 .mat-list-item {
-  font-family: var(--bs-font-sans-serif) !important;
+  font-family: Arial !important;
 }
 body {
-  font-family: var(--bs-font-sans-serif) !important;
+  font-family: Arial !important;
 }
 .mat-menu-item {
   font-family: var(--bs-font-sans-serif) !important;
 }
 mat-nav-list a :hover {
   font-weight: unset !important;
+}
+.form-group label {
+  font-weight: bold !important;
+}
+.quill-editor-is-invalid .ql-container {
+  border-color: red !important;
+}
+.quill-editor-is-invalid .ql-toolbar {
+  border-color: red !important;
 }
