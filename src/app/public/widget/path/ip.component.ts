@@ -60,6 +60,7 @@ export class IPComponent implements OnInit {
   @Input() functionParameter2: any = null;
   @Input() functionParameter3: any = null;
   @Input() uiprop: any = null;
+  @Input() angularGrid: any = null;
   constructor(private router: Router) {}
 
   ngOnInit(): void {}

@@ -7,19 +7,22 @@
     </span>
 </h1>
 <mat-dialog-content class="alertMssg ms-2" >
-    <br> {{data.label}}
+    <br>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="row p-3 ">
             <div class="col ">
-                <div class="form-group required" [style]="{height:  formGroupheight}">
-
+                <div class="form-group required" [style]="{height:  formGroupheight,width:'500px'}">
+                    <label for="dataCtrl"> {{data.label}}</label>
                     <input *ngIf="!loggedUser.enableRichTextForVMComment" id="dataCtrl"  formControlName="dataCtrl">
-                    <quill-editor *ngIf="loggedUser.enableRichTextForVMComment" id="dataCtrl" [styles]="{height: '150px'}"   formControlName="dataCtrl" ngDefaultControl></quill-editor>
+                    <quill-editor *ngIf="loggedUser.enableRichTextForVMComment" id="dataCtrl" [styles]="{height: '150px'}" [modules]="quillConf"   formControlName="dataCtrl" ngDefaultControl  [ngClass]="{ 'quill-editor-is-invalid': submitted && f.dataCtrl.errors }"></quill-editor>
+                    <div *ngIf="submitted && f.dataCtrl.errors" class="invalid-feedback">
+                        <div class="ms-1" *ngIf="f.dataCtrl.errors.required">{{data.label}} is required</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row ">
-            <div class="col float-end">
+            <div class="col float-end mt-5">
 
                 <button type="submit" mat-button class="float-end">Ok</button>
                 <button type="button" mat-button (click)="onClose()" class="float-end">Cancel</button>
