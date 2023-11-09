@@ -27,6 +27,7 @@ import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.com
 import { AuthserviceService } from '../../services/authservice.service';
 import { VmsService } from '../../services/vms.service';
 import { ToastService } from '../../widget/toast/toast-service';
+import { YornDialogComponent } from '../../widget/alert-dialog/yorn-dialog.component';
 @Component({
   selector: 'app-add-vm',
   templateUrl: './add-vm.component.html',
@@ -54,6 +55,7 @@ export class AddVmComponent implements OnInit {
     private vms: VmsService,
     private toastService:ToastService
   ) {
+    
     tms
       .getTeams()
       .then((res) => {
@@ -174,6 +176,21 @@ export class AddVmComponent implements OnInit {
       .then((res) => {
         if (typeof callback == 'function') {
           callback();
+        }
+      });
+  }
+
+   openYornDialog(data: any, callback: any) {
+    this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: 'app-dialog-class',
+      })
+      .afterClosed()
+      .toPromise()
+      .then((res) => {
+        if (typeof callback == 'function') {
+          callback(res);
         }
       });
   }

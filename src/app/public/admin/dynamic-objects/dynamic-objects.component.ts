@@ -34,6 +34,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { DynamicObjectsService } from '../../services/dynamicobjects.service';
+import { YornDialogComponent } from '../../widget/alert-dialog/yorn-dialog.component';
 
 const LOCAL_STORAGE_KEY = 'dynamicObjectListGridState';
 const DEFAULT_PAGE_SIZE = 25;
@@ -383,14 +384,14 @@ export class ToolsDynamicObjectsComponent implements OnInit {
                 this.loggedUser.permissions.delete_vm
               );
             },
-            action: (_event: any, args: any) => {
+            action: async (_event: any, args: any) => {
               const dataContext = args.dataContext;
               const row = args?.row ?? 0;
-              if (
-                confirm(
-                  `Do you really want to remove this object  "${dataContext.description}"? CAUTION: This action will remove all data from object table.`
-                )
-              ) {
+               let userConfirmation = await this.openYornDialog({
+                  title: "Prompt",
+                  message: `<p class="mb-3"><strong> Do you really want to remove this object  "${dataContext.description}"? CAUTION: This action will remove all data from object table.</strong></p>`,
+                });
+            if (userConfirmation) {
                 this.spinner.setSpinnerState(true);
                 this.dynamicObjectService
                   .deleteDynamicObject(dataContext.name)
@@ -547,5 +548,14 @@ export class ToolsDynamicObjectsComponent implements OnInit {
       //console.log('Grid State before destroy :: ', gridState);
       localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
+  }
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

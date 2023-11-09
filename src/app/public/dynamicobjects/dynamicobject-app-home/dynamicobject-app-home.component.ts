@@ -46,6 +46,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { UserDefinedFunctionsService } from '../../services/userdefinedfunctions.service';
 import { HttpHeaders } from '@angular/common/http';
 import { UserDefinedFunctionDialogComponent } from '../../widget/alert-dialog/userdefinedfunction-dialog.component';
+import { YornDialogComponent } from '../../widget/alert-dialog/yorn-dialog.component';
 @Component({
   selector: 'app-dynamicobject-app-home',
   templateUrl: './dynamicobject-app-home.component.html',
@@ -706,16 +707,17 @@ export class DynamicObjectAppHomeComponent implements OnInit {
             this.loggedUser.permissions.delete_vm
           );*/
         },
-        action: (_event: any, args: any) => {
+       action: async (_event: any, args: any) => {
           const dataContext = args.dataContext;
           const row = args?.row ?? 0;
-          if (
-            confirm(
-              `Do you really want to remove this record  "${JSON.stringify(
+          let userConfirmation = await this.openYornDialog({
+      title: "Prompt",
+      message: `<p class="mb-3"><strong>Do you really want to remove this record  "${JSON.stringify(
                 dataContext
-              )}"?`
-            )
-          ) {
+              )}" ?</strong></p>`,
+    });
+    if (userConfirmation) {
+  
             this.spinner.setSpinnerState(true);
             this.dynamicobjectappServie
               .deleteDynamicObjectAppRecord(this.app, dataContext)
@@ -1046,5 +1048,14 @@ export class DynamicObjectAppHomeComponent implements OnInit {
       // use a delay to make sure Angular ran at least a full cycle and make sure it finished rendering the Component
       setTimeout(() => $(cellNode).empty().html(componentOutput.domElement));
     }
+  }
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

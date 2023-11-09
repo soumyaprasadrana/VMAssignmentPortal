@@ -54,6 +54,7 @@ import { SlickCustomTooltip } from "@slickgrid-universal/custom-tooltip-plugin";
 import { LinkComponent } from "../../widget/path/link.component";
 import { SnapshotsDialogComponent } from "../../widget/alert-dialog/snapshots-dialog.component";
 import { IPComponent } from "../../widget/path/ip.component";
+import { YornDialogComponent } from "../../widget/alert-dialog/yorn-dialog.component";
 const LOCAL_STORAGE_KEY = "gridState";
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -539,7 +540,7 @@ export class HomePageComponent implements OnInit {
       }
     );
   }
-  release(_event: any, args: any) {
+  async release(_event: any, args: any) {
     //console.log(this.selectedRows);
     const dataContext = args.dataContext;
 
@@ -552,7 +553,11 @@ export class HomePageComponent implements OnInit {
       this.selectedRows.length > 1 &&
       isincludedielectedRows
     ) {
-      if (!window.confirm("Release selected vms ?")) {
+      let userConfirmation = await this.openYornDialog({
+        title: "Rlease VMS",
+        message: `<p class="mb-3"><strong>Do you really want to release selected VMs ?</strong></p>`,
+      });
+      if (!userConfirmation) {
         return;
       }
       args.ipList = this.selectedRows;
@@ -640,7 +645,11 @@ export class HomePageComponent implements OnInit {
         });
       return;
     }
-    if (!window.confirm("Release VM:" + dataContext.ip + "?")) {
+    let userConfirmation = await this.openYornDialog({
+      title: "Rlease VM",
+      message: `<p class="mb-3"><strong>Do you really want to release VM ${dataContext.ip} ?</strong></p>`,
+    });
+    if (!userConfirmation) {
       return;
     }
     this.spinner.setSpinnerState(true);
@@ -1052,6 +1061,15 @@ export class HomePageComponent implements OnInit {
         }
       });
   }
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
+  }
   openImportDialog(data: any, callback: any) {
     this.dialog
       .open(FileChooseDialogComponent, {
@@ -1282,12 +1300,14 @@ export class HomePageComponent implements OnInit {
       command: "add-domment",
       title: "Add Comment",
       iconCssClass: "fa fa-edit",
-      action: (_event: any, args: any) => {
+      action: async (_event: any, args: any) => {
         const dataContext = args.dataContext;
         //const row = args?.row ?? 0;
-        if (
-          confirm(`Do you really want to remove this vm  "${dataContext.ip}"?`)
-        ) {
+        var userConfirmation = await this.openYornDialog({
+          title: "Remove VM",
+          message: `Do you really want to remove this vm  "${dataContext.ip}"?`,
+        });
+        if (userConfirmation) {
           this.spinner.setSpinnerState(true);
           this.vms
             .deleteVM(dataContext.ip)
@@ -1469,14 +1489,14 @@ export class HomePageComponent implements OnInit {
             this.loggedUser.permissions.delete_vm
           );
         },
-        action: (_event: any, args: any) => {
+        action: async (_event: any, args: any) => {
           const dataContext = args.dataContext;
           //const row = args?.row ?? 0;
-          if (
-            confirm(
-              `Do you really want to remove this vm  "${dataContext.ip}"?`
-            )
-          ) {
+          var userConfirmation = await this.openYornDialog({
+            title: "Remove VM",
+            message: `Do you really want to remove this vm  "${dataContext.ip}"?`,
+          });
+          if (userConfirmation) {
             this.spinner.setSpinnerState(true);
             this.vms
               .deleteVM(dataContext.ip)
