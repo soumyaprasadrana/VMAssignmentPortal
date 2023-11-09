@@ -28,6 +28,7 @@ import { ApplicationpropsService } from '../../services/applicationprops.service
 import { NodeclientService } from '../../services/nodeclient.service';
 import { SpinnerService } from '../../services/spinner-service';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
+import { YornDialogComponent } from '../../widget/alert-dialog/yorn-dialog.component';
 
 @Component({
   selector: 'app-application-properties',
@@ -130,14 +131,15 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
     this.updatePropList[event.prop_name] = event.prop_value;
   }
-  updateProps() {
-    if (
-      !window.confirm(
-        'Update Properties :' + JSON.stringify(this.updatePropList) + ' ?'
-      )
-    ) {
-      return;
-    }
+ async updateProps() {
+     let userConfirmation = await this.openYornDialog({
+          title: "Prompt",
+          message: `<p class="mb-3"><strong>Do you really want to update these properties: "${JSON.stringify(this.updatePropList)}"?</strong></p>`,
+        });
+        if (!userConfirmation) {
+          return;
+        }
+   
     //console.log(this.updatePropList);
     // display form values on success
     var headers = new HttpHeaders({
@@ -203,5 +205,14 @@ export class ApplicationPropertiesComponent implements OnInit {
           callback();
         }
       });
+  }
+   openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

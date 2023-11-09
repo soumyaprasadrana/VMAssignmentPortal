@@ -1,0 +1,24 @@
+<h1 mat-dialog-title class="dialog-title">
+    <span>
+        <i *ngIf="data.titleIcon" class="titleicon {{data.iconClass}}" ></i>
+         {{data.title}}
+       
+    <i (click)="onClose()" aria-label="Close" style="background: white; padding-right: 10px;" class="btn fa fa-times float-end"></i>
+    </span>
+</h1>
+<mat-dialog-content class="alertMssg ms-2">
+     
+    <div  >
+        <div class="row p-2 mt-2">
+            <p [innerHtml]="data.message"></p>
+        </div>
+        <div class="row ">
+            <div class="col float-end">
+
+                <button type="submit" mat-button class="btn btn-success float-end" (click)="onSubmit(true)">Yes</button>
+                <button type="button" mat-button class="btn btn-danger" (click)="onSubmit(false)">No</button>
+
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

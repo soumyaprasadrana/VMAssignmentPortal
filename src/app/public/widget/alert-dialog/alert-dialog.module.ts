@@ -28,6 +28,7 @@ import { TreeModule } from "../tree-diagram/tree.module";
 import { TakeSnapInputDialogComponent } from "./takesnap-dialog.component";
 import { TaskOutputDialogComponent } from "./vsphere-task-output-dialog.component";
 import { UserDefinedFunctionDialogComponent } from "./userdefinedfunction-dialog.component";
+import { YornDialogComponent } from "./yorn-dialog.component";
 import { AngularShellModule } from "../angular-shell/angular-shell.module";
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { AngularShellModule } from "../angular-shell/angular-shell.module";
     TakeSnapInputDialogComponent,
     TaskOutputDialogComponent,
     UserDefinedFunctionDialogComponent,
+    YornDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { AngularShellModule } from "../angular-shell/angular-shell.module";
     TakeSnapInputDialogComponent,
     TaskOutputDialogComponent,
     UserDefinedFunctionDialogComponent,
+    YornDialogComponent,
   ],
 })
 export class AlertModule {}

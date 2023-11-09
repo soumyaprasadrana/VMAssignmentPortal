@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Filters } from "angular-slickgrid";
 import { AlertDialogComponent } from "../widget/alert-dialog/alert-dialog.component";
 import { InputDialogComponent } from "../widget/alert-dialog/input-dialog.component";
+import { YornDialogComponent } from "../widget/alert-dialog/yorn-dialog.component";
 import { ToastService } from "../widget/toast/toast-service";
 import { AuthserviceService } from "./authservice.service";
 import { DynamicObjectAppService } from "./dynamicobjectapp.service";
@@ -97,6 +98,7 @@ export class UserDefinedFunctionsService {
             return {
               openAlertDialog: this.openDialog.bind(this),
               openInputDialog: this.openDialogInput.bind(this),
+              openYornDialog: this.openYornDialog.bind(this),
             };
           case "nodeclient":
             return this._client;
@@ -415,5 +417,14 @@ export class UserDefinedFunctionsService {
   setApp(app: any) {
     if (this.app != app) this.needReload = true;
     this.app = app;
+  }
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

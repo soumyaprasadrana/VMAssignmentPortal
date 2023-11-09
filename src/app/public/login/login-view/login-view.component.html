@@ -12,15 +12,66 @@
 @desc Relationships Graph Component Html
 -->
 <app-navbar></app-navbar>
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 d-none d-md-block">
+        <img
+          src="assets/images/undraw_remotely_2j6y.svg"
+          alt="Image"
+          class="img-fluid"
+        />
+      </div>
+      <div class="col-md-6 d-flex align-items-center justify-content-center contents">
+        <div class="row w-100">
+          <div class="col-md-8 w-100 ml-2">
+            <div class="mb-4">
+                <h3 class="display-4">Welcome!</h3>
+                <p class="text-muted mb-4">Please login to use VM Assignment Portal.</p>             
+            </div>
+             <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                                <div *ngIf="showAlert" class="alert" [ngClass]="{'alert-danger':alert.type=='danger','alert-success':alert.type=='success'}" role="alert">
+                                    {{ alert.message }}
+                                </div>
+                                <div class="form-group mb-3">
+                                    <span class="fa fa-user form-control-prefix-icon text-muted" area-label="false"></span>
+                                    <input id="username" type="text" placeholder="Username" formControlName="username" class="form-control form-control-include-icon " [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                        <div *ngIf="f.username.errors.required">Username is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <span *ngIf="f.password.value.toString().length > 0" [ngClass]="{ 'fa-eye-slash': !hide,'fa-eye': hide }" class="fa form-control-icon text-muted" area-label="false" (click)="hide=!hide"></span>
+                                    <span class="fa fa-lock form-control-prefix-icon text-muted" area-label="false" (click)="hide = !hide"></span>
+                                    <input id="password" [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" class="form-control form-control-include-icon" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">Password is required</div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 btn-block btn-portal btn-login mb-2">Log In</button>
+                                <div class="text-center d-flex justify-content-between mt-4"></div>
+                            </form>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-        <!-- The content half -->
+
+
+
+
+        <!-- The content half 
         <div id="login-content-container" class="col-md-6 bg-light">
-           <!-- <div *ngIf="theme == 'mui' || theme == 'muidark' || theme == 'muipink' || theme == 'muiblue'" class="watermark">
+            <div *ngIf="theme == 'mui' || theme == 'muidark' || theme == 'muipink' || theme == 'muiblue'" class="watermark">
                  <img class="book" src="assets/images/os.png" alt="BOOK.SVG">
-            </div>-->
+            </div>
             <div class="login h-100 d-flex align-items-center py-5">
-                <!-- Demo content-->
+               
                 <div class="container">
                     <div class="row">
                         <div id="login-form-content-container" class="col-lg-10 col-xl-7 mx-auto">
@@ -53,9 +104,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- End -->
+                
             </div>
-        </div>
-        <!-- End -->
+        </div>-->
+        
    
 <app-footer *ngIf="!hideloginfooter"></app-footer>

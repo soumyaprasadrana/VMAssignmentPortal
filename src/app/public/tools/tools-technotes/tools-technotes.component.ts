@@ -35,6 +35,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
 import { NodeclientService } from '../../services/nodeclient.service';
 import { TechnotesService } from '../../services/technotes.service';
+import { YornDialogComponent } from '../../widget/alert-dialog/yorn-dialog.component';
 
 const LOCAL_STORAGE_KEY = 'technotesGridState';
 const DEFAULT_PAGE_SIZE = 25;
@@ -400,14 +401,15 @@ export class ToolsTechnotesComponent implements OnInit {
                 this.loggedUser.permissions.delete_vm
               );
             },
-            action: (_event: any, args: any) => {
+            action: async (_event: any, args: any) => {
               const dataContext = args.dataContext;
               const row = args?.row ?? 0;
-              if (
-                confirm(
-                  `Do you really want to remove this technote  "${dataContext.description}"?`
-                )
-              ) {
+               let userConfirmation = await this.openYornDialog({
+      title: "Prompt",
+      message: `<p class="mb-3"><strong>Do you really want to remove this technote  "${dataContext.description}"?</strong></p>`,
+    });
+    if (userConfirmation) {
+              
                 this.spinner.setSpinnerState(true);
                 this.technotesServie
                   .deleteTechnote(dataContext.id)
@@ -564,5 +566,14 @@ export class ToolsTechnotesComponent implements OnInit {
       //console.log('Grid State before destroy :: ', gridState);
       localStorage[LOCAL_STORAGE_KEY] = JSON.stringify(gridState);
     }
+  }
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

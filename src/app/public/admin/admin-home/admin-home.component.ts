@@ -9,28 +9,29 @@
  * @modify date 2022-02-26 18:26:41
  * @desc Admin Home Component
  */
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { AuthserviceService } from '../../services/authservice.service';
-import { NodeclientService } from '../../services/nodeclient.service';
-import { SpinnerService } from '../../services/spinner-service';
-import { TeamService } from '../../services/teams.service';
-import { UserService } from '../../services/users.service';
-import { AlertDialogComponent } from '../../widget/alert-dialog/alert-dialog.component';
-import { InputDialogComponent } from '../../widget/alert-dialog/input-dialog.component';
-import { ToastService } from '../../widget/toast/toast-service';
-import { AdminConfig } from '../admin.config';
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { AuthserviceService } from "../../services/authservice.service";
+import { NodeclientService } from "../../services/nodeclient.service";
+import { SpinnerService } from "../../services/spinner-service";
+import { TeamService } from "../../services/teams.service";
+import { UserService } from "../../services/users.service";
+import { AlertDialogComponent } from "../../widget/alert-dialog/alert-dialog.component";
+import { InputDialogComponent } from "../../widget/alert-dialog/input-dialog.component";
+import { YornDialogComponent } from "../../widget/alert-dialog/yorn-dialog.component";
+import { ToastService } from "../../widget/toast/toast-service";
+import { AdminConfig } from "../admin.config";
 @Component({
-  selector: 'app-admin-home',
-  templateUrl: './admin-home.component.html',
-  styleUrls: ['./admin-home.component.scss'],
+  selector: "app-admin-home",
+  templateUrl: "./admin-home.component.html",
+  styleUrls: [ "./admin-home.component.scss" ],
 })
 export class AdminHomeComponent implements OnInit {
   cardsMetaData: any;
   teamList: any;
   userList: any;
-  loggedUser:any;
+  loggedUser: any;
   constructor(
     private _spinner: SpinnerService,
     private _client: NodeclientService,
@@ -38,20 +39,20 @@ export class AdminHomeComponent implements OnInit {
     private router: Router,
     private tms: TeamService,
     private userService: UserService,
-    private _auth:AuthserviceService,
-    private toastService:ToastService
+    private _auth: AuthserviceService,
+    private toastService: ToastService
   ) {
     this.cardsMetaData = AdminConfig.cardsMetaData;
     if (_client.deviceIsMobile()) {
       for (var row in this.cardsMetaData) {
         for (var col in this.cardsMetaData[row]) {
           //console.log(this.cardsMetaData[row][col]);
-          this.cardsMetaData[row][col].cardHeight = '200';
-          this.cardsMetaData[row][col].cardWidth = '300';
+          this.cardsMetaData[row][col].cardHeight = "200";
+          this.cardsMetaData[row][col].cardWidth = "300";
         }
       }
     }
-    this.loggedUser=_auth.getUser();
+    this.loggedUser = _auth.getUser();
   }
   deleteTeam() {
     //console.log('Delete User Called');
@@ -72,7 +73,7 @@ export class AdminHomeComponent implements OnInit {
   parseList(res: any) {
     var list = [];
     for (var item in res) {
-      list.push(res[item]['team_name']);
+      list.push(res[item]["team_name"]);
     }
     return list;
   }
@@ -80,17 +81,20 @@ export class AdminHomeComponent implements OnInit {
     console.log(list);
     this.openDialogInput(
       {
-        title: 'Choose a team',
-        label: 'Team',
-        placeholder: 'Select team',
+        title: "Choose a team",
+        label: "Team",
+        placeholder: "Select team",
         list: list,
-        bindLabel: 'team',
+        bindLabel: "team",
       },
-      (res: any) => {
-        console.log('data from close:', res);
+      async (res: any) => {
+        console.log("data from close:", res);
         res = res.dataCtrl;
-
-        if (!window.confirm('Delete team:' + res + '?')) {
+        let userConfirmation = await this.openYornDialog({
+          title: "Prompt",
+          message: `<p class="mb-3"><strong>Do you really want to remove this team  "${res}"?</strong></p>`,
+        });
+        if (!userConfirmation) {
           return;
         }
         this._spinner.setSpinnerState(true);
@@ -99,15 +103,15 @@ export class AdminHomeComponent implements OnInit {
           .deleteTeam(res)
           .then((res2: any) => {
             res2 = JSON.parse(res2);
-            if (res2.status == 'SUCCESS') {
+            if (res2.status == "SUCCESS") {
               this._spinner.setSpinnerState(false);
-              
+
               this.openDialog(
                 {
-                  type: 'message',
-                  message: 'Team deleted successfully!',
+                  type: "message",
+                  message: "Team deleted successfully!",
                 },
-                function () {
+                function() {
                   window.location.reload();
                 }
               );
@@ -115,7 +119,7 @@ export class AdminHomeComponent implements OnInit {
               this._spinner.setSpinnerState(false);
               this.openDialog(
                 {
-                  type: 'alert',
+                  type: "alert",
                   message: res2.message,
                 },
                 null
@@ -127,7 +131,7 @@ export class AdminHomeComponent implements OnInit {
             this._spinner.setSpinnerState(false);
             this.openDialog(
               {
-                type: 'alert',
+                type: "alert",
                 message: err.message,
               },
               null
@@ -142,12 +146,12 @@ export class AdminHomeComponent implements OnInit {
     this.dialog
       .open(AlertDialogComponent, {
         data: data,
-        panelClass: 'app-dialog-class',
+        panelClass: "app-dialog-class",
       })
       .afterClosed()
       .toPromise()
       .then((res: any) => {
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
           callback();
         }
       });
@@ -156,15 +160,15 @@ export class AdminHomeComponent implements OnInit {
     this.dialog
       .open(InputDialogComponent, {
         data: data,
-        panelClass: 'app-dialog-class',
+        panelClass: "app-dialog-class",
 
-        width: '500px',
+        width: "500px",
       })
       .afterClosed()
       .toPromise()
       .then((res) => {
         //console.log(res);
-        if (typeof callback == 'function' && res != '' && res != null) {
+        if (typeof callback == "function" && res != "" && res != null) {
           callback(res);
         }
       });
@@ -188,11 +192,11 @@ export class AdminHomeComponent implements OnInit {
     //console.log(list);
     this.openDialogInput(
       {
-        title: 'Choose a user',
-        label: 'Username',
-        placeholder: 'Select user',
+        title: "Choose a user",
+        label: "Username",
+        placeholder: "Select user",
         list: list,
-        bindLabel: 'user_id',
+        bindLabel: "user_id",
       },
       (res: any) => {
         //console.log('data from close:', res);
@@ -207,22 +211,26 @@ export class AdminHomeComponent implements OnInit {
               .promoteUser(res.user.user_id)
               .then((res2: any) => {
                 res2 = JSON.parse(res2);
-                if (res2.status == 'Success') {
-                  if(this.loggedUser.useToast){
-                    this.toastService.showSuccess('User promoted to Team Lead.',5000);
-                  }else{
-                  this.openDialog(
-                    {
-                      type: 'message',
-                      message: 'User promoted to Team Lead.',
-                    },
-                    null
-                  );}
+                if (res2.status == "Success") {
+                  if (this.loggedUser.useToast) {
+                    this.toastService.showSuccess(
+                      "User promoted to Team Lead.",
+                      5000
+                    );
+                  } else {
+                    this.openDialog(
+                      {
+                        type: "message",
+                        message: "User promoted to Team Lead.",
+                      },
+                      null
+                    );
+                  }
                 } else {
                   this._spinner.setSpinnerState(false);
                   this.openDialog(
                     {
-                      type: 'alert',
+                      type: "alert",
                       message: res2.message,
                     },
                     null
@@ -234,7 +242,7 @@ export class AdminHomeComponent implements OnInit {
                 this._spinner.setSpinnerState(false);
                 this.openDialog(
                   {
-                    type: 'alert',
+                    type: "alert",
                     message: err.message,
                   },
                   null
@@ -252,4 +260,13 @@ export class AdminHomeComponent implements OnInit {
     );
   }
   ngOnInit(): void {}
+  openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
+  }
 }

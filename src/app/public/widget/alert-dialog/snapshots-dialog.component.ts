@@ -19,6 +19,7 @@ import { ToastService } from '../toast/toast-service';
 import { AlertDialogComponent } from './alert-dialog.component';
 import { TakeSnapInputDialogComponent } from './takesnap-dialog.component';
 import { TaskOutputDialogComponent } from './vsphere-task-output-dialog.component';
+import { YornDialogComponent } from './yorn-dialog.component';
 
 export interface DialogData {
   snapshots?:any;
@@ -50,9 +51,13 @@ export class SnapshotsDialogComponent implements OnInit {
     console.log("takeSnapView");
     this.takeSnapshot(this.data.hostname);
   }
-  revertSnapshot():void{
+ async revertSnapshot(){
     console.log("revertSnapshot");
-    if(confirm(`Do you want to revert machine state to ${this.selectedSnap.name}?`)){
+     let userConfirmation = await this.openYornDialog({
+      title: "Prompt",
+      message: `<p class="mb-3"><strong> Do you want to revert machine state to ${this.selectedSnap.name}?</strong></p>`,
+    });
+    if (userConfirmation) {
       this.spinner.setSpinnerState(true);
     this.vms.revertSnap(this.data.hostname,this.selectedSnap.name,this.selectedSnap.snapid).then((res:any)=>{
       console.log(res);
@@ -191,5 +196,14 @@ getObject(){
           callback(res);
         }
       });
+  }
+   openYornDialog(data: any) {
+    return this.dialog
+      .open(YornDialogComponent, {
+        data: data,
+        panelClass: "app-dialog-class",
+      })
+      .afterClosed()
+      .toPromise();
   }
 }

@@ -17,38 +17,24 @@ import {
   query,
   group,
   useAnimation,
-} from '@angular/animations';
-import { getFilterParsedObjectResult } from 'angular-slickgrid';
-import {
-  bounceInDown,
-  bounceInUp,
-  bounceInLeft,
-  lightSpeedIn,
-  fadeInDown,
-  rotateInUpRight,
-  flip,
-  rubberBand,
-  fadeIn,
-  bounceIn,
-} from 'ng-animate';
+} from "@angular/animations";
+import { fadeIn } from "ng-animate";
 const globalAnimation = fadeIn;
 const globalTiming = 0.5;
 const globalDelay = 0;
-export const homeModule = trigger('routeAnimations', [
+export const homeModule = trigger("routeAnimations", [
   // The '* => *' will trigger the animation to change between any two states
-  transition('notFoundx => dash', [
+  transition("notFoundx => dash", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
-  transition(
-    '* => notFoundx',
-
-    [style({ opacity: 0 }), animate(1000, style({ opacity: 1 }))]
-  ),
+  transition("* => notFoundx", [
+    style({ opacity: 0 }),
+    animate(1000, style({ opacity: 1 })),
+  ]),
   //Dash to -> chart
   transition(
-    'dash => chart',
-
+    "dash => chart",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -56,8 +42,7 @@ export const homeModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'chart => dash',
-
+    "chart => dash",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -65,14 +50,14 @@ export const homeModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    '* => dash',
+    "* => dash",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
     })
   ),
   transition(
-    '* => chart',
+    "* => chart",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -80,19 +65,19 @@ export const homeModule = trigger('routeAnimations', [
   ),
 ]);
 
-export const vmmModule = trigger('routeAnimations', [
+export const vmmModule = trigger("routeAnimations", [
   // The '* => *' will trigger the animation to change between any two states
-  transition('notFoundx => dash', [
+  transition("notFoundx => dash", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
-  transition('* => notFoundx', [
+  transition("* => notFoundx", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
   //Child Module Entry
   transition(
-    '* => vmm',
+    "* => vmm",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -100,7 +85,7 @@ export const vmmModule = trigger('routeAnimations', [
   ),
   //Dash to -> chart
   transition(
-    'vmm => add',
+    "vmm => add",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -108,7 +93,7 @@ export const vmmModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'add => dash',
+    "add => dash",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -116,19 +101,19 @@ export const vmmModule = trigger('routeAnimations', [
   ),
 ]);
 
-export const adminModule = trigger('routeAnimations', [
+export const adminModule = trigger("routeAnimations", [
   // The '* => *' will trigger the animation to change between any two states
-  transition('notFoundx => dash', [
+  transition("notFoundx => dash", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
-  transition('* => notFoundx', [
+  transition("* => notFoundx", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
   //Child Module Entry
   transition(
-    '* => admin',
+    "* => admin",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -136,7 +121,7 @@ export const adminModule = trigger('routeAnimations', [
   ),
   //Dash to -> chart
   transition(
-    'admin => addTeam',
+    "admin => addTeam",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -144,7 +129,7 @@ export const adminModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'addTeam => dash',
+    "addTeam => dash",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -152,20 +137,19 @@ export const adminModule = trigger('routeAnimations', [
   ),
 ]);
 
-export const UserModule = trigger('routeAnimations', [
+export const UserModule = trigger("routeAnimations", [
   // The '* => *' will trigger the animation to change between any two states
-  transition('notFoundx => dash', [
+  transition("notFoundx => dash", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
-  transition(
-    '* => notFoundx',
-
-    [style({ opacity: 0 }), animate(1000, style({ opacity: 1 }))]
-  ),
+  transition("* => notFoundx", [
+    style({ opacity: 0 }),
+    animate(1000, style({ opacity: 1 })),
+  ]),
   //Child Module Entry
   transition(
-    '* => user',
+    "* => user",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -173,8 +157,7 @@ export const UserModule = trigger('routeAnimations', [
   ),
   //Dash to -> chart
   transition(
-    'user => add',
-
+    "user => add",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -182,8 +165,7 @@ export const UserModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'add => dash',
-
+    "add => dash",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -191,19 +173,19 @@ export const UserModule = trigger('routeAnimations', [
   ),
 ]);
 
-export const ToolsModule = trigger('routeAnimations', [
+export const ToolsModule = trigger("routeAnimations", [
   // The '* => *' will trigger the animation to change between any two states
-  transition('notFoundx => dash', [
+  transition("notFoundx => dash", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
-  transition('* => notFoundx', [
+  transition("* => notFoundx", [
     style({ opacity: 0 }),
     animate(1000, style({ opacity: 1 })),
   ]),
   //Child Module Entry
   transition(
-    '* => tools',
+    "* => tools",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -211,8 +193,7 @@ export const ToolsModule = trigger('routeAnimations', [
   ),
   //Dash to -> chart
   transition(
-    'tools => dtb',
-
+    "tools => dtb",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -220,8 +201,7 @@ export const ToolsModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'dtb => tools',
-
+    "dtb => tools",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -230,8 +210,7 @@ export const ToolsModule = trigger('routeAnimations', [
 
   //Dash to -> chart
   transition(
-    'tools => ltb',
-
+    "tools => ltb",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -239,8 +218,7 @@ export const ToolsModule = trigger('routeAnimations', [
   ),
   //backward
   transition(
-    'ltb => tools',
-
+    "ltb => tools",
     useAnimation(globalAnimation, {
       // Set the duration to 5seconds and delay to 2seconds
       params: { timing: globalTiming, delay: globalDelay },
@@ -324,34 +302,34 @@ export const ToolsModule = trigger('routeAnimations', [
   )
   ]);
 */
-export const slider = trigger('routeAnimations', [
-  transition('x => chxxart', slideTo('left', 100)),
-  transition('groupx => dxash', slideTo('right', 100)),
+export const slider = trigger("routeAnimations", [
+  transition("x => chxxart", slideTo("left", 100)),
+  transition("groupx => dxash", slideTo("right", 100)),
 ]);
 
 function slideTo(direction: string, top: number) {
   const optional = { optional: true };
   return [
     query(
-      ':enter, :leave',
+      ":enter, :leave",
       [
         style({
-          position: 'absolute',
+          position: "absolute",
           top: top,
           [direction]: 0,
-          width: '100%',
+          width: "100%",
         }),
       ],
       optional
     ),
-    query(':enter', [style({ [direction]: '-100%' })]),
+    query(":enter", [ style({ [direction]: "-100%" }) ]),
     group([
       query(
-        ':leave',
-        [animate('600ms ease', style({ [direction]: '100%' }))],
+        ":leave",
+        [ animate("600ms ease", style({ [direction]: "100%" })) ],
         optional
       ),
-      query(':enter', [animate('600ms ease', style({ [direction]: '0%' }))]),
+      query(":enter", [ animate("600ms ease", style({ [direction]: "0%" })) ]),
     ]),
     // Normalize the page style... Might not be necessary
 
@@ -362,16 +340,16 @@ function slideTo(direction: string, top: number) {
 }
 function fadeOut() {
   return [
-    query(':enter', [style({ opacity: 0 })], { optional: true }),
+    query(":enter", [ style({ opacity: 0 }) ], { optional: true }),
     query(
-      ':leave',
+      ":leave",
       // here we apply a style and use the animate function to apply the style over 0.3 seconds
-      [style({ opacity: 1 }), animate('0.2s', style({ opacity: 0 }))],
+      [ style({ opacity: 1 }), animate("0.2s", style({ opacity: 0 })) ],
       { optional: true }
     ),
     query(
-      ':enter',
-      [style({ opacity: 0 }), animate('0.2s', style({ opacity: 1 }))],
+      ":enter",
+      [ style({ opacity: 0 }), animate("0.2s", style({ opacity: 1 })) ],
       { optional: true }
     ),
   ];
